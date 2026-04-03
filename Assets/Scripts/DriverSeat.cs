@@ -13,7 +13,7 @@ namespace Root {
         public override void Interact(bool state) {
             if (state) {
                 GameManager.Player.GetComponent<CameraController>().enabled = false;
-                GameManager.Player.GetComponent<MovementController>().enabled = false;
+                GameManager.Input.Movement.Disable();
                 _cameraController.enabled = true;
             }
         }

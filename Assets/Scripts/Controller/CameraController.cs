@@ -80,7 +80,7 @@ public class CameraController : MonoBehaviour {
         _selectedInteractable.Interact(ctx.started);
     }
     
-    private void Update() {
+    private void LateUpdate() {
         Vector2 moveDir = _input.Movement.MoveDir.ReadValue<Vector2>();
 
         if (moveDir.magnitude > 0 && _movementController.GetState() != CharacterState.Air) {

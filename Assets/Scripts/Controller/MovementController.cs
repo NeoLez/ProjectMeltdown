@@ -182,6 +182,11 @@ namespace Root.Controller {
                     if (_currentSlopeAngle <= maxSlopeAngle) {
                         _currentState = CharacterState.Grounded;
                         _currentPhysicsMaterial = hit.collider.gameObject.GetComponent<Collider>().material;
+                        
+                        if (hit.collider.TryGetComponent<MovingPlatform>(out var component)) {
+                            SetGroundSpeed(component.GetSpeed());
+                        }
+                        
                     }
                     else {
                         _currentState = CharacterState.Sliding;

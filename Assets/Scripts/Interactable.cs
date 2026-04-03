@@ -6,6 +6,7 @@ namespace Root {
         public abstract void Interact(bool state);
 
         public void Select(bool state) {
+            if (SelectedVisuals == null) return;
             SelectedVisuals.SetActive(state);
         }
     }

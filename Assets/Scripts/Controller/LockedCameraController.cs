@@ -1,19 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Root.Controller {
     public class LockedCameraController : MonoBehaviour {
         [SerializeField] private float MouseSensitivity;
         [SerializeField] private float Speed;
-        [SerializeField] private float MovementSpeed;
         [SerializeField] private Transform cam;
-        [SerializeField] private Transform mouseTarget;
+        [SerializeField] private Transform cameraTarget;
+        [SerializeField] public float interactDistance = 2;
 
         private PlayerInputActions _input;
         private Vector2 _prevMousePos = Vector2.zero;
 
         private void Awake() {
             _input = GameManager.Input;
+            
+            _input.Interaction.Interact.started += HandleInteraction;
+            _input.Interaction.Interact.canceled += HandleInteraction;
         }
 
         private void Update() {
@@ -22,12 +26,14 @@ namespace Root.Controller {
             mousePos.y -= Screen.height / 2;
             mousePos.x -= Screen.width / 2;
             
-            cam.position = Vector3.Lerp(cam.position, mouseTarget.position, MovementSpeed);
+            cam.position = cameraTarget.position;
             
-            Quaternion targetRotation = mouseTarget.rotation * Quaternion.Euler(-mousePos.y * MouseSensitivity, mousePos.x * MouseSensitivity, 0f);
+            Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * MouseSensitivity, mousePos.x * MouseSensitivity, 0f);
             cam.rotation = Quaternion.Lerp(cam.rotation, targetRotation, Speed);
             
             _prevMousePos = mousePos;
+            
+            HandleInteractionObjectSelection();
         }
 
         private void OnEnable() {
@@ -43,8 +49,34 @@ namespace Root.Controller {
 
         private void GoBack(InputAction.CallbackContext _) {
             GameManager.Player.GetComponent<CameraController>().enabled = true;
-            GameManager.Player.GetComponent<MovementController>().enabled = true;
+            _input.Movement.Enable();
             enabled = false;
+        }
+        
+        private Interactable _selectedInteractable;
+        private void HandleInteractionObjectSelection() {
+            Ray ray = Camera.main.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>());
+            if (!Physics.Raycast(ray, out var hit, interactDistance) ||
+                !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
+                return;
+            }
+
+            if (_selectedInteractable == component) return;
+            _selectedInteractable = component;
+            _selectedInteractable.Select(true);
+        }
+
+        private void DeselectItem() {
+            if (_selectedInteractable == null) return;
+        
+            _selectedInteractable.Select(false);
+            _selectedInteractable.Interact(false);
+        }
+    
+        private void HandleInteraction(InputAction.CallbackContext ctx) {
+            if (_selectedInteractable == null) return;
+        
+            _selectedInteractable.Interact(ctx.started);
         }
     }
 }
