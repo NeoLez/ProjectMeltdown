@@ -10,7 +10,7 @@ namespace Root {
         [SerializeField] private float percentage;
         
         [SerializeField] private float maxTransformY;
-        [SerializeField] private float maxTrainSpeed;
+        [SerializeField] public float maxTrainSpeed;
         [SerializeField] private Transform visuals;
 
         private void Awake() {
