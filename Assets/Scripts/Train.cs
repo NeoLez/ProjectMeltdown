@@ -5,6 +5,7 @@ namespace Root {
     public class Train : MonoBehaviour {
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private BatterySlot batterySlot;
+        [SerializeField] private Speedometer speedometer;
 
         [SerializeField] private float batteryDrain;
         
@@ -44,6 +45,9 @@ namespace Root {
             if (battery != null) {
                 battery.energy -= batteryDrain * Time.deltaTime;
             }
+
+            speedometer.maxSpeed = speedController.maxTrainSpeed;
+            speedometer.SetSpeed(_currentSpeed);
 
             engineSound.pitch = math.lerp(engineSoundPitchLow, engineSoundPitchHigh, _currentSpeed / speedController.maxTrainSpeed);
             engineSound.volume = math.lerp(0.1f, 1, targetSpeed / speedController.maxTrainSpeed);

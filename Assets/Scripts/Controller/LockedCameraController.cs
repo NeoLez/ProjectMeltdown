@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Root.Controller {
     public class LockedCameraController : MonoBehaviour {
+        [SerializeField] private float lerpSensitivity;
         [SerializeField] private float MouseSensitivity;
         [SerializeField] private float Speed;
         [SerializeField] private Transform cam;
@@ -25,11 +25,14 @@ namespace Root.Controller {
             
             mousePos.y -= Screen.height / 2;
             mousePos.x -= Screen.width / 2;
+
+            mousePos.y /= Screen.height / MouseSensitivity;
+            mousePos.x /= Screen.width / MouseSensitivity;
             
             cam.position = cameraTarget.position;
             
-            Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * MouseSensitivity, mousePos.x * MouseSensitivity, 0f);
-            cam.rotation = Quaternion.Lerp(cam.rotation, targetRotation, Speed);
+            Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * lerpSensitivity, mousePos.x * lerpSensitivity, 0f);
+            cam.rotation = Quaternion.Lerp(cam.rotation, targetRotation, Speed * Time.deltaTime);
             
             _prevMousePos = mousePos;
             
