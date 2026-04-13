@@ -36,7 +36,7 @@ namespace Root
 
             if (_currentSpeed > targetSpeed)
             {
-                _currentSpeed -= _decelerationRate * Time.deltaTime;
+                _currentSpeed -= _decelerationRate * (brakeController.GetBrakeAmount() * 4 + 1) * Time.deltaTime;
                 if (_currentSpeed < targetSpeed)
                 {
                     _currentSpeed = targetSpeed;
