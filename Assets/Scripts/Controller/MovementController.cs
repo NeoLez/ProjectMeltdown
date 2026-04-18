@@ -8,7 +8,7 @@ namespace Root.Controller {
         private Rigidbody _rb;
         private CameraController _cameraController;
         private CapsuleCollider _collider;
-        private CharacterState _currentState;
+        [SerializeField] private CharacterState _currentState;
 
         [SerializeField] private float groundCheckRayLength;
         [SerializeField] private LayerMask groundLayer;
@@ -22,9 +22,12 @@ namespace Root.Controller {
 
         [SerializeField] private float currentVerticalSpeed;
 
+        [SerializeField] private Transform parent;
+
         private bool jump;
 
         private void Start() {
+            prevLocalPos = parent.InverseTransformPoint(transform.position);
             _input = GameManager.Input;
             _rb = GetComponent<Rigidbody>();
             _cameraController = GetComponent<CameraController>();
@@ -53,9 +56,15 @@ namespace Root.Controller {
             Vector2 input = _input.Movement.MoveDir.ReadValue<Vector2>();
             Vector3 worldMoveDir = (_cameraController.GetHorizontalDirectionForwardVector() * input.y +
                                     _cameraController.GetHorizontalDirectionRightVector() * input.x).Swizzle_x0y();
+
+            var newGlobalPos = parent.TransformPoint(prevLocalPos);
+            newGlobalPos += worldMoveDir * movementSpeed * Time.fixedDeltaTime + Vector3.up * currentVerticalSpeed * Time.fixedDeltaTime;
             
-            _rb.MovePosition(transform.position + worldMoveDir * movementSpeed * Time.deltaTime + Vector3.up * currentVerticalSpeed * Time.deltaTime);
+            _rb.linearVelocity = (newGlobalPos - transform.position) / Time.deltaTime;
+            prevLocalPos = parent.InverseTransformPoint(newGlobalPos);
         }
+
+        private Vector3 prevLocalPos;
 
         private void UpdateState() {
             if (currentVerticalSpeed > 0) {
