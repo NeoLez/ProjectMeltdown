@@ -22,7 +22,9 @@ namespace Root {
         [SerializeField] private int maxRepetition;
         public event Action<MapSection> OnAddedPiece;
         [SerializeField] private Transform root;
-
+        [SerializeField] private Train train;
+        [SerializeField] private List<GameObject> ShitToDelete;
+        
         private void Awake() {
             foreach (var sectionListing in _sectionListings) {
                 Debug.Log("a");
@@ -45,6 +47,7 @@ namespace Root {
         }
 
         private int currentRepetition;
+        private int shit = 2;
         private MapSection sectionPrefab;
         private void CreateRandom() {
             Debug.Log(mapSections.Count);
@@ -52,6 +55,16 @@ namespace Root {
                 var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
                 sectionPrefab = speed[Random.Range(0, speed.Count)];
                 currentRepetition = Random.Range(minRepetition, maxRepetition + 1);
+
+                if (shit == 0) {
+                    foreach (var shit in ShitToDelete) {
+                        Destroy(shit);
+                    }
+                    Rebase();
+                    shit = 2;
+                }
+
+                shit--;
             }
             currentRepetition--;
             
@@ -73,6 +86,10 @@ namespace Root {
         private void RemovePastSection() {
             PastSections[0].Remove();
             PastSections.RemoveAt(0);
+        }
+
+        private void Rebase() {
+            transform.position += train.transform.position * -1;
         }
     }
 }
