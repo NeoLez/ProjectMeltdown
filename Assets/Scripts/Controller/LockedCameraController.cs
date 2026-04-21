@@ -80,6 +80,7 @@ namespace Root.Controller {
             if (_selectedInteractable == null) return;
         
             _selectedInteractable.Interact(ctx.started);
+            if (ctx.started == false) _selectedInteractable = null;
         }
     }
 }
