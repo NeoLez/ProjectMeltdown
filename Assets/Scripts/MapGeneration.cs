@@ -47,7 +47,7 @@ namespace Root {
         }
 
         private int currentRepetition;
-        private int shit = 2;
+        private int shit = 15;
         private MapSection sectionPrefab;
         private void CreateRandom() {
             Debug.Log(mapSections.Count);
