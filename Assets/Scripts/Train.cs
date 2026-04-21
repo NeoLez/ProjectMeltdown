@@ -29,11 +29,12 @@ namespace Root
         [SerializeField] private float strainSoundVolumeHigh;
         
         [SerializeField] private GameObject ui_descarrilado;
-
+        [SerializeField] private MapGeneration mapGenerator;
         private bool _descarrilado;
 
         private void Awake() {
             previousDirection = previousDirection == Vector3.zero ? transform.forward : previousDirection;
+            mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
         }
 
         private void Update()
@@ -99,6 +100,7 @@ namespace Root
                 previousDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
                 currentSpeed += previousDirection * m;
                 currentDistanceTraveledToNextPathpoint = 0;
+                _waypoints[0].TrainReached();
                 _waypoints.RemoveAt(0);
                 if (_waypoints[0].maxSpeed < _currentSpeed) {
                     _descarrilado = true;
