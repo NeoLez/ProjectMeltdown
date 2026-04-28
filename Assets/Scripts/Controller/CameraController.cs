@@ -39,12 +39,19 @@ public class CameraController : MonoBehaviour {
 
     private void Start() {
         _movementController = GetComponent<MovementController>();
+        
+        _input.Interaction.Enable();
         _input.Interaction.Interact.started += HandleInteraction;
         _input.Interaction.Interact.canceled += HandleInteraction;
         
         cam = Camera.main.transform;
         
         LockCamera();
+    }
+
+    private void OnDestroy() {
+        _input.Interaction.Interact.started -= HandleInteraction;
+        _input.Interaction.Interact.canceled -= HandleInteraction;
     }
 
     private void OnEnable() {

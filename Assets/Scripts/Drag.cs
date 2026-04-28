@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Root {
     public class Drag : MonoBehaviour {
@@ -7,14 +8,20 @@ namespace Root {
         private float _distance;
 
         private void Awake() {
-            GameManager.Input.Interaction.Interact.started += _ => {
-                if (obj != null) {
-                    StopDrag();
-                }
-                else {
-                    StartDrag();
-                }
-            };
+            GameManager.Input.Interaction.Interact.started += HandleDrag;
+        }
+
+        private void OnDestroy() {
+            GameManager.Input.Interaction.Interact.started -= HandleDrag;
+        }
+
+        public void HandleDrag(InputAction.CallbackContext _) {
+            if (obj != null) {
+                StopDrag();
+            }
+            else {
+                StartDrag();
+            }
         }
 
         private void StartDrag() {

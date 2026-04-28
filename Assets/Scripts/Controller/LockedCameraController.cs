@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,11 @@ namespace Root.Controller {
             
             _input.Interaction.Interact.started += HandleInteraction;
             _input.Interaction.Interact.canceled += HandleInteraction;
+        }
+
+        private void OnDestroy() {
+            _input.Interaction.Interact.started -= HandleInteraction;
+            _input.Interaction.Interact.canceled -= HandleInteraction;
         }
 
         private void Update() {

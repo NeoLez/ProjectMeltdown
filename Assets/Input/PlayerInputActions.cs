@@ -269,6 +269,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""88f72ed6-7552-487e-971e-2b6a00140516"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -291,6 +300,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""GoBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59de2ae7-5d0d-44f8-8367-ecb62bc03918"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -373,6 +393,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Interact = m_Interaction.FindAction("Interact", throwIfNotFound: true);
         m_Interaction_GoBack = m_Interaction.FindAction("GoBack", throwIfNotFound: true);
+        m_Interaction_Reset = m_Interaction.FindAction("Reset", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -682,6 +703,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IInteractionActions> m_InteractionActionsCallbackInterfaces = new List<IInteractionActions>();
     private readonly InputAction m_Interaction_Interact;
     private readonly InputAction m_Interaction_GoBack;
+    private readonly InputAction m_Interaction_Reset;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -701,6 +723,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/GoBack".
         /// </summary>
         public InputAction @GoBack => m_Wrapper.m_Interaction_GoBack;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/Reset".
+        /// </summary>
+        public InputAction @Reset => m_Wrapper.m_Interaction_Reset;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -733,6 +759,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @GoBack.started += instance.OnGoBack;
             @GoBack.performed += instance.OnGoBack;
             @GoBack.canceled += instance.OnGoBack;
+            @Reset.started += instance.OnReset;
+            @Reset.performed += instance.OnReset;
+            @Reset.canceled += instance.OnReset;
         }
 
         /// <summary>
@@ -750,6 +779,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @GoBack.started -= instance.OnGoBack;
             @GoBack.performed -= instance.OnGoBack;
             @GoBack.canceled -= instance.OnGoBack;
+            @Reset.started -= instance.OnReset;
+            @Reset.performed -= instance.OnReset;
+            @Reset.canceled -= instance.OnReset;
         }
 
         /// <summary>
@@ -920,5 +952,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnGoBack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Reset" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnReset(InputAction.CallbackContext context);
     }
 }

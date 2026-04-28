@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Root.Controller {
     [RequireComponent(typeof(Rigidbody), typeof(CameraController), typeof(CapsuleCollider))]
@@ -33,9 +34,13 @@ namespace Root.Controller {
             _cameraController = GetComponent<CameraController>();
             _collider = GetComponent<CapsuleCollider>();
 
-            _input.Movement.Jump.performed += (ctx) => Jump();
+            _input.Movement.Enable();
+            _input.Movement.Jump.performed += Jump;
         }
-        
+
+        private void OnDestroy() {
+            _input.Movement.Jump.performed -= Jump;
+        }
 
         private void FixedUpdate() {
             if (jump) {
@@ -56,7 +61,7 @@ namespace Root.Controller {
             Vector2 input = _input.Movement.MoveDir.ReadValue<Vector2>();
             Vector3 worldMoveDir = (_cameraController.GetHorizontalDirectionForwardVector() * input.y +
                                     _cameraController.GetHorizontalDirectionRightVector() * input.x).Swizzle_x0y();
-
+            
             var newGlobalPos = parent.TransformPoint(prevLocalPos);
             newGlobalPos += worldMoveDir * movementSpeed * Time.fixedDeltaTime + Vector3.up * currentVerticalSpeed * Time.fixedDeltaTime;
             
@@ -95,7 +100,7 @@ namespace Root.Controller {
             }
         }
 
-        private void Jump() {
+        private void Jump(InputAction.CallbackContext _) {
             if (_currentState == CharacterState.Grounded) {
                 jump = true;
             }

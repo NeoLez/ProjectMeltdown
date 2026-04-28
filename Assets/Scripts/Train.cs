@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Root
 {
@@ -35,6 +36,10 @@ namespace Root
         private void Awake() {
             previousDirection = previousDirection == Vector3.zero ? transform.forward : previousDirection;
             mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
+            GameManager.Input.Interaction.Reset.performed += context => {
+                if (_descarrilado)
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            };
         }
 
         private void Update()
