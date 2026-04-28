@@ -31,6 +31,9 @@ namespace Root
         
         [SerializeField] private GameObject ui_descarrilado;
         [SerializeField] private MapGeneration mapGenerator;
+
+        [SerializeField] private float tiempoDescarrilamiento;
+        [SerializeField] private float _descarriladoTimer;
         private bool _descarrilado;
 
         private void Awake() {
@@ -105,8 +108,16 @@ namespace Root
                 _waypoints[0].TrainReached();
                 _waypoints.RemoveAt(0);
                 if (_waypoints[0].maxSpeed < _currentSpeed) {
-                    _descarrilado = true;
-                    return;
+                    if (_descarriladoTimer >= tiempoDescarrilamiento) {
+                        _descarrilado = true;
+                        _descarriladoTimer = 0;
+                        return;
+                    }
+
+                    _descarriladoTimer += (_currentSpeed - _waypoints[0].maxSpeed) * Time.deltaTime;
+                }
+                else {
+                    _descarriladoTimer = 0;
                 }
                 currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
                 //dirVector = (_waypoints[0].transform.position - _waypoints[1].transform.position).normalized;
@@ -130,6 +141,10 @@ namespace Root
         public Vector3 GetSpeed()
         {
             return _currentSpeed * currentSpeed;
+        }
+
+        public bool EstaDescarrilando() {
+            return _descarriladoTimer > 0;
         }
     }
 }
