@@ -27,7 +27,6 @@ namespace Root {
         
         private void Awake() {
             foreach (var sectionListing in _sectionListings) {
-                Debug.Log("a");
                 if (!mapSections.TryGetValue(sectionListing.maxSpeed, out var list)) {
                     list = new();
                     mapSections[sectionListing.maxSpeed] = list;
@@ -50,7 +49,6 @@ namespace Root {
         private int shit = 15;
         private MapSection sectionPrefab;
         private void CreateRandom() {
-            Debug.Log(mapSections.Count);
             if (currentRepetition == 0) {
                 var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
                 sectionPrefab = speed[Random.Range(0, speed.Count)];

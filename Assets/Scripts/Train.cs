@@ -35,21 +35,34 @@ namespace Root
         [SerializeField] private float tiempoDescarrilamiento;
         [SerializeField] private float _descarriladoTimer;
         private bool _descarrilado;
+        
+        [SerializeField] private Transform movementTeleport;
+        [SerializeField] private Transform visualPosition;
+        [SerializeField] private Transform trainPosition;
+
+        [SerializeField] private List<VisualContainer> containers;
+        [SerializeField] private List<Transform> objectsInsideTrain;
 
         private void Awake() {
-            previousDirection = previousDirection == Vector3.zero ? transform.forward : previousDirection;
+            previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
             GameManager.Input.Interaction.Reset.performed += context => {
                 if (_descarrilado)
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             };
+            GameManager.Train = this;
         }
 
+        public bool IsStopped() {
+            return isStopped;
+        }
+
+        private bool isStopped;
         private void Update()
         {
             if (_descarrilado) {
                 currentSpeed += Vector3.up;
-                transform.position = currentSpeed * _currentSpeed * Time.deltaTime;
+                trainPosition.position = currentSpeed * _currentSpeed * Time.deltaTime;
                 ui_descarrilado.SetActive(true);
                 return;
             }
@@ -65,7 +78,7 @@ namespace Root
 
             float speedChange = - brakeController.GetBrakeAmount() * Time.deltaTime;
 
-            if (_currentSpeed <= targetSpeed) {
+            if (_currentSpeed < targetSpeed) {
                 speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
             }
             else {
@@ -129,8 +142,58 @@ namespace Root
             
             currentSpeed += currentDirection * distanceToTravel;
             Vector3 dirVector = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-            transform.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
-            transform.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+
+            
+            if (_currentSpeed == 0) {
+                if (!isStopped) {
+                    isStopped = true;
+                    trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
+                    trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+                    MovePhysicalTrainToTrainPosition();
+                    ResetVisualThingies();
+                }
+            }
+            else {
+                trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
+                trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+                if (isStopped) {
+                    isStopped = false;
+                    MovePhysicalTrainToStaticArea();
+                    SetVisualThingies();
+                }
+            }
+        }
+
+        private void MovePhysicalTrainToTrainPosition() {
+            Debug.Log("Moving Train to actual position");
+            foreach (var objectInsideTrain in objectsInsideTrain) {
+                objectInsideTrain.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.position));
+                objectInsideTrain.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.forward));
+            }
+            transform.position = trainPosition.position;
+            transform.rotation = trainPosition.rotation;
+        }
+        
+        private void MovePhysicalTrainToStaticArea() {
+            Debug.Log("Moving Train to static simulation area");
+            foreach (var objectInsideTrain in objectsInsideTrain) {
+                objectInsideTrain.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.position));
+                objectInsideTrain.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.forward));
+            }
+            transform.position = movementTeleport.position;
+            transform.rotation = movementTeleport.rotation;
+        }
+
+        private void SetVisualThingies() {
+            foreach (var container in containers) {
+                container.goal = visualPosition;
+            }
+        }
+
+        private void ResetVisualThingies() {
+            foreach (var container in containers) {
+                container.goal = null;
+            }
         }
         
         public float currentDistanceBetweenPathpoints;
