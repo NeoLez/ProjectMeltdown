@@ -11,7 +11,7 @@ namespace Root
         [SerializeField] private float sensitivity;
         [SerializeField] private float maxSwitchSpeed;
         [SerializeField] private float percentage;
-
+        [SerializeField] private float maxBraking;
         [SerializeField] private float maxTransformY;
         [SerializeField] private Transform visuals;
 
@@ -59,7 +59,7 @@ namespace Root
 
         public float GetBrakeAmount()
         {
-            return percentage;
+            return percentage * maxBraking;
         }
     }
 }

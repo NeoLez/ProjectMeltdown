@@ -19,8 +19,8 @@ namespace Root
 
         [SerializeField] private float _maxEngineStrain;
         [SerializeField] private float _currentSpeed;
-        [SerializeField] private float _accelerationRate;
-        [SerializeField] private float _decelerationRate;
+        [SerializeField] private float _engineAccelerationRate;
+        [SerializeField] private float _frictionDecelerationRate;
         [SerializeField] private AudioSource engineSound;
         [SerializeField] private float engineSoundPitchLow;
         [SerializeField] private float engineSoundPitchHigh;
@@ -51,7 +51,7 @@ namespace Root
                 return;
             }
             
-            float targetSpeed = speedController.GetTargetSpeed() * (1 - brakeController.GetBrakeAmount());
+            float targetSpeed = speedController.GetTargetSpeed();
             float speedDifference = targetSpeed - _currentSpeed;
 
             if (speedDifference > _maxEngineStrain)
@@ -59,22 +59,19 @@ namespace Root
                 Debug.Log("Straining Engine: " + targetSpeed + " " + _currentSpeed);
             }
 
-            if (_currentSpeed > targetSpeed)
-            {
-                _currentSpeed -= _decelerationRate * (brakeController.GetBrakeAmount() * 40 + 1) * Time.deltaTime;
-                if (_currentSpeed < targetSpeed)
-                {
-                    _currentSpeed = targetSpeed;
-                }
+
+            float speedChange = - brakeController.GetBrakeAmount() * Time.deltaTime;
+
+            if (_currentSpeed <= targetSpeed) {
+                speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
             }
-            else if (_currentSpeed < targetSpeed)
-            {
-                _currentSpeed += _accelerationRate * Time.deltaTime;
-                if (_currentSpeed > targetSpeed)
-                {
-                    _currentSpeed = targetSpeed;
-                }
+            else {
+                speedChange -= _frictionDecelerationRate * _currentSpeed * Time.deltaTime;
             }
+
+            _currentSpeed += speedChange;
+
+            _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
 
             var battery = batterySlot.GetBattery();
             if (battery != null)

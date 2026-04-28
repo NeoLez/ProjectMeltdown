@@ -14442,6 +14442,7 @@ MonoBehaviour:
   sensitivity: 0.002
   maxSwitchSpeed: 0.05
   percentage: 0
+  maxBraking: 6
   maxTransformY: 0.6
   visuals: {fileID: 548263278}
 --- !u!4 &548263278
@@ -38775,8 +38776,8 @@ MonoBehaviour:
   batteryDrain: 1
   _maxEngineStrain: 20
   _currentSpeed: 0
-  _accelerationRate: 2.25
-  _decelerationRate: 0.5
+  _engineAccelerationRate: 1.5
+  _frictionDecelerationRate: 0.025
   engineSound: {fileID: 1582644323}
   engineSoundPitchLow: 0.5
   engineSoundPitchHigh: 1.75
