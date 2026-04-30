@@ -61,12 +61,11 @@ namespace Root.Controller {
             Vector2 input = _input.Movement.MoveDir.ReadValue<Vector2>();
             Vector3 worldMoveDir = (_cameraController.GetHorizontalDirectionForwardVector() * input.y +
                                     _cameraController.GetHorizontalDirectionRightVector() * input.x).Swizzle_x0y();
+
+
+
+            _rb.linearVelocity = worldMoveDir * movementSpeed + Vector3.up * currentVerticalSpeed;
             
-            var newGlobalPos = parent.TransformPoint(prevLocalPos);
-            newGlobalPos += worldMoveDir * movementSpeed * Time.fixedDeltaTime + Vector3.up * currentVerticalSpeed * Time.fixedDeltaTime;
-            
-            _rb.linearVelocity = (newGlobalPos - transform.position) / Time.deltaTime;
-            prevLocalPos = parent.InverseTransformPoint(newGlobalPos);
         }
 
         private Vector3 prevLocalPos;
