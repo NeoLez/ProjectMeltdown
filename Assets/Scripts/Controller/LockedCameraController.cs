@@ -7,7 +7,7 @@ namespace Root.Controller {
         [SerializeField] private float lerpSensitivity;
         [SerializeField] private float MouseSensitivity;
         [SerializeField] private float Speed;
-        [SerializeField] private Transform cam;
+        [SerializeField] private CameraPivot cam;
         [SerializeField] private Transform cameraTarget;
         [SerializeField] public float interactDistance = 2;
 
@@ -35,10 +35,10 @@ namespace Root.Controller {
             mousePos.y /= Screen.height / MouseSensitivity;
             mousePos.x /= Screen.width / MouseSensitivity;
             
-            cam.position = cameraTarget.position;
+            cam.transform.position = cameraTarget.position;
             
             Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * lerpSensitivity, mousePos.x * lerpSensitivity, 0f);
-            cam.rotation = Quaternion.Lerp(cam.rotation, targetRotation, Speed * Time.deltaTime);
+            cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, targetRotation, Speed * Time.deltaTime);
             
             _prevMousePos = mousePos;
             
@@ -48,7 +48,6 @@ namespace Root.Controller {
         private void OnEnable() {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
-            cam = Camera.main.transform;
             _input.Interaction.GoBack.started += GoBack;
         }
 
@@ -64,7 +63,7 @@ namespace Root.Controller {
         
         private Interactable _selectedInteractable;
         private void HandleInteractionObjectSelection() {
-            Ray ray = Camera.main.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>());
+            Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>());
             if (!Physics.Raycast(ray, out var hit, interactDistance) ||
                 !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
                 return;

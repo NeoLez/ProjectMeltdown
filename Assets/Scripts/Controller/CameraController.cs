@@ -44,8 +44,6 @@ public class CameraController : MonoBehaviour {
         _input.Interaction.Interact.started += HandleInteraction;
         _input.Interaction.Interact.canceled += HandleInteraction;
         
-        cam = Camera.main.transform;
-        
         LockCamera();
     }
 
