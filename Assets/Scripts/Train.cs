@@ -11,7 +11,6 @@ namespace Root
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private TrainBrakeController brakeController;
         [SerializeField] private BatterySlot batterySlot;
-        [SerializeField] private Speedometer speedometer;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
         [SerializeField] private List<TrainPathWaypoint> _waypoints;
         
@@ -89,14 +88,12 @@ namespace Root
 
             _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
 
-            var battery = batterySlot.GetBattery();
+            var battery = batterySlot?.GetBattery();
             if (battery != null)
             {
                 battery.energy -= batteryDrain * Time.deltaTime;
             }
-
-            speedometer.maxSpeed = speedController.maxTrainSpeed;
-            speedometer.SetSpeed(_currentSpeed);
+            
             speedometerHorizontal.maxSpeed = speedController.maxTrainSpeed;
             speedometerHorizontal.SetSpeed(_currentSpeed);
 

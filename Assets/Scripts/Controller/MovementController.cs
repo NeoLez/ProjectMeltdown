@@ -23,12 +23,9 @@ namespace Root.Controller {
 
         [SerializeField] private float currentVerticalSpeed;
 
-        [SerializeField] private Transform parent;
-
         private bool jump;
 
         private void Start() {
-            prevLocalPos = parent.InverseTransformPoint(transform.position);
             _input = GameManager.Input;
             _rb = GetComponent<Rigidbody>();
             _cameraController = GetComponent<CameraController>();
