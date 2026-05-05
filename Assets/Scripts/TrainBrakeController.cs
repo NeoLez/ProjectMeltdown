@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,9 +13,20 @@ namespace Root
         [SerializeField] private float sensitivity;
         [SerializeField] private float maxSwitchSpeed;
         [SerializeField] private float percentage;
-        [SerializeField] private float maxBraking;
         [SerializeField] private float maxTransformY;
         [SerializeField] private Transform visuals;
+        [SerializeField] private AudioSource BrakeDegradeSound;
+
+
+        private int currentBrakeLevel;
+        [SerializeField] private float currentDamage;
+        [Serializable] public class BrakeLevels {
+            public float maxDamage;
+            public float maxBraking;
+        }
+
+        [SerializeField] public List<BrakeLevels> brakeLevels;
+        [SerializeField] public List<GameObject> ledIndicators;
 
         private void Awake()
         {
@@ -35,8 +48,9 @@ namespace Root
             }
         }
 
-        private void Update()
-        {
+        private void Update() {
+            UpdateBrakeState();
+            
             if (active)
             {
                 float yMovement = GameManager.Input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
@@ -57,9 +71,22 @@ namespace Root
             }
         }
 
-        public float GetBrakeAmount()
+        private void UpdateBrakeState() {
+            if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage) {
+                ledIndicators[currentBrakeLevel].SetActive(true);
+                currentBrakeLevel++;
+                BrakeDegradeSound.Play();
+                Debug.Log("Brakes Degraded");
+            }
+        }
+
+        public float UseBrakeGetAmount()
         {
-            return percentage * maxBraking;
+            return percentage * brakeLevels[currentBrakeLevel].maxBraking;
+        }
+
+        public void Damage(float damage) {
+            currentDamage += damage;
         }
     }
 }

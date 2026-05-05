@@ -71,11 +71,12 @@ namespace Root
 
             if (speedDifference > _maxEngineStrain)
             {
-                Debug.Log("Straining Engine: " + targetSpeed + " " + _currentSpeed);
+                //Debug.Log("Straining Engine: " + targetSpeed + " " + _currentSpeed);
             }
 
-
-            float speedChange = - brakeController.GetBrakeAmount() * Time.deltaTime;
+            var braking = brakeController.UseBrakeGetAmount() * Time.deltaTime;
+            float speedChange = - braking;
+            brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
 
             if (_currentSpeed < targetSpeed) {
                 speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
