@@ -11,6 +11,7 @@ namespace Root
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private TrainBrakeController brakeController;
         [SerializeField] private BatterySlot batterySlot;
+        [SerializeField] private EmergencyStopButton emergencyStopButton;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
         [SerializeField] private List<TrainPathWaypoint> _waypoints;
         
@@ -65,6 +66,10 @@ namespace Root
                 ui_descarrilado.SetActive(true);
                 return;
             }
+
+            if (emergencyStopButton.ShouldBreak() && _currentSpeed == 0) {
+                emergencyStopButton.ReachedStop();
+            }
             
             float targetSpeed = speedController.GetTargetSpeed();
             float speedDifference = targetSpeed - _currentSpeed;
@@ -77,6 +82,11 @@ namespace Root
             var braking = brakeController.UseBrakeGetAmount() * Time.deltaTime;
             float speedChange = - braking;
             brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
+
+            if (emergencyStopButton.ShouldBreak()) {
+                speedChange -= emergencyStopButton.brakeSpeed * Time.deltaTime;
+            }
+            
 
             if (_currentSpeed < targetSpeed) {
                 speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
@@ -118,7 +128,7 @@ namespace Root
                 currentDistanceTraveledToNextPathpoint = 0;
                 _waypoints[0].TrainReached();
                 _waypoints.RemoveAt(0);
-                if (_waypoints[0].maxSpeed < _currentSpeed) {
+                if (_waypoints[0].maxSpeed < _currentSpeed && !emergencyStopButton.ShouldBreak()) {
                     if (_descarriladoTimer >= tiempoDescarrilamiento) {
                         _descarrilado = true;
                         _descarriladoTimer = 0;
