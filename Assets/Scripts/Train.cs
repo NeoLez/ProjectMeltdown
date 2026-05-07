@@ -13,6 +13,12 @@ namespace Root
         [SerializeField] private BatterySlot batterySlot;
         [SerializeField] private EmergencyStopButton emergencyStopButton;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
+        [SerializeField] private List<Button> externalDoorButtons;
+        [SerializeField] private List<TrainDoor> externalDoors;
+        
+        [SerializeField] private List<Button> cabDoorButton;
+        [SerializeField] private List<TrainDoor> cabDoor;
+        
         [SerializeField] private List<TrainPathWaypoint> _waypoints;
         
         [SerializeField] private float batteryDrain;
@@ -51,6 +57,14 @@ namespace Root
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             };
             GameManager.Train = this;
+
+            foreach (var button in externalDoorButtons) {
+                button.OnClicked += HandleExternalDoorButton;
+            }
+
+            foreach (var button in cabDoorButton) {
+                button.OnClicked += HandleCabDoorButton;
+            }
         }
 
         public bool IsStopped() {
@@ -155,6 +169,7 @@ namespace Root
             if (_currentSpeed == 0) {
                 if (!isStopped) {
                     isStopped = true;
+                    LockExternalDoorButtons();
                     trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
                     trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
                     MovePhysicalTrainToTrainPosition();
@@ -166,6 +181,7 @@ namespace Root
                 trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
                 if (isStopped) {
                     isStopped = false;
+                    LockExternalDoorButtons();
                     MovePhysicalTrainToStaticArea();
                     SetVisualThingies();
                 }
@@ -201,6 +217,82 @@ namespace Root
         private void ResetVisualThingies() {
             foreach (var container in containers) {
                 container.goal = null;
+            }
+        }
+
+        private bool cabDoorOpened;
+        public void HandleCabDoorButton() {
+            if (cabDoorOpened) {
+                CloseCabDoors();
+            }
+            else {
+                OpenCabDoors();
+            }
+        }
+        
+        private void OpenCabDoors() {
+            LockCabDoorButtons();
+            foreach (var door in externalDoors) {
+                
+            }
+            //Unlock when finished
+        }
+
+        private void CloseCabDoors() {
+            LockCabDoorButtons();
+            foreach (var door in externalDoors) {
+                
+            }
+            //Unlock when finished
+        }
+        
+        private void LockCabDoorButtons() {
+            foreach (var button in cabDoorButton) {
+                button.Lock();
+            }
+        }
+        
+        private void UnlockCabDoorButtons() {
+            foreach (var button in cabDoorButton) {
+                button.Unlock();
+            }
+        }
+        
+        private bool externalDoorsOpened;
+        public void HandleExternalDoorButton() {
+            if (externalDoorsOpened) {
+                CloseExternalDoors();
+            }
+            else {
+                OpenExternalDoors();
+            }
+        }
+        
+        private void OpenExternalDoors() {
+            LockExternalDoorButtons();
+            foreach (var door in externalDoors) {
+                
+            }
+            //Unlock when finished
+        }
+
+        private void CloseExternalDoors() {
+            LockExternalDoorButtons();
+            foreach (var door in externalDoors) {
+                
+            }
+            //Unlock when finished
+        }
+        
+        private void LockExternalDoorButtons() {
+            foreach (var button in externalDoorButtons) {
+                button.Lock();
+            }
+        }
+        
+        private void UnlockExternalDoorButtons() {
+            foreach (var button in externalDoorButtons) {
+                button.Unlock();
             }
         }
         
