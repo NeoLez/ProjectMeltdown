@@ -182,6 +182,7 @@ namespace Root
                 trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
                 trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
                 
+                LockExternalDoorButtons();
                 if (isStopped) {
                     isStopped = false;
                     Debug.Log("B");
