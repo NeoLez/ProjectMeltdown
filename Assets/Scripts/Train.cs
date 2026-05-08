@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PrimeTween;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,10 +15,10 @@ namespace Root
         [SerializeField] private EmergencyStopButton emergencyStopButton;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
         [SerializeField] private List<Button> externalDoorButtons;
-        [SerializeField] private List<TrainDoor> externalDoors;
+        [SerializeField] private List<Animator> externalDoors;
         
         [SerializeField] private List<Button> cabDoorButton;
-        [SerializeField] private List<TrainDoor> cabDoor;
+        [SerializeField] private List<Animator> cabDoor;
         
         [SerializeField] private List<TrainPathWaypoint> _waypoints;
         
@@ -71,7 +72,7 @@ namespace Root
             return isStopped;
         }
 
-        private bool isStopped;
+        private bool isStopped = true;
         private void Update()
         {
             if (_descarrilado) {
@@ -169,7 +170,8 @@ namespace Root
             if (_currentSpeed == 0) {
                 if (!isStopped) {
                     isStopped = true;
-                    LockExternalDoorButtons();
+                    Debug.Log("A");
+                    UnlockExternalDoorButtons();
                     trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
                     trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
                     MovePhysicalTrainToTrainPosition();
@@ -179,9 +181,15 @@ namespace Root
             else {
                 trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
                 trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+                
                 if (isStopped) {
                     isStopped = false;
-                    LockExternalDoorButtons();
+                    Debug.Log("B");
+                    if (externalDoorsOpened) {
+                        CloseExternalDoors(false);
+                        Debug.Log("E");
+                    }
+                    
                     MovePhysicalTrainToStaticArea();
                     SetVisualThingies();
                 }
@@ -220,7 +228,7 @@ namespace Root
             }
         }
 
-        private bool cabDoorOpened;
+        public bool cabDoorOpened = true;
         public void HandleCabDoorButton() {
             if (cabDoorOpened) {
                 CloseCabDoors();
@@ -231,19 +239,21 @@ namespace Root
         }
         
         private void OpenCabDoors() {
+            cabDoorOpened = true;
             LockCabDoorButtons();
             foreach (var door in externalDoors) {
                 
             }
-            //Unlock when finished
+            Invoke(nameof(UnlockCabDoorButtons), 2f);
         }
 
         private void CloseCabDoors() {
+            cabDoorOpened = false;
             LockCabDoorButtons();
             foreach (var door in externalDoors) {
                 
             }
-            //Unlock when finished
+            Invoke(nameof(UnlockCabDoorButtons), 2f);
         }
         
         private void LockCabDoorButtons() {
@@ -255,13 +265,13 @@ namespace Root
         private void UnlockCabDoorButtons() {
             foreach (var button in cabDoorButton) {
                 button.Unlock();
-            }
+            }   
         }
         
-        private bool externalDoorsOpened;
+        public bool externalDoorsOpened = true;
         public void HandleExternalDoorButton() {
             if (externalDoorsOpened) {
-                CloseExternalDoors();
+                CloseExternalDoors(true);
             }
             else {
                 OpenExternalDoors();
@@ -269,19 +279,28 @@ namespace Root
         }
         
         private void OpenExternalDoors() {
+            externalDoorsOpened = true;
             LockExternalDoorButtons();
             foreach (var door in externalDoors) {
-                
+                Tween.Custom(0.99f, 0f, new TweenSettings(1f), f => {
+                    Debug.Log(f);
+                    door.SetFloat("Time", f);
+                });
             }
-            //Unlock when finished
+            Invoke(nameof(UnlockExternalDoorButtons), 2f);
         }
 
-        private void CloseExternalDoors() {
+        private void CloseExternalDoors(bool unlockOnceClosed) {
+            externalDoorsOpened = false;
             LockExternalDoorButtons();
             foreach (var door in externalDoors) {
-                
+                Tween.Custom(0f, 0.99f, new TweenSettings(1f), f => {
+                    Debug.Log(f);
+                    door.SetFloat("Time", f);
+                });
             }
-            //Unlock when finished
+            if(unlockOnceClosed)
+                Invoke(nameof(UnlockExternalDoorButtons), 2f);
         }
         
         private void LockExternalDoorButtons() {

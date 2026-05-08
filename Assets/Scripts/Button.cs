@@ -7,7 +7,7 @@ namespace Root {
         public GameObject offObject;
         public event Action OnClicked;
 
-        public bool Locked { get; private set; }
+        [field: SerializeField] private bool Locked { get; set; }
         
         public override void Interact(bool state) {
             if (state && !Locked) {
@@ -16,12 +16,14 @@ namespace Root {
         }
 
         public void Lock() {
+            Debug.Log("aaaa");
             Locked = true;
             onObject.SetActive(false);
             offObject.SetActive(true);
         }
 
         public void Unlock() {
+            Debug.Log("bbbb");
             Locked = false;
             onObject.SetActive(true);
             offObject.SetActive(false);
