@@ -6418,6 +6418,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1529421659881326902, guid: 44c3aff7c41c85e43be3a15174ae6fc2, type: 3}
   m_PrefabInstance: {fileID: 1724490311}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &158269305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 158269307}
+  - component: {fileID: 158269306}
+  m_Layer: 0
+  m_Name: no.
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &158269306
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158269305}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.79412174, y: 7.7634835, z: 10.620171}
+  m_Center: {x: -0.44829226, y: 3.3817413, z: 0.69867325}
+--- !u!4 &158269307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158269305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.93, y: 0, z: -44.48826}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &164275876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37752,17 +37805,6 @@ MonoBehaviour:
   batterySlot: {fileID: 0}
   emergencyStopButton: {fileID: 1874688292}
   speedometerHorizontal: {fileID: 972612785}
-  externalDoorButtons:
-  - {fileID: 658524432}
-  externalDoors:
-  - {fileID: 1242058237}
-  - {fileID: 999278226}
-  - {fileID: 95407911}
-  - {fileID: 1526535753}
-  cabDoorButton: []
-  cabDoor:
-  - {fileID: 64502589}
-  - {fileID: 2020943303}
   _waypoints:
   - {fileID: 130946946}
   - {fileID: 1511545380}
@@ -37799,8 +37841,6 @@ MonoBehaviour:
   - {fileID: 64502587}
   objectsInsideTrain:
   - {fileID: 1466652824}
-  cabDoorOpened: 1
-  externalDoorsOpened: 1
   currentDistanceBetweenPathpoints: 0
   currentDistanceTraveledToNextPathpoint: 0
   currentSpeed: {x: 0, y: 0, z: 0}
@@ -77313,3 +77353,4 @@ SceneRoots:
   - {fileID: 978504749}
   - {fileID: 1488261161}
   - {fileID: 1041437610}
+  - {fileID: 158269307}
