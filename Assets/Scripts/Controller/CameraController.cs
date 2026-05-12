@@ -76,7 +76,6 @@ public class CameraController : MonoBehaviour {
         if (_selectedInteractable == null) return;
         
         _selectedInteractable.Select(false);
-        _selectedInteractable.Interact(false);
     }
     
     private void HandleInteraction(InputAction.CallbackContext ctx) {
