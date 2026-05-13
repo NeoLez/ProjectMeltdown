@@ -62,6 +62,7 @@ namespace Root.Controller {
         }
         
         private Interactable _selectedInteractable;
+        private Interactable _interactingWithInternals;
         private void HandleInteractionObjectSelection() {
             Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>());
             if (!Physics.Raycast(ray, out var hit, interactDistance) ||
@@ -82,10 +83,15 @@ namespace Root.Controller {
         }
     
         private void HandleInteraction(InputAction.CallbackContext ctx) {
-            if (_selectedInteractable == null) return;
-        
-            _selectedInteractable.Interact(ctx.started);
-            if (ctx.started == false) _selectedInteractable = null;
+            if (!ctx.started && _interactingWithInternals != null)
+            {
+                _interactingWithInternals.Interact(false);
+            }else if (_selectedInteractable != null)
+            {
+                _selectedInteractable.Interact(ctx.started);
+                if (!ctx.started) _selectedInteractable = null;
+                else _interactingWithInternals = _selectedInteractable;
+            }
         }
     }
 }
