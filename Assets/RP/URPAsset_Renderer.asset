@@ -64,10 +64,14 @@ MonoBehaviour:
   - {fileID: -1763622522183829049}
   - {fileID: 5978505671836392563}
   - {fileID: 5101553694958585104}
-  m_RendererFeatureMap: c7b95affa85a86e7735c77a93bebf7521085966e0e5ccc46
+  - {fileID: 3334717481360277787}
+  m_RendererFeatureMap: c7b95affa85a86e7735c77a93bebf7521085966e0e5ccc461bc1c396e14b472e
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
-  m_AssetVersion: 2
+  m_AssetVersion: 3
+  m_PrepassLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_OpaqueLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -89,6 +93,21 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &3334717481360277787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69a19d29ef66464ea0afc7cd84fd6c2, type: 3}
+  m_Name: VolumetricFogRendererFeature
+  m_EditorClassIdentifier: com.cqf.urpvolumetricfog.runtime::VolumetricFogRendererFeature
+  m_Active: 1
+  downsampleDepthShader: {fileID: 4800000, guid: cffeaeec0396a2c4dad475266cc8dfeb, type: 3}
+  volumetricFogShader: {fileID: 4800000, guid: 08f816187f9af0244a95556ee0cab83f, type: 3}
 --- !u!114 &5101553694958585104
 MonoBehaviour:
   m_ObjectHideFlags: 0
