@@ -329,5 +329,11 @@ namespace Root
         public bool EstaDescarrilando() {
             return _descarriladoTimer > 0;
         }
+
+        public float GetCurrentMaxSpeed() 
+        {
+            return _waypoints.Count > 0 ? _waypoints[0].maxSpeed : 0f;
+        }
     }
+
 }
