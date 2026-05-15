@@ -2653,6 +2653,7 @@ GameObject:
   - component: {fileID: 66361627}
   - component: {fileID: 66361626}
   - component: {fileID: 66361625}
+  - component: {fileID: 66361628}
   m_Layer: 0
   m_Name: 1_3
   m_TagString: Untagged
@@ -2754,6 +2755,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66361623}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &66361628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66361623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 60
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 66361626}
 --- !u!1001 &68487042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22876,6 +22895,7 @@ GameObject:
   - component: {fileID: 592903594}
   - component: {fileID: 592903593}
   - component: {fileID: 592903592}
+  - component: {fileID: 592903595}
   m_Layer: 0
   m_Name: 1_1
   m_TagString: Untagged
@@ -22977,6 +22997,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592903590}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &592903595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592903590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 80
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 592903593}
 --- !u!1001 &596668389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27681,6 +27719,7 @@ GameObject:
   - component: {fileID: 714623946}
   - component: {fileID: 714623945}
   - component: {fileID: 714623944}
+  - component: {fileID: 714623947}
   m_Layer: 0
   m_Name: 1_4
   m_TagString: Untagged
@@ -27782,6 +27821,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714623942}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &714623947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714623942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 20
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 714623945}
 --- !u!43 &716951521
 Mesh:
   m_ObjectHideFlags: 0
@@ -38993,6 +39050,7 @@ GameObject:
   - component: {fileID: 1074294514}
   - component: {fileID: 1074294513}
   - component: {fileID: 1074294512}
+  - component: {fileID: 1074294515}
   m_Layer: 0
   m_Name: 1_6
   m_TagString: Untagged
@@ -39094,6 +39152,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1074294510}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1074294515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074294510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 30
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 1074294513}
 --- !u!1001 &1077195781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44202,6 +44278,7 @@ GameObject:
   - component: {fileID: 1236323498}
   - component: {fileID: 1236323497}
   - component: {fileID: 1236323496}
+  - component: {fileID: 1236323499}
   m_Layer: 0
   m_Name: 1_5
   m_TagString: Untagged
@@ -44303,6 +44380,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236323494}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1236323499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236323494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 10
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 1236323497}
 --- !u!43 &1236447039
 Mesh:
   m_ObjectHideFlags: 0
@@ -52080,7 +52175,7 @@ Light:
   serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 0.81472987, b: 0.38073963, a: 1}
-  m_Intensity: 50
+  m_Intensity: 80
   m_Range: 100
   m_SpotAngle: 65.18255
   m_InnerSpotAngle: 51.289795
@@ -55197,6 +55292,7 @@ GameObject:
   - component: {fileID: 1528168879}
   - component: {fileID: 1528168878}
   - component: {fileID: 1528168877}
+  - component: {fileID: 1528168880}
   m_Layer: 0
   m_Name: 1_8
   m_TagString: Untagged
@@ -55298,6 +55394,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528168875}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1528168880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528168875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 70
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 1528168878}
 --- !u!43 &1528758526
 Mesh:
   m_ObjectHideFlags: 0
@@ -58114,6 +58228,7 @@ GameObject:
   - component: {fileID: 1586682128}
   - component: {fileID: 1586682127}
   - component: {fileID: 1586682126}
+  - component: {fileID: 1586682129}
   m_Layer: 0
   m_Name: 1_7
   m_TagString: Untagged
@@ -58215,6 +58330,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586682124}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1586682129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586682124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 50
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 1586682127}
 --- !u!1001 &1593396284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70729,7 +70862,7 @@ Light:
   serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 0.81472987, b: 0.38073963, a: 1}
-  m_Intensity: 50
+  m_Intensity: 80
   m_Range: 100
   m_SpotAngle: 65.18255
   m_InnerSpotAngle: 51.289795
@@ -76992,6 +77125,7 @@ GameObject:
   - component: {fileID: 2121364107}
   - component: {fileID: 2121364106}
   - component: {fileID: 2121364105}
+  - component: {fileID: 2121364108}
   m_Layer: 0
   m_Name: 1_2
   m_TagString: Untagged
@@ -77093,6 +77227,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121364103}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2121364108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121364103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 40
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 2121364106}
 --- !u!1001 &2131722234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77418,6 +77570,7 @@ GameObject:
   - component: {fileID: 2142081500}
   - component: {fileID: 2142081499}
   - component: {fileID: 2142081498}
+  - component: {fileID: 2142081501}
   m_Layer: 0
   m_Name: 1
   m_TagString: Untagged
@@ -77519,6 +77672,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2142081496}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2142081501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142081496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24dd3fedef065c04f9ca80751ab23866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MarkingsColorUpdater
+  train: {fileID: 1068053785}
+  speed: 0
+  safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
+  limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
+  warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
+  renderer: {fileID: 2142081499}
 --- !u!1 &2142322406
 GameObject:
   m_ObjectHideFlags: 0
