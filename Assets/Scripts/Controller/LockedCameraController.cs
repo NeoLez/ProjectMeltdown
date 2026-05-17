@@ -64,7 +64,7 @@ namespace Root.Controller {
         private Interactable _selectedInteractable;
         private Interactable _interactingWithInternals;
         private void HandleInteractionObjectSelection() {
-            Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>());
+            Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>()/new Vector2(Screen.width/GameManager.RTSize.x,Screen.height/GameManager.RTSize.y));
             if (!Physics.Raycast(ray, out var hit, interactDistance) ||
                 !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
                 return;

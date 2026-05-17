@@ -6,6 +6,7 @@ public static class GameManager {
   public static Player Player;
   public static Camera Camera;
   public static Train Train;
+  public static readonly Vector2 RTSize = new(480,270);  
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
   private static void CreateInput() {
