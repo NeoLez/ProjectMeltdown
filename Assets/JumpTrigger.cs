@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class JumpTrigger : MonoBehaviour
+    public class TrainBoardingTrigger : MonoBehaviour
     {
         [SerializeField] private Transform boardingPoint;
         [SerializeField] private float maxDistance;
@@ -25,24 +25,8 @@ namespace Root
             GameManager.Input.Movement.Jump.performed -= TryBoard;
         }
 
-        private bool _playerInZone = false;
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.GetComponentInParent<Player>() != null)
-                _playerInZone = true;
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.GetComponentInParent<Player>() != null)
-                _playerInZone = false;
-        }
-
         private void TryBoard(UnityEngine.InputSystem.InputAction.CallbackContext _)
         {
-            if (!_playerInZone) return;
-
             var player = GameManager.Player.transform;
 
             // Condicion 1: estar abajo del punto de referencia
