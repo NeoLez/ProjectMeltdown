@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using PrimeTween;
 using Unity.Mathematics;
 using UnityEngine;
@@ -48,7 +49,8 @@ namespace Root
         [SerializeField] private Transform trainPosition;
 
         [SerializeField] private List<VisualContainer> containers;
-        [SerializeField] private List<Transform> objectsInsideTrain;
+        [SerializeField] private List<VisualContainer> objectsInsideTrain;
+        [SerializeField] private List<ItemInsideArea> itemInsideAreas;
 
         private void Awake() {
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
@@ -185,10 +187,17 @@ namespace Root
                 LockExternalDoorButtons();
                 if (isStopped) {
                     isStopped = false;
-                    Debug.Log("B");
+                    HashSet<VisualContainer> itemsInside = new();
+                    foreach (var area in itemInsideAreas) {
+                        Debug.Log(area._containers.Count);
+                        itemsInside.UnionWith(area._containers);
+                    }
+                    Debug.Log(itemsInside.Count());
+                    objectsInsideTrain.Clear();
+                    objectsInsideTrain.AddRange(itemsInside.ToList());
+                    
                     if (externalDoorsOpened) {
                         CloseExternalDoors(false);
-                        Debug.Log("E");
                     }
                     
                     MovePhysicalTrainToStaticArea();
@@ -200,8 +209,8 @@ namespace Root
         private void MovePhysicalTrainToTrainPosition() {
             Debug.Log("Moving Train to actual position");
             foreach (var objectInsideTrain in objectsInsideTrain) {
-                objectInsideTrain.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.position));
-                objectInsideTrain.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.forward));
+                objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
+                objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
             }
             transform.position = trainPosition.position;
             transform.rotation = trainPosition.rotation;
@@ -210,8 +219,8 @@ namespace Root
         private void MovePhysicalTrainToStaticArea() {
             Debug.Log("Moving Train to static simulation area");
             foreach (var objectInsideTrain in objectsInsideTrain) {
-                objectInsideTrain.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.position));
-                objectInsideTrain.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.forward));
+                objectInsideTrain.transform.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
+                objectInsideTrain.transform.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
             }
             transform.position = movementTeleport.position;
             transform.rotation = movementTeleport.rotation;
@@ -221,10 +230,16 @@ namespace Root
             foreach (var container in containers) {
                 container.goal = visualPosition;
             }
+            foreach (var container in objectsInsideTrain) {
+                container.goal = visualPosition;
+            }
         }
 
         private void ResetVisualThingies() {
             foreach (var container in containers) {
+                container.goal = null;
+            }
+            foreach (var container in objectsInsideTrain) {
                 container.goal = null;
             }
         }
@@ -296,7 +311,6 @@ namespace Root
             LockExternalDoorButtons();
             foreach (var door in externalDoors) {
                 Tween.Custom(0f, 0.99f, new TweenSettings(1f), f => {
-                    Debug.Log(f);
                     door.SetFloat("Time", f);
                 });
             }

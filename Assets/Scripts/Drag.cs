@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 namespace Root {
     public class Drag : MonoBehaviour {
         public Rigidbody obj;
+        [SerializeField] private Transform camera;
         [SerializeField] private float rayDistance;
         private float _distance;
 
@@ -25,7 +26,7 @@ namespace Root {
         }
 
         private void StartDrag() {
-            if (Physics.Raycast(GameManager.Camera.transform.position, GameManager.Camera.transform.forward,
+            if (Physics.Raycast(camera.position, camera.forward,
                     out var hit, rayDistance)) {
                 if (hit.rigidbody == null) return;
                 if (hit.rigidbody.TryGetComponent<DraggableObject>(out var comp)) {
@@ -33,7 +34,7 @@ namespace Root {
                     obj.useGravity = false;
                     comp.OnStartedDragging?.Invoke();
                     obj.constraints = RigidbodyConstraints.FreezeRotation;
-                    _distance = Vector3.Distance(obj.transform.position, GameManager.Camera.transform.position);
+                    _distance = Vector3.Distance(obj.transform.position, camera.position);
                 }
             }
         }
@@ -47,7 +48,7 @@ namespace Root {
 
         private void Update() {
             if (obj == null) return;
-            obj.MovePosition(GameManager.Camera.transform.position + _distance * GameManager.Camera.transform.forward);
+            obj.MovePosition(camera.position + _distance * camera.forward);
         }
     }
 }

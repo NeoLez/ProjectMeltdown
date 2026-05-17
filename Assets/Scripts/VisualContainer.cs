@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 
 namespace Root {
+    [Serializable]
     public class VisualContainer : MonoBehaviour {
         [SerializeField] private GameObject visuals;
         public Transform originCenter;
@@ -11,6 +13,7 @@ namespace Root {
         }
 
         private void Update() {
+            if (visuals == null) return;
             if (goal == null) {
                 visuals.transform.position = transform.position;
                 visuals.transform.rotation = transform.rotation;

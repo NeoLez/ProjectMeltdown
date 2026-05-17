@@ -85,11 +85,9 @@ namespace Root.Controller {
         private void HandleInteraction(InputAction.CallbackContext ctx) {
             if (!ctx.started && _interactingWithInternals != null)
             {
-                Debug.Log("a");
                 _interactingWithInternals.Interact(false);
             }else if (_selectedInteractable != null)
             {
-                Debug.Log("b: " + ctx.started);
                 _selectedInteractable.Interact(ctx.started);
                 if (!ctx.started) _selectedInteractable = null;
                 else _interactingWithInternals = _selectedInteractable;
