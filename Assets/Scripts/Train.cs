@@ -78,14 +78,12 @@ namespace Root
         private void Update()
         {
             if (_descarrilado) {
-                currentSpeed += Vector3.up;
-                trainPosition.position = currentSpeed * _currentSpeed * Time.deltaTime;
                 ui_descarrilado.SetActive(true);
                 return;
             }
 
-            if (emergencyStopButton.ShouldBreak() && _currentSpeed == 0) {
-                emergencyStopButton.ReachedStop();
+            if (emergencyStopButton.IsBreaking() && _currentSpeed == 0) {
+                emergencyStopButton.FinishBraking();
             }
             
             float targetSpeed = speedController.GetTargetSpeed();
@@ -100,7 +98,7 @@ namespace Root
             float speedChange = - braking;
             brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
 
-            if (emergencyStopButton.ShouldBreak()) {
+            if (emergencyStopButton.IsBreaking()) {
                 speedChange -= emergencyStopButton.brakeSpeed * Time.deltaTime;
             }
             
@@ -145,7 +143,7 @@ namespace Root
                 currentDistanceTraveledToNextPathpoint = 0;
                 _waypoints[0].TrainReached();
                 _waypoints.RemoveAt(0);
-                if (_waypoints[0].maxSpeed < _currentSpeed && !emergencyStopButton.ShouldBreak()) {
+                if (_waypoints[0].maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking()) {
                     if (_descarriladoTimer >= tiempoDescarrilamiento) {
                         _descarrilado = true;
                         _descarriladoTimer = 0;
