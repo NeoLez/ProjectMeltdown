@@ -5,38 +5,60 @@ namespace Root
 {
     public class LightSwitch : MonoBehaviour
     {
-        [SerializeField] private Button button;
-        [SerializeField] private List<Light> lights;
-
-        private bool _on = true; 
+        [SerializeField] private Button button;         // Boton que activa el switch
+        [SerializeField] private List<Light> lights;    // Lista de spotlights a controlar
+        private bool _on = false;                       // Estado actual de las luces
 
         private void Awake()
         {
+            // Nos suscribimos al evento del boton
             button.OnClicked += Toggle;
         }
 
         private void Start()
         {
+            // Nos suscribimos a los eventos de energia del tren
+            GameManager.Train.OnPowerLost += TurnOff;
+            GameManager.Train.OnPowerRestored += TurnOn;
+        }
+
+        private void OnDestroy()
+        {
+            // Nos desuscribimos para evitar errores al destruir el objeto
+            button.OnClicked -= Toggle;
+            GameManager.Train.OnPowerLost -= TurnOff;
+            GameManager.Train.OnPowerRestored -= TurnOn;
+        }
+
+        public bool IsOn() => _on; // Devuelve si las luces están prendidas
+
+        private void Toggle()
+        {
+            // Alternamos el estado y lo aplicamos a cada luz
+            _on = !_on;
             foreach (var light in lights)
             {
                 light.enabled = _on;
             }
         }
 
-        private void OnDestroy()
+        private void TurnOff()
         {
-            button.OnClicked -= Toggle;
-        }
-
-        public bool IsOn() => _on;
-
-        private void Toggle()
-        {
-            _on = !_on;
-
+            // Se apaga cuando el tren pierde energia
+            _on = false;
             foreach (var light in lights)
             {
-                light.enabled = _on;
+                light.enabled = false;
+            }
+        }
+
+        private void TurnOn()
+        {
+            // Se vuelve a encender cuando el tren recupera energia
+            _on = true;
+            foreach (var light in lights)
+            {
+                light.enabled = true;
             }
         }
     }
