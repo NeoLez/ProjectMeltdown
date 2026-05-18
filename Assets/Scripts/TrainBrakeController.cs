@@ -20,7 +20,9 @@ namespace Root
 
         private int currentBrakeLevel;
         [SerializeField] private float currentDamage;
-        [Serializable] public class BrakeLevels {
+        [Serializable]
+        public class BrakeLevels
+        {
             public float maxDamage;
             public float maxBraking;
         }
@@ -48,9 +50,10 @@ namespace Root
             }
         }
 
-        private void Update() {
+        private void Update()
+        {
             UpdateBrakeState();
-            
+
             if (active)
             {
                 float yMovement = GameManager.Input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
@@ -71,8 +74,10 @@ namespace Root
             }
         }
 
-        private void UpdateBrakeState() {
-            if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage) {
+        private void UpdateBrakeState()
+        {
+            if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage)
+            {
                 ledIndicators[currentBrakeLevel].SetActive(true);
                 currentBrakeLevel++;
                 BrakeDegradeSound.Play();
@@ -85,8 +90,11 @@ namespace Root
             return percentage * brakeLevels[currentBrakeLevel].maxBraking;
         }
 
-        public void Damage(float damage) {
+        public void Damage(float damage)
+        {
             currentDamage += damage;
         }
+
+        public int GetBrakeLevel() => currentBrakeLevel;
     }
 }
