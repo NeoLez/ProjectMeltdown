@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,12 +12,17 @@ namespace Root
         [SerializeField] private Image image;
         [SerializeField] private string format = "{0}";
 
-        private void Update()
-        {
-            if (train.AlertSystem.alert == null) return;
+        private void Awake() {
+            train.AlertSystem.OnEventChanged += ChangeStuff;
+        }
 
-            image.overrideSprite = train.AlertSystem.alert.arrow;
-            label.text = string.Format(format, Mathf.RoundToInt(train.AlertSystem.alert.maxSpeed));
+        private void OnDestroy() {
+            train.AlertSystem.OnEventChanged -= ChangeStuff;
+        }
+
+        private void ChangeStuff() {
+            image.overrideSprite = train.AlertSystem.currentAlert.arrow;
+            label.text = string.Format(format, Mathf.RoundToInt(train.AlertSystem.currentAlert.maxSpeed));
         }
     }
 }

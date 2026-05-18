@@ -159,7 +159,7 @@ namespace Root
                 distanceToTravel -= m;
                 previousDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
                 currentDistanceTraveledToNextPathpoint = 0;
-                _waypoints[0].TrainReached();
+                _waypoints[1].TrainReached();
                 _waypoints.RemoveAt(0);
                 if (_waypoints[0].maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
                 {

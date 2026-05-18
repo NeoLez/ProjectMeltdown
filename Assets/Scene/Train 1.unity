@@ -4278,6 +4278,7 @@ MonoBehaviour:
     mapSection: {fileID: 5024895116933449650, guid: d92d9004e6a217ef58d587e64897b4e2, type: 3}
   - maxSpeed: 60
     mapSection: {fileID: 5024895116933449650, guid: 56bdb2d066f12a8468cee02775a78928, type: 3}
+  initialSection: {fileID: 1511545380}
   SectionCount: 20
   minRepetition: 10
   maxRepetition: 24
@@ -6594,7 +6595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.42246002, b: 0.42246002, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -40703,6 +40704,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ed64aedc7c4d48904ae5f19d900f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.TrainAlertSystem
+  alerts: []
+  currentAlert: {fileID: 0}
 --- !u!1001 &1071158631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44000,6 +44003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.SpeedIndicator
   train: {fileID: 1068053785}
   label: {fileID: 1212736031}
+  image: {fileID: 150740625}
   format: '{0} km/h'
 --- !u!114 &1173034385
 MonoBehaviour:
@@ -53600,6 +53604,7 @@ MonoBehaviour:
     maxBraking: 6
   - maxDamage: 1e+18
     maxBraking: 3
+  ledIndicators: []
 --- !u!65 &1427049397
 BoxCollider:
   m_ObjectHideFlags: 0

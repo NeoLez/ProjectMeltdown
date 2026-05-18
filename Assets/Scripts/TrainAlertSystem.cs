@@ -1,12 +1,26 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Root {
     public class TrainAlertSystem : MonoBehaviour {
-        public TrainAlertSO alert;
-        public void SetAlert(TrainAlertSO alert) {
-            this.alert = alert;
-            Debug.Log(alert.name);
-            Debug.Log(alert.maxSpeed);
+        [SerializeField] private List<TrainAlertSO> alerts;
+        public TrainAlertSO currentAlert;
+        public event Action OnEventChanged;
+        public void AddAlert(TrainAlertSO alert) {
+            alerts.Add(alert);
         }
+
+        private void SetAlert() {
+            currentAlert = alerts[0];
+            OnEventChanged?.Invoke();
+        }
+
+        public void SetNextAlert() {
+            SetAlert();
+            alerts.RemoveAt(0);
+        }
+        
+        
     }
 }

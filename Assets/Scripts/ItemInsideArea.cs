@@ -7,14 +7,12 @@ namespace Root {
 
         private void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent(out VisualContainer container)) {
-                Debug.Log(other.name);
                 _containers.Add(container);
             }
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.TryGetComponent(out VisualContainer container)) {
-                Debug.Log("Removed " +other.name);
                 _containers.Remove(container);
             }
         }

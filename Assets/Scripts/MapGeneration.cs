@@ -13,7 +13,7 @@ namespace Root {
 
         [SerializeField] private List<MapSectionListing> _sectionListings;
         private Dictionary<int, List<MapSection>> mapSections = new();
-
+        [SerializeField] private TrainPathWaypoint initialSection;
 
         private List<MapSection> IncomingSections = new();
         private List<MapSection> PastSections = new();
@@ -32,10 +32,19 @@ namespace Root {
                     mapSections[sectionListing.maxSpeed] = list;
                 }
                 list.Add(sectionListing.mapSection);
-                
-                var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
-                nextSectionPrefab = speed[Random.Range(0, speed.Count)];
             }
+
+            initialSection.OnTrainReached += () => {
+                train.AlertSystem.SetNextAlert();
+            };
+        }
+
+        private void Start() {
+            var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
+            nextSectionPrefab = speed[Random.Range(0, speed.Count)];
+            train.AlertSystem.AddAlert(nextSectionPrefab.alert);
+            train.AlertSystem.SetNextAlert();
+            Debug.Log("AddedAlertInitial");
         }
 
         private void Update() {
@@ -58,7 +67,8 @@ namespace Root {
                 sectionPrefab = nextSectionPrefab;
                 nextSectionPrefab = speed[Random.Range(0, speed.Count)];
                 currentRepetition = Random.Range(minRepetition, maxRepetition + 1);
-                train.AlertSystem.SetAlert(nextSectionPrefab.alert);
+                train.AlertSystem.AddAlert(nextSectionPrefab.alert);
+                Debug.Log("AddedAlert");
 
                 if (shit == 0) {
                     foreach (var shit in ShitToDelete) {
@@ -79,6 +89,12 @@ namespace Root {
             section.OnTrainCompleted += TrainReachedPoint;
             IncomingSections.Add(section);
             OnAddedPiece?.Invoke(section);
+            if (currentRepetition == 0) {
+                section.OnTrainCompleted += () => {
+                    Debug.Log("Set Next Alert");
+                    train.AlertSystem.SetNextAlert();
+                };
+            }
         }
 
         private void TrainReachedPoint() {
