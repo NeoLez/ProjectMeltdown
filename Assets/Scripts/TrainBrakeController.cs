@@ -28,7 +28,6 @@ namespace Root
         }
 
         [SerializeField] public List<BrakeLevels> brakeLevels;
-        [SerializeField] public List<GameObject> ledIndicators;
 
         private void Awake()
         {
@@ -78,7 +77,6 @@ namespace Root
         {
             if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage)
             {
-                ledIndicators[currentBrakeLevel].SetActive(true);
                 currentBrakeLevel++;
                 BrakeDegradeSound.Play();
                 Debug.Log("Brakes Degraded");
