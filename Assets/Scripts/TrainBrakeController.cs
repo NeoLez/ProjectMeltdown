@@ -79,7 +79,6 @@ namespace Root
             {
                 currentBrakeLevel++;
                 BrakeDegradeSound.Play();
-                Debug.Log("Brakes Degraded");
             }
         }
 

@@ -68,7 +68,6 @@ namespace Root {
                 nextSectionPrefab = speed[Random.Range(0, speed.Count)];
                 currentRepetition = Random.Range(minRepetition, maxRepetition + 1);
                 train.AlertSystem.AddAlert(nextSectionPrefab.alert);
-                Debug.Log("AddedAlert");
 
                 if (shit == 0) {
                     foreach (var shit in ShitToDelete) {
@@ -91,7 +90,6 @@ namespace Root {
             OnAddedPiece?.Invoke(section);
             if (currentRepetition == 0) {
                 section.OnTrainCompleted += () => {
-                    Debug.Log("Set Next Alert");
                     train.AlertSystem.SetNextAlert();
                 };
             }
