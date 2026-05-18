@@ -15,7 +15,10 @@ namespace Root {
         }
 
         private void LateUpdate() {
-            if (_battery != null) _battery.transform.position = pivot.position;
+            if (_battery != null) {
+                _battery.transform.position = pivot.position;
+                _battery.transform.rotation = pivot.rotation;
+            }
         }
 
         public Battery GetBattery() {
