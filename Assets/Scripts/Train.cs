@@ -22,8 +22,6 @@ namespace Root
         [SerializeField] private List<Animator> cabDoor;
         
         [SerializeField] private List<TrainPathWaypoint> _waypoints;
-        
-        [SerializeField] private float batteryDrain;
 
         [SerializeField] private float _maxEngineStrain;
         [SerializeField] private float _currentSpeed;
@@ -45,7 +43,6 @@ namespace Root
         private bool _descarrilado;
         
         [SerializeField] private Transform movementTeleport;
-        [SerializeField] private Transform visualPosition;
         [SerializeField] private Transform trainPosition;
 
         [SerializeField] private List<VisualContainer> containers;
@@ -74,6 +71,7 @@ namespace Root
             return isStopped;
         }
 
+        
         private bool isStopped = true;
         private void Update()
         {
@@ -82,64 +80,42 @@ namespace Root
                 return;
             }
 
-            if (emergencyStopButton.IsBreaking() && _currentSpeed == 0) {
-                emergencyStopButton.FinishBraking();
-            }
-            
             float targetSpeed = speedController.GetTargetSpeed();
             float speedDifference = targetSpeed - _currentSpeed;
-
-            if (speedDifference > _maxEngineStrain)
-            {
-                //Debug.Log("Straining Engine: " + targetSpeed + " " + _currentSpeed);
-            }
-
-            var braking = brakeController.UseBrakeGetAmount() * Time.deltaTime;
-            float speedChange = - braking;
-            brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
-
-            if (emergencyStopButton.IsBreaking()) {
-                speedChange -= emergencyStopButton.brakeSpeed * Time.deltaTime;
-            }
+            float speedChange = CalculateSpeed(targetSpeed, speedDifference);
             
-
-            if (_currentSpeed < targetSpeed) {
-                speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
-            }
-            else {
-                speedChange -= _frictionDecelerationRate * _currentSpeed * Time.deltaTime;
-            }
-
             _currentSpeed += speedChange;
-
             _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
 
-            var battery = batterySlot?.GetBattery();
-            if (battery != null)
-            {
-                battery.energy -= batteryDrain * Time.deltaTime;
-            }
+            ConsumeBattery();
             
-            speedometerHorizontal.maxSpeed = speedController.maxTrainSpeed;
             speedometerHorizontal.SetSpeed(_currentSpeed);
 
-            engineSound.pitch = math.lerp(engineSoundPitchLow, engineSoundPitchHigh, _currentSpeed / speedController.maxTrainSpeed);
-            engineSound.volume = math.lerp(0.1f, 1, targetSpeed / speedController.maxTrainSpeed);
-            rattleSound.volume = math.lerp(0, 1, _currentSpeed / speedController.maxTrainSpeed);
-            rattleSound.pitch = math.lerp(0.5f, 3, _currentSpeed / speedController.maxTrainSpeed);
-            strainSound.volume = math.lerp(strainSoundVolumeLow, strainSoundVolumeHigh, speedDifference / _maxEngineStrain);
+            UpdateSounds(targetSpeed, speedDifference);
+            
+            MoveTrain();
+            
+            if (_currentSpeed == 0) {
+                if (!isStopped) {
+                    TrainStopped();
+                }
+            }
+            else {
+                LockExternalDoorButtons();
+                if (isStopped) {
+                    TrainStarted();
+                }
+            }
+        }
 
-            
-            
+        private void MoveTrain() {
             currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
             
             var distanceToTravel = _currentSpeed * Time.deltaTime;
             var m =  currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint;
-            currentSpeed = Vector3.zero;
             while (distanceToTravel > currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint ) {
                 distanceToTravel -= m;
                 previousDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-                currentSpeed += previousDirection * m;
                 currentDistanceTraveledToNextPathpoint = 0;
                 _waypoints[0].TrainReached();
                 _waypoints.RemoveAt(0);
@@ -156,56 +132,76 @@ namespace Root
                     _descarriladoTimer = 0;
                 }
                 currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
-                //dirVector = (_waypoints[0].transform.position - _waypoints[1].transform.position).normalized;
                 m = currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint;
             }
             currentDistanceTraveledToNextPathpoint += distanceToTravel;
 
             var currentDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-            
-            currentSpeed += currentDirection * distanceToTravel;
-            Vector3 dirVector = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-
-            
-            if (_currentSpeed == 0) {
-                if (!isStopped) {
-                    isStopped = true;
-                    Debug.Log("A");
-                    UnlockExternalDoorButtons();
-                    trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
-                    trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
-                    MovePhysicalTrainToTrainPosition();
-                    ResetVisualThingies();
-                }
-            }
-            else {
-                trainPosition.position = _waypoints[0].transform.position + dirVector * currentDistanceTraveledToNextPathpoint;
+            if (_currentSpeed != 0) {
+                trainPosition.position = _waypoints[0].transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
                 trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
-                
-                LockExternalDoorButtons();
-                if (isStopped) {
-                    isStopped = false;
-                    HashSet<VisualContainer> itemsInside = new();
-                    foreach (var area in itemInsideAreas) {
-                        Debug.Log(area._containers.Count);
-                        itemsInside.UnionWith(area._containers);
-                    }
-                    Debug.Log(itemsInside.Count());
-                    objectsInsideTrain.Clear();
-                    objectsInsideTrain.AddRange(itemsInside.ToList());
-                    
-                    if (externalDoorsOpened) {
-                        CloseExternalDoors(false);
-                    }
-                    
-                    MovePhysicalTrainToStaticArea();
-                    SetVisualThingies();
-                }
             }
         }
 
-        private void MovePhysicalTrainToTrainPosition() {
-            Debug.Log("Moving Train to actual position");
+        private void TrainStopped() {
+            isStopped = true;
+            
+            if (emergencyStopButton.IsBreaking()) {
+                emergencyStopButton.FinishBraking();
+            }
+            UnlockExternalDoorButtons();
+            MovePhysicalTrainToMap();
+            SetContainerVisualsToTheirOwnPosition();
+        }
+
+        private void TrainStarted() {
+            isStopped = false;
+            
+            if (externalDoorsOpened) {
+                CloseExternalDoors(false);
+            }
+            MovePhysicalTrainToSimulationArea();
+            SetContainerVisualsToTrainRelative();
+        }
+
+        private float CalculateSpeed(float targetSpeed, float speedDifference) {
+            var braking = brakeController.UseBrakeGetAmount() * Time.deltaTime;
+            float speedChange = - braking;
+            brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
+
+            if (emergencyStopButton.IsBreaking()) {
+                speedChange -= emergencyStopButton.brakeSpeed * Time.deltaTime;
+            }
+            
+            if (_currentSpeed < targetSpeed) {
+                speedChange += _engineAccelerationRate * math.clamp(targetSpeed / _currentSpeed, 0.5f, 2) * Time.deltaTime;
+            }
+            else {
+                speedChange -= _frictionDecelerationRate * _currentSpeed * Time.deltaTime;
+            }
+
+            return speedChange;
+        }
+
+        private bool ConsumeBattery() {
+            var battery = batterySlot?.GetBattery();
+            if (battery != null)
+            {
+                battery.energy -= Time.deltaTime; //Cambiar logica aca
+            }
+            //TODO: A lo mejor hacer que si no puede consumir la bateria correctamente retorne falso y de ahi manejar que se apague todo
+            return true;
+        }
+
+        private void UpdateSounds(float targetSpeed, float speedDifference) {
+            engineSound.pitch = math.lerp(engineSoundPitchLow, engineSoundPitchHigh, _currentSpeed / speedController.maxTrainSpeed);
+            engineSound.volume = math.lerp(0.1f, 1, targetSpeed / speedController.maxTrainSpeed);
+            rattleSound.volume = math.lerp(0, 1, _currentSpeed / speedController.maxTrainSpeed);
+            rattleSound.pitch = math.lerp(0.5f, 3, _currentSpeed / speedController.maxTrainSpeed);
+            strainSound.volume = math.lerp(strainSoundVolumeLow, strainSoundVolumeHigh, speedDifference / _maxEngineStrain);
+        }
+        
+        private void MovePhysicalTrainToMap() {
             foreach (var objectInsideTrain in objectsInsideTrain) {
                 objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
@@ -214,8 +210,14 @@ namespace Root
             transform.rotation = trainPosition.rotation;
         }
         
-        private void MovePhysicalTrainToStaticArea() {
-            Debug.Log("Moving Train to static simulation area");
+        private void MovePhysicalTrainToSimulationArea() {
+            HashSet<VisualContainer> itemsInside = new();
+            foreach (var area in itemInsideAreas) {
+                itemsInside.UnionWith(area._containers);
+            }
+            objectsInsideTrain = itemsInside.ToList();
+            
+            
             foreach (var objectInsideTrain in objectsInsideTrain) {
                 objectInsideTrain.transform.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
@@ -224,16 +226,16 @@ namespace Root
             transform.rotation = movementTeleport.rotation;
         }
 
-        private void SetVisualThingies() {
+        private void SetContainerVisualsToTrainRelative() {
             foreach (var container in containers) {
-                container.goal = visualPosition;
+                container.goal = trainPosition;
             }
             foreach (var container in objectsInsideTrain) {
-                container.goal = visualPosition;
+                container.goal = trainPosition;
             }
         }
 
-        private void ResetVisualThingies() {
+        private void SetContainerVisualsToTheirOwnPosition() {
             foreach (var container in containers) {
                 container.goal = null;
             }
@@ -330,13 +332,7 @@ namespace Root
         
         public float currentDistanceBetweenPathpoints;
         public float currentDistanceTraveledToNextPathpoint;
-        public Vector3 currentSpeed = Vector3.zero;
         public Vector3 previousDirection;
-        
-        public Vector3 GetSpeed()
-        {
-            return _currentSpeed * currentSpeed;
-        }
 
         public bool EstaDescarrilando() {
             return _descarriladoTimer > 0;
