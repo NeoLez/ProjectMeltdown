@@ -52,7 +52,9 @@ namespace Root
         // MODIFICADO: campos de consumo de bateria + desaceleracion cuando se agota la bateria, independiente del freno normal
         [SerializeField] private float batteryDrain = 1f;
         [SerializeField] private float strainMultiplier = 0.5f;
-        [SerializeField] private float batteryOutDecelerationRate = 0.5f; 
+        [SerializeField] private float batteryOutDecelerationRate = 0.5f;
+
+        public TrainAlertSystem AlertSystem;
 
         public event Action OnPowerLost;
         public event Action OnPowerRestored;

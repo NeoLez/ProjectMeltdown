@@ -32,6 +32,9 @@ namespace Root {
                     mapSections[sectionListing.maxSpeed] = list;
                 }
                 list.Add(sectionListing.mapSection);
+                
+                var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
+                nextSectionPrefab = speed[Random.Range(0, speed.Count)];
             }
         }
 
@@ -48,11 +51,14 @@ namespace Root {
         private int currentRepetition;
         private int shit = 15;
         private MapSection sectionPrefab;
+        private MapSection nextSectionPrefab;
         private void CreateRandom() {
             if (currentRepetition == 0) {
                 var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
-                sectionPrefab = speed[Random.Range(0, speed.Count)];
+                sectionPrefab = nextSectionPrefab;
+                nextSectionPrefab = speed[Random.Range(0, speed.Count)];
                 currentRepetition = Random.Range(minRepetition, maxRepetition + 1);
+                train.AlertSystem.SetAlert(nextSectionPrefab.alert);
 
                 if (shit == 0) {
                     foreach (var shit in ShitToDelete) {

@@ -7,6 +7,7 @@ namespace Root {
         public List<TrainPathWaypoint> Waypoints;
         public event Action OnTrainCompleted;
         public Transform end;
+        public TrainAlertSO alert;
 
         private void Awake() {
             Waypoints[^1].OnTrainReached += () => {
