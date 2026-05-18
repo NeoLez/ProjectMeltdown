@@ -19,8 +19,16 @@ namespace Root {
                 visuals.transform.rotation = transform.rotation;
             }
             else {
-                visuals.transform.position = goal.TransformPoint(originCenter.InverseTransformPoint(transform.position));
-                visuals.transform.forward = goal.TransformDirection(originCenter.InverseTransformDirection(transform.forward));
+                Vector3 localPos = originCenter.InverseTransformPoint(transform.position);
+                Vector3 worldPos = goal.TransformPoint(localPos);
+
+                
+                Quaternion localRot = Quaternion.Inverse(originCenter.rotation) * transform.rotation;
+                Quaternion worldRot = goal.rotation * localRot;
+
+                visuals.transform.SetPositionAndRotation(worldPos, worldRot);
+                Debug.DrawRay(visuals.transform.position, visuals.transform.forward, Color.green);
+                Debug.DrawRay(transform.position, transform.forward, Color.red);
             }
         }
     }
