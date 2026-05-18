@@ -258,6 +258,7 @@ namespace Root
         {
             foreach (var objectInsideTrain in objectsInsideTrain)
             {
+                if(objectInsideTrain == null) continue;
                 objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
             }
@@ -276,6 +277,7 @@ namespace Root
 
             foreach (var objectInsideTrain in objectsInsideTrain)
             {
+                if(objectInsideTrain == null) continue;
                 objectInsideTrain.transform.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
             }

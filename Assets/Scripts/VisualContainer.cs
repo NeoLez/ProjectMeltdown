@@ -31,5 +31,9 @@ namespace Root {
                 Debug.DrawRay(transform.position, transform.forward, Color.red);
             }
         }
+
+        private void OnDestroy() {
+            Destroy(visuals);
+        }
     }
 }
