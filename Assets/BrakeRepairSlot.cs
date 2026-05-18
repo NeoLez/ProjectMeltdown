@@ -8,9 +8,9 @@ namespace Root
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent<Liquid>(out var liquid)) return;
+            if (!other.TryGetComponent<BrakeFluid>(out var fluid)) return;
 
-            brakeController.Repair(liquid.rechargeAmount);
+            brakeController.Repair(fluid.repairAmount);
             Destroy(other.gameObject);
         }
     }

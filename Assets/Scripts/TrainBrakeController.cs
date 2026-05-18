@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-
 namespace Root
 {
     public class TrainBrakeController : Interactable
@@ -16,8 +15,6 @@ namespace Root
         [SerializeField] private float maxTransformY;
         [SerializeField] private Transform visuals;
         [SerializeField] private AudioSource BrakeDegradeSound;
-
-
         private int currentBrakeLevel;
         [SerializeField] private float currentDamage;
         [Serializable]
@@ -26,14 +23,11 @@ namespace Root
             public float maxDamage;
             public float maxBraking;
         }
-
         [SerializeField] public List<BrakeLevels> brakeLevels;
-
         private void Awake()
         {
             _initialPosition = transform.localPosition;
         }
-
         public override void Interact(bool state)
         {
             active = state;
@@ -48,11 +42,9 @@ namespace Root
                 Cursor.lockState = CursorLockMode.Confined;
             }
         }
-
         private void Update()
         {
             UpdateBrakeState();
-
             if (active)
             {
                 float yMovement = GameManager.Input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
@@ -60,10 +52,8 @@ namespace Root
                     yMovement = maxSwitchSpeed;
                 else if (yMovement < -maxSwitchSpeed)
                     yMovement = -maxSwitchSpeed;
-
                 percentage -= yMovement;
                 percentage = math.clamp(percentage, 0, 1);
-
                 visuals.localPosition = _initialPosition - maxTransformY * percentage * Vector3.forward;
             }
             else
@@ -72,31 +62,31 @@ namespace Root
                 visuals.localPosition = _initialPosition - maxTransformY * percentage * Vector3.forward;
             }
         }
-
         private void UpdateBrakeState()
         {
+            if (currentBrakeLevel >= brakeLevels.Count - 1) return;
             if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage)
             {
                 currentBrakeLevel++;
                 BrakeDegradeSound.Play();
             }
         }
-
         public float UseBrakeGetAmount()
         {
             return percentage * brakeLevels[currentBrakeLevel].maxBraking;
         }
-
         public void Damage(float damage)
         {
             currentDamage += damage;
         }
-
         public void Repair(float amount)
         {
             currentDamage = Mathf.Max(0, currentDamage - amount);
+            while (currentBrakeLevel > 0 && currentDamage <= brakeLevels[currentBrakeLevel - 1].maxDamage)
+            {
+                currentBrakeLevel--;
+            }
         }
-
         public int GetBrakeLevel() => currentBrakeLevel;
     }
 }
