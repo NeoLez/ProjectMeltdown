@@ -62,6 +62,7 @@ namespace Root
 
         private void Awake()
         {
+            _powerLost = true; 
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
             GameManager.Input.Interaction.Reset.performed += context => {
@@ -237,9 +238,25 @@ namespace Root
             return speedChange;
         }
 
-        // MODIFICADO: consumo variable segun el esfuerzo del motor
+        // permite prender y apagar el motor manualmente 
+        public void SetEnginePower(bool on)
+        {
+            if (!on && !_powerLost)
+            {
+                _powerLost = true;
+                OnPowerLost?.Invoke();
+            }
+            else if (on && _powerLost)
+            {
+                _powerLost = false;
+                OnPowerRestored?.Invoke();
+            }
+        }
+
+        // MODIFICADO: consumo variable segun el esfuerzo del motor + corta si el motor está apagado
         private bool ConsumeBattery(float speedDifference)
         {
+            if (_powerLost) return false;
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
             if (battery.energy <= 0) return false;
@@ -260,7 +277,7 @@ namespace Root
         {
             foreach (var objectInsideTrain in objectsInsideTrain)
             {
-                if(objectInsideTrain == null) continue;
+                if (objectInsideTrain == null) continue;
                 objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
             }
@@ -279,7 +296,7 @@ namespace Root
 
             foreach (var objectInsideTrain in objectsInsideTrain)
             {
-                if(objectInsideTrain == null) continue;
+                if (objectInsideTrain == null) continue;
                 objectInsideTrain.transform.position = movementTeleport.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
                 objectInsideTrain.transform.forward = movementTeleport.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
             }
