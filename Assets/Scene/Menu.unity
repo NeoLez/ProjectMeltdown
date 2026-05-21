@@ -2637,6 +2637,7 @@ GameObject:
   - component: {fileID: 1391570782}
   - component: {fileID: 1391570781}
   - component: {fileID: 1391570780}
+  - component: {fileID: 1391570783}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2705,6 +2706,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1391570783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391570779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6055e49ebd9f420488b92f3cab8f10e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTEventSystemRaycaster
+  rtDisplay: {fileID: 2099878840}
+  rtCamera: {fileID: 1989975169}
+  rtSize: {x: 640, y: 360}
 --- !u!1001 &1410707122
 PrefabInstance:
   m_ObjectHideFlags: 0
