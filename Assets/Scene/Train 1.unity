@@ -12872,7 +12872,6 @@ Transform:
   - {fileID: 169446934}
   - {fileID: 2067365613128575668}
   - {fileID: 992571040}
-  - {fileID: 1420550504}
   - {fileID: 1865754737}
   - {fileID: 1337434676}
   - {fileID: 3946933057912439668}
@@ -12886,6 +12885,7 @@ Transform:
   - {fileID: 1935062305}
   - {fileID: 603963436}
   - {fileID: 890688382}
+  - {fileID: 1420550504}
   - {fileID: 559386649}
   - {fileID: 2049680607}
   m_Father: {fileID: 696350299}
@@ -13361,6 +13361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.BatterySlot
   pivot: {fileID: 1914250234}
+  train: {fileID: 1068053785}
 --- !u!65 &248355530
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20287,6 +20288,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: lampara_3
       objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2813736040820012329, guid: 729e208b9c2ee83429492c888deef794, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -41776,6 +41785,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: lampara_2
       objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2813736040820012329, guid: 729e208b9c2ee83429492c888deef794, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43794,6 +43811,7 @@ MonoBehaviour:
   - {fileID: 603963438}
   - {fileID: 890688384}
   - {fileID: 559386651}
+  - {fileID: 1420550506}
 --- !u!114 &1068053787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43817,9 +43835,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1068053783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 747fd98b5b75ab24a97856d6a0dfa234, type: 3}
+  m_Script: {fileID: 11500000, guid: f63a541f88863a2428a2ac15789d25cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.EngineInteractionBlocker
+  m_EditorClassIdentifier: Assembly-CSharp::Root.PowerObjectsController
+  train: {fileID: 1068053785}
+  objectsToDisable:
+  - {fileID: 1173034382}
+  - {fileID: 5237468790890010609}
+  - {fileID: 1087098728}
+  buttonsToLock:
+  - {fileID: 1309271968}
+  - {fileID: 2002497077}
+  buttonsToIgnore:
+  - {fileID: 2002497077}
 --- !u!1001 &1071158631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62920,7 +62948,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -269.309, y: 179.999, z: -0.0010070801}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.000395, y: 13.000355}
+  m_AnchoredPosition: {x: 7.000366, y: 13.000355}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!64 &1561638112
@@ -65372,6 +65400,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: lampara_1
       objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2813736040820012329, guid: 729e208b9c2ee83429492c888deef794, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -86695,6 +86731,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: lampara
       objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8510042073331708328, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: -2813736040820012329, guid: 729e208b9c2ee83429492c888deef794, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
