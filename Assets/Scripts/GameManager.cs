@@ -15,6 +15,7 @@ public static class GameManager {
       Input.Movement.Enable();
       Input.CameraMovement.Enable();
       Input.Interaction.Enable();
+      Input.Interaction.Interact.Enable();
   }
 
 }

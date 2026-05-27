@@ -33,59 +33,26 @@ public class CameraController : MonoBehaviour {
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
 
-    private void Awake() {
-        _input = GameManager.Input;
-    }
-
     private void Start() {
-        _movementController = GetComponent<MovementController>();
-        
-        _input.Interaction.Enable();
+        _input = GameManager.Input;
         _input.Interaction.Interact.started += HandleInteraction;
-        _input.Interaction.Interact.canceled += HandleInteraction;
-        
-        LockCamera();
-    }
-
-    private void OnDestroy() {
-        _input.Interaction.Interact.started -= HandleInteraction;
-        _input.Interaction.Interact.canceled -= HandleInteraction;
+        _movementController = GetComponent<MovementController>();
     }
 
     private void OnEnable() {
         LockCamera();
     }
 
-    private Interactable _selectedInteractable;
-    private void HandleInteractionObjectSelection() {
+    private void HandleInteraction(InputAction.CallbackContext _)
+    {
         if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance) ||
-            !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
-            if (_selectedInteractable != null) {
-                DeselectItem();
-                _selectedInteractable = null;
-            }
+            !hit.collider.gameObject.TryGetComponent<InteractableNormalCamera>(out var component)) {
             return;
         }
-
-        if (_selectedInteractable == component) return;
-        _selectedInteractable = component;
-        _selectedInteractable.Select(true);
-    }
-
-    private void DeselectItem() {
-        if (_selectedInteractable == null) return;
-        
-        _selectedInteractable.Select(false);
-    }
-    
-    private void HandleInteraction(InputAction.CallbackContext ctx) {
-        if (_selectedInteractable == null) return;
-        
-        _selectedInteractable.Interact(ctx.started);
+        component.Interact();
     }
     
     private void LateUpdate() {
-        LockCamera();
         Vector2 moveDir = _input.Movement.MoveDir.ReadValue<Vector2>();
 
         if (moveDir.magnitude > 0 && _movementController.GetState() != CharacterState.Air) {
@@ -108,7 +75,6 @@ public class CameraController : MonoBehaviour {
         if (walkedPreviousFrame) {
             stepSoundTime -= Time.deltaTime;
             if (stepSoundTime <= 0) {
-                //FootstepMaterialDatabase.Dictionary[_movementController.GetMaterialType()]?.PlaySound();
                 stepSoundTime += (float)Math.PI * 2 / frequency;
             }
         }
@@ -118,8 +84,6 @@ public class CameraController : MonoBehaviour {
         
         yaw += _input.CameraMovement.MouseX.ReadValue<float>() * sensitivity;
         pitch += _input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
-        
-        sensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 0.15f);
 
         pitch = Mathf.Clamp(pitch, -89f, 89f);
         if (yaw > 360)
@@ -130,7 +94,6 @@ public class CameraController : MonoBehaviour {
         float target = -moveDir.x * sideSwayAngle;
         currentSideSwayAngle = (target - currentSideSwayAngle) * swaySpeed + currentSideSwayAngle;
         cam.localRotation = Quaternion.Euler(-pitch, yaw, currentSideSwayAngle);
-        HandleInteractionObjectSelection();
     }
 
     private void HeadBob() {
@@ -148,19 +111,7 @@ public class CameraController : MonoBehaviour {
     }
 
     public void LockCamera() {
-        Cursor.visible = false;
-        _input.CameraMovement.Enable();
         Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    public void UnlockCamera() {
-        Cursor.visible = true;
-        _input.CameraMovement.Disable();
-        Cursor.lockState = CursorLockMode.Confined;
-    }
-
-    public Transform GetCamera() {
-        return cam;
     }
 
     public Vector2 GetHorizontalDirectionForwardVector() {

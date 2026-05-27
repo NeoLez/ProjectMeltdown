@@ -7,8 +7,8 @@ namespace Root
     {
         [SerializeField] private Train train;
         [SerializeField] private List<GameObject> objectsToDisable;
-        [SerializeField] private List<Button> buttonsToLock;
-        [SerializeField] private List<Button> buttonsToIgnore;
+        [SerializeField] private List<PanelButton> buttonsToLock;
+        [SerializeField] private List<PanelButton> buttonsToIgnore;
 
         private void Awake()
         {

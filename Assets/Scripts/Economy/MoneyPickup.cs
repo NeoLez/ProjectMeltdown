@@ -2,15 +2,12 @@ using UnityEngine;
 
 namespace Root
 {
-    public class MoneyPickup : Interactable
+    public class MoneyPickup : InteractableNormalCamera
     {
         [SerializeField] private int amount = 50;
 
-        public override void Interact(bool state)
+        public override void Interact()
         {
-            if (!state)
-                return;
-
             EconomyManager.Instance.AddMoney(amount);
 
             Destroy(gameObject);

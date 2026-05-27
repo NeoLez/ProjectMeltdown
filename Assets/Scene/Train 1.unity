@@ -5695,7 +5695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4083faccdde980549914127a57f353e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.LightSwitch
-  button: {fileID: 1309271968}
+  panelButton: {fileID: 1309271968}
   lights:
   - {fileID: 1442088707}
   - {fileID: 1935062307}
@@ -28310,7 +28310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 658524431}
   - component: {fileID: 658524433}
-  - component: {fileID: 658524432}
+  - component: {fileID: 658524434}
   m_Layer: 0
   m_Name: ExternalDoorButton
   m_TagString: Untagged
@@ -28333,22 +28333,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 428223281}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &658524432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 658524430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed36723b40d46debde3c96fcfe840e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  SelectedVisuals: {fileID: 0}
-  onObject: {fileID: 1275198488}
-  offObject: {fileID: 1996016871}
-  <Locked>k__BackingField: 0
 --- !u!65 &658524433
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28370,6 +28354,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &658524434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658524430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
+  SelectedVisuals: {fileID: 0}
+  onObject: {fileID: 1275198488}
+  offObject: {fileID: 1996016871}
+  <Locked>k__BackingField: 0
 --- !u!1001 &663933349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34750,7 +34750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.IgnitionSwitch
   onVisual: {fileID: 564966465}
   offVisual: {fileID: 786748451}
-  button: {fileID: 2002497077}
+  panelButton: {fileID: 2002497077}
 --- !u!4 &822037058 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8179003250075979487, guid: 0459edae06f15274b9c81cea3a52aad1, type: 3}
@@ -42505,8 +42505,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.8572747, z: 0.9572983}
-  m_Center: {x: 0, y: 0.42863744, z: -0.02135086}
+  m_Size: {x: 1.45, y: 2.65, z: 1.2808595}
+  m_Center: {x: 0, y: 0.47475445, z: 0.16042972}
 --- !u!1001 &1029887455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43751,7 +43751,7 @@ MonoBehaviour:
   emergencyStopButton: {fileID: 1874688292}
   speedometerHorizontal: {fileID: 972612785}
   externalDoorButtons:
-  - {fileID: 658524432}
+  - {fileID: 658524434}
   externalDoors:
   - {fileID: 1242058237}
   - {fileID: 999278226}
@@ -59156,7 +59156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraPosition: {fileID: 765228322}
   cam: {fileID: 592390505}
-  sensitivity: 0.05
+  sensitivity: 0.15
   interactDistance: 2
   sideSwayAngle: 1
   swaySpeed: 0.005

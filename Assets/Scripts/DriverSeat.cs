@@ -3,19 +3,17 @@ using UnityEngine;
 
 namespace Root {
     [RequireComponent(typeof(LockedCameraController))]
-    public class DriverSeat : Interactable {
+    public class DriverSeat : InteractableNormalCamera {
         private LockedCameraController _cameraController;
 
         private void Awake() {
             _cameraController = GetComponent<LockedCameraController>();
         }
 
-        public override void Interact(bool state) {
-            if (state) {
-                GameManager.Player.GetComponent<CameraController>().enabled = false;
-                GameManager.Input.Movement.Disable();
-                _cameraController.enabled = true;
-            }
+        public override void Interact() {
+            GameManager.Player.GetComponent<CameraController>().enabled = false;
+            GameManager.Input.Movement.Disable();
+            _cameraController.enabled = true;
         }
     }
 }
