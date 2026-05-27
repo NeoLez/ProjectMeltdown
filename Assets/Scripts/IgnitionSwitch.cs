@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Root
 {
@@ -6,12 +7,12 @@ namespace Root
     {
         [SerializeField] private GameObject onVisual;
         [SerializeField] private GameObject offVisual;
-        [SerializeField] private Button button;
+        [SerializeField] private PanelButton panelButton;
         private bool _engineOn = false;
 
         private void Awake()
         {
-            button.OnClicked += Toggle;
+            panelButton.OnClicked += Toggle;
 
             onVisual.SetActive(_engineOn);
             offVisual.SetActive(!_engineOn);
@@ -19,7 +20,7 @@ namespace Root
 
         private void OnDestroy()
         {
-            button.OnClicked -= Toggle;
+            panelButton.OnClicked -= Toggle;
         }
 
         private void Toggle()

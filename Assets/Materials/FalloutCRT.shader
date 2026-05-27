@@ -4,10 +4,16 @@ Shader "Custom/FalloutCRT"
     {
         _MainTex ("Texture", 2D) = "white" {}
 
-        _ScanlineIntensity ("Scanline Intensity", Range(0,1)) = 0.25
-        _NoiseIntensity ("Noise Intensity", Range(0,1)) = 0.03
+        _ScanlineIntensity ("Scanline Intensity", Range(0,1)) = 0.45
 
-        // MÁS SUAVE
+        _ScanlineSize ("Scanline Size", Range(50,1200)) = 250
+
+        _ScanlineSpeed ("Scanline Speed", Range(-10,10)) = 1.5
+
+        _ScanlineDarkness ("Scanline Darkness", Range(0,1)) = 0.7
+
+        _NoiseIntensity ("Noise Intensity", Range(0,1)) = 0.025
+
         _Curvature ("Screen Curvature", Range(0,0.05)) = 0.006
 
         _Glow ("Glow", Range(0,3)) = 1.25
@@ -23,6 +29,7 @@ Shader "Custom/FalloutCRT"
         Pass
         {
             CGPROGRAM
+
             #pragma vertex vert
             #pragma fragment frag
 
@@ -44,9 +51,14 @@ Shader "Custom/FalloutCRT"
             float4 _MainTex_ST;
 
             float _ScanlineIntensity;
+            float _ScanlineSize;
+            float _ScanlineSpeed;
+            float _ScanlineDarkness;
+
             float _NoiseIntensity;
             float _Curvature;
             float _Glow;
+
             float4 _GreenTint;
 
             v2f vert (appdata v)
@@ -74,25 +86,57 @@ Shader "Custom/FalloutCRT"
                 // CURVATURA SUAVE
                 float2 centered = uv * 2.0 - 1.0;
 
-                centered.x *= 1.0 + pow(abs(centered.y), 2.0) * _Curvature;
-                centered.y *= 1.0 + pow(abs(centered.x), 2.0) * _Curvature;
+                centered.x *=
+                    1.0 +
+                    pow(abs(centered.y), 2.0)
+                    * _Curvature;
+
+                centered.y *=
+                    1.0 +
+                    pow(abs(centered.x), 2.0)
+                    * _Curvature;
 
                 uv = centered * 0.5 + 0.5;
 
-                // EVITA BORDES NEGROS
+                // SIN BORDES NEGROS
                 uv = clamp(uv, 0.001, 0.999);
+
+                // ESTABILIZA EL PATRON
+                uv = floor(uv * 1024.0) / 1024.0;
 
                 fixed4 col = tex2D(_MainTex, uv);
 
                 // GRAYSCALE
-                float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
+                float gray = dot(
+                    col.rgb,
+                    float3(0.299, 0.587, 0.114)
+                );
 
-                // VERDE FALLOUT
-                col.rgb = gray * _GreenTint.rgb * _Glow;
+                // VERDE CRT
+                col.rgb =
+                    gray *
+                    _GreenTint.rgb *
+                    _Glow;
 
-                // SCANLINES
+                // MOVIMIENTO HACIA ABAJO
+                float scroll =
+                    _Time.y *
+                    _ScanlineSpeed;
+
+                // LINEAS DEFINIDAS
                 float scan =
-                    sin(uv.y * 350.0) * 0.5 + 0.5;
+                    sin(
+                        (uv.y + scroll)
+                        * _ScanlineSize
+                    );
+
+                scan = step(0.0, scan);
+
+                scan = lerp(
+                    _ScanlineDarkness,
+                    1.0,
+                    scan
+                );
 
                 col.rgb *= lerp(
                     1.0,
@@ -100,15 +144,21 @@ Shader "Custom/FalloutCRT"
                     _ScanlineIntensity
                 );
 
-                // NOISE
+                // NOISE CRT
                 float noise =
-                    rand(uv + _Time.y * 0.1);
+                    rand(
+                        uv +
+                        _Time.y * 0.1
+                    );
 
-                col.rgb += noise * _NoiseIntensity;
+                col.rgb +=
+                    noise *
+                    _NoiseIntensity;
 
-                // VIGNETTE CASI INVISIBLE
+                // VIGNETTE SUAVE
                 float vignette =
-                    1.0 - smoothstep(
+                    1.0 -
+                    smoothstep(
                         1.1,
                         1.6,
                         length(centered)
@@ -118,6 +168,7 @@ Shader "Custom/FalloutCRT"
 
                 return col;
             }
+
             ENDCG
         }
     }

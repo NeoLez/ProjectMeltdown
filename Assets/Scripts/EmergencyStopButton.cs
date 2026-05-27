@@ -15,12 +15,17 @@ namespace Root {
             UpdateVisuals();
         }
 
-        public override void Interact(bool state) {
-            if (state && !isBraking && !IsSpent()) {
+        public override void StartInteraction() {
+            if (!isBraking && !IsSpent()) {
                 isBraking = true;
                 usesLeft--;
                 UpdateVisuals();
             }
+        }
+
+        public override void EndInteraction()
+        {
+            
         }
 
         private void UpdateVisuals() {
