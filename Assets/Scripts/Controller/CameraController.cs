@@ -43,6 +43,11 @@ public class CameraController : MonoBehaviour {
         LockCamera();
     }
 
+    private void OnDestroy()
+    {
+        _input.Interaction.Interact.started -= HandleInteraction;
+    }
+
     private void HandleInteraction(InputAction.CallbackContext _)
     {
         if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance) ||
@@ -111,7 +116,12 @@ public class CameraController : MonoBehaviour {
     }
 
     public void LockCamera() {
-        Cursor.lockState = CursorLockMode.Locked;
+        MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
+    }
+
+    public void UnlockCamera()
+    {
+        MouseHandler.RelinquishControl(this);
     }
 
     public Vector2 GetHorizontalDirectionForwardVector() {

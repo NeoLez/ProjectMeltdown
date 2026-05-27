@@ -1,3 +1,4 @@
+using Root.Controller;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -17,16 +18,15 @@ namespace Root {
             _initialPosition = transform.localPosition;
         }
 
-        public override void Interact(bool state) {
-            active = state;
-            if (active) {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.Confined;
-            }
+        public override void StartInteraction() {
+            active = true;
+            MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
+        }
+
+        public override void EndInteraction()
+        {
+            active = false;
+            MouseHandler.RelinquishControl(this);
         }
 
         private void Update() {

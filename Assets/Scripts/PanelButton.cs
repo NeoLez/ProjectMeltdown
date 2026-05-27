@@ -9,10 +9,15 @@ namespace Root {
 
         [field: SerializeField] private bool Locked { get; set; }
         
-        public override void Interact(bool state) {
-            if (state && !Locked) {
+        public override void StartInteraction() {
+            if (!Locked) {
                 OnClicked?.Invoke();
             }
+        }
+
+        public override void EndInteraction()
+        {
+            
         }
 
         public void Lock() {

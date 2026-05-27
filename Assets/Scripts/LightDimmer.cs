@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Root.Controller;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -35,19 +36,16 @@ namespace Root
             visuals.localRotation = Quaternion.Euler(0, math.lerp(minRotation, maxRotation, percentage), 0);
         }
 
-        public override void Interact(bool state)
+        public override void StartInteraction()
         {
-            _active = state;
-            if (_active)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.Confined;
-            }
+            _active = true;
+            MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
+        }
+
+        public override void EndInteraction()
+        {
+            _active = false;
+            MouseHandler.RelinquishControl(this);
         }
 
         private void Update()
