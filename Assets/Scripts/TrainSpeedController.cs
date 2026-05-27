@@ -1,10 +1,10 @@
+using System;
 using Root.Controller;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace Root {
-    public class TrainSpeedController : Interactable {
-        private bool active;
+    public class TrainSpeedController : InteractableDraggable {
         private Vector3 _initialPosition;
         [SerializeField] private float sensitivity;
         [SerializeField] private float maxSwitchSpeed;
@@ -18,15 +18,9 @@ namespace Root {
             _initialPosition = transform.localPosition;
         }
 
-        public override void StartInteraction() {
-            active = true;
-            MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
-        }
-
-        public override void EndInteraction()
+        private void Start()
         {
-            active = false;
-            MouseHandler.RelinquishControl(this);
+            SetCamera(GameManager.Camera);
         }
 
         private void Update() {
@@ -43,6 +37,8 @@ namespace Root {
 
                 visuals.localPosition = _initialPosition + maxTransformY * percentage * Vector3.forward;
             }
+            
+            UpdateMousePosition();
         }
 
         public float GetTargetSpeed() {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class LightDimmer : Interactable
+    public class LightDimmer : InteractableDraggable
     {
         [SerializeField] private LightSwitch lightSwitch;
         [SerializeField] private List<Light> lights;
@@ -24,10 +24,10 @@ namespace Root
 
         [SerializeField] private float percentage;
 
-        private bool _active;
-
         private void Start()
         {
+            SetCamera(GameManager.Camera);
+            
             foreach (var light in lights)
             {
                 light.intensity = minIntensity;
@@ -36,21 +36,9 @@ namespace Root
             visuals.localRotation = Quaternion.Euler(0, math.lerp(minRotation, maxRotation, percentage), 0);
         }
 
-        public override void StartInteraction()
-        {
-            _active = true;
-            MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
-        }
-
-        public override void EndInteraction()
-        {
-            _active = false;
-            MouseHandler.RelinquishControl(this);
-        }
-
         private void Update()
         {
-            if (_active)
+            if (active)
             {
                 float xMovement = GameManager.Input.CameraMovement.MouseX.ReadValue<float>() * sensitivity;
                 xMovement = math.clamp(xMovement, -maxSwitchSpeed, maxSwitchSpeed);
@@ -64,6 +52,8 @@ namespace Root
                 light.intensity = lightSwitch.IsOn() ? math.lerp(minIntensity, maxIntensity, percentage) : 0;
                 light.range = lightSwitch.IsOn() ? math.lerp(minRange, maxRange, percentage) : 0;
             }
+            
+            UpdateMousePosition();
         }
     }
 }

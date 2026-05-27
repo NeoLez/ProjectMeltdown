@@ -32854,6 +32854,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7345215532584642558, guid: 4528d087f7ee77e429bd72b629778b81, type: 3}
   m_PrefabInstance: {fileID: 740634524}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &741595035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 741595036}
+  m_Layer: 0
+  m_Name: MousePivotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &741595036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741595035}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -0, z: 0.0427}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 543450652910457226}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &744580242
 GameObject:
   m_ObjectHideFlags: 0
@@ -55656,6 +55687,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 268384c4ae839604995c97e72be17530, type: 3}
+--- !u!1 &1387972466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1387972467}
+  m_Layer: 0
+  m_Name: MousePivotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1387972467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387972466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1411535897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1388460822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56773,6 +56835,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1343767274}
+  - {fileID: 1387972467}
   m_Father: {fileID: 2016194410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1419731845
@@ -57275,7 +57338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mousePivotPoint: {fileID: 1775279216}
-  active: 0
   resetSpeed: 1
   sensitivity: 0.002
   maxSwitchSpeed: 0.05
@@ -59642,6 +59704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de06f38d0e7e476fa5b580f1096531cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mousePivotPoint: {fileID: 741595036}
   sensitivity: 0.002
   maxSwitchSpeed: 0.05
   percentage: 0
@@ -67665,6 +67728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d2c62589e0bc946abb8844a453b6c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.LightDimmer
+  mousePivotPoint: {fileID: 1387972467}
   lightSwitch: {fileID: 84285328}
   lights:
   - {fileID: 1442088707}
@@ -85380,7 +85444,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 741595036}
   m_Father: {fileID: 744580243}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
 --- !u!4 &543450653437421032 stripped
