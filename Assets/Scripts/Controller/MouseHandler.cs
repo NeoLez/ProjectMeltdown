@@ -7,7 +7,7 @@ namespace Root.Controller
 {
     public static class MouseHandler
     {
-        private static List<MouseSettings> mouseSettings = new();
+        private static readonly List<MouseSettings> MouseSettingsList = new();
 
         public static void RequestControl(CursorLockMode lockState, bool visible, Component requester)
         {
@@ -16,31 +16,31 @@ namespace Root.Controller
             mouseSetting.visible = visible;
             mouseSetting.requester = requester;
             
-            mouseSettings.Add(mouseSetting);
+            MouseSettingsList.Add(mouseSetting);
             SetMouseSettings(mouseSetting);
         }
 
         public static void RelinquishControl(Component requester)
         {
             Debug.Log("A");
-            for (int i = mouseSettings.Count - 1; i >= 0; i--)
+            for (int i = MouseSettingsList.Count - 1; i >= 0; i--)
             {
-                if (mouseSettings[i].requester == null)
+                if (MouseSettingsList[i].requester == null)
                 {
-                    mouseSettings.RemoveAt(i);
+                    MouseSettingsList.RemoveAt(i);
                     Debug.Log("Cleaned");
                     continue;
                 }
 
-                if (mouseSettings[i].requester == requester)
+                if (MouseSettingsList[i].requester == requester)
                 {
                     Debug.Log("Removed");
-                    if (i == mouseSettings.Count - 1)
+                    if (i == MouseSettingsList.Count - 1)
                     {
                         Debug.Log("ASD");
-                        SetMouseSettings(mouseSettings[i-1]);
+                        SetMouseSettings(MouseSettingsList[i-1]);
                     }
-                    mouseSettings.RemoveAt(i);
+                    MouseSettingsList.RemoveAt(i);
                     break;
                 }
             }
@@ -69,11 +69,17 @@ namespace Root.Controller
         public static void PrintState()
         {
             StringBuilder sb = new();
-            foreach (var mouseSetting in mouseSettings)
+            foreach (var mouseSetting in MouseSettingsList)
             {
                 sb.Append(mouseSetting.ToString());
             }
             Debug.Log(sb.ToString());
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void ResetStaticData()
+        {
+            MouseSettingsList.Clear();
         }
     }
 }
