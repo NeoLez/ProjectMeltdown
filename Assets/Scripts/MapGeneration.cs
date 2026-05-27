@@ -44,7 +44,6 @@ namespace Root {
             nextSectionPrefab = speed[Random.Range(0, speed.Count)];
             train.AlertSystem.AddAlert(nextSectionPrefab.alert);
             train.AlertSystem.SetNextAlert();
-            Debug.Log("AddedAlertInitial");
         }
 
         private void Update() {

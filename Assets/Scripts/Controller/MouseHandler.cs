@@ -22,22 +22,18 @@ namespace Root.Controller
 
         public static void RelinquishControl(Component requester)
         {
-            Debug.Log("A");
             for (int i = MouseSettingsList.Count - 1; i >= 0; i--)
             {
                 if (MouseSettingsList[i].requester == null)
                 {
                     MouseSettingsList.RemoveAt(i);
-                    Debug.Log("Cleaned");
                     continue;
                 }
 
                 if (MouseSettingsList[i].requester == requester)
                 {
-                    Debug.Log("Removed");
                     if (i == MouseSettingsList.Count - 1)
                     {
-                        Debug.Log("ASD");
                         SetMouseSettings(MouseSettingsList[i-1]);
                     }
                     MouseSettingsList.RemoveAt(i);
@@ -51,7 +47,6 @@ namespace Root.Controller
         {
             Cursor.lockState = mouseSetting.lockState;
             Cursor.visible = mouseSetting.visible;
-            PrintState();
         }
         
         public struct MouseSettings
