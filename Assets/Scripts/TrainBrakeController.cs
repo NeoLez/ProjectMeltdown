@@ -5,9 +5,8 @@ using Unity.Mathematics;
 using UnityEngine;
 namespace Root
 {
-    public class TrainBrakeController : Interactable
+    public class TrainBrakeController : InteractableDraggable
     {
-        private bool active;
         private Vector3 _initialPosition;
         [SerializeField] private float resetSpeed = 1f;
         [SerializeField] private float sensitivity;
@@ -18,27 +17,22 @@ namespace Root
         [SerializeField] private AudioSource BrakeDegradeSound;
         private int currentBrakeLevel;
         [SerializeField] private float currentDamage;
-        [Serializable]
-        public class BrakeLevels
+        
+        [Serializable] public class BrakeLevels
         {
             public float maxDamage;
             public float maxBraking;
         }
         [SerializeField] public List<BrakeLevels> brakeLevels;
+        
         private void Awake()
         {
             _initialPosition = transform.localPosition;
         }
-        public override void StartInteraction()
-        {
-            active = true;
-            MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
-        }
 
-        public override void EndInteraction()
+        private void Start()
         {
-            active = false;
-            MouseHandler.RelinquishControl(this);
+            SetCamera(GameManager.Camera);
         }
         
         private void Update()
@@ -60,6 +54,7 @@ namespace Root
                 percentage = math.max(0, percentage - resetSpeed * Time.deltaTime);
                 visuals.localPosition = _initialPosition - maxTransformY * percentage * Vector3.forward;
             }
+            UpdateMousePosition();
         }
         private void UpdateBrakeState()
         {

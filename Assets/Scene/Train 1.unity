@@ -51537,7 +51537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed36723b40d46debde3c96fcfe840e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  SelectedVisuals: {fileID: 0}
   onObject: {fileID: 940168561}
   offObject: {fileID: 1804038478}
   <Locked>k__BackingField: 0
@@ -57241,7 +57240,7 @@ GameObject:
   - component: {fileID: 1427049397}
   - component: {fileID: 1427049396}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Brake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57275,7 +57274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3536a255d41147e4faf803482ff706fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedVisuals: {fileID: 0}
+  mousePivotPoint: {fileID: 1775279216}
+  active: 0
   resetSpeed: 1
   sensitivity: 0.002
   maxSwitchSpeed: 0.05
@@ -59642,7 +59642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de06f38d0e7e476fa5b580f1096531cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedVisuals: {fileID: 0}
   sensitivity: 0.002
   maxSwitchSpeed: 0.05
   percentage: 0
@@ -67666,7 +67665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d2c62589e0bc946abb8844a453b6c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.LightDimmer
-  SelectedVisuals: {fileID: 0}
   lightSwitch: {fileID: 84285328}
   lights:
   - {fileID: 1442088707}
@@ -70104,6 +70102,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8179003250075979487, guid: 0459edae06f15274b9c81cea3a52aad1, type: 3}
   m_PrefabInstance: {fileID: 1104285159}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1775279215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1775279216}
+  - component: {fileID: 1775279217}
+  m_Layer: 0
+  m_Name: BrakeMousePivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1775279216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775279215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.4854918, y: 0.4854915, z: 0.5140993, w: 0.51409894}
+  m_LocalPosition: {x: -0.0033, y: -0, z: 0.0584}
+  m_LocalScale: {x: 0.14053878, y: 0.109307915, z: 0.052051667}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5376359193229968637}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1775279217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775279215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749b9f4f9e524410a1a3a62c877a30b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainer
+  visuals: {fileID: 1764135738}
+  originCenter: {fileID: 0}
+  goal: {fileID: 0}
 --- !u!43 &1778290490
 Mesh:
   m_ObjectHideFlags: 0
@@ -75284,7 +75329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abe5567e22c24e548e749fdbfa571892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.EmergencyStopButton
-  SelectedVisuals: {fileID: 0}
   maxUses: 2
   usesLeft: 2
   isBraking: 0
@@ -79362,7 +79406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed36723b40d46debde3c96fcfe840e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  SelectedVisuals: {fileID: 0}
   onObject: {fileID: 940168561}
   offObject: {fileID: 1804038478}
   <Locked>k__BackingField: 0
@@ -86420,7 +86463,8 @@ Transform:
   m_LocalPosition: {x: 0.007100016, y: 0.5724796, z: -0.0071821213}
   m_LocalScale: {x: 1.9211676, y: 1.9211775, z: 1.9211775}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1775279216}
   m_Father: {fileID: 1764135739}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5396782984077935738
