@@ -8,6 +8,8 @@ namespace Root
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
 
+        [SerializeField] private IgnitionSwitch ignitionSwitch;
+
         private Battery _battery;
 
         public event Action OnBatteryInserted;
@@ -27,8 +29,12 @@ namespace Root
                 rb.constraints = RigidbodyConstraints.FreezeAll;
                 rb.position = pivot.position;
 
-
                 OnBatteryInserted?.Invoke();
+
+                if (ignitionSwitch.IsEngineOn())
+                {
+                    train.SetEnginePower(true);
+                }
             }
         }
 

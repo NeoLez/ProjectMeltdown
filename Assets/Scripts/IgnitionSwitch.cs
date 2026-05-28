@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Root
 {
@@ -7,13 +6,14 @@ namespace Root
     {
         [SerializeField] private GameObject onVisual;
         [SerializeField] private GameObject offVisual;
+
         [SerializeField] private PanelButton panelButton;
-        private bool _engineOn = false;
+
+        private bool _engineOn = true;
 
         private void Awake()
         {
             panelButton.OnClicked += Toggle;
-
             onVisual.SetActive(_engineOn);
             offVisual.SetActive(!_engineOn);
         }
@@ -29,8 +29,13 @@ namespace Root
 
             GameManager.Train.SetEnginePower(_engineOn);
 
-            onVisual.SetActive(_engineOn);     
-            offVisual.SetActive(!_engineOn);    
+            onVisual.SetActive(_engineOn);
+            offVisual.SetActive(!_engineOn);
+        }
+
+        public bool IsEngineOn()
+        {
+            return _engineOn;
         }
     }
 }

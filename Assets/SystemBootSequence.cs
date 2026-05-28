@@ -15,6 +15,7 @@ namespace Root
         [Header("Sistemas reales")]
         [SerializeField] private GameObject systemsCanvas;
         [SerializeField] private GameObject lightsObject;
+        [SerializeField] private GameObject emergencyLight;
 
         [SerializeField] private float bootDuration = 2f;
         [SerializeField] private float activatedDuration = 1f;
@@ -44,11 +45,11 @@ namespace Root
 
         private IEnumerator BootRoutine()
         {
-            // Apagar sistemas reales
             systemsCanvas.SetActive(false);
             lightsObject.SetActive(false);
 
-            // Mostrar boot
+            emergencyLight.SetActive(true);
+
             bootCanvas.SetActive(true);
 
             bootText.text = "ACTIVANDO SISTEMAS.....";
@@ -59,11 +60,12 @@ namespace Root
 
             yield return new WaitForSeconds(activatedDuration);
 
-            // Encender sistemas
             bootCanvas.SetActive(false);
 
             systemsCanvas.SetActive(true);
             lightsObject.SetActive(true);
+
+            emergencyLight.SetActive(false);
         }
 
         private void ShutdownSystems()
@@ -74,6 +76,8 @@ namespace Root
 
             systemsCanvas.SetActive(false);
             lightsObject.SetActive(false);
+
+            emergencyLight.SetActive(true);
         }
     }
 }
