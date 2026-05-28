@@ -24,6 +24,9 @@ namespace Root.Controller
         protected void UpdateMousePosition()
         {
             if(!active) return;
+#if UNITY_EDITOR_LINUX
+            return;
+#endif
             Mouse.current.WarpCursorPosition(_camera.WorldToScreenPoint(mousePivotPoint.position) * GameManager.GetResolutionRatio());
         }
 
