@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,7 +15,6 @@ namespace Root.Controller {
 
         private void Awake() {
             _input = GameManager.Input;
-            
             _input.Interaction.Interact.started += HandleInteraction;
             _input.Interaction.Interact.canceled += HandleInteraction;
         }
@@ -24,6 +22,24 @@ namespace Root.Controller {
         private void OnDestroy() {
             _input.Interaction.Interact.started -= HandleInteraction;
             _input.Interaction.Interact.canceled -= HandleInteraction;
+        }
+
+        private void HandleInteraction(InputAction.CallbackContext ctx)
+        {
+            if (!isActiveAndEnabled) return;
+            if (ctx.started) HandleInteractionObjectSelection();
+            
+            
+
+            if (ctx.started)
+            {
+                if (_selectedInteractable == null) return;
+                _selectedInteractable.StartInteraction();
+            }
+            else {
+                _selectedInteractable?.EndInteraction();
+                _selectedInteractable = null;
+            }
         }
 
         private void Update() {
@@ -41,17 +57,16 @@ namespace Root.Controller {
             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, targetRotation, Speed * Time.deltaTime);
             
             _prevMousePos = mousePos;
-            
-            HandleInteractionObjectSelection();
         }
 
         private void OnEnable() {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
             _input.Interaction.GoBack.started += GoBack;
         }
 
         private void OnDisable() {
+            MouseHandler.RelinquishControl(this);
+            _selectedInteractable?.EndInteraction();
             _input.Interaction.GoBack.started -= GoBack;
         }
 
@@ -62,36 +77,14 @@ namespace Root.Controller {
         }
         
         private Interactable _selectedInteractable;
-        private Interactable _interactingWithInternals;
         private void HandleInteractionObjectSelection() {
-            Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>()/new Vector2(Screen.width/GameManager.RTSize.x,Screen.height/GameManager.RTSize.y));
+            Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>()/GameManager.GetResolutionRatio());
             if (!Physics.Raycast(ray, out var hit, interactDistance) ||
                 !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
+                _selectedInteractable = null;
                 return;
             }
-
-            if (_selectedInteractable == component) return;
             _selectedInteractable = component;
-            _selectedInteractable.Select(true);
-        }
-
-        private void DeselectItem() {
-            if (_selectedInteractable == null) return;
-        
-            _selectedInteractable.Select(false);
-            _selectedInteractable.Interact(false);
-        }
-    
-        private void HandleInteraction(InputAction.CallbackContext ctx) {
-            if (!ctx.started && _interactingWithInternals != null)
-            {
-                _interactingWithInternals.Interact(false);
-            }else if (_selectedInteractable != null)
-            {
-                _selectedInteractable.Interact(ctx.started);
-                if (!ctx.started) _selectedInteractable = null;
-                else _interactingWithInternals = _selectedInteractable;
-            }
         }
     }
 }

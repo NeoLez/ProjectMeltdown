@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Root
 {
     public class LightSwitch : MonoBehaviour
     {
-        [SerializeField] private Button button;         // Boton que activa el switch
+        [FormerlySerializedAs("button")] [SerializeField] private PanelButton panelButton;         // Boton que activa el switch
         [SerializeField] private List<Light> lights;    // Lista de spotlights a controlar
         private bool _on = false;                       // Estado actual de las luces
 
         private void Awake()
         {
             // Nos suscribimos al evento del boton
-            button.OnClicked += Toggle;
+            panelButton.OnClicked += Toggle;
         }
 
         private void Start()
@@ -25,12 +26,12 @@ namespace Root
         private void OnDestroy()
         {
             // Nos desuscribimos para evitar errores al destruir el objeto
-            button.OnClicked -= Toggle;
+            panelButton.OnClicked -= Toggle;
             GameManager.Train.OnPowerLost -= TurnOff;
             GameManager.Train.OnPowerRestored -= TurnOn;
         }
 
-        public bool IsOn() => _on; // Devuelve si las luces están prendidas
+        public bool IsOn() => _on; // Devuelve si las luces estï¿½n prendidas
 
         private void Toggle()
         {

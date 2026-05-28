@@ -6,20 +6,21 @@ namespace Root
     {
         [SerializeField] private GameObject onVisual;
         [SerializeField] private GameObject offVisual;
-        [SerializeField] private Button button;
-        private bool _engineOn = false;
+
+        [SerializeField] private PanelButton panelButton;
+
+        private bool _engineOn = true;
 
         private void Awake()
         {
-            button.OnClicked += Toggle;
-
+            panelButton.OnClicked += Toggle;
             onVisual.SetActive(_engineOn);
             offVisual.SetActive(!_engineOn);
         }
 
         private void OnDestroy()
         {
-            button.OnClicked -= Toggle;
+            panelButton.OnClicked -= Toggle;
         }
 
         private void Toggle()
@@ -28,8 +29,13 @@ namespace Root
 
             GameManager.Train.SetEnginePower(_engineOn);
 
-            onVisual.SetActive(_engineOn);     
-            offVisual.SetActive(!_engineOn);    
+            onVisual.SetActive(_engineOn);
+            offVisual.SetActive(!_engineOn);
+        }
+
+        public bool IsEngineOn()
+        {
+            return _engineOn;
         }
     }
 }

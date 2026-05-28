@@ -253,7 +253,7 @@ namespace Root
             }
         }
 
-        // MODIFICADO: consumo variable segun el esfuerzo del motor + corta si el motor está apagado
+        // MODIFICADO: consumo variable segun el esfuerzo del motor + corta si el motor estï¿½ apagado
         private bool ConsumeBattery(float speedDifference)
         {
             if (_powerLost) return false;

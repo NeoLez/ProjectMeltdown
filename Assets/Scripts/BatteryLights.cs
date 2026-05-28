@@ -5,12 +5,14 @@ namespace Root
 {
     public class BatteryLights : MonoBehaviour
     {
-        [SerializeField] private List<Light> lights; 
+        [SerializeField] private List<Light> lights;
 
         private void Start()
         {
             GameManager.Train.OnPowerLost += TurnOff;
             GameManager.Train.OnPowerRestored += TurnOn;
+
+            TurnOff();
         }
 
         private void OnDestroy()

@@ -15,6 +15,12 @@ public static class GameManager {
       Input.Movement.Enable();
       Input.CameraMovement.Enable();
       Input.Interaction.Enable();
+      Input.Interaction.Interact.Enable();
   }
 
+  public static Vector2 GetResolutionRatio()
+  {
+      return new Vector2(Screen.width / RTSize.x, Screen.height / RTSize.y);
+  } 
+  
 }
