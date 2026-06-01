@@ -62,7 +62,6 @@ namespace Root
         {
             _powerLost = true; 
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
-            mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
             GameManager.Input.Interaction.Reset.performed += context => {
                 if (_descarrilado)
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -146,27 +145,38 @@ namespace Root
                 }
             }
         }
-        
-        [SerializeField] private List<TrainPathWaypoint> _waypoints;
+
+        public float currentMaxSpeed;
         public float currentDistanceBetweenPathpoints;
         public float currentDistanceTraveledToNextPathpoint;
+        public int waypointIndex;
+        public TrainPathWaypoint currentWaypoint;
+        public TrainPathWaypoint nextWaypoint;
         public Vector3 previousDirection;
 
         private void MoveTrain()
         {
-            Debug.Log("a");
-            currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
+            if (currentWaypoint == null) {
+                waypointIndex = 1;
+                currentWaypoint = mapGenerator.GetWaypoint(0);
+                nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
+            }
+            
+            currentDistanceBetweenPathpoints = Vector3.Distance(currentWaypoint.transform.position, nextWaypoint.transform.position);
 
             var distanceToTravel = _currentSpeed * Time.deltaTime;
             var m = currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint;
             while (distanceToTravel > currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint)
             {
                 distanceToTravel -= m;
-                previousDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
+                previousDirection = (nextWaypoint.transform.position - currentWaypoint.transform.position).normalized;
                 currentDistanceTraveledToNextPathpoint = 0;
-                _waypoints[1].TrainReached();
-                _waypoints.RemoveAt(0);
-                if (_waypoints[0].maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
+                nextWaypoint.TrainReached();
+                currentWaypoint = nextWaypoint;
+                waypointIndex++;
+                nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
+                
+                if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
                 {
                     if (_descarriladoTimer >= tiempoDescarrilamiento)
                     {
@@ -175,22 +185,24 @@ namespace Root
                         return;
                     }
 
-                    _descarriladoTimer += (_currentSpeed - _waypoints[0].maxSpeed) * Time.deltaTime;
+                    _descarriladoTimer += (_currentSpeed - currentWaypoint.maxSpeed) * Time.deltaTime;
                 }
                 else
                 {
                     _descarriladoTimer = 0;
                 }
-                currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
+                currentDistanceBetweenPathpoints = Vector3.Distance(currentWaypoint.transform.position, nextWaypoint.transform.position);
                 m = currentDistanceBetweenPathpoints - currentDistanceTraveledToNextPathpoint;
             }
             currentDistanceTraveledToNextPathpoint += distanceToTravel;
 
-            var currentDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-            if (_currentSpeed != 0)
-            {
-                trainPosition.position = _waypoints[0].transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
-                trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+            var currentDirection = (nextWaypoint.transform.position - currentWaypoint.transform.position).normalized;
+            
+            trainPosition.position = currentWaypoint.transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
+            trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+
+            if (_currentSpeed == 0 && transform.position != trainPosition.position) {
+                MovePhysicalTrainToMap();
             }
         }
 
@@ -279,12 +291,21 @@ namespace Root
 
         private void MovePhysicalTrainToMap()
         {
-            foreach (var objectInsideTrain in objectsInsideTrain)
-            {
-                if (objectInsideTrain == null) continue;
-                objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
-                objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
+            if (!isStopped) {
+                foreach (var objectInsideTrain in objectsInsideTrain) {
+                    if (objectInsideTrain == null) continue;
+                    objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
+                    objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
+                }
             }
+            else {
+                foreach (var objectInsideTrain in objectsInsideTrain) {
+                    if (objectInsideTrain == null) continue;
+                    objectInsideTrain.transform.position = trainPosition.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
+                    objectInsideTrain.transform.forward = trainPosition.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
+                }
+            }
+
             transform.position = trainPosition.position;
             transform.rotation = trainPosition.rotation;
         }
@@ -446,7 +467,7 @@ namespace Root
 
         public float GetCurrentMaxSpeed()
         {
-            return _waypoints.Count > 0 ? _waypoints[0].maxSpeed : 0f;
+            return currentWaypoint != null ? currentWaypoint.maxSpeed : 0.0f;
         }
     }
 }

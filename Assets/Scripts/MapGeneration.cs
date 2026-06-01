@@ -27,7 +27,6 @@ namespace Root {
         private List<MapSection> PastSections = new();
         [FormerlySerializedAs("SectionCount")] [SerializeField] private int LoadedSectionCount;
         
-        public event Action<MapSection> OnAddedPiece;
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
 
@@ -36,6 +35,7 @@ namespace Root {
         [SerializeField] private int mapWidth;
 
         private List<TrainPathWaypoint> _waypoints = new();
+        private int waypointLowestIndex = 0;
         private MapPointsGen.Map map;
         private MapPointsGen.Node currentNode;
         
@@ -68,9 +68,7 @@ namespace Root {
             nextSectionPrefab = features[Random.Range(0, features.Count)];
             trackSectionCounter = 0;
             currentRepetition = 0;
-            
-            train.AlertSystem.AddAlert(nextSectionPrefab.alert);
-            train.AlertSystem.SetNextAlert();
+            //currentNode = currentNode.OutConnections[0];
         }
 
 
@@ -107,7 +105,8 @@ namespace Root {
             section.transform.rotation = end.rotation;
             section.OnTrainCompleted += TrainReachedPoint;
             IncomingSections.Add(section);
-            OnAddedPiece?.Invoke(section);
+            
+            _waypoints.AddRange(section.Waypoints);
             if (currentRepetition == 0) {
                 section.OnTrainCompleted += () => {
                     train.AlertSystem.SetNextAlert();
@@ -137,10 +136,16 @@ namespace Root {
         }
 
         private void RemovePastSection() {
+            int amountToRemove = PastSections[0].Waypoints.Count;
+            _waypoints.RemoveRange(0, amountToRemove);
+            waypointLowestIndex += amountToRemove;
             PastSections[0].Remove();
             PastSections.RemoveAt(0);
         }
 
+        public TrainPathWaypoint GetWaypoint(int index) {
+            return _waypoints[index - waypointLowestIndex];
+        }
         
         [SerializeField] private int countUntilRebase = 15;
         private int _rebaseCounter;
