@@ -30,6 +30,7 @@ namespace Root {
 
         private void UpdateVisuals() {
             var spent = IsSpent();
+            if(onObject == null  || offObject == null) return;
             onObject.SetActive(!spent);
             offObject.SetActive(spent);
         }

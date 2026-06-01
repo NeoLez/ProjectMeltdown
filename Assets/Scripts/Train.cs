@@ -154,6 +154,7 @@ namespace Root
 
         private void MoveTrain()
         {
+            Debug.Log("a");
             currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
 
             var distanceToTravel = _currentSpeed * Time.deltaTime;

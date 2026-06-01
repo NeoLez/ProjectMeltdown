@@ -22,6 +22,7 @@ namespace Root {
 
         public void Lock() {
             Locked = true;
+            if (onObject == null || offObject == null) return;
             onObject.SetActive(false);
             offObject.SetActive(true);
         }

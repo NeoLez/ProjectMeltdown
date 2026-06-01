@@ -60,14 +60,17 @@ namespace Root {
         }
 
         private void Start() {
-            var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
-            nextSectionPrefab = speed[Random.Range(0, speed.Count)];
+            MapPointsGen.Map m = new(mapHeight, mapWidth);
+            currentNode = m.nodes[Random.Range(0, mapHeight), 0];
+            Debug.Log(m.ToString());
+            
+            var features = featureDictionary[currentNode.feature];
+            nextSectionPrefab = features[Random.Range(0, features.Count)];
+            trackSectionCounter = 0;
+            currentRepetition = 0;
+            
             train.AlertSystem.AddAlert(nextSectionPrefab.alert);
             train.AlertSystem.SetNextAlert();
-
-            MapPointsGen.Map m = new(mapHeight, mapWidth);
-            currentNode = m.nodes[Random.Range(0, mapHeight + 1), 0];
-            Debug.Log(m.ToString());
         }
 
 
@@ -112,11 +115,11 @@ namespace Root {
             }
         }
 
-        private void TrainReachedPoint() {
-            var section = IncomingSections[0];
-            IncomingSections.RemoveAt(0);
-            PastSections.Add(section);
-            
+        private void Update() {
+            UpdateSections();
+        }
+
+        private void UpdateSections() {
             while (IncomingSections.Count < LoadedSectionCount) {
                 CreateRandom();    
             }
@@ -124,6 +127,13 @@ namespace Root {
             while (PastSections.Count > LoadedSectionCount) {
                 RemovePastSection();
             }
+        }
+
+        private void TrainReachedPoint() {
+            var section = IncomingSections[0];
+            IncomingSections.RemoveAt(0);
+            PastSections.Add(section);
+            UpdateSections();
         }
 
         private void RemovePastSection() {
