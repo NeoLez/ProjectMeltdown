@@ -56,26 +56,26 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 0
+        m_Bits: 64
       PassNames: []
-    overrideMaterial: {fileID: 0}
+    overrideMaterial: {fileID: 2100000, guid: 530d0ef3c028b124b91eca68c72426df, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
+    overrideMode: 0
+    overrideDepthState: 1
+    depthCompareFunction: 5
+    enableWrite: 0
     stencilSettings:
       overrideStencilState: 0
       stencilReference: 0
       stencilCompareFunction: 8
-      passOperation: 0
-      failOperation: 0
-      zFailOperation: 0
+      passOperation: 2
+      failOperation: 6
+      zFailOperation: 7
     cameraSettings:
       overrideCamera: 0
-      restoreCamera: 1
+      restoreCamera: 0
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
 --- !u!114 &11400000
@@ -103,12 +103,12 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
+  - {fileID: -358877305297363828}
   - {fileID: -1763622522183829049}
   - {fileID: 5978505671836392563}
   - {fileID: 5101553694958585104}
   - {fileID: 3334717481360277787}
-  - {fileID: -358877305297363828}
-  m_RendererFeatureMap: c7b95affa85a86e7735c77a93bebf7521085966e0e5ccc461bc1c396e14b472e8c1ccd03fe0205fb
+  m_RendererFeatureMap: 8c1ccd03fe0205fbc7b95affa85a86e7735c77a93bebf7521085966e0e5ccc461bc1c396e14b472e
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
