@@ -25,6 +25,23 @@ namespace Root
             OnMoneyChanged?.Invoke(currentMoney);
         }
 
+        public bool SpendMoney(int amount)
+        {
+            if (currentMoney < amount)
+            {
+                Debug.Log("Dinero insuficiente");
+                return false;
+            }
+
+            currentMoney -= amount;
+
+            Debug.Log($"Dinero actual: ${currentMoney}");
+
+            OnMoneyChanged?.Invoke(currentMoney);
+
+            return true;
+        }
+
         public int GetMoney()
         {
             return currentMoney;
