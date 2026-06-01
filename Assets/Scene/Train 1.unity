@@ -6714,9 +6714,12 @@ MonoBehaviour:
   strainMultiplier: 0.005
   batteryOutDecelerationRate: 0.5
   AlertSystem: {fileID: 1068053787}
-  _waypoints: []
+  currentMaxSpeed: 0
   currentDistanceBetweenPathpoints: 0
   currentDistanceTraveledToNextPathpoint: 0
+  waypointIndex: 0
+  currentWaypoint: {fileID: 0}
+  nextWaypoint: {fileID: 0}
   previousDirection: {x: 0, y: 0, z: 0}
   cabDoorOpened: 1
   externalDoorsOpened: 1
