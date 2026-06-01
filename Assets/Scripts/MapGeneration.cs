@@ -68,9 +68,7 @@ namespace Root {
             nextSectionPrefab = features[Random.Range(0, features.Count)];
             trackSectionCounter = 0;
             currentRepetition = 0;
-            
-            train.AlertSystem.AddAlert(nextSectionPrefab.alert);
-            train.AlertSystem.SetNextAlert();
+            //currentNode = currentNode.OutConnections[0];
         }
 
 

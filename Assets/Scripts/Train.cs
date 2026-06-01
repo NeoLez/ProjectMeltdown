@@ -62,7 +62,7 @@ namespace Root
         {
             _powerLost = true; 
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
-            mapGenerator.OnAddedPiece += section => _waypoints.AddRange(section.Waypoints);
+            mapGenerator.OnAddedPiece += HandleWaypointAddition;
             GameManager.Input.Interaction.Reset.performed += context => {
                 if (_descarrilado)
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -78,6 +78,10 @@ namespace Root
             {
                 button.OnClicked += HandleCabDoorButton;
             }
+        }
+
+        public void HandleWaypointAddition(MapSection mapSection) {
+            _waypoints.AddRange(mapSection.Waypoints);
         }
 
         public bool IsStopped()
@@ -154,7 +158,6 @@ namespace Root
 
         private void MoveTrain()
         {
-            Debug.Log("a");
             currentDistanceBetweenPathpoints = Vector3.Distance(_waypoints[0].transform.position, _waypoints[1].transform.position);
 
             var distanceToTravel = _currentSpeed * Time.deltaTime;
@@ -187,10 +190,12 @@ namespace Root
             currentDistanceTraveledToNextPathpoint += distanceToTravel;
 
             var currentDirection = (_waypoints[1].transform.position - _waypoints[0].transform.position).normalized;
-            if (_currentSpeed != 0)
-            {
-                trainPosition.position = _waypoints[0].transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
-                trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+            
+            trainPosition.position = _waypoints[0].transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
+            trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
+
+            if (_currentSpeed == 0 && transform.position != trainPosition.position) {
+                MovePhysicalTrainToMap();
             }
         }
 
@@ -279,12 +284,21 @@ namespace Root
 
         private void MovePhysicalTrainToMap()
         {
-            foreach (var objectInsideTrain in objectsInsideTrain)
-            {
-                if (objectInsideTrain == null) continue;
-                objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
-                objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
+            if (!isStopped) {
+                foreach (var objectInsideTrain in objectsInsideTrain) {
+                    if (objectInsideTrain == null) continue;
+                    objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
+                    objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
+                }
             }
+            else {
+                foreach (var objectInsideTrain in objectsInsideTrain) {
+                    if (objectInsideTrain == null) continue;
+                    objectInsideTrain.transform.position = trainPosition.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
+                    objectInsideTrain.transform.forward = trainPosition.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
+                }
+            }
+
             transform.position = trainPosition.position;
             transform.rotation = trainPosition.rotation;
         }
