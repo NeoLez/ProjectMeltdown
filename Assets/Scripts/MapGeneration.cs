@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Root {
@@ -10,20 +11,33 @@ namespace Root {
             public int maxSpeed;
             public MapSection mapSection;
         }
+        
+        [Serializable] private class FeatureListing {
+            public MapPointsGen.Feature feature;
+            public MapSection mapSection;
+        }
 
         [SerializeField] private List<MapSectionListing> _sectionListings;
         private Dictionary<int, List<MapSection>> mapSections = new();
-        [SerializeField] private TrainPathWaypoint initialSection;
+        
+        [SerializeField] private List<FeatureListing> _featureListings;
+        private Dictionary<MapPointsGen.Feature, List<MapSection>> featureDictionary = new();
 
         private List<MapSection> IncomingSections = new();
         private List<MapSection> PastSections = new();
-        [SerializeField] private int SectionCount;
-        [SerializeField] private int minRepetition;
-        [SerializeField] private int maxRepetition;
+        [FormerlySerializedAs("SectionCount")] [SerializeField] private int LoadedSectionCount;
+        
         public event Action<MapSection> OnAddedPiece;
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
-        [SerializeField] private List<GameObject> ShitToDelete;
+
+
+        [SerializeField] private int mapHeight;
+        [SerializeField] private int mapWidth;
+
+        private List<TrainPathWaypoint> _waypoints = new();
+        private MapPointsGen.Map map;
+        private MapPointsGen.Node currentNode;
         
         private void Awake() {
             foreach (var sectionListing in _sectionListings) {
@@ -34,9 +48,15 @@ namespace Root {
                 list.Add(sectionListing.mapSection);
             }
 
-            initialSection.OnTrainReached += () => {
-                train.AlertSystem.SetNextAlert();
-            };
+            foreach (var featureListing in _featureListings) {
+                if (!featureDictionary.TryGetValue(featureListing.feature, out var list)) {
+                    list = new();
+                    featureDictionary[featureListing.feature] = list;
+                }
+                list.Add(featureListing.mapSection);
+            }
+
+            _rebaseCounter = countUntilRebase;
         }
 
         private void Start() {
@@ -44,39 +64,37 @@ namespace Root {
             nextSectionPrefab = speed[Random.Range(0, speed.Count)];
             train.AlertSystem.AddAlert(nextSectionPrefab.alert);
             train.AlertSystem.SetNextAlert();
+
+            MapPointsGen.Map m = new(mapHeight, mapWidth);
+            currentNode = m.nodes[Random.Range(0, mapHeight + 1), 0];
+            Debug.Log(m.ToString());
         }
 
-        private void Update() {
-            while (IncomingSections.Count < SectionCount) {
-                CreateRandom();    
-            }
 
-            while (PastSections.Count > SectionCount) {
-                RemovePastSection();
-            }
-        }
-
+        [SerializeField] private int amountOfTrackSectionsBetweenFeatures = 8;
+        private int trackSectionCounter = 0;
         private int currentRepetition;
-        private int shit = 15;
+        
         private MapSection sectionPrefab;
         private MapSection nextSectionPrefab;
         private void CreateRandom() {
             if (currentRepetition == 0) {
-                var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
                 sectionPrefab = nextSectionPrefab;
-                nextSectionPrefab = speed[Random.Range(0, speed.Count)];
-                currentRepetition = Random.Range(minRepetition, maxRepetition + 1);
-                train.AlertSystem.AddAlert(nextSectionPrefab.alert);
-
-                if (shit == 0) {
-                    foreach (var shit in ShitToDelete) {
-                        Destroy(shit);
-                    }
-                    Rebase();
-                    shit = 2;
+                if (trackSectionCounter == amountOfTrackSectionsBetweenFeatures) {
+                    var features = featureDictionary[currentNode.feature];
+                    nextSectionPrefab = features[Random.Range(0, features.Count)];
+                    trackSectionCounter = 0;
                 }
-
-                shit--;
+                else {
+                    var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
+                    nextSectionPrefab = speed[Random.Range(0, speed.Count)];
+                    trackSectionCounter++;
+                }
+                
+                currentRepetition = Random.Range(sectionPrefab.minRepetition, sectionPrefab.maxRepetition + 1);
+                train.AlertSystem.AddAlert(nextSectionPrefab.alert);
+                
+                HandleRebase();
             }
             currentRepetition--;
             
@@ -98,6 +116,14 @@ namespace Root {
             var section = IncomingSections[0];
             IncomingSections.RemoveAt(0);
             PastSections.Add(section);
+            
+            while (IncomingSections.Count < LoadedSectionCount) {
+                CreateRandom();    
+            }
+
+            while (PastSections.Count > LoadedSectionCount) {
+                RemovePastSection();
+            }
         }
 
         private void RemovePastSection() {
@@ -105,8 +131,17 @@ namespace Root {
             PastSections.RemoveAt(0);
         }
 
-        private void Rebase() {
-            transform.position += train.transform.position * -1;
+        
+        [SerializeField] private int countUntilRebase = 15;
+        private int _rebaseCounter;
+        private void HandleRebase() {
+            if (_rebaseCounter == 0) {
+                transform.position += train.transform.position * -1;
+                
+                _rebaseCounter = countUntilRebase;
+            }
+
+            _rebaseCounter--;
         }
     }
 }

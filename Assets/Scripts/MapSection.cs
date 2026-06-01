@@ -8,6 +8,8 @@ namespace Root {
         public event Action OnTrainCompleted;
         public Transform end;
         public TrainAlertSO alert;
+        public int minRepetition;
+        public int maxRepetition;
 
         private void Awake() {
             Waypoints[^1].OnTrainReached += () => {

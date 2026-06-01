@@ -21,8 +21,6 @@ namespace Root
         [SerializeField] private List<Button> cabDoorButton;
         [SerializeField] private List<Animator> cabDoor;
 
-        [SerializeField] private List<TrainPathWaypoint> _waypoints;
-
         [SerializeField] private float _maxEngineStrain;
         [SerializeField] private float _currentSpeed;
         [SerializeField] private float _engineAccelerationRate;
@@ -148,6 +146,11 @@ namespace Root
                 }
             }
         }
+        
+        [SerializeField] private List<TrainPathWaypoint> _waypoints;
+        public float currentDistanceBetweenPathpoints;
+        public float currentDistanceTraveledToNextPathpoint;
+        public Vector3 previousDirection;
 
         private void MoveTrain()
         {
@@ -434,10 +437,6 @@ namespace Root
                 button.Unlock();
             }
         }
-
-        public float currentDistanceBetweenPathpoints;
-        public float currentDistanceTraveledToNextPathpoint;
-        public Vector3 previousDirection;
 
         public bool EstaDescarrilando()
         {
