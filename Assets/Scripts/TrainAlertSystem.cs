@@ -10,6 +10,12 @@ namespace Root {
 
         private bool firstAdded = true;
         public void AddAlert(TrainAlertSO alert) {
+            if (firstAdded) {
+                firstAdded = false;
+                currentAlert = alert;
+                OnEventChanged?.Invoke();
+                return;
+            }
             alerts.Add(alert);
         }
 
@@ -19,6 +25,10 @@ namespace Root {
         }
 
         public void SetNextAlert() {
+            if (alerts.Count == 0) {
+                firstAdded = true;
+                return;
+            }
             SetAlert();
             alerts.RemoveAt(0);
         }
