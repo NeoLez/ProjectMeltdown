@@ -512,30 +512,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6d6ee5a865462d96b21d439cb76705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sectionListings:
-  - maxSpeed: 80
-    mapSection: {fileID: 5024895116933449650, guid: a1ab63daaba5d8362810db76c50da881, type: 3}
-  - maxSpeed: 40
-    mapSection: {fileID: 5024895116933449650, guid: 767334e6eaf9b5893823fc8d347ae45a, type: 3}
-  - maxSpeed: 40
-    mapSection: {fileID: 5024895116933449650, guid: 88a7034be74ef11e5a812cb48d1b90fe, type: 3}
-  - maxSpeed: 50
-    mapSection: {fileID: 5024895116933449650, guid: 32c3d9ca6889d4a8ebb40c0b1c3984ee, type: 3}
-  - maxSpeed: 50
-    mapSection: {fileID: 5024895116933449650, guid: 4ee39bfb1564ee9da8074294e3038e28, type: 3}
-  - maxSpeed: 60
-    mapSection: {fileID: 5024895116933449650, guid: d92d9004e6a217ef58d587e64897b4e2, type: 3}
-  - maxSpeed: 60
-    mapSection: {fileID: 5024895116933449650, guid: 56bdb2d066f12a8468cee02775a78928, type: 3}
-  _featureListings:
-  - feature: 3
-    mapSection: {fileID: 8274113595705031903, guid: f5879d5b5d10108ff8e827c558db28ec, type: 3}
   LoadedSectionCount: 20
   root: {fileID: 100897461}
   train: {fileID: 1068053785}
   mapHeight: 4
   mapWidth: 20
-  amountOfTrackSectionsBetweenFeatures: 3
+  tunnelGeneratorSo: {fileID: 11400000, guid: 33a0d702563b9f5ef8bb996c14864a4a, type: 2}
+  startGeneratorSo: {fileID: 11400000, guid: c123a9a02af84a48fabc19356ebd23d6, type: 2}
+  stationGeneratorSo: {fileID: 0}
+  abandonedStationGeneratorSo: {fileID: 0}
+  tunnelForkGeneratorSo: {fileID: 0}
+  tunnelJoinGeneratorSo: {fileID: 0}
   countUntilRebase: 15
 --- !u!4 &100897461
 Transform:
@@ -902,14 +889,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.42246002, b: 0.42246002, a: 1}
+  m_Color: {r: 1, g: 0.42246002, b: 0.42246002, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f744f0d06d9b53d488d9d2c5e7ab8832, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7727,7 +7714,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '{0}'
+  m_text: Calibrating
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 54e17751f47168b459f9ee8184f342cf, type: 2}
   m_sharedMaterial: {fileID: -534225863281175362, guid: 54e17751f47168b459f9ee8184f342cf, type: 2}

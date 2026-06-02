@@ -7,6 +7,8 @@ namespace Root {
         [SerializeField] private List<TrainAlertSO> alerts;
         public TrainAlertSO currentAlert;
         public event Action OnEventChanged;
+
+        private bool firstAdded = true;
         public void AddAlert(TrainAlertSO alert) {
             alerts.Add(alert);
         }

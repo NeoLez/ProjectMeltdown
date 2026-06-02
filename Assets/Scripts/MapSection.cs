@@ -5,15 +5,14 @@ using UnityEngine;
 namespace Root {
     public class MapSection : MonoBehaviour {
         public List<TrainPathWaypoint> Waypoints;
-        public event Action OnTrainCompleted;
-        public Transform end;
+        public event Action<bool> OnTrainCompleted;
         public TrainAlertSO alert;
-        public int minRepetition;
-        public int maxRepetition;
+        public Transform end;
+        public bool shouldConsumeAlert;
 
         private void Awake() {
             Waypoints[^1].OnTrainReached += () => {
-                OnTrainCompleted?.Invoke();
+                OnTrainCompleted?.Invoke(shouldConsumeAlert);
             };
         }
 
