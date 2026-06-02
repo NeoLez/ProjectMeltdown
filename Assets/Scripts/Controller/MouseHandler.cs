@@ -9,15 +9,20 @@ namespace Root.Controller
     {
         private static readonly List<MouseSettings> MouseSettingsList = new();
 
-        // crosshair como parametro opcional
-        public static void RequestControl(CursorLockMode lockState, bool visible, Component requester, GameObject crosshair = null)
+        public static bool ShowCrosshair { get; private set; }
+
+        public static void RequestControl(
+            CursorLockMode lockState,
+            bool visible,
+            Component requester,
+            bool showCrosshair = false)
         {
             var mouseSetting = new MouseSettings();
             mouseSetting.lockState = lockState;
             mouseSetting.visible = visible;
             mouseSetting.requester = requester;
-            mouseSetting.crosshair = crosshair;
-            
+            mouseSetting.showCrosshair = showCrosshair;
+
             MouseSettingsList.Add(mouseSetting);
             SetMouseSettings(mouseSetting);
         }
@@ -36,30 +41,28 @@ namespace Root.Controller
                 {
                     if (i == MouseSettingsList.Count - 1)
                     {
-                        SetMouseSettings(MouseSettingsList[i-1]);
+                        SetMouseSettings(MouseSettingsList[i - 1]);
                     }
                     MouseSettingsList.RemoveAt(i);
                     break;
                 }
             }
-            
         }
 
         private static void SetMouseSettings(MouseSettings mouseSetting)
         {
             Cursor.lockState = mouseSetting.lockState;
             Cursor.visible = mouseSetting.visible;
-            // crosshair activo con el cursor bloqueado
-            if (mouseSetting.crosshair != null)
-                mouseSetting.crosshair.SetActive(mouseSetting.lockState == CursorLockMode.Locked);
+
+            ShowCrosshair = mouseSetting.showCrosshair;
         }
-        
+
         public struct MouseSettings
         {
             public CursorLockMode lockState;
             public bool visible;
             public Component requester;
-            public GameObject crosshair; 
+            public bool showCrosshair;
 
             public override string ToString()
             {

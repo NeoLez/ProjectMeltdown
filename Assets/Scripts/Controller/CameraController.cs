@@ -30,7 +30,8 @@ public class CameraController : MonoBehaviour
 
     private PlayerInputActions _input;
     private MovementController _movementController;
- 
+
+    // MODIFICADO: referencia al crosshair que se muestra cuando el cursor esta bloqueado
     [SerializeField] private GameObject crosshair;
 
     public Timer walkCancelTimer = new Timer();
@@ -137,12 +138,15 @@ public class CameraController : MonoBehaviour
 
     public void LockCamera()
     {
-        // pasa el crosshair al MouseHandler para que lo active/desactive
-        MouseHandler.RequestControl(CursorLockMode.Locked, false, this, crosshair);
+        // MODIFICADO: pasa true para mostrar el crosshair cuando el cursor esta bloqueado
+        MouseHandler.RequestControl(CursorLockMode.Locked, false, this, true);
+        if (crosshair != null) crosshair.SetActive(true);
     }
 
     public void UnlockCamera()
     {
+        // MODIFICADO: apaga el crosshair al desbloquear la camara
+        if (crosshair != null) crosshair.SetActive(false);
         MouseHandler.RelinquishControl(this);
     }
 
