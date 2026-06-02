@@ -67,27 +67,19 @@ namespace Root {
         public SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
         public bool generatingFeature;
+        
         private void CreateRandom() {
-            //Debug.Log("w");
             if (_sectionGeneratorSo.HasFinished()) {
-                //Debug.Log("w1");
                 currentNode =  _sectionGeneratorSo.GetNextNode();
                 if (generatingFeature) {
-                    //Debug.Log("w2");
                     _sectionGeneratorSo = GetGeneratorFromFeatureEnum(MapPointsGen.Feature.TUNNEL);
                 }
                 else {
-                    //Debug.Log("w3");
                     _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
-                    Debug.Log(currentNode.feature);
                 }
                 _sectionGeneratorSo.Initialize(currentNode);
                 generatingFeature = !generatingFeature;
-                
-                //Debug.Log("w4");
             }
-            
-            //Debug.Log("w5");
             
             section = _sectionGeneratorSo.Create();
 
