@@ -9,12 +9,14 @@ namespace Root.Controller
     {
         private static readonly List<MouseSettings> MouseSettingsList = new();
 
-        public static void RequestControl(CursorLockMode lockState, bool visible, Component requester)
+        // crosshair como parametro opcional
+        public static void RequestControl(CursorLockMode lockState, bool visible, Component requester, GameObject crosshair = null)
         {
             var mouseSetting = new MouseSettings();
             mouseSetting.lockState = lockState;
             mouseSetting.visible = visible;
             mouseSetting.requester = requester;
+            mouseSetting.crosshair = crosshair;
             
             MouseSettingsList.Add(mouseSetting);
             SetMouseSettings(mouseSetting);
@@ -47,6 +49,9 @@ namespace Root.Controller
         {
             Cursor.lockState = mouseSetting.lockState;
             Cursor.visible = mouseSetting.visible;
+            // crosshair activo con el cursor bloqueado
+            if (mouseSetting.crosshair != null)
+                mouseSetting.crosshair.SetActive(mouseSetting.lockState == CursorLockMode.Locked);
         }
         
         public struct MouseSettings
@@ -54,6 +59,7 @@ namespace Root.Controller
             public CursorLockMode lockState;
             public bool visible;
             public Component requester;
+            public GameObject crosshair; 
 
             public override string ToString()
             {

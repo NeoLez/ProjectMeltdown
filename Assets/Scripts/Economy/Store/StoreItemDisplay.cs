@@ -45,7 +45,7 @@ namespace Root
 
             if (!EconomyManager.Instance.SpendMoney(_price))
             {
-                Debug.Log("No hay suficiente dinero");
+                Debug.Log("No hay plata");
                 return;
             }
 

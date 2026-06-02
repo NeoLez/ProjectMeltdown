@@ -30,6 +30,8 @@ public class CameraController : MonoBehaviour
 
     private PlayerInputActions _input;
     private MovementController _movementController;
+ 
+    [SerializeField] private GameObject crosshair;
 
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
@@ -135,7 +137,8 @@ public class CameraController : MonoBehaviour
 
     public void LockCamera()
     {
-        MouseHandler.RequestControl(CursorLockMode.Locked, false, this);
+        // pasa el crosshair al MouseHandler para que lo active/desactive
+        MouseHandler.RequestControl(CursorLockMode.Locked, false, this, crosshair);
     }
 
     public void UnlockCamera()
