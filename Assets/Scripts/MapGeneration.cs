@@ -7,25 +7,9 @@ using Random = UnityEngine.Random;
 
 namespace Root {
     public class MapGeneration : MonoBehaviour {
-        [Serializable] private class MapSectionListing {
-            public int maxSpeed;
-            public MapSection mapSection;
-        }
-        
-        [Serializable] private class FeatureListing {
-            public MapPointsGen.Feature feature;
-            public MapSection mapSection;
-        }
-
-        [SerializeField] private List<MapSectionListing> _sectionListings;
-        private Dictionary<int, List<MapSection>> mapSections = new();
-        
-        [SerializeField] private List<FeatureListing> _featureListings;
-        private Dictionary<MapPointsGen.Feature, List<MapSection>> featureDictionary = new();
-
         private List<MapSection> IncomingSections = new();
         private List<MapSection> PastSections = new();
-        [FormerlySerializedAs("SectionCount")] [SerializeField] private int LoadedSectionCount;
+        [SerializeField] private int LoadedSectionCount;
         
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
@@ -34,28 +18,38 @@ namespace Root {
         [SerializeField] private int mapHeight;
         [SerializeField] private int mapWidth;
 
+        [SerializeField] private SectionGeneratorSO tunnelGeneratorSo;
+        [SerializeField] private SectionGeneratorSO startGeneratorSo;
+        [SerializeField] private SectionGeneratorSO stationGeneratorSo;
+        [SerializeField] private SectionGeneratorSO abandonedStationGeneratorSo;
+        [SerializeField] private SectionGeneratorSO tunnelForkGeneratorSo;
+        [SerializeField] private SectionGeneratorSO tunnelJoinGeneratorSo;
+
+        private SectionGeneratorSO GetGeneratorFromFeatureEnum(MapPointsGen.Feature feature) {
+            switch (feature) {
+                case MapPointsGen.Feature.TUNNEL_FORK:
+                    return tunnelForkGeneratorSo;
+                case MapPointsGen.Feature.TUNNEL_JOIN:
+                    return tunnelJoinGeneratorSo;
+                case MapPointsGen.Feature.START:
+                    return startGeneratorSo;
+                case MapPointsGen.Feature.STATION:
+                    return stationGeneratorSo;
+                case MapPointsGen.Feature.ABANDONED_STATION:
+                    return abandonedStationGeneratorSo;
+                case MapPointsGen.Feature.TUNNEL:
+                    return tunnelGeneratorSo;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private List<TrainPathWaypoint> _waypoints = new();
         private int waypointLowestIndex = 0;
         private MapPointsGen.Map map;
         private MapPointsGen.Node currentNode;
         
         private void Awake() {
-            foreach (var sectionListing in _sectionListings) {
-                if (!mapSections.TryGetValue(sectionListing.maxSpeed, out var list)) {
-                    list = new();
-                    mapSections[sectionListing.maxSpeed] = list;
-                }
-                list.Add(sectionListing.mapSection);
-            }
-
-            foreach (var featureListing in _featureListings) {
-                if (!featureDictionary.TryGetValue(featureListing.feature, out var list)) {
-                    list = new();
-                    featureDictionary[featureListing.feature] = list;
-                }
-                list.Add(featureListing.mapSection);
-            }
-
             _rebaseCounter = countUntilRebase;
         }
 
@@ -64,54 +58,48 @@ namespace Root {
             currentNode = m.nodes[Random.Range(0, mapHeight), 0];
             Debug.Log(m.ToString());
             
-            var features = featureDictionary[currentNode.feature];
-            nextSectionPrefab = features[Random.Range(0, features.Count)];
-            trackSectionCounter = 0;
-            currentRepetition = 0;
-            //currentNode = currentNode.OutConnections[0];
+            _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
+            _sectionGeneratorSo.Initialize(currentNode);
+            generatingFeature = true;
         }
-
-
-        [SerializeField] private int amountOfTrackSectionsBetweenFeatures = 8;
-        private int trackSectionCounter = 0;
-        private int currentRepetition;
         
-        private MapSection sectionPrefab;
-        private MapSection nextSectionPrefab;
+
+        private SectionGeneratorSO _sectionGeneratorSo;
+        private MapSection section;
+        private bool generatingFeature;
         private void CreateRandom() {
-            if (currentRepetition == 0) {
-                sectionPrefab = nextSectionPrefab;
-                if (trackSectionCounter == amountOfTrackSectionsBetweenFeatures) {
-                    var features = featureDictionary[currentNode.feature];
-                    nextSectionPrefab = features[Random.Range(0, features.Count)];
-                    trackSectionCounter = 0;
+            //Debug.Log("w");
+            if (_sectionGeneratorSo.HasFinished()) {
+                //Debug.Log("w1");
+                currentNode =  _sectionGeneratorSo.GetNextNode();
+                if (generatingFeature) {
+                    //Debug.Log("w2");
+                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(MapPointsGen.Feature.TUNNEL);
                 }
                 else {
-                    var speed = mapSections[mapSections.Keys.ElementAt(Random.Range(0, mapSections.Count))];
-                    nextSectionPrefab = speed[Random.Range(0, speed.Count)];
-                    trackSectionCounter++;
+                    //Debug.Log("w3");
+                    currentNode = _sectionGeneratorSo.GetNextNode();
+                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
+                    //Debug.Log(currentNode.feature);
                 }
+                _sectionGeneratorSo.Initialize(currentNode);
+                generatingFeature = !generatingFeature;
                 
-                currentRepetition = Random.Range(sectionPrefab.minRepetition, sectionPrefab.maxRepetition + 1);
-                train.AlertSystem.AddAlert(nextSectionPrefab.alert);
-                
-                HandleRebase();
+                //Debug.Log("w4");
             }
-            currentRepetition--;
             
-            var section = Instantiate(sectionPrefab, root);
+            //Debug.Log("w5");
+            
+            section = _sectionGeneratorSo.Create();
+
+            section.transform.parent = root;
             Transform end = IncomingSections.Count != 0 ? IncomingSections[IncomingSections.Count-1].end : transform;
             section.transform.position = end.position;
             section.transform.rotation = end.rotation;
-            section.OnTrainCompleted += TrainReachedPoint;
+            section.OnTrainCompleted += TrainReachedSectionEnd;
             IncomingSections.Add(section);
             
             _waypoints.AddRange(section.Waypoints);
-            if (currentRepetition == 0) {
-                section.OnTrainCompleted += () => {
-                    train.AlertSystem.SetNextAlert();
-                };
-            }
         }
 
         private void Update() {
@@ -128,10 +116,14 @@ namespace Root {
             }
         }
 
-        private void TrainReachedPoint() {
+        public void TrainReachedSectionEnd(bool updateAlert) {
+            if(updateAlert)
+                train.AlertSystem.SetNextAlert();
             var section = IncomingSections[0];
             IncomingSections.RemoveAt(0);
             PastSections.Add(section);
+            
+            HandleRebase();
             UpdateSections();
         }
 
