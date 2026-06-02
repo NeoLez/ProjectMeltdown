@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2417856951153933955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1523528888584120030}
+  - component: {fileID: 2080547362670143724}
+  m_Layer: 0
+  m_Name: Waypoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1523528888584120030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2417856951153933955}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -181.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5205768700190203375}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2080547362670143724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2417856951153933955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0322137a9904e23bc50003c214b2190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.TrainPathWaypoint
+  maxSpeed: 80
 --- !u!1 &6514100051029115651
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,6 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5205768700190203375}
+  - component: {fileID: 930173673868568972}
   m_Layer: 0
   m_Name: EstacionB2
   m_TagString: Untagged
@@ -25,14 +71,32 @@ Transform:
   m_GameObject: {fileID: 6514100051029115651}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.57, y: 29.539999, z: -206.14027}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2046079245982716314}
   - {fileID: 9072699030811772623}
+  - {fileID: 1523528888584120030}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &930173673868568972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6514100051029115651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eae37ec2c5a40f6bc77cce40bec7c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MapSection
+  Waypoints:
+  - {fileID: 2080547362670143724}
+  alert: {fileID: 11400000, guid: ea7689117be4169cc96bd38fafdb357b, type: 2}
+  end: {fileID: 1523528888584120030}
+  shouldConsumeAlert: 0
 --- !u!1001 &1134030933834600691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47,15 +111,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238298211632354876, guid: f95f2aa9f998cbf4a98625186bf4063c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.17
       objectReference: {fileID: 0}
     - target: {fileID: 8238298211632354876, guid: f95f2aa9f998cbf4a98625186bf4063c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 30.763077
       objectReference: {fileID: 0}
     - target: {fileID: 8238298211632354876, guid: f95f2aa9f998cbf4a98625186bf4063c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -136.07782
       objectReference: {fileID: 0}
     - target: {fileID: 8238298211632354876, guid: f95f2aa9f998cbf4a98625186bf4063c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -173,15 +237,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4558159677009818935, guid: 8cb420f74ac8e76419224fa8cefb016d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.67
+      value: 18.5
       objectReference: {fileID: 0}
     - target: {fileID: 4558159677009818935, guid: 8cb420f74ac8e76419224fa8cefb016d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -29.783077
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 4558159677009818935, guid: 8cb420f74ac8e76419224fa8cefb016d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 188.07784
+      value: 52
       objectReference: {fileID: 0}
     - target: {fileID: 4558159677009818935, guid: 8cb420f74ac8e76419224fa8cefb016d, type: 3}
       propertyPath: m_LocalRotation.w
