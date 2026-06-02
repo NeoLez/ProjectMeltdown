@@ -80,7 +80,7 @@ namespace Root {
                     //Debug.Log("w3");
                     currentNode = _sectionGeneratorSo.GetNextNode();
                     _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
-                    //Debug.Log(currentNode.feature);
+                    Debug.Log(currentNode.feature);
                 }
                 _sectionGeneratorSo.Initialize(currentNode);
                 generatingFeature = !generatingFeature;
