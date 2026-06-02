@@ -13,7 +13,7 @@ namespace Root {
         
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
-
+        [SerializeField] public Transform itemRoot;
 
         [SerializeField] private int mapHeight;
         [SerializeField] private int mapWidth;
@@ -50,6 +50,7 @@ namespace Root {
         private MapPointsGen.Node currentNode;
         
         private void Awake() {
+            GameManager.MapGeneration = this;
             _rebaseCounter = countUntilRebase;
         }
 
