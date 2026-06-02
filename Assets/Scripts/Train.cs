@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 
 namespace Root
 {
-    public class Train : MonoBehaviour
-    {
+    public class Train : MonoBehaviour {
+        public bool godmode;
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private TrainBrakeController brakeController;
         [SerializeField] private BatterySlot batterySlot;
@@ -178,7 +178,7 @@ namespace Root
                 
                 if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
                 {
-                    if (_descarriladoTimer >= tiempoDescarrilamiento)
+                    if (_descarriladoTimer >= tiempoDescarrilamiento && !godmode)
                     {
                         _descarrilado = true;
                         _descarriladoTimer = 0;

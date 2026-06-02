@@ -14,7 +14,8 @@ namespace Root {
         [SerializeField] private List<MapSectionListing> _sectionListings;
         public Dictionary<int, List<MapSectionListing>> mapSections = new();
         public int maxTrackSections;
-
+        public bool skipNode;
+        
         private bool initialized;
         public void Initialize() {
             if (initialized) return;

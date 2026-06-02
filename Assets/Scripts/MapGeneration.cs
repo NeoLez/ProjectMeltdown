@@ -64,9 +64,9 @@ namespace Root {
         }
         
 
-        private SectionGeneratorSO _sectionGeneratorSo;
+        public SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
-        private bool generatingFeature;
+        public bool generatingFeature;
         private void CreateRandom() {
             //Debug.Log("w");
             if (_sectionGeneratorSo.HasFinished()) {
@@ -78,7 +78,6 @@ namespace Root {
                 }
                 else {
                     //Debug.Log("w3");
-                    currentNode = _sectionGeneratorSo.GetNextNode();
                     _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
                     Debug.Log(currentNode.feature);
                 }
