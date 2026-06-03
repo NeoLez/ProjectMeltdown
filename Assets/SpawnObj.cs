@@ -14,7 +14,6 @@ namespace Root
             obj.transform.GetChild(0).transform.position = transform.position;
 
             Debug.Log($"{transform.position} {obj.transform.GetChild(0).transform.position}");
-            Debug.Break();
         }
     }
 }

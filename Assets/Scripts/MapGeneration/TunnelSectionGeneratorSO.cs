@@ -6,11 +6,11 @@ namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelSectionGenerator")]
     public class TunnelSectionGeneratorSO : SectionGeneratorSO {
         public TunnelSectionGeneratorSettingsSO settings;
-        private MapPointsGen.Node node;
+        private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
         
-        public override void Initialize(MapPointsGen.Node node) {
-            this.node = node;
+        public override void Initialize(MapGeneration.MapGenerationContext context) {
+            _context = context;
             hasFinished = false;
             currentRepetition = 0;
             trackSectionsCreated = 0;
@@ -54,7 +54,7 @@ namespace Root {
         }
 
         public override MapPointsGen.Node GetNextNode() {
-            return settings.skipNode ? node : node.OutConnections[0];
+            return settings.skipNode ? _context.currentNode : _context.currentNode.OutConnections[0];
         }
 
         public override bool CanGenerate() {

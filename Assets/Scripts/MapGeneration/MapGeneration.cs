@@ -25,6 +25,13 @@ namespace Root {
         [SerializeField] private SectionGeneratorSO tunnelForkGeneratorSo;
         [SerializeField] private SectionGeneratorSO tunnelJoinGeneratorSo;
 
+        public class MapGenerationContext
+        {
+            public MapPointsGen.Node currentNode;
+            public MapPointsGen.Node lastNode;
+        }
+        MapGenerationContext _context;
+
         private SectionGeneratorSO GetGeneratorFromFeatureEnum(MapPointsGen.Feature feature) {
             switch (feature) {
                 case MapPointsGen.Feature.TUNNEL_FORK:
@@ -47,7 +54,6 @@ namespace Root {
         private List<TrainPathWaypoint> _waypoints = new();
         private int waypointLowestIndex = 0;
         private MapPointsGen.Map map;
-        private MapPointsGen.Node currentNode;
         
         private void Awake() {
             GameManager.MapGeneration = this;
@@ -56,12 +62,15 @@ namespace Root {
 
         private void Start() {
             MapPointsGen.Map m = new(mapHeight, mapWidth);
-            currentNode = m.nodes[Random.Range(0, mapHeight), 0];
+            _context = new();
+            _context.currentNode = m.nodes[Random.Range(0, mapHeight), 0];
             Debug.Log(m.ToString());
             
-            _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
-            _sectionGeneratorSo.Initialize(currentNode);
+            _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
+            _sectionGeneratorSo.Initialize(_context);
             generatingFeature = true;
+            
+            UpdateSections();
         }
         
 
@@ -69,16 +78,20 @@ namespace Root {
         private MapSection section;
         public bool generatingFeature;
         
-        private void CreateRandom() {
-            if (_sectionGeneratorSo.HasFinished()) {
-                currentNode =  _sectionGeneratorSo.GetNextNode();
+        private bool CreateRandom() {
+            if(!_sectionGeneratorSo.CanGenerate() && !_sectionGeneratorSo.HasFinished()) return false;
+            
+            if (_sectionGeneratorSo.HasFinished())
+            {
+                _context.lastNode = _context.currentNode;
+                _context.currentNode =  _sectionGeneratorSo.GetNextNode();
                 if (generatingFeature) {
                     _sectionGeneratorSo = GetGeneratorFromFeatureEnum(MapPointsGen.Feature.TUNNEL);
                 }
                 else {
-                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(currentNode.feature);
+                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
                 }
-                _sectionGeneratorSo.Initialize(currentNode);
+                _sectionGeneratorSo.Initialize(_context);
                 generatingFeature = !generatingFeature;
             }
             
@@ -92,6 +105,7 @@ namespace Root {
             IncomingSections.Add(section);
             
             _waypoints.AddRange(section.Waypoints);
+            return true;
         }
 
         private void Update() {
@@ -99,8 +113,8 @@ namespace Root {
         }
 
         private void UpdateSections() {
-            while (IncomingSections.Count < LoadedSectionCount) {
-                CreateRandom();    
+            while (IncomingSections.Count < LoadedSectionCount && CreateRandom()) {
+                    
             }
 
             while (PastSections.Count > LoadedSectionCount) {
@@ -116,7 +130,6 @@ namespace Root {
             PastSections.Add(section);
             
             HandleRebase();
-            UpdateSections();
         }
 
         private void RemovePastSection() {

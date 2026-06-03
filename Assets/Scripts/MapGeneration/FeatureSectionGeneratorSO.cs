@@ -5,11 +5,12 @@ namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/FeatureSelectionGenerator")]
     public class FeatureSectionGeneratorSO : SectionGeneratorSO {
         public FeatureSectionGeneratorSettingsSO settings;
-        private MapPointsGen.Node node;
+        private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
         
-        public override void Initialize(MapPointsGen.Node node) {
-            this.node = node;
+        public override void Initialize(MapGeneration.MapGenerationContext context)
+        {
+            _context = context;
             hasFinished = false;
         }
 
@@ -32,7 +33,7 @@ namespace Root {
         }
 
         public override MapPointsGen.Node GetNextNode() {
-            return node.OutConnections[0];
+            return _context.currentNode.OutConnections[0];
         }
 
         public override bool CanGenerate() {
