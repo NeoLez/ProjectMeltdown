@@ -68,7 +68,6 @@ namespace Root {
             
             _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
             _sectionGeneratorSo.Initialize(_context);
-            generatingFeature = true;
             
             UpdateSections();
         }
@@ -76,7 +75,6 @@ namespace Root {
 
         public SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
-        public bool generatingFeature;
         
         private bool CreateRandom() {
             if(!_sectionGeneratorSo.CanGenerate() && !_sectionGeneratorSo.HasFinished()) return false;
@@ -85,14 +83,9 @@ namespace Root {
             {
                 _context.lastNode = _context.currentNode;
                 _context.currentNode =  _sectionGeneratorSo.GetNextNode();
-                if (generatingFeature) {
-                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(MapPointsGen.Feature.TUNNEL);
-                }
-                else {
-                    _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
-                }
+                _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
+                Debug.Log(_context.currentNode.feature);
                 _sectionGeneratorSo.Initialize(_context);
-                generatingFeature = !generatingFeature;
             }
             
             section = _sectionGeneratorSo.Create();

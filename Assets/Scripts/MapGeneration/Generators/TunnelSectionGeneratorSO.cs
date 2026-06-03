@@ -54,7 +54,7 @@ namespace Root {
         }
 
         public override MapPointsGen.Node GetNextNode() {
-            return settings.skipNode ? _context.currentNode : _context.currentNode.OutConnections[0];
+            return _context.currentNode.OutConnections[0];
         }
 
         public override bool CanGenerate() {

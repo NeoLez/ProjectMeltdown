@@ -4,12 +4,19 @@ using UnityEngine;
 
 namespace Root {
     public class MapPointsGen {
-        public class Node {
+        public class Node
+        {
+            public int height;
             public char line;
             public List<Node> InConnections = new();
             public List<Node> OutConnections = new();
             public Feature feature;
 
+            public Node(int height)
+            {
+                this.height = height;
+            }
+            
             public bool CanConnectTo() {
                 return feature == Feature.TUNNEL;
             }
@@ -30,7 +37,7 @@ namespace Root {
                 return  Feature.TUNNEL;
             }
 
-            if (chance <= 0.85f) {
+            if (chance <= 0.8f) {
                 return Feature.ABANDONED_STATION;
             }
 
@@ -49,7 +56,7 @@ namespace Root {
                 for (int x = 0; x < height; x++) {
                     Node prevNode = null;
                     for (int y = 0; y < width; y++) {
-                        nodes[x, y] = new Node();
+                        nodes[x, y] = new Node(x);
                         if (y == 0) {
                             nodes[x, y].feature = Feature.START;
                         }
@@ -57,19 +64,23 @@ namespace Root {
                             nodes[x, y].feature = GetFeature();
                         }
                         
-                        
-                        
-                        if (prevNode != null) {
-                            prevNode.OutConnections.Add(nodes[x, y]);
-                            nodes[x, y].InConnections.Add(prevNode);
+                        if (prevNode != null)
+                        {
+                            var tunnelNode = new Node(prevNode.height);
+                            tunnelNode.feature = Feature.TUNNEL;
+                            
+                            prevNode.OutConnections.Add(tunnelNode);
+                            tunnelNode.InConnections.Add(prevNode);
+                            
+                            tunnelNode.OutConnections.Add(nodes[x, y]);
+                            nodes[x, y].InConnections.Add(tunnelNode);
                         }
                         prevNode = nodes[x, y];
                     }
                 }
                 
-                float connectionChance = 1.0f;
+                float connectionChance = 0.5f;
                 for (int y = 1; y < width - 1; y++) {
-                    int connectionCount = 0;
                     for (int x = 0; x < height; x++) {
                         if (!nodes[x, y].CanConnectTo()) {
                             continue;
@@ -97,11 +108,28 @@ namespace Root {
                                 continue;
                             }
                             
-                            nodes[x, y].OutConnections.Add(nodes[targetX, targetY]);
-                            nodes[targetX, targetY].InConnections.Add(nodes[x, y]);
+                            var tunnelNode = new Node(x);
+                            tunnelNode.feature = Feature.TUNNEL;
+                            
+                            tunnelNode.InConnections.Add(nodes[x, y]);
+                            nodes[x, y].OutConnections.Add(tunnelNode);
+                            
+                            tunnelNode.OutConnections.Add(nodes[targetX, targetY]);
+                            nodes[targetX, targetY].InConnections.Add(tunnelNode);
+                            
                             nodes[x, y].feature = Feature.TUNNEL_FORK;
                             nodes[targetX, targetY].feature = Feature.TUNNEL_JOIN;
 
+                        }
+                    }
+                }
+                
+                for (int y = 1; y < width - 1; y++) {
+                    for (int x = 0; x < height; x++)
+                    {
+                        while (nodes[x, y].feature == Feature.TUNNEL)
+                        {
+                            nodes[x, y].feature = GetFeature();
                         }
                     }
                 }
