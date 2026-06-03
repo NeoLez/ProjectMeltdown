@@ -7,14 +7,16 @@ namespace Root {
         public class Node
         {
             public int height;
+            public int dist;
             public char line;
             public List<Node> InConnections = new();
             public List<Node> OutConnections = new();
             public Feature feature;
 
-            public Node(int height)
+            public Node(int height, int dist)
             {
                 this.height = height;
+                this.dist = dist;
             }
             
             public bool CanConnectTo() {
@@ -56,7 +58,7 @@ namespace Root {
                 for (int x = 0; x < height; x++) {
                     Node prevNode = null;
                     for (int y = 0; y < width; y++) {
-                        nodes[x, y] = new Node(x);
+                        nodes[x, y] = new Node(x, y);
                         if (y == 0) {
                             nodes[x, y].feature = Feature.START;
                         }
@@ -66,7 +68,7 @@ namespace Root {
                         
                         if (prevNode != null)
                         {
-                            var tunnelNode = new Node(prevNode.height);
+                            var tunnelNode = new Node(prevNode.height, y);
                             tunnelNode.feature = Feature.TUNNEL;
                             
                             prevNode.OutConnections.Add(tunnelNode);
@@ -108,7 +110,7 @@ namespace Root {
                                 continue;
                             }
                             
-                            var tunnelNode = new Node(x);
+                            var tunnelNode = new Node(x, y);
                             tunnelNode.feature = Feature.TUNNEL;
                             
                             tunnelNode.InConnections.Add(nodes[x, y]);

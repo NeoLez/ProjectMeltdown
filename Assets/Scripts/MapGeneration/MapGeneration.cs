@@ -84,7 +84,7 @@ namespace Root {
                 _context.lastNode = _context.currentNode;
                 _context.currentNode =  _sectionGeneratorSo.GetNextNode();
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
-                Debug.Log(_context.currentNode.feature);
+                Debug.Log($"{_context.currentNode.feature} {_context.currentNode.height} {_context.currentNode.dist}");
                 _sectionGeneratorSo.Initialize(_context);
             }
             

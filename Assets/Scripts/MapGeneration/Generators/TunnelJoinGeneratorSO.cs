@@ -7,20 +7,27 @@ namespace Root {
         public TunnelJoinGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
-        public int budget;
         
         public override void Initialize(MapGeneration.MapGenerationContext context)
         {
             _context = context;
             hasFinished = false;
-            budget = settings.budget;
         }
         
         public override MapSection Create() {
             if (hasFinished) throw new Exception();
+            hasFinished = true;
+            
+            MapSection obj;
 
-            MapSection obj = Instantiate(settings.join);
-            budget--;
+            if (_context.currentNode.height > _context.lastNode.height)
+                obj = Instantiate(settings.joinFromRightToMain);
+            else if (_context.currentNode.height < _context.lastNode.height)
+                obj = Instantiate(settings.joinFromLeftToMain);
+            else if (_context.currentNode.height < _context.currentNode.InConnections[1].height)
+                obj = Instantiate(settings.straightEntryOnRight);
+            else
+                obj = Instantiate(settings.straightEntryOnLeft);
             
             return obj;
         }
@@ -34,7 +41,7 @@ namespace Root {
         }
 
         public override bool CanGenerate() {
-            return !hasFinished && budget > 0;
+            return !hasFinished;
         }
     }
 }

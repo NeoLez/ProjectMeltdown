@@ -6,7 +6,9 @@ namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Settings/TunnelJoinGeneratorSettings")]
     public class TunnelJoinGeneratorSettingsSO : ScriptableObject
     {
-        public MapSection join;
-        public int budget;
+        public MapSection joinFromRightToMain;
+        public MapSection joinFromLeftToMain;
+        public MapSection straightEntryOnRight;
+        public MapSection straightEntryOnLeft;
     }
 }
