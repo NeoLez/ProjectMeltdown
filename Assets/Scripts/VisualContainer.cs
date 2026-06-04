@@ -7,9 +7,11 @@ namespace Root {
         [SerializeField] private GameObject visuals;
         public Transform originCenter;
         public Transform goal;
+        Animator anim;
 
         private void Start() {
             originCenter = GameManager.Train.transform;
+            if (visuals != null) { anim = visuals.GetComponentInChildren<Animator>(); }            
         }
 
         private void Update() {
@@ -34,6 +36,11 @@ namespace Root {
 
         private void OnDestroy() {
             Destroy(visuals);
+        }
+
+        public void PlayAnimation(bool an)
+        {
+            anim.enabled = an;
         }
     }
 }

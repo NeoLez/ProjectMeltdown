@@ -13,6 +13,7 @@ namespace Root
         [SerializeField] private VisualEffect _visualEffect;
 
         private Battery _battery;
+        private VisualContainer _visualBattery;
         private bool _animationEnd = false;
 
         public event Action OnBatteryInserted;
@@ -23,31 +24,32 @@ namespace Root
             if (_battery != null)
                 return;
 
-            if (other.gameObject.TryGetComponent<Battery>(out var battery))
+            if (other.gameObject.TryGetComponent<Battery>(out var battery) && other.gameObject.TryGetComponent<VisualContainer>(out var visual))
             {
                 _battery = battery;
-                Animator anim = _battery.GetComponentInChildren<Animator>(); //la forma mas clunky de hacer esto, perdonen chicos </3
+                _visualBattery = visual;
                 var rb = battery.GetComponent<Rigidbody>();
 
                 rb.constraints = RigidbodyConstraints.FreezeAll; _battery.transform.position = pivot.position;
                 _battery.transform.rotation = pivot.rotation;
 
                 OnBatteryInserted?.Invoke();
-                StartCoroutine(AnimTrigger(anim));
+                StartCoroutine(AnimTrigger(_visualBattery));
+
+                if (ignitionSwitch.IsEngineOn()) { train.SetEnginePower(true); }
             }
         }
-        System.Collections.IEnumerator AnimTrigger(Animator anim)
+        System.Collections.IEnumerator AnimTrigger(VisualContainer battery)
         {
-            anim.enabled = true;
+            battery.PlayAnimation(true);
 
             yield return new WaitForSeconds(0.70f);
 
             _visualEffect.SendEvent("OnPlay");
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
-
-            if (ignitionSwitch.IsEngineOn()) { train.SetEnginePower(true); }
+            battery.PlayAnimation(false);
         }
 
         private void Update()
