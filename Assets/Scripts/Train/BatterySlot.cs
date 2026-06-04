@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Root
 {
@@ -9,6 +10,7 @@ namespace Root
         [SerializeField] private Train train;
 
         [SerializeField] private IgnitionSwitch ignitionSwitch;
+        [SerializeField] private VisualEffect _visualEffect;
 
         private Battery _battery;
         private bool _animationEnd = false;
@@ -37,7 +39,11 @@ namespace Root
         System.Collections.IEnumerator AnimTrigger(Animator anim)
         {
             anim.enabled = true;
-            yield return new WaitForSeconds(1f);
+
+            yield return new WaitForSeconds(0.70f);
+
+            _visualEffect.SendEvent("OnPlay");
+            yield return new WaitForSeconds(0.15f);
 
             _animationEnd = true;
 
