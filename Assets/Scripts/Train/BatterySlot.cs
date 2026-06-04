@@ -23,13 +23,14 @@ namespace Root
             if (other.gameObject.TryGetComponent<Battery>(out var battery))
             {
                 _battery = battery;
-
+                var anim = battery.GetComponent<Animator>(); //la forma mas clunky de hacer esto, perdonen chicos </3
                 var rb = battery.GetComponent<Rigidbody>();
 
                 rb.constraints = RigidbodyConstraints.FreezeAll;
                 rb.position = pivot.position;
 
                 OnBatteryInserted?.Invoke();
+                anim.Play("Insert");
 
                 if (ignitionSwitch.IsEngineOn())
                 {
