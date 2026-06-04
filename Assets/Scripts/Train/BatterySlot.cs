@@ -11,6 +11,7 @@ namespace Root
         [SerializeField] private IgnitionSwitch ignitionSwitch;
 
         private Battery _battery;
+        private bool _animationEnd = false;
 
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
@@ -23,20 +24,24 @@ namespace Root
             if (other.gameObject.TryGetComponent<Battery>(out var battery))
             {
                 _battery = battery;
-                var anim = battery.GetComponent<Animator>(); //la forma mas clunky de hacer esto, perdonen chicos </3
+                Animator anim = _battery.GetComponentInChildren<Animator>(); //la forma mas clunky de hacer esto, perdonen chicos </3
                 var rb = battery.GetComponent<Rigidbody>();
 
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                rb.position = pivot.position;
+                rb.constraints = RigidbodyConstraints.FreezeAll; _battery.transform.position = pivot.position;
+                _battery.transform.rotation = pivot.rotation;
 
                 OnBatteryInserted?.Invoke();
-                anim.Play("Insert");
-
-                if (ignitionSwitch.IsEngineOn())
-                {
-                    train.SetEnginePower(true);
-                }
+                StartCoroutine(AnimTrigger(anim));
             }
+        }
+        System.Collections.IEnumerator AnimTrigger(Animator anim)
+        {
+            anim.enabled = true;
+            yield return new WaitForSeconds(1f);
+
+            _animationEnd = true;
+
+            if (ignitionSwitch.IsEngineOn()) { train.SetEnginePower(true); }
         }
 
         private void Update()
@@ -49,7 +54,7 @@ namespace Root
 
         private void LateUpdate()
         {
-            if (_battery != null)
+            if (_battery != null && _animationEnd)
             {
                 _battery.transform.position = pivot.position;
                 _battery.transform.rotation = pivot.rotation;
