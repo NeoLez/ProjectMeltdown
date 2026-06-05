@@ -32,11 +32,12 @@ namespace Root {
                 return;
             }
 
-            if (IsSpent() || isBraking) {
+            if (IsSpent() || isBraking || GameManager.Train.IsStopped())
+            {
                 LowerAndRaiseButton();
                 return;
             }
-            
+
             LowerButtonAndCloseCover();
             isBraking = true;
             usesLeft--;

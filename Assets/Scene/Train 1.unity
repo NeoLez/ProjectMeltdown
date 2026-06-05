@@ -295,12 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4083faccdde980549914127a57f353e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.LightSwitch
-  panelButton: {fileID: 1309271971}
-  lights:
-  - {fileID: 1442088707}
-  - {fileID: 1935062307}
-  - {fileID: 603963438}
-  _on: 0
 --- !u!1 &94017699
 GameObject:
   m_ObjectHideFlags: 0
@@ -5115,11 +5109,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &806177775 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7711106570095221601, guid: bd67a53f6fa7c024196a91508f825f61, type: 3}
-  m_PrefabInstance: {fileID: 2814234492541837971}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &808957815
 GameObject:
   m_ObjectHideFlags: 0
@@ -6678,9 +6667,10 @@ MonoBehaviour:
   objectsInsideTrain: []
   itemInsideAreas:
   - {fileID: 665520367}
-  batteryDrain: 0.5
+  batteryDrain: 0.05
   strainMultiplier: 0.005
   batteryOutDecelerationRate: 0.5
+  batteryStopTime: 5
   AlertSystem: {fileID: 1068053787}
   currentMaxSpeed: 0
   currentDistanceBetweenPathpoints: 0
@@ -12239,12 +12229,12 @@ MonoBehaviour:
   usesLeft: 2
   isBraking: 0
   brakeSpeed: 20
-  buttonObject: {fileID: 1933413484}
-  buttonTravelDistance: -0.5
-  buttonPressTime: 0.1
-  coverObject: {fileID: 806177775}
-  coverRotationAngle: 105
-  coverRotationTime: 0.2
+  buttonObject: {fileID: 0}
+  buttonTravelDistance: 0
+  buttonPressTime: 0
+  coverObject: {fileID: 0}
+  coverRotationAngle: 0
+  coverRotationTime: 0
 --- !u!1 &1874893840
 GameObject:
   m_ObjectHideFlags: 0
@@ -12385,11 +12375,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 248355528}
   m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
---- !u!4 &1933413484 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4960722468392748174, guid: bd67a53f6fa7c024196a91508f825f61, type: 3}
-  m_PrefabInstance: {fileID: 2814234492541837971}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1935062304
 GameObject:
   m_ObjectHideFlags: 0

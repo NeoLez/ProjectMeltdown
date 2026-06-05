@@ -51,6 +51,7 @@ namespace Root
         [SerializeField] private float batteryDrain = 1f;
         [SerializeField] private float strainMultiplier = 0.5f;
         [SerializeField] private float batteryOutDecelerationRate = 0.5f;
+        [SerializeField] private float batteryStopTime = 5f;
 
         public TrainAlertSystem AlertSystem;
 
@@ -105,11 +106,15 @@ namespace Root
                     OnPowerLost?.Invoke();
                 }
                 // Sin bateria solo aplica friccion, no acelera
-                _currentSpeed -= batteryOutDecelerationRate * _currentSpeed * Time.deltaTime;
+                float deceleration = speedController.maxTrainSpeed / batteryStopTime;
+                _currentSpeed -= deceleration * Time.deltaTime;
+
+                if (_currentSpeed <= 0.01f)
+                {
+                    _currentSpeed = 0;
+                }
+
                 _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
-                MoveTrain();
-                UpdateSounds(targetSpeed, speedDifference);
-                return;
             }
             // MODIFICADO: si la bateria se restauro, dispara OnPowerRestored
             if (_powerLost)
