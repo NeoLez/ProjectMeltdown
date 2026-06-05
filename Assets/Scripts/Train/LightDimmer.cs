@@ -7,7 +7,7 @@ namespace Root
 {
     public class LightDimmer : InteractableDraggable
     {
-        [SerializeField] private LightSwitch lightSwitch;
+        [SerializeField] private LightSwitchButton lightSwitch;
         [SerializeField] private List<Light> lights;
 
         [SerializeField] private float sensitivity;

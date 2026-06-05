@@ -1,3 +1,4 @@
+using PrimeTween;
 using UnityEngine;
 
 namespace Root {
@@ -8,19 +9,37 @@ namespace Root {
         
         public float brakeSpeed;
 
-        public GameObject onObject;
-        public GameObject offObject;
-
+        public Transform buttonObject;
+        public float buttonTravelDistance;
+        public float buttonPressTime;
+        
+        public Transform coverObject;
+        public float coverRotationAngle;
+        public float coverRotationTime;
+        private Easing coverEasing;
+        
+        private bool isAnimating = false;
+        private bool isCoverDown = true;
+        
         private void Awake() {
-            UpdateVisuals();
+            coverEasing = Easing.Bounce(0.5f);
         }
 
         public override void StartInteraction() {
-            if (!isBraking && !IsSpent()) {
-                isBraking = true;
-                usesLeft--;
-                UpdateVisuals();
+            if (isAnimating) return;
+            if (isCoverDown) {
+                OpenCover();
+                return;
             }
+
+            if (IsSpent() || isBraking) {
+                LowerAndRaiseButton();
+                return;
+            }
+            
+            LowerButtonAndCloseCover();
+            isBraking = true;
+            usesLeft--;
         }
 
         public override void EndInteraction()
@@ -28,11 +47,36 @@ namespace Root {
             
         }
 
-        private void UpdateVisuals() {
-            var spent = IsSpent();
-            if(onObject == null  || offObject == null) return;
-            onObject.SetActive(!spent);
-            offObject.SetActive(spent);
+        public void OpenCover() {
+            isAnimating = true;
+            isCoverDown = false;
+            Tween.LocalEulerAngles(coverObject, coverObject.localEulerAngles, coverObject.localEulerAngles + new Vector3(coverRotationAngle, 0, 0), coverRotationTime, coverEasing).OnComplete(() => isAnimating = false);
+        }
+        
+        public void CloseCover() {
+            isAnimating = true;
+            isCoverDown = true;
+            Tween.LocalEulerAngles(coverObject, coverObject.localEulerAngles, coverObject.localEulerAngles - new Vector3(coverRotationAngle, 0, 0), coverRotationTime, coverEasing).OnComplete(() => isAnimating = false);
+        }
+
+        public void LowerButton() {
+            isAnimating = true;
+            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => isAnimating = false);
+        }
+        
+        public void RaiseButton() {
+            isAnimating = true;
+            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition - Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => isAnimating = false);
+        }
+
+        public void LowerButtonAndCloseCover() {
+            isAnimating = true;
+            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => CloseCover());
+        }
+        
+        public void LowerAndRaiseButton() {
+            isAnimating = true;
+            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => RaiseButton());
         }
         
         public bool IsBreaking() {
@@ -40,6 +84,7 @@ namespace Root {
         }
         
         public void FinishBraking() {
+            RaiseButton();
             isBraking = false;
         }
 
@@ -47,12 +92,10 @@ namespace Root {
             int maxRepairs = maxUses - usesLeft;
             if (amount > maxRepairs) {
                 usesLeft = maxUses;
-                UpdateVisuals();
                 return amount - maxRepairs;
             }
             
             usesLeft += amount;
-            UpdateVisuals();
             return 0;
         }
 
