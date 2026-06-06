@@ -10,6 +10,7 @@ namespace Root {
         private bool phase;
         private bool decisionTaken;
         private bool createdFork;
+        private bool changeLine;
         
         public override void Initialize(MapGeneration.MapGenerationContext context) {
             _context = context;
@@ -22,9 +23,7 @@ namespace Root {
             if (hasFinished) throw new Exception();
             
             MapSection obj;
-            Debug.Log("a");
             if (!createdFork) {
-                Debug.Log("b");
                 createdFork = true;
                 
                 obj = Instantiate(settings.ForkSection);
@@ -36,15 +35,10 @@ namespace Root {
                 return obj;
             }
 
-            
-            if (GameManager.Train.forkDecisionSwitch.GetDirection()) {
-                Debug.Log("c");
-                obj = settings.forkRight ? Instantiate(settings.ForkOutWaypoints) : Instantiate(settings.ForkStraightWaypoints);
-            }
-            else {
-                Debug.Log("d");
-                obj = settings.forkRight ? Instantiate(settings.ForkStraightWaypoints) : Instantiate(settings.ForkOutWaypoints);
-            }
+            Debug.Log("T " + GameManager.Train.forkDecisionSwitch.GetDirection() + " " + settings.forkRight);
+            changeLine = !(GameManager.Train.forkDecisionSwitch.GetDirection() ^ settings.forkRight);
+            Debug.Log(changeLine);
+            obj = changeLine ? Instantiate(settings.ForkOutWaypoints) : Instantiate(settings.ForkStraightWaypoints);
             hasFinished = true;
             
             return obj;
@@ -55,7 +49,7 @@ namespace Root {
         }
 
         public override MapPointsGen.Node GetNextNode() {
-            return _context.currentNode.OutConnections[0];
+            return changeLine ? _context.currentNode.OutConnections[1] :  _context.currentNode.OutConnections[0];
         }
 
         public override bool CanGenerate() {
