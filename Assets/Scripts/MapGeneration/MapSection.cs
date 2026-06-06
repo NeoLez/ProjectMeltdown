@@ -7,7 +7,6 @@ namespace Root {
         [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
 
         public List<TrainPathWaypoint> GetWaypoints() {
-            SetAlert();
             return _waypoints;
         }
 
@@ -16,7 +15,7 @@ namespace Root {
         public Transform end;
         public bool shouldConsumeAlert;
 
-        private void SetAlert() {
+        private void Awake() {
             _waypoints[^1].OnTrainReached += () => {
                 OnTrainCompleted?.Invoke(shouldConsumeAlert);
             };
@@ -27,10 +26,6 @@ namespace Root {
                 Destroy(w);
             }
             Destroy(gameObject);
-        }
-
-        public bool HasAlert() {
-            return alert != null;
         }
     }
 }
