@@ -22,7 +22,7 @@ namespace Root {
 
             switch (stage) {
                 case 0:
-                    if(count == 0 && settings.StraightRoad.HasAlert())
+                    if(count == 0)
                         GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert);
                     
                     var obj1 = Instantiate(settings.StraightRoad);
@@ -38,12 +38,11 @@ namespace Root {
                 case 1:
                     MapSection obj2 = Instantiate(settings.FeatureSectionPrefab);
                     obj2.shouldConsumeAlert = true;
-                    if(settings.FeatureSectionPrefab.HasAlert())
-                        GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert);
+                    GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert);
                     stage++;
                     return obj2;
                 case 2:
-                    if(count == 0 && settings.StraightRoad.HasAlert())
+                    if(count == 0)
                         GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert);
                     
                     var obj3 = Instantiate(settings.StraightRoad);
