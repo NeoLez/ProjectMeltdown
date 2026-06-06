@@ -36,11 +36,11 @@ namespace Root {
 
         public static Feature GetFeature() {
             float chance = Random.value;
-            if (chance <= 0.5f) {
+            if (chance <= 0.99f) {
                 return  Feature.TUNNEL;
             }
 
-            if (chance <= 0.8f) {
+            if (chance <= 0.999f) {
                 return Feature.ABANDONED_STATION;
             }
 
@@ -82,7 +82,7 @@ namespace Root {
                     }
                 }
                 
-                float connectionChance = 0.5f;
+                float connectionChance = 1f;
                 for (int y = 1; y < width - 1; y++) {
                     for (int x = 0; x < height; x++) {
                         if (!nodes[x, y].CanConnectTo()) {

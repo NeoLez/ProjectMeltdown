@@ -28,6 +28,7 @@ namespace Root {
                 createdFork = true;
                 
                 obj = Instantiate(settings.ForkSection);
+                obj.shouldConsumeAlert = true;
                 obj.GetWaypoints()[^1].OnTrainReached += () => {
                     decisionTaken = true;
                     GameManager.MapGeneration.UpdateSections();
