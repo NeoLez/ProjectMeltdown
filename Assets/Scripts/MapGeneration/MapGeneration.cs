@@ -22,7 +22,8 @@ namespace Root {
         [SerializeField] private SectionGeneratorSO startGeneratorSo;
         [SerializeField] private SectionGeneratorSO stationGeneratorSo;
         [SerializeField] private SectionGeneratorSO abandonedStationGeneratorSo;
-        [SerializeField] private SectionGeneratorSO tunnelForkGeneratorSo;
+        [SerializeField] private SectionGeneratorSO tunnelForkLeftGeneratorSo;
+        [SerializeField] private SectionGeneratorSO tunnelForkRightGeneratorSo;
         [SerializeField] private SectionGeneratorSO tunnelJoinGeneratorSo;
 
         public class MapGenerationContext
@@ -34,8 +35,10 @@ namespace Root {
 
         private SectionGeneratorSO GetGeneratorFromFeatureEnum(MapPointsGen.Feature feature) {
             switch (feature) {
-                case MapPointsGen.Feature.TUNNEL_FORK:
-                    return tunnelForkGeneratorSo;
+                case MapPointsGen.Feature.TUNNEL_FORK_RIGHT:
+                    return tunnelForkRightGeneratorSo;
+                case MapPointsGen.Feature.TUNNEL_FORK_LEFT:
+                    return tunnelForkLeftGeneratorSo;
                 case MapPointsGen.Feature.TUNNEL_JOIN:
                     return tunnelJoinGeneratorSo;
                 case MapPointsGen.Feature.START:
@@ -91,13 +94,13 @@ namespace Root {
             section = _sectionGeneratorSo.Create();
 
             section.transform.parent = root;
-            Transform end = IncomingSections.Count != 0 ? IncomingSections[IncomingSections.Count-1].end : transform;
+            Transform end = IncomingSections.Count != 0 ? IncomingSections[^1].end : (PastSections.Count != 0 ? PastSections[0].end : transform);
             section.transform.position = end.position;
             section.transform.rotation = end.rotation;
             section.OnTrainCompleted += TrainReachedSectionEnd;
             IncomingSections.Add(section);
             
-            _waypoints.AddRange(section.Waypoints);
+            _waypoints.AddRange(section.GetWaypoints());
             return true;
         }
 
@@ -105,7 +108,7 @@ namespace Root {
             UpdateSections();
         }
 
-        private void UpdateSections() {
+        public void UpdateSections() {
             while (IncomingSections.Count < LoadedSectionCount && CreateRandom()) {
                     
             }
@@ -126,7 +129,7 @@ namespace Root {
         }
 
         private void RemovePastSection() {
-            int amountToRemove = PastSections[0].Waypoints.Count;
+            int amountToRemove = PastSections[0].GetWaypoints().Count;
             _waypoints.RemoveRange(0, amountToRemove);
             waypointLowestIndex += amountToRemove;
             PastSections[0].Remove();
@@ -140,6 +143,7 @@ namespace Root {
         [SerializeField] private int countUntilRebase = 15;
         private int _rebaseCounter;
         private void HandleRebase() {
+            return;
             if (_rebaseCounter == 0) {
                 transform.position += train.transform.position * -1;
                 

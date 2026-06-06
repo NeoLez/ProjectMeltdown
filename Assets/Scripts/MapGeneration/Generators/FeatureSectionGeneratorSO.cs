@@ -19,7 +19,7 @@ namespace Root {
             
             hasFinished = true;
             
-            if(settings.addAlert)
+            if(settings.addAlert && settings.FeatureSectionPrefab.HasAlert())
                 GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert);
             
             MapSection obj = Instantiate(settings.FeatureSectionPrefab);

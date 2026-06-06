@@ -15,6 +15,7 @@ namespace Root
         [SerializeField] private BatterySlot batterySlot;
         [SerializeField] private EmergencyStopButton emergencyStopButton;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
+        [SerializeField] public ForkDecisionSwitch forkDecisionSwitch;
         [SerializeField] private List<Button> externalDoorButtons;
         [SerializeField] private List<Animator> externalDoors;
 

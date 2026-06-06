@@ -515,7 +515,8 @@ MonoBehaviour:
   startGeneratorSo: {fileID: 11400000, guid: c123a9a02af84a48fabc19356ebd23d6, type: 2}
   stationGeneratorSo: {fileID: 11400000, guid: 034ddef5e25bcdf7f8b51588eb23e84f, type: 2}
   abandonedStationGeneratorSo: {fileID: 11400000, guid: fa4337947397876c99a2900e2062b7e0, type: 2}
-  tunnelForkGeneratorSo: {fileID: 11400000, guid: 33a0d702563b9f5ef8bb996c14864a4a, type: 2}
+  tunnelForkLeftGeneratorSo: {fileID: 11400000, guid: 95a7af21de327afe39a653dabcf8e2c0, type: 2}
+  tunnelForkRightGeneratorSo: {fileID: 11400000, guid: 613fd7b6022dabf40a147d28bd81a677, type: 2}
   tunnelJoinGeneratorSo: {fileID: 11400000, guid: 0bf1c427ba17ed644b22fe32e0970e71, type: 2}
   _sectionGeneratorSo: {fileID: 0}
   countUntilRebase: 15
@@ -6632,6 +6633,7 @@ MonoBehaviour:
   batterySlot: {fileID: 248355529}
   emergencyStopButton: {fileID: 1874688292}
   speedometerHorizontal: {fileID: 972612785}
+  forkDecisionSwitch: {fileID: 1309271972}
   externalDoorButtons:
   - {fileID: 658524434}
   externalDoors:
@@ -8854,6 +8856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1309271970}
   - component: {fileID: 1309271969}
+  - component: {fileID: 1309271972}
   - component: {fileID: 1309271971}
   m_Layer: 0
   m_Name: LightSwitch
@@ -8881,8 +8884,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 0.34, z: 0.26}
-  m_Center: {x: 0.180599, y: -0.19, z: -0.47}
+  m_Size: {x: 0.33999997, y: 0.34853613, z: 0.26}
+  m_Center: {x: 0.180599, y: -0.18573195, z: -0.47000003}
 --- !u!4 &1309271970
 Transform:
   m_ObjectHideFlags: 0
@@ -8917,6 +8920,25 @@ MonoBehaviour:
   - {fileID: 1442088707}
   - {fileID: 1935062307}
   - {fileID: 603963438}
+  lightObject: {fileID: 0}
+  rotationOn: {fileID: 0}
+  rotationOff: {fileID: 0}
+  rotationTime: 0.1
+--- !u!114 &1309271972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309271967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e6bf42a055468d8f8580bcfbbc33f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.ForkDecisionSwitch
+  onObject: {fileID: 0}
+  offObject: {fileID: 0}
+  <Locked>k__BackingField: 0
   lightObject: {fileID: 1632196840}
   rotationOn: {fileID: 126187435}
   rotationOff: {fileID: 422470710}
@@ -16821,15 +16843,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2243229576664521807, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.1830127
+      value: -0.18301275
       objectReference: {fileID: 0}
     - target: {fileID: 2243229576664521807, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.1830127
+      value: 0.18301275
       objectReference: {fileID: 0}
     - target: {fileID: 2243229576664521807, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -60
+      value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 2243229576664521807, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -16861,19 +16883,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071079
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071057
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -16881,7 +16903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8161569405149383769, guid: 1846015a879c09947be42049a4912245, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

@@ -26,7 +26,8 @@ namespace Root {
 
         public enum Feature {
             TUNNEL,
-            TUNNEL_FORK,
+            TUNNEL_FORK_RIGHT,
+            TUNNEL_FORK_LEFT,
             TUNNEL_JOIN,
             START,
             STATION,
@@ -119,7 +120,7 @@ namespace Root {
                             tunnelNode.OutConnections.Add(nodes[targetX, targetY]);
                             nodes[targetX, targetY].InConnections.Add(tunnelNode);
                             
-                            nodes[x, y].feature = Feature.TUNNEL_FORK;
+                            nodes[x, y].feature = nodes[x,y].height > nodes[targetX, targetY].height ? Feature.TUNNEL_FORK_LEFT : Feature.TUNNEL_FORK_RIGHT;
                             nodes[targetX, targetY].feature = Feature.TUNNEL_JOIN;
 
                         }

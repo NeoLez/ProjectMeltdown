@@ -4,23 +4,33 @@ using UnityEngine;
 
 namespace Root {
     public class MapSection : MonoBehaviour {
-        public List<TrainPathWaypoint> Waypoints;
+        [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
+
+        public List<TrainPathWaypoint> GetWaypoints() {
+            SetAlert();
+            return _waypoints;
+        }
+
         public event Action<bool> OnTrainCompleted;
         public TrainAlertSO alert;
         public Transform end;
         public bool shouldConsumeAlert;
 
-        private void Awake() {
-            Waypoints[^1].OnTrainReached += () => {
+        private void SetAlert() {
+            _waypoints[^1].OnTrainReached += () => {
                 OnTrainCompleted?.Invoke(shouldConsumeAlert);
             };
         }
 
         public void Remove() {
-            foreach (var w in Waypoints) {
+            foreach (var w in _waypoints) {
                 Destroy(w);
             }
             Destroy(gameObject);
+        }
+
+        public bool HasAlert() {
+            return alert != null;
         }
     }
 }

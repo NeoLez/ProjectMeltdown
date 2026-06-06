@@ -16,7 +16,7 @@ namespace Root {
         private void Awake()
         {
             // Nos suscribimos al evento del boton
-            OnClicked += Toggle;
+            //OnClicked += Toggle;
         }
 
         private void Start()
@@ -47,8 +47,11 @@ namespace Root {
         private void TurnOff()
         {
             if (isAnimating) return;
-            isAnimating = true;
-            Tween.LocalRotation(lightObject, rotationOff.localRotation, rotationTime).OnComplete(() => isAnimating = false);
+            
+            if(lightObject != null) {
+                isAnimating = true;
+                Tween.LocalRotation(lightObject, rotationOff.localRotation, rotationTime).OnComplete(() => isAnimating = false);
+            }
             
             // Se apaga cuando el tren pierde energia
             _on = false;
@@ -61,9 +64,12 @@ namespace Root {
         private void TurnOn()
         {
             if (isAnimating) return;
-            isAnimating = true;
-            Tween.LocalRotation(lightObject, rotationOn.localRotation, rotationTime).OnComplete(() => isAnimating = false);
-            
+            if (lightObject != null) {
+                isAnimating = true;
+                Tween.LocalRotation(lightObject, rotationOn.localRotation, rotationTime)
+                    .OnComplete(() => isAnimating = false);
+            }
+
             // Se vuelve a encender cuando el tren recupera energia
             _on = true;
             foreach (var light in lights)

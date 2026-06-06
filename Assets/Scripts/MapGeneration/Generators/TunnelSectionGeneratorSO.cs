@@ -32,7 +32,8 @@ namespace Root {
                 TunnelSectionGeneratorSettingsSO.MapSectionListing nextSectionListing = speed[UnityEngine.Random.Range(0, speed.Count)];
                 currentRepetition = UnityEngine.Random.Range(nextSectionListing.minRepetition, nextSectionListing.maxRepetition + 1);
                 currentSection = nextSectionListing.mapSection;
-                GameManager.Train.AlertSystem.AddAlert(currentSection.alert);
+                if(currentSection.HasAlert())
+                    GameManager.Train.AlertSystem.AddAlert(currentSection.alert);
                 trackSectionsCreated++;
             }
             currentRepetition--;

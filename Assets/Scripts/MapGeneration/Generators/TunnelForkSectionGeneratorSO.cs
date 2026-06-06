@@ -2,31 +2,50 @@ using System;
 using UnityEngine;
 
 namespace Root {
+    [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelForkGenerator")]
     public class TunnelForkSectionGeneratorSO : SectionGeneratorSO {
         private MapGeneration.MapGenerationContext _context;
         [SerializeField] private TunnelForkSectionGeneratorSettingsSO settings;
         private bool hasFinished;
-        private int straightPartCounter;
+        private bool phase;
+        private bool decisionTaken;
+        private bool createdFork;
         
         public override void Initialize(MapGeneration.MapGenerationContext context) {
             _context = context;
             hasFinished = false;
-            straightPartCounter = settings.straightSectionLength;
+            decisionTaken = false;
+            createdFork = false;
         }
 
         public override MapSection Create() {
             if (hasFinished) throw new Exception();
-            hasFinished = true;
             
             MapSection obj;
-
-            if (straightPartCounter > 0) {
-                straightPartCounter++;
-                return Instantiate(settings.StraightRoad);
+            Debug.Log("a");
+            if (!createdFork) {
+                Debug.Log("b");
+                createdFork = true;
+                
+                obj = Instantiate(settings.ForkSection);
+                obj.GetWaypoints()[^1].OnTrainReached += () => {
+                    decisionTaken = true;
+                    GameManager.MapGeneration.UpdateSections();
+                };
+                return obj;
             }
 
-
-            throw new NotImplementedException();
+            
+            if (GameManager.Train.forkDecisionSwitch.GetDirection()) {
+                Debug.Log("c");
+                obj = settings.forkRight ? Instantiate(settings.ForkOutWaypoints) : Instantiate(settings.ForkStraightWaypoints);
+            }
+            else {
+                Debug.Log("d");
+                obj = settings.forkRight ? Instantiate(settings.ForkStraightWaypoints) : Instantiate(settings.ForkOutWaypoints);
+            }
+            hasFinished = true;
+            
             return obj;
         }
 
@@ -39,7 +58,7 @@ namespace Root {
         }
 
         public override bool CanGenerate() {
-            return !hasFinished;
+            return !hasFinished && decisionTaken;
         }
     }
 }
