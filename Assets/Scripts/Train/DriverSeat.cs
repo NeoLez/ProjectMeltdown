@@ -10,7 +10,11 @@ namespace Root {
             _cameraController = GetComponent<LockedCameraController>();
         }
 
-        public override void Interact() {
+        public override void Interact()
+        {
+            if (GameManager.Player.GetComponent<PlayerItemHolder>()?.HasItem == true)
+                return;
+
             GameManager.Player.GetComponent<CameraController>().enabled = false;
             GameManager.Input.Movement.Disable();
             _cameraController.enabled = true;

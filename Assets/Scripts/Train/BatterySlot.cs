@@ -89,5 +89,38 @@ namespace Root
         {
             return _battery;
         }
+
+        public bool TryInsertBattery( Battery battery, VisualContainer visual)
+        {
+            if (_battery != null)
+                return false;
+
+            _battery = battery;
+            _visualBattery = visual;
+
+            Rigidbody rb = battery.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.isKinematic = true;
+            }
+
+            battery.transform.SetParent(transform);
+
+            battery.transform.position = pivot.position;
+            battery.transform.rotation = pivot.rotation;
+
+            OnBatteryInserted?.Invoke();
+
+            StartCoroutine(AnimTrigger(_visualBattery));
+
+            if (ignitionSwitch.IsEngineOn())
+            {
+                train.SetEnginePower(true);
+            }
+
+            return true;
+        }
     }
 }

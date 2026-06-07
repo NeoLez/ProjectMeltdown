@@ -13,5 +13,14 @@ namespace Root
             brakeController.Repair(fluid.repairAmount);
             Destroy(other.gameObject);
         }
+
+        public bool TryUseBrakeFluid(BrakeFluid fluid)
+        {
+            brakeController.Repair(fluid.repairAmount);
+
+            Destroy(fluid.gameObject);
+
+            return true;
+        }
     }
 }

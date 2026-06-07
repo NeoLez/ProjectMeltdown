@@ -56,14 +56,39 @@ public class CameraController : MonoBehaviour
 
     private void HandleInteraction(InputAction.CallbackContext _)
     {
-        if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance)) return;
+        PlayerItemHolder holder = GetComponent<PlayerItemHolder>();
 
-        var component = hit.collider.gameObject.GetComponent<InteractableNormalCamera>()
-                     ?? hit.collider.gameObject.GetComponentInParent<InteractableNormalCamera>();
+        if (holder != null && holder.HasItem)
+        {
+            if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance))
+            {
+                holder.Drop();
+                return;
+            }
 
-        if (component == null) return;
+            var component = hit.collider.gameObject.GetComponent<InteractableNormalCamera>()
+                         ?? hit.collider.gameObject.GetComponentInParent<InteractableNormalCamera>();
 
-        component.Interact();
+            if (component == null)
+            {
+                holder.Drop();
+                return;
+            }
+
+            component.Interact();
+            return;
+        }
+
+        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance))
+            return;
+
+        var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>()
+                        ?? hitInfo.collider.gameObject.GetComponentInParent<InteractableNormalCamera>();
+
+        if (interactable == null)
+            return;
+
+        interactable.Interact();
     }
 
     private void LateUpdate()
