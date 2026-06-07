@@ -36,11 +36,11 @@ namespace Root {
 
         public static Feature GetFeature() {
             float chance = Random.value;
-            if (chance <= 0.99f) {
+            if (chance <= 0.7f) {
                 return  Feature.TUNNEL;
             }
 
-            if (chance <= 0.999f) {
+            if (chance <= 0.85f) {
                 return Feature.ABANDONED_STATION;
             }
 

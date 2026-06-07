@@ -42,7 +42,7 @@ namespace Root
         private bool _descarrilado;
 
         [SerializeField] private Transform movementTeleport;
-        [SerializeField] private Transform trainPosition;
+        [SerializeField] public Transform trainPosition;
 
         [SerializeField] private List<VisualContainer> containers;
         [SerializeField] private List<VisualContainer> objectsInsideTrain;

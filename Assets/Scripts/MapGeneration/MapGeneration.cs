@@ -144,9 +144,9 @@ namespace Root {
         [SerializeField] private int countUntilRebase = 15;
         private int _rebaseCounter;
         private void HandleRebase() {
-            return;
             if (_rebaseCounter == 0) {
-                transform.position += train.transform.position * -1;
+                Debug.Log("Rebasing");
+                transform.position += train.trainPosition.position * -1;
                 
                 _rebaseCounter = countUntilRebase;
             }
