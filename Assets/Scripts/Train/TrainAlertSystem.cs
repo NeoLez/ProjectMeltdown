@@ -10,7 +10,6 @@ namespace Root {
 
         private bool firstAdded = true;
         public void AddAlert(TrainAlertSO alert) {
-            Debug.Log("Adding alert " + alert.name);
             alerts.Add(alert);
             if(alerts.Count == 1) SetAlert();
         }
@@ -22,18 +21,13 @@ namespace Root {
         
         public void SetNextAlert() {
             if (alerts.Count == 0) {
-                Debug.Log("No alerts!");
                 return;
             }
-
-            if (alerts.Count == 1) {
-                return;
-            }
-            Debug.Log("Removing Alert" + alerts[0].name);
+            
             alerts.RemoveAt(0);
-            SetAlert();
+            if (alerts.Count >= 1) {
+                SetAlert();
+            }
         }
-        
-        
     }
 }
