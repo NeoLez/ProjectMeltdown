@@ -1,35 +1,46 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-namespace Root {
-    public class Drag : MonoBehaviour {
+namespace Root
+{
+    public class Drag : MonoBehaviour
+    {
         public Rigidbody obj;
         [SerializeField] private Transform camera;
         [SerializeField] private float rayDistance;
         private float _distance;
-
-        private void Awake() {
+        private void Awake()
+        {
             GameManager.Input.Interaction.Interact.started += HandleDrag;
         }
-
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             GameManager.Input.Interaction.Interact.started -= HandleDrag;
         }
-
-        public void HandleDrag(InputAction.CallbackContext _) {
-            if (obj != null) {
+        public void HandleDrag(InputAction.CallbackContext _)
+        {
+            if (obj != null)
+            {
                 StopDrag();
             }
-            else {
+            else
+            {
                 StartDrag();
             }
         }
-
-        private void StartDrag() {
+        private void StartDrag()
+        {
             if (Physics.Raycast(camera.position, camera.forward,
-                    out var hit, rayDistance)) {
+                    out var hit, rayDistance))
+            {
                 if (hit.rigidbody == null) return;
-                if (hit.rigidbody.TryGetComponent<DraggableObject>(out var comp)) {
+                StoreItemDisplay store = hit.collider.GetComponentInParent<StoreItemDisplay>(); // interaccion al comprar
+                if (store != null)
+                {
+                    store.Interact();
+                    if (!store.IsPurchased) return;
+                }
+                if (hit.rigidbody.TryGetComponent<DraggableObject>(out var comp))
+                {
                     obj = hit.rigidbody;
                     obj.useGravity = false;
                     comp.OnStartedDragging?.Invoke();
@@ -38,15 +49,15 @@ namespace Root {
                 }
             }
         }
-
-        private void StopDrag() {
+        private void StopDrag()
+        {
             obj.useGravity = true;
             obj.constraints = RigidbodyConstraints.None;
             obj.GetComponent<DraggableObject>().OnStoppedDragging?.Invoke();
             obj = null;
         }
-
-        private void Update() {
+        private void Update()
+        {
             if (obj == null) return;
             obj.MovePosition(camera.position + _distance * camera.forward);
         }

@@ -9,6 +9,8 @@ namespace Root
         private bool _purchased;
         private PriceCanvas _priceCanvas;
 
+        public bool IsPurchased => _purchased;
+
         public void Initialize(StoreItemData data, int price, PriceCanvas priceCanvas)
         {
             _data = data;
