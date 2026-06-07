@@ -8,7 +8,7 @@ namespace Root
         [SerializeField] private Transform camera;
         [SerializeField] private float rayDistance;
         private float _distance;
-        private void Awake()
+        private void OnEnable()
         {
             GameManager.Input.Interaction.Interact.started += HandleDrag;
         }
@@ -29,8 +29,7 @@ namespace Root
         }
         private void StartDrag()
         {
-            if (Physics.Raycast(camera.position, camera.forward,
-                    out var hit, rayDistance))
+            if (Physics.Raycast(camera.position, camera.forward, out var hit, rayDistance))
             {
                 if (hit.rigidbody == null) return;
                 StoreItemDisplay store = hit.collider.GetComponentInParent<StoreItemDisplay>(); // interaccion al comprar

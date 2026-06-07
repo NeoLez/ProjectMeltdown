@@ -3,6 +3,7 @@ using Root;
 using Root.Controller;
 using Timers;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
@@ -30,18 +31,21 @@ public class CameraController : MonoBehaviour
 
     private PlayerInputActions _input;
     private MovementController _movementController;
+    private PlayerItemHolder _playerItemHolder;
 
     // MODIFICADO: referencia al crosshair que se muestra cuando el cursor esta bloqueado
     [SerializeField] private GameObject crosshair;
 
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
-
+    
     private void Start()
     {
         _input = GameManager.Input;
         _input.Interaction.Interact.started += HandleInteraction;
         _movementController = GetComponent<MovementController>();
+        _playerItemHolder = GetComponent<PlayerItemHolder>();
+        Assert.IsNotNull(_playerItemHolder);
     }
 
     private void OnEnable()
@@ -56,25 +60,24 @@ public class CameraController : MonoBehaviour
 
     private void HandleInteraction(InputAction.CallbackContext _)
     {
-        PlayerItemHolder holder = GetComponent<PlayerItemHolder>();
 
-        if (holder != null && holder.HasItem)
+        if (_playerItemHolder.HasItem)
         {
             if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance))
             {
-                holder.Drop();
+                _playerItemHolder.Drop();
                 return;
             }
 
-            var component = hit.collider.gameObject.GetComponent<InteractableNormalCamera>()
-                         ?? hit.collider.gameObject.GetComponentInParent<InteractableNormalCamera>();
+            var component = hit.collider.gameObject.GetComponent<InteractableNormalCamera>();
 
             if (component == null)
             {
-                holder.Drop();
+                _playerItemHolder.Drop();
                 return;
             }
 
+            Debug.Log("A");
             component.Interact();
             return;
         }
@@ -82,12 +85,12 @@ public class CameraController : MonoBehaviour
         if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance))
             return;
 
-        var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>()
-                        ?? hitInfo.collider.gameObject.GetComponentInParent<InteractableNormalCamera>();
+        var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>();
 
         if (interactable == null)
             return;
 
+        Debug.Log("B");
         interactable.Interact();
     }
 

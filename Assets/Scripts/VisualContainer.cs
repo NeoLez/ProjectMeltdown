@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Root {
     [Serializable]
     public class VisualContainer : MonoBehaviour {
-        [SerializeField] private GameObject visuals;
+        [SerializeField] public GameObject visuals;
         public Transform originCenter;
         public Transform goal;
         Animator anim;

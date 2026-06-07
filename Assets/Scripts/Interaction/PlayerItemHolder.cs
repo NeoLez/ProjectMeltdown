@@ -5,7 +5,8 @@ namespace Root
     public class PlayerItemHolder : MonoBehaviour
     {
         [SerializeField] private Transform holdPoint;
-
+        private Transform oldParent;
+        
         public PickupItem HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
@@ -16,6 +17,8 @@ namespace Root
                 return;
 
             HeldItem = item;
+            
+            item.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("GrabObject");
 
             Rigidbody rb = item.GetComponent<Rigidbody>();
 
@@ -25,12 +28,12 @@ namespace Root
                 rb.useGravity = false;
             }
 
-            Collider[] colliders =
-                item.GetComponentsInChildren<Collider>();
+            Collider[] colliders = item.GetComponentsInChildren<Collider>();
 
             foreach (var col in colliders)
                 col.enabled = false;
 
+            oldParent = item.transform.parent;
             item.transform.SetParent(holdPoint);
             item.transform.localPosition = Vector3.zero;
             item.transform.localRotation = Quaternion.identity;
@@ -41,16 +44,15 @@ namespace Root
             if (!HasItem)
                 return;
 
-            Rigidbody rb =
-                HeldItem.GetComponent<Rigidbody>();
+            Rigidbody rb = HeldItem.GetComponent<Rigidbody>();
 
-            Collider[] colliders =
-                HeldItem.GetComponentsInChildren<Collider>();
+            Collider[] colliders = HeldItem.GetComponentsInChildren<Collider>();
 
             foreach (var col in colliders)
                 col.enabled = true;
 
-            HeldItem.transform.SetParent(null);
+            HeldItem.transform.SetParent(oldParent);
+            HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("Default");
 
             if (rb != null)
             {

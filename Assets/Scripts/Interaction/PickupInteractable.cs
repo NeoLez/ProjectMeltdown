@@ -7,15 +7,12 @@ namespace Root
     {
         public override void Interact()
         {
-            PlayerItemHolder holder =
-                GameManager.Player
-                    .GetComponent<PlayerItemHolder>();
+            PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
 
             if (holder == null)
                 return;
 
-            PickupItem item =
-                GetComponent<PickupItem>();
+            PickupItem item = GetComponent<PickupItem>();
 
             if (holder.HasItem)
             {
