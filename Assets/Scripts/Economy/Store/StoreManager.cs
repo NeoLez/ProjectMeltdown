@@ -7,6 +7,7 @@ namespace Root
     {
         [SerializeField] private List<StoreItemData> items;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
+        [SerializeField] private GameObject priceCanvasPrefab;
 
         private void Start()
         {
@@ -19,20 +20,25 @@ namespace Root
             {
                 StoreItemData item = GetRandomItem();
 
-                int price =
-                    Random.Range(item.minPrice,
-                                 item.maxPrice + 1);
+                int price = Random.Range(item.minPrice, item.maxPrice + 1);
 
-                GameObject obj =
-                    Instantiate(item.prefab,
-                        point.transform.position,
-                        point.transform.rotation);
+                GameObject obj = Instantiate(item.prefab,
+                    point.transform.position,
+                    point.transform.rotation);
 
-                StoreItemDisplay display =
-                    obj.GetComponentInChildren<StoreItemDisplay>();
+                GameObject canvasObj = Instantiate(priceCanvasPrefab,
+                    point.transform.position,
+                    point.transform.rotation);
+
+                PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
+
+                if (priceCanvas != null)
+                    priceCanvas.Initialize(price);
+
+                StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
                 if (display != null)
-                    display.Initialize(item, price);
+                    display.Initialize(item, price, priceCanvas);
             }
         }
 
@@ -43,8 +49,7 @@ namespace Root
             foreach (var item in items)
                 totalWeight += item.weight;
 
-            int randomWeight =
-                Random.Range(0, totalWeight);
+            int randomWeight = Random.Range(0, totalWeight);
 
             foreach (var item in items)
             {
