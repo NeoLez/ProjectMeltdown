@@ -34,12 +34,11 @@ namespace Root {
                 };
                 return obj;
             }
-
-            Debug.Log("T " + GameManager.Train.forkDecisionSwitch.GetDirection() + " " + settings.forkRight);
+            
             changeLine = !(GameManager.Train.forkDecisionSwitch.GetDirection() ^ settings.forkRight);
-            Debug.Log(changeLine);
             obj = changeLine ? Instantiate(settings.ForkOutWaypoints) : Instantiate(settings.ForkStraightWaypoints);
             hasFinished = true;
+            obj.shouldConsumeAlert = true;
             
             return obj;
         }

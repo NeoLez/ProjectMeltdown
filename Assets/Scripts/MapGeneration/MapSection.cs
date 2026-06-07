@@ -15,7 +15,7 @@ namespace Root {
         public Transform end;
         public bool shouldConsumeAlert;
 
-        private void Awake() {
+        public void Initialize() {
             _waypoints[^1].OnTrainReached += () => {
                 OnTrainCompleted?.Invoke(shouldConsumeAlert);
             };

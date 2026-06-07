@@ -92,6 +92,7 @@ namespace Root {
             }
             
             section = _sectionGeneratorSo.Create();
+            section.Initialize();
 
             section.transform.parent = root;
             Transform end = IncomingSections.Count != 0 ? IncomingSections[^1].end : (PastSections.Count != 0 ? PastSections[0].end : transform);

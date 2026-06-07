@@ -10,27 +10,28 @@ namespace Root {
 
         private bool firstAdded = true;
         public void AddAlert(TrainAlertSO alert) {
-            if (firstAdded) {
-                firstAdded = false;
-                currentAlert = alert;
-                OnEventChanged?.Invoke();
-                return;
-            }
+            Debug.Log("Adding alert " + alert.name);
             alerts.Add(alert);
+            if(alerts.Count == 1) SetAlert();
         }
 
         private void SetAlert() {
             currentAlert = alerts[0];
             OnEventChanged?.Invoke();
         }
-
+        
         public void SetNextAlert() {
             if (alerts.Count == 0) {
-                firstAdded = true;
+                Debug.Log("No alerts!");
                 return;
             }
-            SetAlert();
+
+            if (alerts.Count == 1) {
+                return;
+            }
+            Debug.Log("Removing Alert" + alerts[0].name);
             alerts.RemoveAt(0);
+            SetAlert();
         }
         
         
