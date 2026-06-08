@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Root
 {
+    [RequireComponent(typeof(BoxCollider))]
     public class JumpTrigger : MonoBehaviour
     {
         [SerializeField] private Transform boardingPoint;
@@ -11,11 +12,14 @@ namespace Root
 
         private MovementController _movementController;
         private CameraController _cameraController;
+        private BoxCollider _boxCollider;
 
         private void Start()
         {
             _movementController = GameManager.Player.GetComponent<MovementController>();
             _cameraController = GameManager.Player.GetComponent<CameraController>();
+
+            _boxCollider = GetComponent<BoxCollider>();
 
             GameManager.Input.Movement.Jump.performed += TryBoard;
         }
@@ -52,8 +56,19 @@ namespace Root
             if (angle > maxAngle)
                 return;
 
-            // Si todas las condiciones se cumplen → teletransportar
-            player.position = boardingPoint.position;
+            // Centro real del trigger 
+            Vector3 triggerCenter = transform.TransformPoint(_boxCollider.center);
+
+            // Offset entre el centro del trigger y el objetivo 
+            Vector3 offset = boardingPoint.position - triggerCenter;
+
+            // Mantener la posición relativa dentro del trigger
+            Vector3 targetPosition = player.position + new Vector3(offset.x, 0f, offset.z);
+
+            // Forzar la altura de la plataforma
+            targetPosition.y = boardingPoint.position.y;
+
+            player.position = targetPosition;
         }
     }
 }

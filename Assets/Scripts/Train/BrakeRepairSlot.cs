@@ -2,25 +2,32 @@ using UnityEngine;
 
 namespace Root
 {
-    public class BrakeRepairSlot : MonoBehaviour
+    public class BrakeRepairSlot : InteractableNormalCamera
     {
-        [SerializeField] private TrainBrakeController brakeController; 
-
-        private void OnTriggerEnter(Collider other)
+        [SerializeField] private TrainBrakeController brakeController;
+        public override void Interact()
         {
-            if (!other.TryGetComponent<BrakeFluid>(out var fluid)) return;
+            PlayerItemHolder holder =
+                GameManager.Player.GetComponent<PlayerItemHolder>();
+
+            if (holder == null)
+                return;
+
+            if (!holder.HasItem)
+                return;
+
+            BrakeFluid fluid =
+                holder.HeldItem.GetComponent<BrakeFluid>();
+
+            if (fluid == null)
+                return;
 
             brakeController.Repair(fluid.repairAmount);
-            Destroy(other.gameObject);
-        }
 
-        public bool TryUseBrakeFluid(BrakeFluid fluid)
-        {
-            brakeController.Repair(fluid.repairAmount);
+            holder.ForceClearHeldItem();
 
             Destroy(fluid.gameObject);
-
-            return true;
         }
     }
+
 }

@@ -4,52 +4,71 @@ using UnityEngine.VFX;
 
 namespace Root
 {
-    public class BatterySlot : MonoBehaviour
+    public class BatterySlot : InteractableNormalCamera
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
-
         [SerializeField] private IgnitionSwitch ignitionSwitch;
-        [SerializeField] private VisualEffect _visualEffect;
-
+        [SerializeField] private VisualEffect visualEffect;
         private Battery _battery;
         private VisualContainer _visualBattery;
-        private bool _animationEnd = false;
-
+        private bool _animationEnd;
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
 
-        private void OnTriggerEnter(Collider other)
+        public override void Interact()
         {
-            if (_battery != null)
+            PlayerItemHolder holder =
+                GameManager.Player.GetComponent<PlayerItemHolder>();
+
+            if (holder == null)
                 return;
 
-            if (other.gameObject.TryGetComponent<Battery>(out var battery) && other.gameObject.TryGetComponent<VisualContainer>(out var visual))
+            // Retirar batería
+            if (!holder.HasItem && _battery != null)
             {
-                _battery = battery;
-                _visualBattery = visual;
-                var rb = battery.GetComponent<Rigidbody>();
+                Battery battery = TakeBattery();
 
-                rb.constraints = RigidbodyConstraints.FreezeAll; _battery.transform.position = pivot.position;
-                _battery.transform.rotation = pivot.rotation;
+                if (battery != null)
+                {
+                    PickupItem pickup =
+                        battery.GetComponent<PickupItem>();
 
-                OnBatteryInserted?.Invoke();
-                StartCoroutine(AnimTrigger(_visualBattery));
+                    holder.Pickup(pickup);
+                }
 
-                if (ignitionSwitch.IsEngineOn()) { train.SetEnginePower(true); }
+                return;
+            }
+
+            // Insertar batería
+            if (!holder.HasItem)
+                return;
+
+            Battery batteryToInsert =
+                holder.HeldItem.GetComponent<Battery>();
+
+            if (batteryToInsert == null)
+                return;
+
+            VisualContainer visual =
+                batteryToInsert.GetComponentInChildren<VisualContainer>();
+
+            if (visual == null)
+                return;
+
+            if (TryInsertBattery(batteryToInsert, visual))
+            {
+                holder.ForceClearHeldItem();
             }
         }
+
         System.Collections.IEnumerator AnimTrigger(VisualContainer battery)
         {
-            //battery.PlayAnimation(true);
-
             yield return new WaitForSeconds(0.70f);
 
-            //_visualEffect.SendEvent("OnPlay");
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
-            //battery.PlayAnimation(false);
         }
 
         private void Update()
@@ -75,14 +94,31 @@ namespace Root
                 return;
 
             var rb = _battery.GetComponent<Rigidbody>();
-
             rb.constraints = RigidbodyConstraints.None;
+            _battery = null;
+            train.SetEnginePower(false);
+            OnBatteryRemoved?.Invoke();
+        }
+
+        public Battery TakeBattery()
+        {
+            if (_battery == null)
+                return null;
+
+            Battery battery = _battery;
+
+            var rb = battery.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.constraints = RigidbodyConstraints.None;
+                rb.isKinematic = false;
+            }
 
             _battery = null;
-
             train.SetEnginePower(false);
-
             OnBatteryRemoved?.Invoke();
+            return battery;
         }
 
         public Battery GetBattery()
@@ -90,7 +126,7 @@ namespace Root
             return _battery;
         }
 
-        public bool TryInsertBattery( Battery battery, VisualContainer visual)
+        public bool TryInsertBattery(Battery battery, VisualContainer visual)
         {
             if (_battery != null)
                 return false;
@@ -107,12 +143,9 @@ namespace Root
             }
 
             battery.transform.SetParent(transform);
-
             battery.transform.position = pivot.position;
             battery.transform.rotation = pivot.rotation;
-
             OnBatteryInserted?.Invoke();
-
             StartCoroutine(AnimTrigger(_visualBattery));
 
             if (ignitionSwitch.IsEngineOn())
