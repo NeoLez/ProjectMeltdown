@@ -17,22 +17,18 @@ namespace Root
         private void Start()
         {
             foreach (var spawnPoint in spawnPoints) {
-                Debug.Log("Hand");
                 var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
                 merchantHands.Add(hand);
             }
-            Debug.Log(merchantHands.Count);
             GenerateStock();
         }
 
         private void GenerateStock()
         {
-            Debug.Log(merchantHands.Count);
             foreach (var hand in merchantHands)
             {
                 StoreItemData item = GetRandomItem();
                 
-                Debug.Log("Item " + item.itemName);
 
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
 

@@ -33,6 +33,10 @@ namespace Root {
         }
         MapGenerationContext _context;
 
+        public MapPointsGen.Node GetCurrentNode() {
+            return _context.currentNode;
+        }
+
         private SectionGeneratorSO GetGeneratorFromFeatureEnum(MapPointsGen.Feature feature) {
             switch (feature) {
                 case MapPointsGen.Feature.TUNNEL_FORK_RIGHT:
@@ -56,19 +60,19 @@ namespace Root {
 
         private List<TrainPathWaypoint> _waypoints = new();
         private int waypointLowestIndex = 0;
-        private MapPointsGen.Map map;
+        public MapPointsGen.Map map;
         
         private void Awake() {
-            GameManager.MapGeneration = this;
             _rebaseCounter = countUntilRebase;
+            
+            GameManager.MapGeneration = this;
+            map = new(mapHeight, mapWidth);
+            _context = new();
+            _context.currentNode = map.nodes[Random.Range(0, mapHeight), 0];
+            Debug.Log(map.ToString());
         }
 
         private void Start() {
-            MapPointsGen.Map m = new(mapHeight, mapWidth);
-            _context = new();
-            _context.currentNode = m.nodes[Random.Range(0, mapHeight), 0];
-            Debug.Log(m.ToString());
-            
             _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
             _sectionGeneratorSo.Initialize(_context);
             

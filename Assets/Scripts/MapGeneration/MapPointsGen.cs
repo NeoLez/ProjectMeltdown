@@ -120,7 +120,7 @@ namespace Root {
                             tunnelNode.OutConnections.Add(nodes[targetX, targetY]);
                             nodes[targetX, targetY].InConnections.Add(tunnelNode);
                             
-                            nodes[x, y].feature = nodes[x,y].height > nodes[targetX, targetY].height ? Feature.TUNNEL_FORK_LEFT : Feature.TUNNEL_FORK_RIGHT;
+                            nodes[x, y].feature = nodes[x,y].height > nodes[targetX, targetY].height ? Feature.TUNNEL_FORK_RIGHT : Feature.TUNNEL_FORK_LEFT;
                             nodes[targetX, targetY].feature = Feature.TUNNEL_JOIN;
 
                         }

@@ -21,13 +21,13 @@ namespace Root {
             MapSection obj;
 
             if (_context.currentNode.height > _context.lastNode.height)
-                obj = Instantiate(settings.joinFromRightToMain);
-            else if (_context.currentNode.height < _context.lastNode.height)
                 obj = Instantiate(settings.joinFromLeftToMain);
+            else if (_context.currentNode.height < _context.lastNode.height)
+                obj = Instantiate(settings.joinFromRightToMain);
             else if (_context.currentNode.height < _context.currentNode.InConnections[1].height)
-                obj = Instantiate(settings.straightEntryOnRight);
-            else
                 obj = Instantiate(settings.straightEntryOnLeft);
+            else
+                obj = Instantiate(settings.straightEntryOnRight);
             
             return obj;
         }

@@ -14,6 +14,7 @@ namespace Root {
         [SerializeField] private Camera cam;
 
         public void Render(RenderTexture target) {
+            cam.targetTexture = target;
             var request = new UniversalRenderPipeline.SingleCameraRequest
             {
                 destination = target
@@ -23,5 +24,15 @@ namespace Root {
             RenderPipeline.SubmitRenderRequest(cam, request);
         }
 
+        public Camera GetCamera() {
+            return cam;
+        }
+
+        public void SetCanvasSettings(Canvas canvas) {
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = cam;
+            if (canvas.transform.localPosition.z <= cam.farClipPlane)
+                canvas.transform.localPosition = Vector3.forward * cam.farClipPlane * 1.1f;
+        }
     }
 }
