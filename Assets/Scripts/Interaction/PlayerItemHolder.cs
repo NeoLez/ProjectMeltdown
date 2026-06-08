@@ -7,7 +7,7 @@ namespace Root
         [SerializeField] private Transform holdPoint;
         private Transform oldParent;
         
-        public PickupItem HeldItem { get; private set; }
+        [field: SerializeField] public PickupItem HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
 
@@ -66,8 +66,10 @@ namespace Root
 
         public void ForceClearHeldItem()
         {
-            if (HeldItem != null)
-                HeldItem.transform.SetParent(null);
+            if (HeldItem != null) {
+                HeldItem.transform.SetParent(oldParent);
+                HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("Default");
+            }
 
             HeldItem = null;
         }
