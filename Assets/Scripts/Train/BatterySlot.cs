@@ -41,7 +41,7 @@ namespace Root
         }
         System.Collections.IEnumerator AnimTrigger(VisualContainer battery)
         {
-            battery.PlayAnimation(true);
+            //battery.PlayAnimation(true);
 
             yield return new WaitForSeconds(0.70f);
 
@@ -49,7 +49,7 @@ namespace Root
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
-            battery.PlayAnimation(false);
+            //battery.PlayAnimation(false);
         }
 
         private void Update()
