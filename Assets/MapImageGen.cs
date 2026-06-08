@@ -92,7 +92,7 @@ namespace Root
             obj.name = $"({y1}-{x1})({y2}-{x2})";
             obj.transform.position = ((p1 + p2) / 2).Swizzle_xy0() + Vector3.forward  *transform.position.z;
             obj.transform.right = (p2 - p1);
-            obj.transform.localScale = new Vector3((p2 - p1).magnitude - 2 * dotRadius, obj.transform.localScale.y, obj.transform.localScale.z);
+            obj.transform.localScale = new Vector3((p2 - p1).magnitude - dotRadius, obj.transform.localScale.y, obj.transform.localScale.z);
         }
     }
 }
