@@ -7,11 +7,9 @@ namespace Root {
         [SerializeField] public GameObject visuals;
         public Transform originCenter;
         public Transform goal;
-        Animator anim;
 
         private void Start() {
             originCenter = GameManager.Train.transform;
-            if (visuals != null) { anim = visuals.GetComponentInChildren<Animator>(); }            
         }
 
         private void Update() {
@@ -29,18 +27,11 @@ namespace Root {
                 Quaternion worldRot = goal.rotation * localRot;
 
                 visuals.transform.SetPositionAndRotation(worldPos, worldRot);
-                Debug.DrawRay(visuals.transform.position, visuals.transform.forward, Color.green);
-                Debug.DrawRay(transform.position, transform.forward, Color.red);
             }
         }
 
         private void OnDestroy() {
             Destroy(visuals);
-        }
-
-        public void PlayAnimation(bool an)
-        {
-            anim.enabled = an;
         }
     }
 }
