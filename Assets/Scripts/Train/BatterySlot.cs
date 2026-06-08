@@ -45,7 +45,7 @@ namespace Root
 
             yield return new WaitForSeconds(0.70f);
 
-            _visualEffect.SendEvent("OnPlay");
+            //_visualEffect.SendEvent("OnPlay");
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;

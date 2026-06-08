@@ -52,7 +52,7 @@ namespace Root
                 col.enabled = true;
 
             HeldItem.transform.SetParent(oldParent);
-            HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("Default");
+            HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("NotGrabbedObject");
 
             if (rb != null)
             {
@@ -68,7 +68,7 @@ namespace Root
         {
             if (HeldItem != null) {
                 HeldItem.transform.SetParent(oldParent);
-                HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("Default");
+                HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("NotGrabbedObject");
             }
 
             HeldItem = null;
