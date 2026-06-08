@@ -59,6 +59,7 @@ namespace Root
         public event Action OnPowerLost;
         public event Action OnPowerRestored;
         private bool _powerLost;
+        private bool _engineEnabled = true;
 
         private void Awake()
         {
@@ -99,14 +100,14 @@ namespace Root
             float speedDifference = targetSpeed - _currentSpeed;
 
             // MODIFICADO: si no hay bateria o se agoto la energia, dispara OnPowerLost y desacelera por friccion
-            if (!ConsumeBattery(speedDifference))
+            if (!_engineEnabled || !ConsumeBattery(speedDifference))
             {
                 if (!_powerLost)
                 {
                     _powerLost = true;
                     OnPowerLost?.Invoke();
                 }
-                // Sin bateria solo aplica friccion, no acelera
+
                 float deceleration = speedController.maxTrainSpeed / batteryStopTime;
                 _currentSpeed -= deceleration * Time.deltaTime;
 
@@ -117,11 +118,13 @@ namespace Root
 
                 _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
             }
-            // MODIFICADO: si la bateria se restauro, dispara OnPowerRestored
-            if (_powerLost)
+            else
             {
-                _powerLost = false;
-                OnPowerRestored?.Invoke();
+                if (_powerLost)
+                {
+                    _powerLost = false;
+                    OnPowerRestored?.Invoke();
+                }
             }
 
             float speedChange = CalculateSpeed(targetSpeed, speedDifference);
@@ -263,14 +266,14 @@ namespace Root
         // permite prender y apagar el motor manualmente 
         public void SetEnginePower(bool on)
         {
-            if (!on && !_powerLost)
+            _engineEnabled = on;
+
+            if (!on)
             {
-                _powerLost = true;
                 OnPowerLost?.Invoke();
             }
-            else if (on && _powerLost)
+            else
             {
-                _powerLost = false;
                 OnPowerRestored?.Invoke();
             }
         }
@@ -278,12 +281,10 @@ namespace Root
         // MODIFICADO: consumo variable segun el esfuerzo del motor + corta si el motor est� apagado
         private bool ConsumeBattery(float speedDifference)
         {
-            if (_powerLost) return false;
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
             if (battery.energy <= 0) return false;
-            battery.energy -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime;
-            return true;
+            battery.energy -= math.max( 0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime; return true;
         }
 
         private void UpdateSounds(float targetSpeed, float speedDifference)
