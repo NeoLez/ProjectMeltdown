@@ -36,7 +36,7 @@ namespace Root
                 if (store != null)
                 {
                     store.Interact();
-                    if (!store.IsPurchased) return;
+                    if (!store._purchased) return;
                 }
                 if (hit.rigidbody.TryGetComponent<DraggableObject>(out var comp))
                 {

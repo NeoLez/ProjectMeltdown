@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Root
 {
@@ -8,27 +10,49 @@ namespace Root
         [SerializeField] private List<StoreItemData> items;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
         [SerializeField] private GameObject priceCanvasPrefab;
+        private List<MerchantHand> merchantHands = new();
+        private List<StoreItemDisplay> itemsCreated = new();
 
+        [SerializeField] private MerchantHand merchantHandPrefab;
         private void Start()
         {
+            foreach (var spawnPoint in spawnPoints) {
+                Debug.Log("Hand");
+                var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
+                merchantHands.Add(hand);
+            }
+            Debug.Log(merchantHands.Count);
             GenerateStock();
         }
 
         private void GenerateStock()
         {
-            foreach (var point in spawnPoints)
+            Debug.Log(merchantHands.Count);
+            foreach (var hand in merchantHands)
             {
                 StoreItemData item = GetRandomItem();
+                
+                Debug.Log("Item " + item.itemName);
 
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
 
-                GameObject obj = Instantiate(item.prefab,
-                    point.transform.position,
-                    point.transform.rotation);
+                GameObject obj = Instantiate(item.prefab);
+                obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
+                obj.GetComponent<StoreItemDisplay>()._purchased = false;
+                obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
+                    Debug.Log("Purchased item " + item.itemName);
+                    boughtHand.HideHand();
+                    itemsCreated.Remove(i);
+                    merchantHands.Remove(boughtHand);
+                };
+                itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
+                var objBehaviour = obj.transform.GetChild(0);
+                objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
 
                 GameObject canvasObj = Instantiate(priceCanvasPrefab,
-                    point.transform.position,
-                    point.transform.rotation);
+                    hand.transform.position,
+                    hand.transform.rotation,
+                    hand.objectPivot);
 
                 PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
 
@@ -39,6 +63,26 @@ namespace Root
 
                 if (display != null)
                     display.Initialize(item, price, priceCanvas);
+            }
+        }
+
+        private void OnDestroy() {
+            for (int i = itemsCreated.Count - 1; i >= 0; i--) {
+                Destroy(itemsCreated[i].gameObject);
+            }
+        }
+
+        public void ShowItems() {
+            Debug.Log("a");
+            foreach (var hand in merchantHands) {
+                Debug.Log("b");
+                hand.ShowHand();
+            }
+        }
+
+        public void HideItems() {
+            foreach (var hand in merchantHands) {
+                hand.HideHand();
             }
         }
 

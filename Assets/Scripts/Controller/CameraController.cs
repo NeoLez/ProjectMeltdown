@@ -76,8 +76,7 @@ public class CameraController : MonoBehaviour
                 _playerItemHolder.Drop();
                 return;
             }
-
-            Debug.Log("A");
+            
             component.Interact();
             return;
         }
@@ -86,11 +85,9 @@ public class CameraController : MonoBehaviour
             return;
 
         var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>();
-
         if (interactable == null)
             return;
-
-        Debug.Log("B");
+        hitInfo.transform.parent.GetComponent<InteractableNormalCamera>()?.Interact();
         interactable.Interact();
     }
 
