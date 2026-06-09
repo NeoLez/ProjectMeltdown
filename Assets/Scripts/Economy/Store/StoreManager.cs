@@ -9,6 +9,7 @@ namespace Root
     {
         [SerializeField] private List<StoreItemData> items;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
+        [SerializeField] private List<Transform> priceCanvasSpawnPoint;
         [SerializeField] private GameObject priceCanvasPrefab;
         private List<MerchantHand> merchantHands = new();
         private List<StoreItemDisplay> itemsCreated = new();
@@ -25,8 +26,10 @@ namespace Root
 
         private void GenerateStock()
         {
-            foreach (var hand in merchantHands)
+            for (int i = 0; i < spawnPoints.Count; i++)
             {
+                MerchantHand hand = merchantHands[i];
+                Transform priceCanvasSpawn = priceCanvasSpawnPoint[i];
                 StoreItemData item = GetRandomItem();
                 
 
@@ -46,9 +49,9 @@ namespace Root
                 objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
 
                 GameObject canvasObj = Instantiate(priceCanvasPrefab,
-                    hand.transform.position,
-                    hand.transform.rotation,
-                    hand.objectPivot);
+                    priceCanvasSpawn.transform.position,
+                    priceCanvasSpawn.rotation
+                    );
 
                 PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
 
