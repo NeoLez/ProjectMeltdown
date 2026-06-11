@@ -1,18 +1,17 @@
 using UnityEngine;
+using System.Collections;
 
 namespace Root
 {
     public class WalletController : MonoBehaviour
     {
-        Animator _animator;
-        [SerializeField] private GameObject _moneyText;
+        [SerializeField] private Animator animator;
+        [SerializeField] private GameObject moneyText;
 
         private bool _opened;
 
-        private void Start()
-        {
-            _animator = GetComponentInParent<Animator>();
-        }
+        private static readonly int OpenHash =
+            Animator.StringToHash("Open");
 
         private void Update()
         {
@@ -25,21 +24,29 @@ namespace Root
         private void ToggleWallet()
         {
             _opened = !_opened;
+            animator.SetBool(OpenHash, _opened);
 
             if (_opened)
-                Debug.Log("Abriendo billetera");
+                StartCoroutine(ShowMoneyAfterAnimation());
             else
-                Debug.Log("Cerrando billetera");
+                moneyText.SetActive(false);
+        }
 
-            _animator.SetBool("Open", _opened);
+        private IEnumerator ShowMoneyAfterAnimation()
+        {
+            // Espera que empiece la transición
+            yield return null;
 
-            if (!_opened)
-                _moneyText.SetActive(false);
+            // Espera que termine la animación de apertura
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(state.length);
+
+            moneyText.SetActive(true);
         }
 
         public void ShowMoney()
         {
-            _moneyText.SetActive(true);
+            moneyText.SetActive(true);
         }
     }
 }
