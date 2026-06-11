@@ -6924,6 +6924,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 122787829194029660, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
   m_PrefabInstance: {fileID: 403499059}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &998113573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 998113574}
+  m_Layer: 8
+  m_Name: Wallet
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &998113574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998113573}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.22673272, y: -0.6378093, z: 0.26284263, w: 0.68753576}
+  m_LocalPosition: {x: 0.046, y: -0.302, z: 1.026}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1989975166}
+  m_LocalEulerAnglesHint: {x: 1.347, y: -85.204, z: 40.604}
 --- !u!1 &999278222
 GameObject:
   m_ObjectHideFlags: 0
@@ -10806,6 +10837,7 @@ GameObject:
   - component: {fileID: 1466652828}
   - component: {fileID: 1466652829}
   - component: {fileID: 1466652830}
+  - component: {fileID: 1466652831}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -10986,6 +11018,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.PlayerItemHolder
   holdPoint: {fileID: 11784962}
   <HeldItem>k__BackingField: {fileID: 0}
+--- !u!114 &1466652831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466652819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab11e8d5683e2b4f8e6199d11d53fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.WalletSpawner
+  walletPrefab: {fileID: 2350752999870042384, guid: 1978039b814e5a44cb7bc250119cd110, type: 3}
+  walletAnchor: {fileID: 998113574}
 --- !u!1 &1467449334
 GameObject:
   m_ObjectHideFlags: 0
@@ -11952,7 +11998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1602801472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12823,7 +12869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1870122506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13512,6 +13558,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 998113574}
   - {fileID: 362355284}
   - {fileID: 11784962}
   m_Father: {fileID: 0}
