@@ -63,7 +63,7 @@ Transform:
   - {fileID: 2406234214609442620}
   - {fileID: 7116149074299573297}
   m_Father: {fileID: 978450958886582044}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 39.798874, y: 76.937294, z: -10.99544}
 --- !u!1 &1425102721612952291
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,7 +73,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 978450958886582044}
-  - component: {fileID: 3326815502052175774}
   - component: {fileID: 159851486356827841}
   m_Layer: 0
   m_Name: Armature
@@ -98,28 +97,6 @@ Transform:
   - {fileID: 7043263449548654780}
   m_Father: {fileID: 3321860376833384982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3326815502052175774
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425102721612952291}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: dde53405b98eade44b3452725f8130ab, type: 3}
-  m_Controller: {fileID: 9100000, guid: e4b0ab96eca3068448e221504a3ecce8, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &159851486356827841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,8 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e72c76a3677734baea3f90393b5628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.WalletController
-  animator: {fileID: 3326815502052175774}
-  moneyText: {fileID: 3993798284197487179}
+  _moneyText: {fileID: 3993798284197487179}
 --- !u!1 &1835612735186958124
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +141,7 @@ Transform:
   m_Children:
   - {fileID: 5952408225027689856}
   m_Father: {fileID: 7043263449548654780}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 85.55573, y: 48.301163, z: -56.02315}
 --- !u!1 &2067993270493528385
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,6 +182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3321860376833384982}
+  - component: {fileID: 7797745082255058101}
   m_Layer: 0
   m_Name: Wallet
   m_TagString: Untagged
@@ -230,6 +207,28 @@ Transform:
   - {fileID: 4431382743527352962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &7797745082255058101
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2350752999870042384}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c06db4d0b7d88594c93e9b59e19488e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3993798284197487179
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +425,7 @@ Transform:
   m_GameObject: {fileID: 6466411141528726675}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -2.1838573e-24, z: 4.6792393e-24, w: 0.7071067}
-  m_LocalPosition: {x: -1.211048e-24, y: 2.220446e-16, z: 7.979728e-17}
+  m_LocalPosition: {x: -1.211048e-24, y: 2.220446e-16, z: 0.867}
   m_LocalScale: {x: 99.999985, y: 99.999985, z: 99.999985}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +456,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -404180016125636845, guid: dde53405b98eade44b3452725f8130ab, type: 3}
+  - {fileID: 2100000, guid: 1ff58ab0e3a047a41afc60554bd333dd, type: 2}
   - {fileID: -3011199968535446747, guid: dde53405b98eade44b3452725f8130ab, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -525,7 +524,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7555742572746777939}
   m_LocalRotation: {x: 0.08746109, y: 0.89570075, z: -0.4349144, w: -0.03033516}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0095}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0009}
   m_LocalScale: {x: 0.000009707114, y: 0.000009707115, z: 0.000009707115}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -534,7 +533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 50.696, y: 191.882, z: 16.798}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.0053, y: 0.0051}
+  m_AnchoredPosition: {x: 0.0013, y: 0.0014}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1102064753908386313
@@ -646,4 +645,4 @@ Transform:
   m_Children:
   - {fileID: 5248012970424010732}
   m_Father: {fileID: 7043263449548654780}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 87.051506, y: 35.33682, z: 125.96518}

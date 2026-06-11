@@ -4,13 +4,15 @@ namespace Root
 {
     public class WalletController : MonoBehaviour
     {
-        [SerializeField] private Animator animator;
-        [SerializeField] private GameObject moneyText;
+        Animator _animator;
+        [SerializeField] private GameObject _moneyText;
 
         private bool _opened;
 
-        private static readonly int OpenHash =
-            Animator.StringToHash("Open");
+        private void Start()
+        {
+            _animator = GetComponentInParent<Animator>();
+        }
 
         private void Update()
         {
@@ -29,15 +31,15 @@ namespace Root
             else
                 Debug.Log("Cerrando billetera");
 
-            animator.SetBool(OpenHash, _opened);
+            _animator.SetBool("Open", _opened);
 
             if (!_opened)
-                moneyText.SetActive(false);
+                _moneyText.SetActive(false);
         }
 
         public void ShowMoney()
         {
-            moneyText.SetActive(true);
+            _moneyText.SetActive(true);
         }
     }
 }
