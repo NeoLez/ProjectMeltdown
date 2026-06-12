@@ -11,7 +11,6 @@ namespace Root
         [SerializeField] private IgnitionSwitch ignitionSwitch;
         [SerializeField] private VisualEffect visualEffect;
         private Battery _battery;
-        private VisualContainer _visualBattery;
         private bool _animationEnd;
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
@@ -56,16 +55,17 @@ namespace Root
             if (visual == null)
                 return;
 
-            if (TryInsertBattery(batteryToInsert, visual))
+            if (TryInsertBattery(batteryToInsert))
             {
                 holder.ForceClearHeldItem();
             }
         }
 
-        System.Collections.IEnumerator AnimTrigger(VisualContainer battery)
+        System.Collections.IEnumerator AnimTrigger(Battery battery)
         {
+            battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
-
+            visualEffect.SendEvent("OnPlay");
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
@@ -126,13 +126,12 @@ namespace Root
             return _battery;
         }
 
-        public bool TryInsertBattery(Battery battery, VisualContainer visual)
+        public bool TryInsertBattery(Battery battery)
         {
             if (_battery != null)
                 return false;
 
             _battery = battery;
-            _visualBattery = visual;
 
             Rigidbody rb = battery.GetComponent<Rigidbody>();
 
@@ -146,7 +145,7 @@ namespace Root
             battery.transform.position = pivot.position;
             battery.transform.rotation = pivot.rotation;
             OnBatteryInserted?.Invoke();
-            StartCoroutine(AnimTrigger(_visualBattery));
+            StartCoroutine(AnimTrigger(battery));
 
             if (ignitionSwitch.IsEngineOn())
             {
