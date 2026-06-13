@@ -76,14 +76,14 @@ namespace Root
 
             // Calculate how many objects fit along the distance
             int objectCount = Mathf.FloorToInt(distance / spacing);
-
+            Quaternion spawnRotation = Quaternion.LookRotation(direction);
             for (int i = 0; i <= objectCount; i++)
             {
                 float currentDistance = i * spacing;
 
                 Vector3 spawnPosition = origin + (direction * currentDistance);
 
-                Instantiate(LatchPoint, spawnPosition, Quaternion.identity);
+                Instantiate(LatchPoint, spawnPosition, spawnRotation);
             }
         }
 
