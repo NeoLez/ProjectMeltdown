@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 
 namespace Root
@@ -9,11 +10,14 @@ namespace Root
         [SerializeField] float _SpreadAngle = 200f;
         [SerializeField] float _cooldown = 5f;
 
+        [SerializeField] bool _reproduce = true;
+        public int _reproductionChance = 5;
         [SerializeField] int _tangleQuantity = 3;
         bool _maxTangle = false;
         int _tangles = 1;
 
         public GameObject LatchPoint;
+        public GameObject TanglerPoint;
         public float spacing = 1.0f;
         LayerMask layerMask;
 
@@ -83,8 +87,14 @@ namespace Root
                 float currentDistance = i * spacing;
 
                 Vector3 spawnPosition = origin + (direction * currentDistance);
+                var Chance = Random.Range(0, _reproductionChance);
+                if (objectCount == i && _reproduce && Chance == 0)
+                {
+                    Instantiate(TanglerPoint, spawnPosition, spawnRotation);
+                    _reproduce = false;
+                }
+                else Instantiate(LatchPoint, spawnPosition, spawnRotation);
 
-                Instantiate(LatchPoint, spawnPosition, spawnRotation);
                 yield return new WaitForSeconds(0.05f);
             }
         }
