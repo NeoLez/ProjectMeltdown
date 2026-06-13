@@ -11,12 +11,15 @@ namespace Root
 
         [SerializeField] int _tangleQuantity = 3;
         bool _maxTangle = false;
-        int _tangles = 0;
+        int _tangles = 1;
 
         public GameObject LatchPoint;
         public float spacing = 1.0f;
+        LayerMask layerMask;
+
         private void Start()
         {
+            layerMask = LayerMask.GetMask("Ground");
             StartCoroutine(Spread());
         }
         private void OnDrawGizmos()
@@ -51,12 +54,12 @@ namespace Root
             RaycastHit hit;
             Vector3 origin = transform.position;
 
-            if (Physics.Raycast(origin, randomDirection, out hit, _radius)) 
+            if (Physics.Raycast(origin, randomDirection, out hit, _radius, layerMask)) 
             { 
                 Debug.DrawLine(origin, hit.point, Color.green, 1f); 
                 Spreading();
                 //Instantiate(LatchPoint, hit.point, Quaternion.identity);
-                SpawnAlongRay(origin, hit.distance, randomDirection);
+                StartCoroutine(SpawnAlongRay(origin, hit.distance, randomDirection));
             }
             else { Debug.DrawRay(origin, randomDirection * _radius, Color.red, 1f); }
         }
@@ -71,10 +74,8 @@ namespace Root
             
         }
 
-        void SpawnAlongRay(Vector3 origin, float distance, Vector3 direction)
+        private IEnumerator SpawnAlongRay(Vector3 origin, float distance, Vector3 direction)
         {
-
-            // Calculate how many objects fit along the distance
             int objectCount = Mathf.FloorToInt(distance / spacing);
             Quaternion spawnRotation = Quaternion.LookRotation(direction);
             for (int i = 0; i <= objectCount; i++)
@@ -84,9 +85,8 @@ namespace Root
                 Vector3 spawnPosition = origin + (direction * currentDistance);
 
                 Instantiate(LatchPoint, spawnPosition, spawnRotation);
+                yield return new WaitForSeconds(0.05f);
             }
         }
-
-
     }
 }
