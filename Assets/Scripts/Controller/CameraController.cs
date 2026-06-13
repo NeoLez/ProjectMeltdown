@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smooth;
     private Vector2 cameraBobbingOffset;
     private float currentSideSwayAngle;
+    
+    [SerializeField] private LayerMask raycastLayerMask;
 
     [SerializeField] private float waitTimeForFootstepStateChange = 0.05f;
 
@@ -63,7 +65,7 @@ public class CameraController : MonoBehaviour
 
         if (_playerItemHolder.HasItem)
         {
-            if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance))
+            if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance, raycastLayerMask))
             {
                 _playerItemHolder.Drop();
                 return;
@@ -81,13 +83,12 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance))
+        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance, raycastLayerMask))
             return;
 
         var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>();
         if (interactable == null)
             return;
-        hitInfo.transform.parent.GetComponent<InteractableNormalCamera>()?.Interact();
         interactable.Interact();
     }
 
