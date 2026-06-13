@@ -14,6 +14,7 @@ namespace Root
         int _tangles = 0;
 
         public GameObject LatchPoint;
+        public float spacing = 1.0f;
         private void Start()
         {
             StartCoroutine(Spread());
@@ -54,7 +55,8 @@ namespace Root
             { 
                 Debug.DrawLine(origin, hit.point, Color.green, 1f); 
                 Spreading();
-                Instantiate(LatchPoint, hit.point, Quaternion.identity);
+                //Instantiate(LatchPoint, hit.point, Quaternion.identity);
+                SpawnAlongRay(origin, hit.distance, randomDirection);
             }
             else { Debug.DrawRay(origin, randomDirection * _radius, Color.red, 1f); }
         }
@@ -68,5 +70,23 @@ namespace Root
             else { _maxTangle = true; }   
             
         }
+
+        void SpawnAlongRay(Vector3 origin, float distance, Vector3 direction)
+        {
+
+            // Calculate how many objects fit along the distance
+            int objectCount = Mathf.FloorToInt(distance / spacing);
+
+            for (int i = 0; i <= objectCount; i++)
+            {
+                float currentDistance = i * spacing;
+
+                Vector3 spawnPosition = origin + (direction * currentDistance);
+
+                Instantiate(LatchPoint, spawnPosition, Quaternion.identity);
+            }
+        }
+
+
     }
 }
