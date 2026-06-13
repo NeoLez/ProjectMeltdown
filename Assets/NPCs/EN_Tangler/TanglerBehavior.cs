@@ -8,10 +8,12 @@ namespace Root
         [SerializeField] float _radius = 5f;
         [SerializeField] float _SpreadAngle = 200f;
         [SerializeField] float _cooldown = 5f;
-        bool _maxTangle = false;
+
         [SerializeField] int _tangleQuantity = 3;
+        bool _maxTangle = false;
         int _tangles = 0;
 
+        public GameObject LatchPoint;
         private void Start()
         {
             StartCoroutine(Spread());
@@ -48,7 +50,12 @@ namespace Root
             RaycastHit hit;
             Vector3 origin = transform.position;
 
-            if (Physics.Raycast(origin, randomDirection, out hit, _radius)) { Debug.DrawLine(origin, hit.point, Color.green, 1f); Spreading(); }
+            if (Physics.Raycast(origin, randomDirection, out hit, _radius)) 
+            { 
+                Debug.DrawLine(origin, hit.point, Color.green, 1f); 
+                Spreading();
+                Instantiate(LatchPoint, hit.point, Quaternion.identity);
+            }
             else { Debug.DrawRay(origin, randomDirection * _radius, Color.red, 1f); }
         }
 
