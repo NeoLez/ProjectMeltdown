@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
 
@@ -16,10 +18,12 @@ namespace Root
         bool _maxTangle = false;
         int _tangles = 1;
 
-        public GameObject LatchPoint;
+        public TentaculeBehavior LatchPoint;
         public GameObject TanglerPoint;
         public float spacing = 1.0f;
         LayerMask layerMask;
+
+        public Dictionary<int, List<TentaculeBehavior>> TanglesDictionary = new();
 
         private void Start()
         {
@@ -61,8 +65,8 @@ namespace Root
             if (Physics.Raycast(origin, randomDirection, out hit, _radius, layerMask)) 
             { 
                 Debug.DrawLine(origin, hit.point, Color.green, 1f); 
-                Spreading();
-                //Instantiate(LatchPoint, hit.point, Quaternion.identity);
+                Spreading();                
+
                 StartCoroutine(SpawnAlongRay(origin, hit.distance, randomDirection));
             }
             else { Debug.DrawRay(origin, randomDirection * _radius, Color.red, 1f); }
@@ -80,6 +84,8 @@ namespace Root
 
         private IEnumerator SpawnAlongRay(Vector3 origin, float distance, Vector3 direction)
         {
+            TanglesDictionary[_tangles] = new();
+
             int objectCount = Mathf.FloorToInt(distance / spacing);
             Quaternion spawnRotation = Quaternion.LookRotation(direction);
             for (int i = 0; i <= objectCount; i++)
@@ -88,15 +94,25 @@ namespace Root
 
                 Vector3 spawnPosition = origin + (direction * currentDistance);
                 var Chance = Random.Range(0, _reproductionChance);
+
                 if (objectCount == i && _reproduce && Chance == 0)
                 {
                     Instantiate(TanglerPoint, spawnPosition, spawnRotation);
                     _reproduce = false;
                 }
-                else Instantiate(LatchPoint, spawnPosition, spawnRotation);
-
+                else
+                { //TanglesDictionary[_tangles].Add
+                    var og = Instantiate(LatchPoint, spawnPosition, spawnRotation, transform);
+                    og.TentacleNumber = _tangles;
+                    TanglesDictionary[_tangles].Add(og);
+                }                                
                 yield return new WaitForSeconds(0.05f);
             }
+        }
+
+        public void DestroyTangle(int FirstDestroyed)
+        {
+            _tangles--;
         }
     }
 }

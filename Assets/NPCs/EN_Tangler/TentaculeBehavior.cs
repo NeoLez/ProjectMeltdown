@@ -1,19 +1,15 @@
+using System.Net.Sockets;
 using UnityEngine;
 
 namespace Root
 {
-    public class TentaculeBehavior : MonoBehaviour
+    public class TentaculeBehavior : InteractableNormalCamera
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        public int TentacleNumber;
+        public override void Interact()
         {
-        
-        }
+            throw new System.NotImplementedException();
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        } 
     }
 }
