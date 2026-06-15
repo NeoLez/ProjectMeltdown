@@ -5,8 +5,11 @@ namespace Root
     public class PlayerItemHolder : MonoBehaviour
     {
         [SerializeField] private Transform holdPoint;
+        [SerializeField] private float dropDistance = 1.5f;
+
         private Transform oldParent;
-        
+        private GameObject currentHeldVisual;
+
         [field: SerializeField] public PickupItem HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
@@ -17,8 +20,14 @@ namespace Root
                 return;
 
             HeldItem = item;
-            
-            item.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("GrabObject");
+
+            VisualContainer visualContainer = item.GetComponent<VisualContainer>();
+
+            if (visualContainer != null)
+            {
+                visualContainer.visuals.layer = LayerMask.NameToLayer("GrabObject");
+                visualContainer.visuals.SetActive(false);
+            }
 
             Rigidbody rb = item.GetComponent<Rigidbody>();
 
@@ -34,9 +43,17 @@ namespace Root
                 col.enabled = false;
 
             oldParent = item.transform.parent;
-            item.transform.SetParent(holdPoint);
-            item.transform.localPosition = Vector3.zero;
-            item.transform.localRotation = Quaternion.identity;
+
+            if (item.HeldVisualPrefab != null)
+            {
+                currentHeldVisual = Instantiate(
+                    item.HeldVisualPrefab,
+                    holdPoint
+                );
+
+                currentHeldVisual.transform.localPosition = Vector3.zero;
+                currentHeldVisual.transform.localRotation = Quaternion.identity;
+            }
         }
 
         public void Drop()
@@ -44,15 +61,32 @@ namespace Root
             if (!HasItem)
                 return;
 
-            Rigidbody rb = HeldItem.GetComponent<Rigidbody>();
+            if (currentHeldVisual != null)
+                Destroy(currentHeldVisual);
 
-            Collider[] colliders = HeldItem.GetComponentsInChildren<Collider>();
+            HeldItem.transform.position =
+                GameManager.Camera.transform.position +
+                GameManager.Camera.transform.forward * dropDistance;
+
+            HeldItem.transform.SetParent(oldParent);
+
+            VisualContainer visualContainer =
+                HeldItem.GetComponent<VisualContainer>();
+
+            if (visualContainer != null)
+            {
+                visualContainer.visuals.SetActive(true);
+                visualContainer.visuals.layer =
+                    LayerMask.NameToLayer("NotGrabbedObject");
+            }
+
+            Collider[] colliders =
+                HeldItem.GetComponentsInChildren<Collider>();
 
             foreach (var col in colliders)
                 col.enabled = true;
 
-            HeldItem.transform.SetParent(oldParent);
-            HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("NotGrabbedObject");
+            Rigidbody rb = HeldItem.GetComponent<Rigidbody>();
 
             if (rb != null)
             {
@@ -61,17 +95,31 @@ namespace Root
             }
 
             HeldItem = null;
-
+            currentHeldVisual = null;
         }
 
         public void ForceClearHeldItem()
         {
-            if (HeldItem != null) {
+            if (currentHeldVisual != null)
+                Destroy(currentHeldVisual);
+
+            if (HeldItem != null)
+            {
+                VisualContainer visualContainer =
+                    HeldItem.GetComponent<VisualContainer>();
+
+                if (visualContainer != null)
+                {
+                    visualContainer.visuals.SetActive(true);
+                    visualContainer.visuals.layer =
+                        LayerMask.NameToLayer("NotGrabbedObject");
+                }
+
                 HeldItem.transform.SetParent(oldParent);
-                HeldItem.GetComponent<VisualContainer>().visuals.layer = LayerMask.NameToLayer("NotGrabbedObject");
             }
 
             HeldItem = null;
+            currentHeldVisual = null;
         }
     }
 }
