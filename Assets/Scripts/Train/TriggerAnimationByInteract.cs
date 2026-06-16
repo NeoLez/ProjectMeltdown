@@ -4,11 +4,7 @@ namespace Root
 {
     public class TriggerAnimationByInteract : InteractableNormalCamera
     {
-        Animator _animator;
-        void Start()
-        {
-            _animator = GetComponent<Animator>();
-        }
+        [SerializeField] Animator _animator;
         public override void Interact()
         {
             Debug.Log("abrir");
