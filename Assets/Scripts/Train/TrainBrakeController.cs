@@ -59,7 +59,7 @@ namespace Root
         private void UpdateBrakeState()
         {
             if (currentBrakeLevel >= brakeLevels.Count - 1) return;
-            if (currentDamage > brakeLevels[currentBrakeLevel].maxDamage)
+            if (currentDamage >= brakeLevels[currentBrakeLevel].maxDamage)
             {
                 currentBrakeLevel++;
                 BrakeDegradeSound.Play();
@@ -72,6 +72,7 @@ namespace Root
         public void Damage(float damage)
         {
             currentDamage += damage;
+            currentDamage = Math.Min(currentDamage, brakeLevels[^1].maxDamage);
         }
         public void Repair(float amount)
         {
@@ -80,6 +81,10 @@ namespace Root
             {
                 currentBrakeLevel--;
             }
+        }
+
+        public float GetDamagePercentage() {
+            return currentDamage / brakeLevels[^1].maxDamage;
         }
         public int GetBrakeLevel() => currentBrakeLevel;
     }
