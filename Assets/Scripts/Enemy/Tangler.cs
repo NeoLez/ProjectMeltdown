@@ -6,7 +6,6 @@ namespace Root.Enemy {
     public class Tangler : InteractableNormalCamera {
         [SerializeField] float _maxRadius = 10f;
         [SerializeField] float _minRadius = 2f;
-        [SerializeField] float _SpreadAngle = 200f;
         [SerializeField] GameObject visuals;
         [SerializeField] TanglerTentacle tentaclePrefab;
         [SerializeField] int maxTentacleQuantity = 3;

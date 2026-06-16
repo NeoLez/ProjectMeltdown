@@ -52,7 +52,7 @@ namespace Root.Enemy {
             var shouldReproduce = Random.Range(0.0f, 1.0f) <= reproductionChance;
             if (!shouldReproduce) return;
             
-            Instantiate(tanglerPoint, spawnPosition, Quaternion.identity);
+            Instantiate(tanglerPoint, spawnPosition, Quaternion.identity, transform.parent.parent);
             reproduce = false;
         }
         
