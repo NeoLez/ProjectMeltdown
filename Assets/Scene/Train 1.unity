@@ -12958,6 +12958,7 @@ GameObject:
   - component: {fileID: 1768418557}
   - component: {fileID: 1768418559}
   - component: {fileID: 1768418558}
+  - component: {fileID: 1768418560}
   m_Layer: 0
   m_Name: Cylinder_1
   m_TagString: Untagged
@@ -13038,6 +13039,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768418556}
   m_Mesh: {fileID: 2534964839176971238, guid: d51f1c00c4b4f1d4c86563b0a6511a15, type: 3}
+--- !u!114 &1768418560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768418556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54bb6f4be953972409422f1449ccdc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.LiquidVIsualContainer
+  _controller: {fileID: 1427049396}
 --- !u!1 &1801069780
 GameObject:
   m_ObjectHideFlags: 0
@@ -17225,7 +17239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7292228131626642294
 Transform:
   m_ObjectHideFlags: 0
