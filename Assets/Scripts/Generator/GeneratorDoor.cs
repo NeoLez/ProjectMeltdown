@@ -5,33 +5,50 @@ namespace Root
 {
     public class GeneratorDoor : MonoBehaviour
     {
+        public enum DoorMode { Rotate, MoveUp, MoveDown }
         public enum RotationAxis { X, Y, Z }
 
         [SerializeField] private GeneratorSlot generatorSlot;
+        [SerializeField] private DoorMode mode = DoorMode.Rotate;
         [SerializeField] private RotationAxis axis = RotationAxis.Y;
         [SerializeField] private float openAngle = 90f;
-        [SerializeField] private float smooth = 3f;
 
+        [Header("Movimiento")]
+        [SerializeField] private float moveDistance = 3f;
+
+        [Header("General")]
+        [SerializeField] private float smooth = 3f;
 
         private Quaternion _closedRotation;
         private Quaternion _openRotation;
+        private Vector3 _closedPosition;
+        private Vector3 _openPosition;
         private Coroutine _currentRoutine;
 
         private void Start()
         {
-            _closedRotation = transform.localRotation;
-
-            Vector3 eulerAxis = axis switch
-            {
-                RotationAxis.X => new Vector3(openAngle, 0f, 0f),
-                RotationAxis.Z => new Vector3(0f, 0f, openAngle),
-                _ => new Vector3(0f, openAngle, 0f),
-            };
-
-            _openRotation = _closedRotation * Quaternion.Euler(eulerAxis);
-
             generatorSlot.OnPowerRestored += HandlePowerRestored;
             generatorSlot.OnPowerLost += HandlePowerLost;
+
+            if (mode == DoorMode.Rotate)
+            {
+                _closedRotation = transform.localRotation;
+
+                Vector3 eulerAxis = axis switch
+                {
+                    RotationAxis.X => new Vector3(openAngle, 0f, 0f),
+                    RotationAxis.Z => new Vector3(0f, 0f, openAngle),
+                    _ => new Vector3(0f, openAngle, 0f),
+                };
+
+                _openRotation = _closedRotation * Quaternion.Euler(eulerAxis);
+            }
+            else
+            {
+                _closedPosition = transform.localPosition;
+                Vector3 dir = mode == DoorMode.MoveUp ? Vector3.up : Vector3.down;
+                _openPosition = _closedPosition + dir * moveDistance;
+            }
         }
 
         private void OnDestroy()
@@ -40,15 +57,20 @@ namespace Root
             generatorSlot.OnPowerLost -= HandlePowerLost;
         }
 
-        private void HandlePowerRestored() => StartMove(_openRotation);
-        private void HandlePowerLost() => StartMove(_closedRotation);
-
-        private void StartMove(Quaternion target)
+        private void HandlePowerRestored()
         {
-            if (_currentRoutine != null)
-                StopCoroutine(_currentRoutine);
+            if (_currentRoutine != null) StopCoroutine(_currentRoutine);
+            _currentRoutine = mode == DoorMode.Rotate
+                ? StartCoroutine(RotateDoor(_openRotation))
+                : StartCoroutine(MoveDoor(_openPosition));
+        }
 
-            _currentRoutine = StartCoroutine(RotateDoor(target));
+        private void HandlePowerLost()
+        {
+            if (_currentRoutine != null) StopCoroutine(_currentRoutine);
+            _currentRoutine = mode == DoorMode.Rotate
+                ? StartCoroutine(RotateDoor(_closedRotation))
+                : StartCoroutine(MoveDoor(_closedPosition));
         }
 
         private IEnumerator RotateDoor(Quaternion target)
@@ -58,8 +80,18 @@ namespace Root
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, target, smooth * Time.deltaTime);
                 yield return null;
             }
-
             transform.localRotation = target;
+            _currentRoutine = null;
+        }
+
+        private IEnumerator MoveDoor(Vector3 target)
+        {
+            while (Vector3.Distance(transform.localPosition, target) > 0.01f)
+            {
+                transform.localPosition = Vector3.Lerp(transform.localPosition, target, smooth * Time.deltaTime);
+                yield return null;
+            }
+            transform.localPosition = target;
             _currentRoutine = null;
         }
     }
