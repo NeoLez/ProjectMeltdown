@@ -4,12 +4,17 @@ namespace Root
 {
     public class TriggerAnimationByInteract : InteractableNormalCamera
     {
-        [SerializeField] Animator _animator;
+        Animator _animator;
+        [SerializeField] GameObject _visual;
+        private void Start()
+        {
+            _animator = _visual.GetComponent<Animator>();
+        }
         public override void Interact()
         {
             Debug.Log("abrir");
-            if (_animator.GetBool("Open")) { _animator.SetBool("Open", true); }
-            else {_animator.SetBool("Open", false); }
+            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); }
+            else {_animator.SetBool("Open", true); }
         }
     }
 }
