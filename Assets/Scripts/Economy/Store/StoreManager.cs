@@ -37,7 +37,7 @@ namespace Root
 
                 GameObject obj = Instantiate(item.prefab);
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
-                obj.GetComponent<StoreItemDisplay>()._purchased = false;
+                obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
                 obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
                     Debug.Log("Purchased item " + item.itemName);
                     boughtHand.HideHand();
