@@ -6,6 +6,7 @@ namespace Root
     {
         [SerializeField] private Transform holdPoint;
         [SerializeField] private float dropDistance = 1.5f;
+        [SerializeField] private Transform cameraPivot;
 
         private Transform oldParent;
         private GameObject currentHeldVisual;
@@ -65,8 +66,8 @@ namespace Root
                 Destroy(currentHeldVisual);
 
             HeldItem.transform.position =
-                GameManager.Camera.transform.position +
-                GameManager.Camera.transform.forward * dropDistance;
+                cameraPivot.position +
+                cameraPivot.forward * dropDistance;
 
             HeldItem.transform.SetParent(oldParent);
 
