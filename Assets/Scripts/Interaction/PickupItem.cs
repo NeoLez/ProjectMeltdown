@@ -12,7 +12,10 @@ namespace Root
         public GameObject HeldVisualPrefab => heldVisualPrefab;
 
         public void HasBeenPickedUp() {
-            if (!hasBeenPicked) transform.parent.parent = null;
+            if (!hasBeenPicked) {
+                transform.parent.GetComponent<StoreItemDisplay>()?.Interact();
+                transform.parent.parent = null;
+            }
             hasBeenPicked = true;
         }
     }

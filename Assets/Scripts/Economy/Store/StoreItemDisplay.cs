@@ -7,7 +7,7 @@ namespace Root
     {
         private StoreItemData _data;
         private int _price;
-        [SerializeField] public bool _purchased;
+        [NonSerialized] public bool _purchased = true;
         private PriceCanvas _priceCanvas;
         public MerchantHand _storeHand;
         [SerializeField] private Transform _storeItemPivot;
@@ -44,6 +44,10 @@ namespace Root
             
             if (_priceCanvas != null)
                 _priceCanvas.Hide();
+        }
+
+        public void SetNotPurchased() {
+            _purchased = false;
         }
     }
 }
