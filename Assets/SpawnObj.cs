@@ -4,16 +4,19 @@ namespace Root
 {
     public class SpawnObj : MonoBehaviour
     {
-        [SerializeField] private GameObject objPrefab;
+        [SerializeField] private ItemGenerationPoolSO pool;
         void Start() { 
-        
-            Debug.Log($"{transform.position }");
-            var obj = Instantiate(objPrefab);
+            
+            var obj = Instantiate(pool.GetRandom());
             obj.transform.position = transform.position;
+            obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = GameManager.MapGeneration.itemRoot;
             obj.transform.GetChild(0).transform.position = transform.position;
+        }
 
-            Debug.Log($"{transform.position} {obj.transform.GetChild(0).transform.position}");
+        private void OnDrawGizmos() {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(transform.position, 0.3f);
         }
     }
 }
