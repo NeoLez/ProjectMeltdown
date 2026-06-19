@@ -63,6 +63,7 @@ namespace Root
 
         System.Collections.IEnumerator AnimTrigger(Battery battery)
         {
+            yield return new WaitForSeconds(0.02f);
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
             visualEffect.SendEvent("OnPlay");

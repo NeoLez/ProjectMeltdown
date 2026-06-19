@@ -14,8 +14,7 @@ namespace Root {
 
         public void AnimatorOn()
         {
-            _animator.Play("Insert");
-            
+            _animator.SetBool("Insert", true);
         }
     }
 }
