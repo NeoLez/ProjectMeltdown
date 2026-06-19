@@ -157,5 +157,20 @@ namespace Root {
 
             _rebaseCounter--;
         }
+        public MapSection GetNextStation() // Próxima estación en el recorrido, null si no hay
+        {
+            foreach (var section in IncomingSections)
+            {
+                if (section.isStation)
+                    return section;
+            }
+
+            return null;
+        }
+
+        public bool IsTrainInStation() // True si el tren está actualmente en una estación
+        {
+            return IncomingSections.Count > 0 && IncomingSections[0].isStation;
+        }
     }
 }

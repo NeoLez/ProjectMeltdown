@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Root {
     public class MapSection : MonoBehaviour {
+        public bool isStation;
         [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
 
         public List<TrainPathWaypoint> GetWaypoints() {
