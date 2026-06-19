@@ -36,15 +36,16 @@ namespace Root {
 
         public static Feature GetFeature() {
             float chance = Random.value;
+            Debug.Log(chance);
             if (chance <= 0.6f) {
-                return  Feature.TUNNEL;
+                return Feature.TUNNEL;
             }
-
-            if (chance <= 0.6f) {
-                return Feature.ABANDONED_STATION;
+                if (chance <= 0.8f) 
+            {
+                 return Feature.ABANDONED_STATION;
             }
-
-            return Feature.STATION;
+            else { return Feature.STATION; }
+                
         }
         
         public class Map {
