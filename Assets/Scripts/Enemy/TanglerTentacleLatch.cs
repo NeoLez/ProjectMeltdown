@@ -1,7 +1,9 @@
+using UnityEngine;
+
 namespace Root.Enemy {
     public class TanglerTentacleLatch : InteractableNormalCamera {
         public TanglerTentacle tangler;
-        
+        [SerializeField] GameObject _particles;
         public int ChainLatchNumber;
         
         public override void Interact() {
@@ -12,8 +14,17 @@ namespace Root.Enemy {
             Invoke(nameof(DestroyThingy), time);
         }
 
-        public void DestroyThingy() {
+        public void DestroyThingy() 
+        {
+            Instantiate(_particles, transform.position, transform.rotation);
             Destroy(gameObject);
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                Interact();
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Root.Enemy {
         [SerializeField] float _maxRadius = 10f;
         [SerializeField] float _minRadius = 2f;
         [SerializeField] GameObject visuals;
+        [SerializeField] GameObject _particles;
         [SerializeField] TanglerTentacle tentaclePrefab;
         [SerializeField] int maxTentacleQuantity = 3;
         bool _maxTangle = false;
@@ -67,6 +68,7 @@ namespace Root.Enemy {
 
             _isDead = true;
             visuals.SetActive(false);
+            Instantiate(_particles, transform.position, Quaternion.identity, transform);
             Invoke(nameof(Destroy), 5f);
         }
 
