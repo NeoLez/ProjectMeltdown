@@ -5,7 +5,7 @@ namespace Root.Enemy {
         public TanglerTentacle tangler;
         [SerializeField] GameObject _particles;
         public int ChainLatchNumber;
-        
+        bool _once = true;
         public override void Interact() {
             tangler.Cut(ChainLatchNumber);
         }
@@ -20,10 +20,13 @@ namespace Root.Enemy {
             Destroy(gameObject);
         }
         private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                Interact();
+        {            
+            if (other.CompareTag("Player") || _once)
+            {             
+                    var PJ = other.GetComponent<HealthControl>();
+                    PJ.TakeDamage(35f);
+                    Interact();
+                _once = false;
             }
         }
     }
