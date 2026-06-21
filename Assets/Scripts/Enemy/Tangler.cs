@@ -6,8 +6,9 @@ namespace Root.Enemy {
     public class Tangler : InteractableNormalCamera {
         [SerializeField] float _maxRadius = 10f;
         [SerializeField] float _minRadius = 2f;
-        [SerializeField] GameObject visuals;
+        [SerializeField] GameObject _visuals;
         [SerializeField] GameObject _particles;
+        [SerializeField] GameObject _particlesHit;
         [SerializeField] TanglerTentacle tentaclePrefab;
         [SerializeField] int maxTentacleQuantity = 3;
         bool _maxTangle = false;
@@ -16,14 +17,17 @@ namespace Root.Enemy {
         private Dictionary<int, TanglerTentacle> _tentacles = new();
         private int _tentacleAmount;
         private int _tentacleID;
-
+        [SerializeField]private int _health = 3;
         private bool _isDead;
         
         [SerializeField] float tentacleSpawnCooldown = 15f;
         private float _lastTentacleSpawnTime;
+        Animator _animator;
+
 
         private void Awake() {
             _lastTentacleSpawnTime = Time.time;
+            _animator = _visuals.GetComponent<Animator>();
         }
 
         private void Update() {
@@ -59,17 +63,23 @@ namespace Root.Enemy {
             return !_isDead && (_tentacleAmount < maxTentacleQuantity);
         }
 
-        public override void Interact() {
+        public override void Interact() 
+        {
             if (_isDead) return;
-            foreach (var tentacle in _tentacles) {
-                if (tentacle.Value.IsDead()) continue;
-                tentacle.Value.Cut(0);
-            }
+            if (_health <= 0) 
+            {
+                foreach (var tentacle in _tentacles)
+                {
+                    if (tentacle.Value.IsDead()) continue;
+                    tentacle.Value.Cut(0);
+                }
 
-            _isDead = true;
-            visuals.SetActive(false);
-            Instantiate(_particles, transform.position, Quaternion.identity, transform);
-            Invoke(nameof(Destroy), 5f);
+                _isDead = true;
+                _visuals.SetActive(false);
+                Instantiate(_particles, transform.position, Quaternion.identity, transform);
+                Invoke(nameof(Destroy), 5f);
+            }
+            else { _animator.Play("Damage", -1, 0f); Instantiate(_particlesHit, transform.position, transform.rotation); _health--; }
         }
 
         private void HandleOnTentacleCut() {

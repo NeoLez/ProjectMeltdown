@@ -72,13 +72,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.TanglerBehavior
   _maxRadius: 20
   _minRadius: 2
-  visuals: {fileID: 224208897061824222}
+  _visuals: {fileID: 224208897061824222}
   _particles: {fileID: 3960954949758265888, guid: b0671952e5a32564fb842b3d3037e780, type: 3}
+  _particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
   tentaclePrefab: {fileID: 7890181221209374021, guid: 3d1d67053776261f8ab5513d6a3f40a4, type: 3}
   maxTentacleQuantity: 3
   layerMask:
     serializedVersion: 2
     m_Bits: 8
+  _health: 3
   tentacleSpawnCooldown: 2
 --- !u!1 &3454196259793415225
 GameObject:
@@ -334,6 +336,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Decal Projector_24
       objectReference: {fileID: 0}
+    - target: {fileID: 3762604586858721386, guid: 2ff55cc993366974ab3cad78ade95a9b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4024757476059890280, guid: 2ff55cc993366974ab3cad78ade95a9b, type: 3}
       propertyPath: m_Size.x
       value: 1.83
@@ -423,6 +429,10 @@ PrefabInstance:
     - target: {fileID: 3762604586858721386, guid: 2ff55cc993366974ab3cad78ade95a9b, type: 3}
       propertyPath: m_Name
       value: Decal Projector_25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762604586858721386, guid: 2ff55cc993366974ab3cad78ade95a9b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4024757476059890280, guid: 2ff55cc993366974ab3cad78ade95a9b, type: 3}
       propertyPath: m_Size.x
