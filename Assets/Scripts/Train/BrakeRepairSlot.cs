@@ -28,13 +28,16 @@ namespace Root
 
             brakeController.Repair(fluid.repairAmount);
 
-            holder.ForceClearHeldItem();
+            if (TryInsertBattery(fluid))
+            {
+                holder.ForceClearHeldItem();
+            }
         }
         System.Collections.IEnumerator AnimTrigger(BrakeFluid fluid)
         {
             yield return new WaitForSeconds(0.02f);
             fluid.AnimatorOn();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             Destroy(fluid.gameObject);
         }
 

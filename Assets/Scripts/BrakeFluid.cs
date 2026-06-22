@@ -8,6 +8,7 @@ namespace Root
         [SerializeField] Animator _animator;
         public void AnimatorOn()
         {
+            Debug.Log("startAnimationFluid");
             _animator.SetBool("Insert", true);
         }
     }
