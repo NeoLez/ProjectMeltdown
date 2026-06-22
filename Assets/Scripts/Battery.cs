@@ -7,11 +7,6 @@ namespace Root {
         public float maxEnergy;
         [SerializeField] Animator _animator;
 
-        private void Start()
-        {
-            
-        }
-
         public void AnimatorOn()
         {
             _animator.SetBool("Insert", true);
