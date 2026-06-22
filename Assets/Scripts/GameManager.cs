@@ -7,6 +7,7 @@ public static class GameManager {
   public static Camera Camera;
   public static Train Train;
   public static MapGeneration MapGeneration;
+  public static AudioSystem AudioSystem;
   public static readonly Vector2 RTSize = new(640,360);  
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -17,7 +18,10 @@ public static class GameManager {
       Input.CameraMovement.Enable();
       Input.Interaction.Enable();
       Input.Interaction.Interact.Enable();
-  }
+
+      AudioSystem = new AudioSystem();
+
+    }
 
   public static Vector2 GetResolutionRatio()
   {

@@ -1,3 +1,4 @@
+using Root.Controller;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,7 +30,7 @@ namespace Root
                 GameManager.Input.CameraMovement.Disable();
                 GameManager.Input.Interaction.Disable();
 
-                AudioListener.pause = true;
+                GameManager.AudioSystem?.PauseAll();
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -40,7 +41,7 @@ namespace Root
                 GameManager.Input.CameraMovement.Enable();
                 GameManager.Input.Interaction.Enable();
 
-                AudioListener.pause = false;
+                GameManager.AudioSystem?.ResumeAll();
 
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
@@ -55,6 +56,7 @@ namespace Root
 
         public void ReturnToMenu()
         {
+            GameManager.AudioSystem?.ResumeAll();
             GameManager.Input.Enable();
 
             Cursor.visible = true;
