@@ -11,6 +11,7 @@ namespace Root
 
         [SerializeField] private float batteryDrain = 0.5f;
 
+        [Header("Sounds")]
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
 
@@ -65,12 +66,6 @@ namespace Root
             }
 
             _battery.energy -= batteryDrain * Time.deltaTime;
-
-            if (!_powered)
-            {
-                _powered = true;
-                OnPowerRestored?.Invoke();
-            }
         }
 
         private void LateUpdate()
@@ -142,6 +137,11 @@ namespace Root
                 visualEffect.SendEvent("OnPlay");
             if (_soundInsert != null)
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
+            if (!_powered)
+            {
+                _powered = true;
+                OnPowerRestored?.Invoke();
+            }
             yield return new WaitForSeconds(0.10f);
             _animationEnd = true;
         }

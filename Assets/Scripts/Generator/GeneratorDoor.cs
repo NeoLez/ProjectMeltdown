@@ -19,6 +19,10 @@ namespace Root
         [Header("General")]
         [SerializeField] private float smooth = 3f;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioClip _soundOpen;
+        [SerializeField] private AudioClip _soundClose;
+
         private Quaternion _closedRotation;
         private Quaternion _openRotation;
         private Vector3 _closedPosition;
@@ -60,6 +64,8 @@ namespace Root
         private void HandlePowerRestored()
         {
             if (_currentRoutine != null) StopCoroutine(_currentRoutine);
+            if (_soundOpen != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundOpen, transform.position, GameManager.AudioSystem.VFX);
             _currentRoutine = mode == DoorMode.Rotate
                 ? StartCoroutine(RotateDoor(_openRotation))
                 : StartCoroutine(MoveDoor(_openPosition));
@@ -68,6 +74,8 @@ namespace Root
         private void HandlePowerLost()
         {
             if (_currentRoutine != null) StopCoroutine(_currentRoutine);
+            if (_soundClose != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundClose, transform.position, GameManager.AudioSystem.VFX);
             _currentRoutine = mode == DoorMode.Rotate
                 ? StartCoroutine(RotateDoor(_closedRotation))
                 : StartCoroutine(MoveDoor(_closedPosition));
