@@ -1,4 +1,5 @@
 using PrimeTween;
+using System;
 using UnityEngine;
 
 namespace Root {
@@ -20,7 +21,7 @@ namespace Root {
         
         private bool isAnimating = false;
         private bool isCoverDown = true;
-        
+        [SerializeField] DiscSlot _discSlot;
         private void Awake() {
             coverEasing = Easing.Bounce(0.5f);
         }
@@ -34,6 +35,7 @@ namespace Root {
 
             if (IsSpent() || isBraking || GameManager.Train.IsStopped())
             {
+                Debug.Log("EmergenciaNO");
                 LowerAndRaiseButton();
                 return;
             }
@@ -41,6 +43,8 @@ namespace Root {
             LowerButtonAndCloseCover();
             isBraking = true;
             usesLeft--;
+            Debug.Log("Emergencia");
+            _discSlot.Disc.SetDiscUsage();
         }
 
         public override void EndInteraction()
@@ -90,18 +94,20 @@ namespace Root {
         }
 
         public int Repair(int amount) {
-            int maxRepairs = maxUses - usesLeft;
+            /*int maxRepairs = maxUses - usesLeft;
             if (amount > maxRepairs) {
                 usesLeft = maxUses;
                 return amount - maxRepairs;
             }
             
-            usesLeft += amount;
+            usesLeft += amount;*/
+            usesLeft = amount;
             return 0;
         }
 
         public bool IsSpent() {
             return usesLeft <= 0;
         }
+
     }
 }
