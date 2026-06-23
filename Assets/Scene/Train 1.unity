@@ -1288,12 +1288,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 230484817}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.70934004, w: 0.7048664}
-  m_LocalPosition: {x: 0.06, y: 0, z: 0.046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.70710325, y: 0.0022369623, z: -0.70710325, w: 0.0022369325}
+  m_LocalPosition: {x: 0.00399, y: 0.0011, z: 0.000062892745}
+  m_LocalScale: {x: 0.0050000004, y: 0.005, z: 0.0050000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1451264423}
+  m_Father: {fileID: 7292228131626642294}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.362}
 --- !u!1 &242273396
 GameObject:
@@ -1524,7 +1524,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.TriggerAnimationByInteract
   _visual: {fileID: 7258558914211190754}
-  _MultipleColliders: 1
+  _multipleColliders: 1
+  _externalCollider: {fileID: 0}
   colliders:
   - {fileID: 256809704}
   - {fileID: 256809703}
@@ -7588,7 +7589,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.TriggerAnimationByInteract
   _visual: {fileID: 2880003376413889429}
-  _MultipleColliders: 1
+  _multipleColliders: 1
+  _externalCollider: {fileID: 1451264425}
   colliders:
   - {fileID: 930347402}
   - {fileID: 930347403}
@@ -12284,8 +12286,7 @@ Transform:
   m_LocalPosition: {x: 0.119, y: 0.423, z: -0.29}
   m_LocalScale: {x: 1, y: 1.3056195, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 230484818}
+  m_Children: []
   m_Father: {fileID: 930347401}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1451264425
@@ -12305,7 +12306,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.37353265, y: 1, z: 1.0434141}
   m_Center: {x: -0.018725336, y: 0, z: -0.021707058}
@@ -19342,7 +19343,8 @@ Transform:
   m_LocalPosition: {x: -1.809196, y: 0.3114057, z: 11.603137}
   m_LocalScale: {x: 199.99995, y: 199.99997, z: 199.99997}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 230484818}
   m_Father: {fileID: 1903895828}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7292228131626642295
