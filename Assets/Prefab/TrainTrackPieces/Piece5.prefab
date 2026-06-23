@@ -1498,6 +1498,7 @@ GameObject:
   - component: {fileID: 672697148489268385}
   - component: {fileID: 1832874830030432571}
   - component: {fileID: 5726208613432328926}
+  - component: {fileID: 253157422114425069}
   m_Layer: 3
   m_Name: Floor_1
   m_TagString: Untagged
@@ -1598,6 +1599,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &253157422114425069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4271943667156426941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
+  materialType: 1
 --- !u!1 &4849071540754307707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,7 +1622,6 @@ GameObject:
   m_Component:
   - component: {fileID: 181863085953778054}
   - component: {fileID: 5024895116933449650}
-  - component: {fileID: 2509095204387650096}
   m_Layer: 0
   m_Name: Piece5
   m_TagString: Untagged
@@ -1655,19 +1668,6 @@ MonoBehaviour:
   alert: {fileID: 11400000, guid: ff709923be46688be83c1f113cce4e75, type: 2}
   end: {fileID: 4813942471683659535}
   shouldConsumeAlert: 0
---- !u!114 &2509095204387650096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4849071540754307707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
-  materialType: 1
 --- !u!1 &6555175087388508055
 GameObject:
   m_ObjectHideFlags: 0

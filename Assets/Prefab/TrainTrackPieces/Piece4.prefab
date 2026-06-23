@@ -1453,6 +1453,7 @@ GameObject:
   - component: {fileID: 6432112492918432625}
   - component: {fileID: 8485791505346248461}
   - component: {fileID: 6345838902007748676}
+  - component: {fileID: 8265394617134953695}
   m_Layer: 3
   m_Name: Floor_1
   m_TagString: Untagged
@@ -1553,6 +1554,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8265394617134953695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842241323524358386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
+  materialType: 1
 --- !u!1 &4849071540754307707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,7 +1577,6 @@ GameObject:
   m_Component:
   - component: {fileID: 181863085953778054}
   - component: {fileID: 5024895116933449650}
-  - component: {fileID: 261989418757304124}
   m_Layer: 0
   m_Name: Piece4
   m_TagString: Untagged
@@ -1610,19 +1623,6 @@ MonoBehaviour:
   alert: {fileID: 11400000, guid: 601913a49523d5eba8e8bc500186043e, type: 2}
   end: {fileID: 8839246655429309750}
   shouldConsumeAlert: 0
---- !u!114 &261989418757304124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4849071540754307707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
-  materialType: 1
 --- !u!1 &5190144595486079824
 GameObject:
   m_ObjectHideFlags: 0
@@ -2220,7 +2220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
-  materialType: 0
+  materialType: 1
 --- !u!4 &4561061342631742782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7534092016020701443, guid: 2ec3af716f1930d45a6f368bebf63216, type: 3}
