@@ -7,6 +7,7 @@ namespace Root
     {
         Animator _animator;
         [SerializeField] GameObject _visual;
+        [SerializeField] Animator _pivot;
         [SerializeField] bool _multipleColliders = false;
         [SerializeField] BoxCollider _externalCollider;
         [SerializeField] List<BoxCollider> colliders;
@@ -20,8 +21,8 @@ namespace Root
             {
                 Colliders();
             }
-            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); }
-            else {_animator.SetBool("Open", true); }
+            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); _pivot.SetBool("Open", false);}
+            else {_animator.SetBool("Open", true); _pivot.SetBool("Open", true);}
             if (_externalCollider != null) 
             {
                 if (_externalCollider.enabled) { _externalCollider.enabled = false; }

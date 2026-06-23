@@ -33,7 +33,7 @@ namespace Root {
                 return;
             }
 
-            if (IsSpent() || isBraking || GameManager.Train.IsStopped())
+            if (IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.Disc == null)
             {
                 Debug.Log("EmergenciaNO");
                 LowerAndRaiseButton();
