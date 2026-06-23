@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Root.Controller {
+namespace Root.Controller
+{
     [RequireComponent(typeof(Rigidbody), typeof(CameraController), typeof(CapsuleCollider))]
-    public class MovementController : MonoBehaviour {
+    public class MovementController : MonoBehaviour
+    {
         private PlayerInputActions _input;
         private Rigidbody _rb;
         private CameraController _cameraController;
@@ -23,9 +25,15 @@ namespace Root.Controller {
 
         [SerializeField] private float currentVerticalSpeed;
 
-        private bool jump;
+        [Header("Footsteps")]
+        [SerializeField] private float footstepDistance = 1.5f;
 
-        private void Start() {
+        private bool jump;
+        private float _distanceTravelled;
+        private Vector3 _lastPosition;
+
+        private void Start()
+        {
             _input = GameManager.Input;
             _rb = GetComponent<Rigidbody>();
             _cameraController = GetComponent<CameraController>();
@@ -33,82 +41,127 @@ namespace Root.Controller {
 
             _input.Movement.Enable();
             _input.Movement.Jump.performed += Jump;
+
+            _lastPosition = transform.position;
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             _input.Movement.Jump.performed -= Jump;
         }
 
-        private void FixedUpdate() {
-            if (jump) {
+        private void FixedUpdate()
+        {
+            if (jump)
+            {
                 currentVerticalSpeed = verticalJumpSpeed;
                 jump = false;
             }
-                        
+
             UpdateState();
-                        
-            
-            if (_currentState == CharacterState.Grounded) {
+
+            if (_currentState == CharacterState.Grounded)
+            {
                 currentVerticalSpeed = 0;
             }
-            else {
+            else
+            {
                 currentVerticalSpeed += Physics.gravity.y * Time.deltaTime;
             }
-                        
+
             Vector2 input = _input.Movement.MoveDir.ReadValue<Vector2>();
             Vector3 worldMoveDir = (_cameraController.GetHorizontalDirectionForwardVector() * input.y +
                                     _cameraController.GetHorizontalDirectionRightVector() * input.x).Swizzle_x0y();
 
-
-
             _rb.linearVelocity = worldMoveDir * movementSpeed + Vector3.up * currentVerticalSpeed;
-            
+
+            if (_currentState == CharacterState.Grounded && _rb.linearVelocity.magnitude > 0.1f)
+            {
+                _distanceTravelled += Vector3.Distance(transform.position, _lastPosition);
+                if (_distanceTravelled >= footstepDistance)
+                {
+                    _distanceTravelled = 0;
+                    PlayFootstep();
+                }
+            }
+
+            _lastPosition = transform.position;
         }
 
         private Vector3 prevLocalPos;
 
-        private void UpdateState() {
-            if (currentVerticalSpeed > 0) {
+        private void UpdateState()
+        {
+            if (currentVerticalSpeed > 0)
+            {
                 _currentState = CharacterState.Air;
                 _currentSurfaceNormal = Vector3.up;
                 return;
             }
             if (Physics.SphereCast(transform.position, _collider.radius - 0.001f, Vector3.down, out RaycastHit hit,
-                    groundCheckRayLength, groundLayer)) {
-                //Do another raycast since the normal vector obtained through the SphereCast collider are inaccurate
-                if (Physics.Raycast(hit.point + Vector3.up, Vector3.down, out hit, 2f, groundLayer)) {
+                    groundCheckRayLength, groundLayer))
+            {
+                if (Physics.Raycast(hit.point + Vector3.up, Vector3.down, out hit, 2f, groundLayer))
+                {
                     _currentSurfaceNormal = hit.normal;
                     _currentSlopeAngle = Vector3.Angle(_currentSurfaceNormal, Vector3.up);
 
-                    if (_currentSlopeAngle <= maxSlopeAngle) {
+                    if (_currentSlopeAngle <= maxSlopeAngle)
+                    {
                         _currentState = CharacterState.Grounded;
                         _currentPhysicsMaterial = hit.collider.gameObject.GetComponent<Collider>().material;
                     }
-                    else {
+                    else
+                    {
                         _currentState = CharacterState.Air;
                         _currentSurfaceNormal = Vector3.up;
                     }
                 }
             }
-            else {
+            else
+            {
                 _currentSurfaceNormal = Vector3.up;
                 _currentState = CharacterState.Air;
             }
         }
 
-        private void Jump(InputAction.CallbackContext _) {
-            if (_currentState == CharacterState.Grounded) {
+        private void PlayFootstep()
+        {
+            SoundSystem.MaterialType material = SoundSystem.MaterialType.None;
+
+            if (Physics.SphereCast(
+                    transform.position,
+                    _collider.radius - 0.001f,
+                    Vector3.down,
+                    out RaycastHit hit,
+                    groundCheckRayLength,
+                    groundLayer))
+            {
+                if (hit.collider.TryGetComponent(out SoundSystem.MaterialTypeComponent matComp))
+                    material = matComp.materialType;
+            }
+
+            var so = SoundSystem.FootstepMaterialDatabase.Dictionary[material];
+            so?.PlaySound();
+        }
+
+        private void Jump(InputAction.CallbackContext _)
+        {
+            if (_currentState == CharacterState.Grounded)
+            {
                 jump = true;
             }
         }
-        
-        public CharacterState GetState() {
+
+        public CharacterState GetState()
+        {
             return _currentState;
         }
     }
 }
 
-public enum CharacterState {
+public enum CharacterState
+{
     Grounded,
     Air,
 }
