@@ -58,6 +58,8 @@ namespace Root
 
         public event Action OnPowerLost;
         public event Action OnPowerRestored;
+        public event Action OnTrainStartedMoving;
+        public event Action OnTrainStoppedMoving;
         private bool _powerLost;
         private bool _engineEnabled = true;
 
@@ -218,7 +220,7 @@ namespace Root
         private void TrainStopped()
         {
             isStopped = true;
-
+            OnTrainStoppedMoving?.Invoke();
             if (emergencyStopButton.IsBreaking())
             {
                 emergencyStopButton.FinishBraking();
@@ -231,7 +233,7 @@ namespace Root
         private void TrainStarted()
         {
             isStopped = false;
-
+            OnTrainStartedMoving?.Invoke();
             if (externalDoorsOpened)
             {
                 CloseExternalDoors(false);
@@ -475,6 +477,10 @@ namespace Root
         public float GetCurrentMaxSpeed()
         {
             return currentWaypoint != null ? currentWaypoint.maxSpeed : 0.0f;
+        }
+
+        public Transform GetTrainPosition() {
+            return trainPosition;
         }
     }
 }

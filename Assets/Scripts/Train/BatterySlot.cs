@@ -75,6 +75,17 @@ namespace Root
             _animationEnd = true;
         }
 
+        private void Awake() {
+            train.OnTrainStartedMoving += (() => {
+                if (_battery == null) return;
+                _battery.GetComponent<VisualContainer>().goal = train.GetTrainPosition();
+            });
+            train.OnTrainStoppedMoving += (() => {
+                if (_battery == null) return;
+                _battery.GetComponent<VisualContainer>().goal = null;
+            });
+        }
+
         private void Update()
         {
             if (_battery == null)
