@@ -1554,6 +1554,7 @@ MonoBehaviour:
   colliders:
   - {fileID: 256809704}
   - {fileID: 256809703}
+  sound: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!65 &256809703
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8480,6 +8481,7 @@ MonoBehaviour:
   batteryStopTime: 5
   AlertSystem: {fileID: 1068053787}
   _descarriladoAudio: {fileID: 8300000, guid: 7552d920be0b5b746bc3697db5999df3, type: 3}
+  _trainReleaseAudio: {fileID: 8300000, guid: 320b82440cb37e142b5250ee97e276c1, type: 3}
   currentMaxSpeed: 0
   currentDistanceBetweenPathpoints: 0
   currentDistanceTraveledToNextPathpoint: 0
@@ -11018,6 +11020,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1874688292}
     - target: {fileID: 3318387083066956081, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
+      propertyPath: sound
+      value: 
+      objectReference: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
+    - target: {fileID: 3318387083066956081, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
       propertyPath: _pivot
       value: 
       objectReference: {fileID: 860920609}
@@ -11221,6 +11227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.LightSwitchButton
   onObject: {fileID: 0}
   offObject: {fileID: 0}
+  sound: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
   <Locked>k__BackingField: 0
   lights:
   - {fileID: 1442088707}
@@ -11244,12 +11251,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.ForkDecisionSwitch
   onObject: {fileID: 0}
   offObject: {fileID: 0}
+  sound: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
   <Locked>k__BackingField: 0
   right: 0
   lightObject: {fileID: 1632196840}
   rotationOn: {fileID: 126187435}
   rotationOff: {fileID: 422470710}
   rotationTime: 0.1
+  sound: {fileID: 0}
 --- !u!4 &1337434676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 122787829194029660, guid: ecd5cc2c9e25546418d4de1ea7278e26, type: 3}
@@ -14860,6 +14869,8 @@ MonoBehaviour:
   coverRotationAngle: 105
   coverRotationTime: 0.2
   _discSlot: {fileID: 571778164}
+  stopSound: {fileID: 8300000, guid: 64cd68e91505d884b9732e3e8ccb91ea, type: 3}
+  interactSound: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
 --- !u!1 &1874893840
 GameObject:
   m_ObjectHideFlags: 0
@@ -15755,6 +15766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.Button
   onObject: {fileID: 0}
   offObject: {fileID: 0}
+  sound: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
   <Locked>k__BackingField: 0
 --- !u!65 &2002497078
 BoxCollider:

@@ -56,6 +56,7 @@ namespace Root
 
         public TrainAlertSystem AlertSystem;
         [SerializeField] private AudioClip _descarriladoAudio;
+        [SerializeField] private AudioClip _trainReleaseAudio;
 
         public event Action OnPowerLost;
         public event Action OnPowerRestored;
@@ -96,7 +97,8 @@ namespace Root
             if (_descarrilado)
             {
                 ui_descarrilado.SetActive(true);
-                AudioSource.PlayClipAtPoint(_descarriladoAudio, GameManager.Camera.transform.position);
+                if(!ui_descarrilado.activeInHierarchy)
+                    GameManager.AudioSystem.PlaySound(_descarriladoAudio);
                 return;
             }
 
@@ -223,6 +225,7 @@ namespace Root
         {
             isStopped = true;
             OnTrainStoppedMoving?.Invoke();
+            GameManager.AudioSystem.PlaySound(_trainReleaseAudio);
             if (emergencyStopButton.IsBreaking())
             {
                 emergencyStopButton.FinishBraking();

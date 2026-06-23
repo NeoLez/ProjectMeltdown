@@ -11,6 +11,7 @@ namespace Root
         [SerializeField] bool _multipleColliders = false;
         [SerializeField] BoxCollider _externalCollider;
         [SerializeField] List<BoxCollider> colliders;
+        [SerializeField] private AudioClip sound;
         private void Start()
         {
             _animator = _visual.GetComponent<Animator>();
@@ -23,6 +24,7 @@ namespace Root
             }
             if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); _pivot.SetBool("Open", false);}
             else {_animator.SetBool("Open", true); _pivot.SetBool("Open", true);}
+            if (sound != null) AudioSource.PlayClipAtPoint(sound, transform.position);
             if (_externalCollider != null) 
             {
                 if (_externalCollider.enabled) { _externalCollider.enabled = false; }

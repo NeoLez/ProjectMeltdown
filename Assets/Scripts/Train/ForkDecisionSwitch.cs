@@ -12,12 +12,14 @@ namespace Root {
         public Transform rotationOff;
         public float rotationTime;
         private bool isAnimating;
-
+        [SerializeField] private AudioClip sound;
+        
         private void Awake() {
             OnClicked += Toggle;
         }
 
         public void Toggle() {
+            if (sound != null) AudioSource.PlayClipAtPoint(sound, transform.position);
             if(right) TurnOff();
             else TurnOn();
         }

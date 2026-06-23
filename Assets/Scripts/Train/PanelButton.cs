@@ -6,12 +6,14 @@ namespace Root {
         public GameObject onObject;
         public GameObject offObject;
         public event Action OnClicked;
+        [SerializeField] private AudioClip sound;
 
         [field: SerializeField] private bool Locked { get; set; }
         
         public override void StartInteraction() {
             if (!Locked) {
                 OnClicked?.Invoke();
+                if (sound != null) AudioSource.PlayClipAtPoint(sound, transform.position);
             }
         }
 

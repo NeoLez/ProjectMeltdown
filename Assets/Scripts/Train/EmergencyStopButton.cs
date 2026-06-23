@@ -22,12 +22,15 @@ namespace Root {
         private bool isAnimating = false;
         private bool isCoverDown = true;
         [SerializeField] DiscSlot _discSlot;
+        [SerializeField] private AudioClip stopSound;
+        [SerializeField] private AudioClip interactSound;
         private void Awake() {
             coverEasing = Easing.Bounce(0.5f);
         }
 
         public override void StartInteraction() {
             if (isAnimating) return;
+            if (interactSound != null) AudioSource.PlayClipAtPoint(interactSound, transform.position);
             if (isCoverDown) {
                 OpenCover();
                 return;
@@ -43,6 +46,7 @@ namespace Root {
             LowerButtonAndCloseCover();
             isBraking = true;
             usesLeft--;
+            GameManager.AudioSystem.PlaySound(stopSound);
             Debug.Log("Emergencia");
             _discSlot.Disc.SetDiscUsage();
         }
