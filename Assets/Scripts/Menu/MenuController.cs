@@ -7,16 +7,11 @@ namespace Root
     {
         [SerializeField] private GameObject pantallaMenu;
         [SerializeField] private GameObject pantallaClases;
-        [SerializeField] private UnityEngine.UI.Button[] classButtons;
-
-        private int _selectedClass = 0;
 
         private void Start()
         {
             pantallaMenu.SetActive(true);
             pantallaClases.SetActive(false);
-
-            SelectClass(0);
         }
 
         public void Play()
@@ -33,23 +28,7 @@ namespace Root
 
         public void SelectClass(int classNumber)
         {
-            _selectedClass = classNumber;
-
-            if (classButtons == null)
-                return;
-
-            for (int i = 0; i < classButtons.Length; i++)
-            {
-                if (classButtons[i] != null)
-                {
-                    classButtons[i].interactable = i != _selectedClass;
-                }
-            }
-        }
-
-        public void Confirmar()
-        {
-            GameManager.VeryUglyKitNumber = _selectedClass;
+            GameManager.VeryUglyKitNumber = classNumber;
             SceneManager.LoadScene("Train 1");
         }
 
