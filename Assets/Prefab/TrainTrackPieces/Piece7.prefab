@@ -1563,6 +1563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181863085953778054}
   - component: {fileID: 5024895116933449650}
+  - component: {fileID: 85667808116334832}
   m_Layer: 0
   m_Name: Piece7
   m_TagString: Untagged
@@ -1603,11 +1604,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eae37ec2c5a40f6bc77cce40bec7c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStation: 0
   _waypoints:
   - {fileID: 5538528545129519094}
   alert: {fileID: 11400000, guid: ff709923be46688be83c1f113cce4e75, type: 2}
   end: {fileID: 8839246655429309750}
   shouldConsumeAlert: 0
+--- !u!114 &85667808116334832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4849071540754307707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
+  materialType: 1
 --- !u!1 &5190144595486079824
 GameObject:
   m_ObjectHideFlags: 0

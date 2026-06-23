@@ -1822,6 +1822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eae37ec2c5a40f6bc77cce40bec7c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStation: 0
   _waypoints:
   - {fileID: 2076848652070145259}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
@@ -1884,6 +1885,7 @@ GameObject:
   - component: {fileID: 3105555009546356377}
   - component: {fileID: 8853983640494371472}
   - component: {fileID: 620623357826333923}
+  - component: {fileID: 7065600996184686608}
   m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
@@ -1984,6 +1986,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7065600996184686608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6890407242697734169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fca37f95b8f174f9179ae0c079d915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
+  materialType: 1
 --- !u!1001 &777753206378869073
 PrefabInstance:
   m_ObjectHideFlags: 0
