@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root
@@ -5,10 +6,23 @@ namespace Root
     public class DiscSlot : InteractableNormalCamera
     {
         [SerializeField] private Transform pivot;
+        [SerializeField] private Train train;
         [SerializeField] private EmergencyStopButton _emergencyDisc;
         public BreakDisc Disc;
 
         private bool _animationEnd = false;
+
+        private void Awake() {
+            train.OnTrainStartedMoving += (() => {
+                if (Disc == null) return;
+                Disc.GetComponent<VisualContainer>().goal = train.GetTrainPosition();
+            });
+            train.OnTrainStoppedMoving += (() => {
+                if (Disc == null) return;
+                Disc.GetComponent<VisualContainer>().goal = null;
+            });
+        }
+
         public override void Interact()
         {
             PlayerItemHolder holder =
