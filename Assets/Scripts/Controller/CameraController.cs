@@ -5,6 +5,7 @@ using Timers;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class CameraController : MonoBehaviour
 {
@@ -130,6 +131,8 @@ public class CameraController : MonoBehaviour
 
         Vector3 viewBobVector = GetHorizontalDirectionRightVector().Swizzle_x0y() * cameraBobbingOffset.x + Vector3.up * cameraBobbingOffset.y;
         cam.position = cameraPosition.position + viewBobVector;
+        CalculateShakeOffset();
+        cam.localPosition += GetShakeOffset();
 
         yaw += _input.CameraMovement.MouseX.ReadValue<float>() * sensitivity;
         pitch += _input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
@@ -150,6 +153,33 @@ public class CameraController : MonoBehaviour
         float s = Mathf.Sin((Time.time - startedWalk) * frequency + (float)Math.PI / 2);
         cameraBobbingOffset.y = Mathf.Lerp(cameraBobbingOffset.y, s * verticalAmount * 1.4f, smooth * Time.deltaTime);
         cameraBobbingOffset.x = Mathf.Lerp(cameraBobbingOffset.x, Mathf.Cos((Time.time - startedWalk) * frequency / 2 + (float)Math.PI / 2) * horizontalAmount * 1.6f, smooth * Time.deltaTime);
+    }
+    
+    public float shakeIntensity;
+    public float targetShakeIntensity;
+    public float shakeTime;
+    public float shakeIntensityLerp;
+    public float shakeLerpBetweenRandomVectors;
+    private Vector3 GetShakeOffset()
+    {
+        return new Vector3(
+            Random.Range(-1f, 1f) * shakeIntensity,
+            Random.Range(-1f, 1f) * shakeIntensity,
+            0f
+        );
+    }
+
+    public void Shake(float intensity, float time) {
+        targetShakeIntensity = intensity;
+        shakeTime = time + Time.time;
+    }
+
+    private void CalculateShakeOffset() {
+        if (shakeTime < Time.time) {
+            shakeIntensity = Mathf.Lerp(shakeIntensity, 0, shakeIntensityLerp);
+            return;
+        }
+        shakeIntensity = Mathf.Lerp(shakeIntensity, targetShakeIntensity, shakeIntensityLerp);
     }
 
     public void AddPitch(float n)
