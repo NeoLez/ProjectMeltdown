@@ -96,9 +96,9 @@ namespace Root
         {
             if (_descarrilado)
             {
-                ui_descarrilado.SetActive(true);
                 if(!ui_descarrilado.activeInHierarchy)
                     GameManager.AudioSystem.PlaySound(_descarriladoAudio);
+                ui_descarrilado.SetActive(true);
                 return;
             }
 
