@@ -6,12 +6,13 @@ namespace Root
 {
     public class GeneratorSlot : InteractableNormalCamera
     {
-        [Header("Referencias")]
         [SerializeField] private Transform pivot;
         [SerializeField] private VisualEffect visualEffect;
 
-        [Header("Consumo")]
         [SerializeField] private float batteryDrain = 0.5f;
+
+        [SerializeField] private AudioClip _soundInsert;
+        [SerializeField] private AudioClip _soundRemove;
 
         private Battery _battery;
         private bool _animationEnd;
@@ -21,13 +22,11 @@ namespace Root
 
         private bool _powered = false;
 
-
         public override void Interact()
         {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
             if (holder == null) return;
 
-            // Retirar batería
             if (!holder.HasItem && _battery != null)
             {
                 Battery battery = TakeBattery();
@@ -39,7 +38,6 @@ namespace Root
                 return;
             }
 
-            // Insertar batería
             if (!holder.HasItem) return;
 
             Battery batteryToInsert = holder.HeldItem.GetComponent<Battery>();
@@ -66,7 +64,6 @@ namespace Root
                 return;
             }
 
-            // Consumo continuo
             _battery.energy -= batteryDrain * Time.deltaTime;
 
             if (!_powered)
@@ -128,10 +125,14 @@ namespace Root
                 OnPowerLost?.Invoke();
             }
 
+            if (_soundRemove != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);
+
             return battery;
         }
 
         public Battery GetBattery() => _battery;
+
         System.Collections.IEnumerator AnimTrigger(Battery battery)
         {
             _animationEnd = false;
@@ -139,6 +140,8 @@ namespace Root
             yield return new WaitForSeconds(0.70f);
             if (visualEffect != null)
                 visualEffect.SendEvent("OnPlay");
+            if (_soundInsert != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
             yield return new WaitForSeconds(0.10f);
             _animationEnd = true;
         }

@@ -15,6 +15,9 @@ namespace Root
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
 
+        [SerializeField] private AudioClip _soundInsert;
+        [SerializeField] private AudioClip _soundRemove;
+
         public override void Interact()
         {
             PlayerItemHolder holder =
@@ -23,7 +26,6 @@ namespace Root
             if (holder == null)
                 return;
 
-            // Retirar bateria
             if (!holder.HasItem && _battery != null)
             {
                 Battery battery = TakeBattery();
@@ -39,7 +41,6 @@ namespace Root
                 return;
             }
 
-            // Insertar bateria
             if (!holder.HasItem)
                 return;
 
@@ -67,6 +68,8 @@ namespace Root
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
             visualEffect.SendEvent("OnPlay");
+            if (_soundInsert != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
@@ -119,6 +122,8 @@ namespace Root
             _battery = null;
             train.SetEnginePower(false);
             OnBatteryRemoved?.Invoke();
+            if (_soundRemove != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);
             return battery;
         }
 

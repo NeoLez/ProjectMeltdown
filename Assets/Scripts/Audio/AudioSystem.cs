@@ -40,7 +40,7 @@ public class AudioSystem
         NonPositionAudioSource?.PlayOneShot(audioClip, volume);
     }
 
-    public void PlaySoundPositional(AudioClip audioClip, Vector3 position, AudioMixerGroup mixerGroup, float volume = 1)
+    public void PlaySoundPositional(AudioClip audioClip, Vector3 position, AudioMixerGroup mixerGroup, float volume = 1, float maxDistance = 50f)
     {
         GameObject source = new GameObject("PositionalAudioSource");
         source.transform.position = position;
@@ -49,6 +49,8 @@ public class AudioSystem
         audioSource.clip = audioClip;
         audioSource.volume = volume;
         audioSource.spatialBlend = 1f;
+        audioSource.maxDistance = maxDistance;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.outputAudioMixerGroup = mixerGroup;
 
         audioSource.Play();
