@@ -5,7 +5,7 @@ namespace Root
     public class BreakDisc : MonoBehaviour
     {
         public int DiscUsage = 3;
-        [SerializeField] Animator _animator;
+        //[SerializeField] Animator _animator;
         /*public int GetDiscUsage()
         {
             return(DiscUsage);  
