@@ -34,10 +34,12 @@ namespace Root.Enemy
             Destroy(gameObject);
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
+        private void OnTriggerEnter(Collider other) {
+            Debug.Log("a");
+            
             if (other.CompareTag("Player") || _once)
             {
+                Debug.Log("a");
                 var PJ = other.GetComponent<HealthControl>();
                 PJ.TakeDamage(35f);
                 Interact();
