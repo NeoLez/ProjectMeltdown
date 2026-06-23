@@ -1,31 +1,46 @@
 using UnityEngine;
 
-namespace Root.Enemy {
-    public class TanglerTentacleLatch : InteractableNormalCamera {
+namespace Root.Enemy
+{
+    public class TanglerTentacleLatch : InteractableNormalCamera
+    {
         public TanglerTentacle tangler;
         [SerializeField] GameObject _particles;
         public int ChainLatchNumber;
         bool _once = true;
-        public override void Interact() {
+
+        private AudioClip _soundLatch;
+
+        public void SetSounds(AudioClip latch, bool playLatch)
+        {
+            _soundLatch = latch;
+            if (playLatch && _soundLatch != null)
+                GameManager.AudioSystem.PlaySoundPositional(_soundLatch, transform.position, GameManager.AudioSystem.VFX);
+        }
+
+        public override void Interact()
+        {
             tangler.Cut(ChainLatchNumber);
         }
 
-        public void DestroyInTime(float time) {
+        public void DestroyInTime(float time)
+        {
             Invoke(nameof(DestroyThingy), time);
         }
 
-        public void DestroyThingy() 
+        public void DestroyThingy()
         {
             Instantiate(_particles, transform.position, transform.rotation);
             Destroy(gameObject);
         }
+
         private void OnTriggerEnter(Collider other)
-        {            
+        {
             if (other.CompareTag("Player") || _once)
-            {             
-                    var PJ = other.GetComponent<HealthControl>();
-                    PJ.TakeDamage(35f);
-                    Interact();
+            {
+                var PJ = other.GetComponent<HealthControl>();
+                PJ.TakeDamage(35f);
+                Interact();
                 _once = false;
             }
         }

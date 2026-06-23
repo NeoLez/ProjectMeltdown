@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Root.Enemy {
-    public class Tangler : InteractableNormalCamera {
+namespace Root.Enemy
+{
+    public class Tangler : InteractableNormalCamera
+    {
         [SerializeField] float _maxRadius = 10f;
         [SerializeField] float _minRadius = 2f;
         [SerializeField] GameObject _visuals;
@@ -17,56 +19,74 @@ namespace Root.Enemy {
         private Dictionary<int, TanglerTentacle> _tentacles = new();
         private int _tentacleAmount;
         private int _tentacleID;
-        [SerializeField]private int _health = 3;
+        [SerializeField] private int _health = 3;
         private bool _isDead;
-        
+
         [SerializeField] float tentacleSpawnCooldown = 15f;
         private float _lastTentacleSpawnTime;
         Animator _animator;
 
+        [Header("Sounds")]
+        [SerializeField] private AudioClip _soundDamage;
+        [SerializeField] private AudioClip _soundDeath;
+        [SerializeField] private AudioClip _soundIdle;
+        [SerializeField] private AudioClip _soundLatch;
+        [SerializeField] private AudioClip _soundDestroy;
 
-        private void Awake() {
+        private AudioSource _idleLoop;
+
+        private void Awake()
+        {
             _lastTentacleSpawnTime = Time.time;
             _animator = _visuals.GetComponent<Animator>();
+            if (_soundIdle != null)
+                _idleLoop = GameManager.AudioSystem.PlaySoundLooping(_soundIdle, transform.position);
         }
 
-        private void Update() {
-            if (Time.time >= _lastTentacleSpawnTime + tentacleSpawnCooldown) {
+        private void Update()
+        {
+            if (Time.time >= _lastTentacleSpawnTime + tentacleSpawnCooldown)
+            {
                 AttemptTentacleSpawn();
             }
         }
 
-        private void AttemptTentacleSpawn() {
+        private void AttemptTentacleSpawn()
+        {
             if (!CanSpawn()) return;
 
             Vector3 origin = transform.position;
             Vector3 randomDirection = Random.insideUnitSphere.normalized;
 
-            if (Physics.Raycast(origin, randomDirection, out var hit, _maxRadius, layerMask) && hit.distance >= _minRadius) {
+            if (Physics.Raycast(origin, randomDirection, out var hit, _maxRadius, layerMask) && hit.distance >= _minRadius)
+            {
                 Debug.DrawLine(origin, hit.point, Color.green, 1f);
-                
+
                 var tentacle = Instantiate(tentaclePrefab, transform.position, Quaternion.identity, transform);
                 _tentacles[_tentacleID] = tentacle;
                 _lastTentacleSpawnTime = Time.time;
                 _tentacleAmount++;
                 _tentacleID++;
-                
+
                 tentacle.onCut += HandleOnTentacleCut;
+                tentacle.SetSounds(_soundLatch, _soundDestroy);
                 tentacle.Spawn(transform.position, hit.distance, randomDirection);
             }
-            else {
+            else
+            {
                 Debug.DrawRay(origin, randomDirection * _maxRadius, Color.red, 1f);
             }
         }
 
-        public bool CanSpawn() {
+        public bool CanSpawn()
+        {
             return !_isDead && (_tentacleAmount < maxTentacleQuantity);
         }
 
-        public override void Interact() 
+        public override void Interact()
         {
             if (_isDead) return;
-            if (_health <= 0) 
+            if (_health <= 0)
             {
                 foreach (var tentacle in _tentacles)
                 {
@@ -77,12 +97,23 @@ namespace Root.Enemy {
                 _isDead = true;
                 _visuals.SetActive(false);
                 Instantiate(_particles, transform.position, Quaternion.identity, transform);
+
+                if (_idleLoop != null) _idleLoop.Stop();
+                if (_soundDeath != null) GameManager.AudioSystem.PlaySoundPositional(_soundDeath, transform.position, GameManager.AudioSystem.VFX);
+
                 Invoke(nameof(Destroy), 5f);
             }
-            else { _animator.Play("Damage", -1, 0f); Instantiate(_particlesHit, transform.position, transform.rotation); _health--; }
+            else
+            {
+                _animator.Play("Damage", -1, 0f);
+                Instantiate(_particlesHit, transform.position, transform.rotation);
+                if (_soundDamage != null) GameManager.AudioSystem.PlaySoundPositional(_soundDamage, transform.position, GameManager.AudioSystem.VFX);
+                _health--;
+            }
         }
 
-        private void HandleOnTentacleCut() {
+        private void HandleOnTentacleCut()
+        {
             _lastTentacleSpawnTime = Time.time;
             _tentacleAmount--;
         }
