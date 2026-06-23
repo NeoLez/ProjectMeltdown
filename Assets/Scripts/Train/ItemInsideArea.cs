@@ -8,12 +8,14 @@ namespace Root {
         private void OnTriggerEnter(Collider other) {
             if (other.TryGetComponent(out VisualContainer container)) {
                 _containers.Add(container);
+                Debug.Log("Added "+container.transform.parent.name);
             }
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.TryGetComponent(out VisualContainer container)) {
                 _containers.Remove(container);
+                Debug.Log("Removed "+container.transform.parent.name);
             }
         }
     }

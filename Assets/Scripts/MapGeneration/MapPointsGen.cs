@@ -36,7 +36,7 @@ namespace Root {
 
         public static Feature GetFeature() {
             float chance = Random.value;
-            Debug.Log(chance);
+            
             if (chance <= 0.6f) {
                 return Feature.TUNNEL;
             }

@@ -6,13 +6,15 @@ namespace Root {
         public ItemGenerationPoolSO[] pools;
         public Transform[] spawnPoints;
         
-        private void Awake() {
+        private void Start() {
+            Debug.Log("Spawning Kit " + GameManager.VeryUglyKitNumber);
             SpawnItems(pools[GameManager.VeryUglyKitNumber]);
         }
 
         private void SpawnItems(ItemGenerationPoolSO pool) {
             int Spawn = 0;
             foreach (var item in pool.items) {
+                Debug.Log(item.name);
                 SpawnItem(item, spawnPoints[Spawn]);
                 Spawn = (Spawn + 1) % pool.items.Count;
             }
@@ -20,10 +22,10 @@ namespace Root {
 
         private void SpawnItem(GameObject item, Transform spawnPoint) {
             var obj = Instantiate(item);
+            obj.transform.parent = GameManager.MapGeneration.itemRoot;
             obj.transform.position = spawnPoint.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-            obj.transform.parent = GameManager.MapGeneration.itemRoot;
-            obj.transform.GetChild(0).transform.position = transform.position;
+            obj.transform.GetChild(0).transform.position = spawnPoint.position;
         }
     }
 }
