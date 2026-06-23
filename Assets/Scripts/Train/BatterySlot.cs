@@ -23,7 +23,7 @@ namespace Root
             if (holder == null)
                 return;
 
-            // Retirar batería
+            // Retirar bateria
             if (!holder.HasItem && _battery != null)
             {
                 Battery battery = TakeBattery();
@@ -39,7 +39,7 @@ namespace Root
                 return;
             }
 
-            // Insertar batería
+            // Insertar bateria
             if (!holder.HasItem)
                 return;
 
