@@ -55,6 +55,7 @@ namespace Root
         [SerializeField] private float batteryStopTime = 5f;
 
         public TrainAlertSystem AlertSystem;
+        [SerializeField] private AudioClip _descarriladoAudio;
 
         public event Action OnPowerLost;
         public event Action OnPowerRestored;
@@ -95,6 +96,7 @@ namespace Root
             if (_descarrilado)
             {
                 ui_descarrilado.SetActive(true);
+                AudioSource.PlayClipAtPoint(_descarriladoAudio, GameManager.Camera.transform.position);
                 return;
             }
 
