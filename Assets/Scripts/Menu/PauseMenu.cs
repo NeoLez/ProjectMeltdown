@@ -32,8 +32,7 @@ namespace Root
 
                 GameManager.AudioSystem?.PauseAll();
 
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                MouseHandler.RequestControl(CursorLockMode.None, true, this, false);
             }
             else
             {
@@ -43,8 +42,7 @@ namespace Root
 
                 GameManager.AudioSystem?.ResumeAll();
 
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+                MouseHandler.RelinquishControl(this);
             }
         }
 
