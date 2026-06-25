@@ -9,7 +9,7 @@ namespace Root
         public override void Interact()
         {
             EconomyManager.Instance.AddMoney(amount);
-
+            MoneyFeedback.Instance.GrabbedBill();
             Destroy(gameObject);
         }
     }
