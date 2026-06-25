@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Root;
 using Root.Controller;
 using Timers;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class CameraController : MonoBehaviour
@@ -38,12 +40,15 @@ public class CameraController : MonoBehaviour
 
     // MODIFICADO: referencia al crosshair que se muestra cuando el cursor esta bloqueado
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private List<Sprite> _crosshairSprite; //System collections Generic
+    private Image _crosshairImage;
 
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
     
     private void Start()
     {
+        _crosshairImage = crosshair.GetComponent<Image>();
         _input = GameManager.Input;
         _input.Interaction.Interact.started += HandleInteraction;
         _movementController = GetComponent<MovementController>();
@@ -91,6 +96,15 @@ public class CameraController : MonoBehaviour
         if (interactable == null)
             return;
         interactable.Interact();
+    }
+
+    private void Update()
+    {
+        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance, raycastLayerMask))
+        {
+            _crosshairImage.sprite = _crosshairSprite[0];
+        }
+        else _crosshairImage.sprite = _crosshairSprite[1];
     }
 
     private void LateUpdate()
