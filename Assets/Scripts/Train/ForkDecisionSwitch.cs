@@ -12,7 +12,6 @@ namespace Root {
         public Transform rotationOff;
         public float rotationTime;
         private bool isAnimating;
-        [SerializeField] private AudioClip sound;
         
         private void Awake() {
             OnClicked += Toggle;

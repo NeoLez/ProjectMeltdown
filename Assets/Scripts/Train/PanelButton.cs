@@ -6,7 +6,7 @@ namespace Root {
         public GameObject onObject;
         public GameObject offObject;
         public event Action OnClicked;
-        [SerializeField] private AudioClip sound;
+        [SerializeField] protected AudioClip sound;
 
         [field: SerializeField] private bool Locked { get; set; }
         

@@ -1,3 +1,4 @@
+using Root.Controller;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,11 @@ namespace Root
     {
         [SerializeField] private GameObject pantallaMenu;
         [SerializeField] private GameObject pantallaClases;
+
+        private void Awake() {
+            MouseHandler.ClearListAndSetToDefault();
+            MouseHandler.RequestControl(CursorLockMode.None, true, this);
+        }
 
         private void Start()
         {
@@ -30,6 +36,7 @@ namespace Root
         {
             GameManager.VeryUglyKitNumber = classNumber;
             SceneManager.LoadScene("Train 1");
+            MouseHandler.ClearListAndSetToDefault();
         }
 
         public void Exit()

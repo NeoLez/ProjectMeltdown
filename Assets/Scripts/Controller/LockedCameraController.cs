@@ -65,8 +65,8 @@ namespace Root.Controller {
         }
 
         private void OnDisable() {
-            MouseHandler.RelinquishControl(this);
             _selectedInteractable?.EndInteraction();
+            MouseHandler.RelinquishControl(this);
             _input.Interaction.GoBack.started -= GoBack;
         }
 

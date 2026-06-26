@@ -79,11 +79,16 @@ namespace Root.Controller
             }
             Debug.Log(sb.ToString());
         }
-
+        
+        /// <summary>
+        /// Resets everything to default state, with an unlocked cursor. It should generally only be called before a scene change, where all elements that requested control of the object are no longer valid.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void ResetStaticData()
+        public static void ClearListAndSetToDefault()
         {
             MouseSettingsList.Clear();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 }
