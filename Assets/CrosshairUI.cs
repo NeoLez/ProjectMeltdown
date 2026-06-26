@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class CrosshairUI : MonoBehaviour
 {
-    private RawImage _rawImage;
+    private Image _rawImage;
 
     private void Awake()
     {
-        _rawImage = GetComponent<RawImage>();
+        _rawImage = GetComponent<Image>();
     }
 
     private void Update()

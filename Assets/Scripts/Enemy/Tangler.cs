@@ -39,8 +39,25 @@ namespace Root.Enemy
         {
             _lastTentacleSpawnTime = Time.time;
             _animator = _visuals.GetComponent<Animator>();
-            if (_soundIdle != null)
-                _idleLoop = GameManager.AudioSystem.PlaySoundLooping(_soundIdle, transform.position);
+        }
+
+        private void Start()
+        {
+            if (_soundIdle != null) 
+            {
+                GameObject idleGO = new GameObject("IdleLoop");
+                idleGO.transform.SetParent(transform);
+                idleGO.transform.localPosition = Vector3.zero;
+
+                _idleLoop = idleGO.AddComponent<AudioSource>();
+                _idleLoop.clip = _soundIdle;
+                _idleLoop.loop = true;
+                _idleLoop.spatialBlend = 1f;
+                _idleLoop.maxDistance = 50f;
+                _idleLoop.rolloffMode = AudioRolloffMode.Linear;
+                _idleLoop.outputAudioMixerGroup = GameManager.AudioSystem.VFX;
+                _idleLoop.Play();
+            }
         }
 
         private void Update()

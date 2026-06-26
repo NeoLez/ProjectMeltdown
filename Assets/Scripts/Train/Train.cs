@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 namespace Root
 {
-    public class Train : MonoBehaviour {
+    public class Train : MonoBehaviour
+    {
         public bool godmode;
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private TrainBrakeController brakeController;
@@ -67,7 +68,7 @@ namespace Root
 
         private void Awake()
         {
-            _powerLost = true; 
+            _powerLost = true;
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             GameManager.Input.Interaction.Reset.performed += context => {
                 if (_descarrilado)
@@ -96,8 +97,11 @@ namespace Root
         {
             if (_descarrilado)
             {
-                if(!ui_descarrilado.activeInHierarchy)
+                if (!ui_descarrilado.activeInHierarchy)
+                {
+                    StopTrainSounds(); 
                     GameManager.AudioSystem.PlaySound(_descarriladoAudio);
+                }
                 ui_descarrilado.SetActive(true);
                 return;
             }
@@ -171,12 +175,13 @@ namespace Root
 
         private void MoveTrain()
         {
-            if (currentWaypoint == null) {
+            if (currentWaypoint == null)
+            {
                 waypointIndex = 1;
                 currentWaypoint = mapGenerator.GetWaypoint(0);
                 nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
             }
-            
+
             currentDistanceBetweenPathpoints = Vector3.Distance(currentWaypoint.transform.position, nextWaypoint.transform.position);
 
             var distanceToTravel = _currentSpeed * Time.deltaTime;
@@ -190,7 +195,7 @@ namespace Root
                 currentWaypoint = nextWaypoint;
                 waypointIndex++;
                 nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
-                
+
                 if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
                 {
                     if (_descarriladoTimer >= tiempoDescarrilamiento && !godmode)
@@ -212,11 +217,12 @@ namespace Root
             currentDistanceTraveledToNextPathpoint += distanceToTravel;
 
             var currentDirection = (nextWaypoint.transform.position - currentWaypoint.transform.position).normalized;
-            
+
             trainPosition.position = currentWaypoint.transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
             trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
 
-            if (_currentSpeed == 0 && transform.position != trainPosition.position) {
+            if (_currentSpeed == 0 && transform.position != trainPosition.position)
+            {
                 MovePhysicalTrainToMap();
             }
         }
@@ -291,7 +297,7 @@ namespace Root
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
             if (battery.energy <= 0) return false;
-            battery.energy -= math.max( 0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime; return true;
+            battery.energy -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime; return true;
         }
 
         private void UpdateSounds(float targetSpeed, float speedDifference)
@@ -303,17 +309,28 @@ namespace Root
             strainSound.volume = math.lerp(strainSoundVolumeLow, strainSoundVolumeHigh, speedDifference / _maxEngineStrain);
         }
 
+        private void StopTrainSounds() // apaga sonidos
+        {
+            if (engineSound != null) engineSound.Stop();
+            if (rattleSound != null) rattleSound.Stop();
+            if (strainSound != null) strainSound.Stop();
+        }
+
         private void MovePhysicalTrainToMap()
         {
-            if (!isStopped) {
-                foreach (var objectInsideTrain in objectsInsideTrain) {
+            if (!isStopped)
+            {
+                foreach (var objectInsideTrain in objectsInsideTrain)
+                {
                     if (objectInsideTrain == null) continue;
                     objectInsideTrain.transform.position = trainPosition.TransformPoint(movementTeleport.InverseTransformPoint(objectInsideTrain.transform.position));
                     objectInsideTrain.transform.forward = trainPosition.TransformDirection(movementTeleport.InverseTransformDirection(objectInsideTrain.transform.forward));
                 }
             }
-            else {
-                foreach (var objectInsideTrain in objectsInsideTrain) {
+            else
+            {
+                foreach (var objectInsideTrain in objectsInsideTrain)
+                {
                     if (objectInsideTrain == null) continue;
                     objectInsideTrain.transform.position = trainPosition.TransformPoint(transform.InverseTransformPoint(objectInsideTrain.transform.position));
                     objectInsideTrain.transform.forward = trainPosition.TransformDirection(transform.InverseTransformDirection(objectInsideTrain.transform.forward));
@@ -484,7 +501,8 @@ namespace Root
             return currentWaypoint != null ? currentWaypoint.maxSpeed : 0.0f;
         }
 
-        public Transform GetTrainPosition() {
+        public Transform GetTrainPosition()
+        {
             return trainPosition;
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Root
@@ -5,13 +6,12 @@ namespace Root
     public class GeneratorLights : MonoBehaviour
     {
         [SerializeField] private GeneratorSlot generatorSlot;
-        [SerializeField] private Transform lightsParent;
-        private Light[] lights;
+
+        [Tooltip("Agregá acá luces, planos con shaders, VFX, o cualquier objeto que deba activarse con energía")]
+        [SerializeField] private List<GameObject> poweredObjects; 
 
         private void Start()
         {
-            lights = lightsParent.GetComponentsInChildren<Light>();
-
             generatorSlot.OnPowerRestored += TurnOn;
             generatorSlot.OnPowerLost += TurnOff;
 
@@ -24,16 +24,16 @@ namespace Root
             generatorSlot.OnPowerLost -= TurnOff;
         }
 
-        private void TurnOn()
+        private void TurnOn() 
         {
-            foreach (var l in lights)
-                l.enabled = true;
+            foreach (var obj in poweredObjects)
+                if (obj != null) obj.SetActive(true);
         }
 
-        private void TurnOff()
+        private void TurnOff() 
         {
-            foreach (var l in lights)
-                l.enabled = false;
+            foreach (var obj in poweredObjects)
+                if (obj != null) obj.SetActive(false);
         }
     }
 }
