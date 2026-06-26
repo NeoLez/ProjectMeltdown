@@ -9,12 +9,27 @@ public class Flicker : MonoBehaviour
 
     private float waitUntil;
 
-    void Start()
+    private void OnEnable()
     {
         waitUntil = Time.time + Random.Range(minTime, maxTime);
+
+        foreach (GameObject obj in flickerObjects)
+        {
+            if (obj != null)
+                obj.SetActive(true);
+        }
     }
 
-    void Update()
+    private void OnDisable()
+    {
+        foreach (GameObject obj in flickerObjects)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
+    }
+
+    private void Update()
     {
         if (Time.time >= waitUntil)
         {

@@ -11,6 +11,9 @@ namespace Root
 
         [SerializeField] private float batteryDrain = 0.5f;
 
+        [Header("Emergency Lights")]
+        [SerializeField] private Flicker emergencyLight; 
+
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
@@ -22,6 +25,11 @@ namespace Root
         public event Action OnPowerLost;
 
         private bool _powered = false;
+
+        private void Start()
+        {
+            SetEmergencyLights(true); 
+        }
 
         public override void Interact()
         {
@@ -60,8 +68,11 @@ namespace Root
                 if (_powered)
                 {
                     _powered = false;
+
+                    SetEmergencyLights(true); 
                     OnPowerLost?.Invoke();
                 }
+
                 return;
             }
 
@@ -79,11 +90,13 @@ namespace Root
 
         public bool TryInsertBattery(Battery battery)
         {
-            if (_battery != null) return false;
+            if (_battery != null)
+                return false;
 
             _battery = battery;
 
             Rigidbody rb = battery.GetComponent<Rigidbody>();
+
             if (rb != null)
             {
                 rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -95,16 +108,19 @@ namespace Root
             battery.transform.rotation = pivot.rotation;
 
             StartCoroutine(AnimTrigger(battery));
+
             return true;
         }
 
         public Battery TakeBattery()
         {
-            if (_battery == null) return null;
+            if (_battery == null)
+                return null;
 
             Battery battery = _battery;
 
             Rigidbody rb = battery.GetComponent<Rigidbody>();
+
             if (rb != null)
             {
                 rb.constraints = RigidbodyConstraints.None;
@@ -117,6 +133,8 @@ namespace Root
             if (_powered)
             {
                 _powered = false;
+
+                SetEmergencyLights(true); 
                 OnPowerLost?.Invoke();
             }
 
@@ -131,19 +149,34 @@ namespace Root
         System.Collections.IEnumerator AnimTrigger(Battery battery)
         {
             _animationEnd = false;
+
             battery.AnimatorOn();
+
             yield return new WaitForSeconds(0.70f);
+
             if (visualEffect != null)
                 visualEffect.SendEvent("OnPlay");
+
             if (_soundInsert != null)
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
+
             if (!_powered)
             {
                 _powered = true;
+
+                SetEmergencyLights(false);
                 OnPowerRestored?.Invoke();
             }
+
             yield return new WaitForSeconds(0.10f);
+
             _animationEnd = true;
+        }
+
+        private void SetEmergencyLights(bool active)
+        {
+            if (emergencyLight != null)
+                emergencyLight.enabled = active;
         }
     }
 }
