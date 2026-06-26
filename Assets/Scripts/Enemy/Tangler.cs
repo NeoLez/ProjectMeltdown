@@ -39,6 +39,10 @@ namespace Root.Enemy
         {
             _lastTentacleSpawnTime = Time.time;
             _animator = _visuals.GetComponent<Animator>();
+        }
+
+        private void Start()
+        {
             if (_soundIdle != null)
                 _idleLoop = GameManager.AudioSystem.PlaySoundLooping(_soundIdle, transform.position);
         }
