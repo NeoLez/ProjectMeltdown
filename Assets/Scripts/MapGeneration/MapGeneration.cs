@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Root {
@@ -13,7 +11,6 @@ namespace Root {
         
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
-        [SerializeField] public Transform itemRoot;
 
         [SerializeField] private int mapHeight;
         [SerializeField] private int mapWidth;
@@ -157,7 +154,7 @@ namespace Root {
 
             _rebaseCounter--;
         }
-        public MapSection GetNextStation() // Próxima estación en el recorrido, null si no hay
+        public MapSection GetNextStation() // Prï¿½xima estaciï¿½n en el recorrido, null si no hay
         {
             foreach (var section in IncomingSections)
             {
@@ -168,7 +165,7 @@ namespace Root {
             return null;
         }
 
-        public bool IsTrainInStation() // True si el tren está actualmente en una estación
+        public bool IsTrainInStation() // True si el tren estï¿½ actualmente en una estaciï¿½n
         {
             return IncomingSections.Count > 0 && IncomingSections[0].isStation;
         }

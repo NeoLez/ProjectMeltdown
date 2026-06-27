@@ -22,7 +22,7 @@ namespace Root {
 
         private void SpawnItem(GameObject item, Transform spawnPoint) {
             var obj = Instantiate(item);
-            obj.transform.parent = GameManager.MapGeneration.itemRoot;
+            obj.transform.parent = transform.parent;
             obj.transform.position = spawnPoint.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.GetChild(0).transform.position = spawnPoint.position;

@@ -10,7 +10,7 @@ namespace Root
             var obj = Instantiate(pool.GetRandom());
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
-            obj.transform.parent = GameManager.MapGeneration.itemRoot;
+            obj.transform.parent = transform.parent;
             obj.transform.GetChild(0).transform.position = transform.position;
         }
 

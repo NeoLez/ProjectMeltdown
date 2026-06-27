@@ -539,7 +539,7 @@ MonoBehaviour:
   LoadedSectionCount: 20
   root: {fileID: 100897461}
   train: {fileID: 1068053785}
-  itemRoot: {fileID: 2127688386}
+  itemRoot: {fileID: 0}
   mapHeight: 5
   mapWidth: 10
   tunnelGeneratorSo: {fileID: 11400000, guid: 33a0d702563b9f5ef8bb996c14864a4a, type: 2}
@@ -563,8 +563,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2127688386}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &101194831
@@ -16994,37 +16993,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124319538}
   m_CullTransparentMesh: 1
---- !u!1 &2127688385
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2127688386}
-  m_Layer: 0
-  m_Name: ItemRoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2127688386
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2127688385}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.53689, y: 0, z: -0.49798}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 100897461}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2137077099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4960722468392748174, guid: bd67a53f6fa7c024196a91508f825f61, type: 3}
