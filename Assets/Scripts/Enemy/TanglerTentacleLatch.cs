@@ -35,13 +35,10 @@ namespace Root.Enemy
         }
 
         private void OnTriggerEnter(Collider other) {
-            Debug.Log("a");
             
-            if (other.CompareTag("Player") || _once)
+            if (_once && other.gameObject.layer == LayerMask.NameToLayer("Player") && other.TryGetComponent(out HealthControl health))
             {
-                Debug.Log("a");
-                var PJ = other.GetComponent<HealthControl>();
-                PJ.TakeDamage(35f);
+                health.TakeDamage(35f);
                 Interact();
                 _once = false;
             }

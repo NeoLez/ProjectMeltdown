@@ -68,39 +68,28 @@ public class CameraController : MonoBehaviour
 
     private void HandleInteraction(InputAction.CallbackContext _)
     {
-
-        if (_playerItemHolder.HasItem)
-        {
-            if (!Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance, raycastLayerMask))
-            {
+        if (_playerItemHolder.HasItem) {
+            if (!TryFindInteractableObject(out var component)) 
                 _playerItemHolder.Drop();
-                return;
-            }
-
-            var component = hit.collider.gameObject.GetComponent<InteractableNormalCamera>();
-
-            if (component == null)
-            {
-                _playerItemHolder.Drop();
-                return;
-            }
-            
-            component.Interact();
+            else
+                component.Interact();
             return;
         }
 
-        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance, raycastLayerMask))
+        if (!TryFindInteractableObject(out var interactable))
             return;
-
-        var interactable = hitInfo.collider.gameObject.GetComponent<InteractableNormalCamera>();
-        if (interactable == null)
-            return;
+        
         interactable.Interact();
+    }
+
+    private bool TryFindInteractableObject(out InteractableNormalCamera interactable) {
+        interactable = null;
+        return Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance, raycastLayerMask) && hit.collider.gameObject.TryGetComponent(out interactable);
     }
 
     private void Update()
     {
-        if (!Physics.Raycast(cam.position, cam.forward, out var hitInfo, interactDistance, raycastLayerMask))
+        if (!TryFindInteractableObject(out _))
         {
             _crosshairImage.sprite = _crosshairSprite[0];
         }
