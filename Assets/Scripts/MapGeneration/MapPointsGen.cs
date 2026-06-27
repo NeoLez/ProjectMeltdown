@@ -40,7 +40,7 @@ namespace Root {
             if (chance <= 0.6f) {
                 return Feature.TUNNEL;
             }
-                if (chance <= 0.8f) 
+            if (chance <= 0.8f) 
             {
                  return Feature.ABANDONED_STATION;
             }
