@@ -20,9 +20,6 @@ namespace Root
         [SerializeField] private List<Button> externalDoorButtons;
         [SerializeField] private List<Animator> externalDoors;
 
-        [SerializeField] private List<Button> cabDoorButton;
-        [SerializeField] private List<Animator> cabDoor;
-
         [SerializeField] private float _maxEngineStrain;
         [SerializeField] private float _currentSpeed;
         [SerializeField] private float _engineAccelerationRate;
@@ -79,11 +76,6 @@ namespace Root
             foreach (var button in externalDoorButtons)
             {
                 button.OnClicked += HandleExternalDoorButton;
-            }
-
-            foreach (var button in cabDoorButton)
-            {
-                button.OnClicked += HandleCabDoorButton;
             }
         }
 
@@ -152,14 +144,17 @@ namespace Root
             {
                 if (!isStopped)
                 {
+                    Debug.Log("c");
                     TrainStopped();
                 }
             }
             else
             {
+                Debug.Log("a");
                 LockExternalDoorButtons();
                 if (isStopped)
                 {
+                    Debug.Log("b");
                     TrainStarted();
                 }
             }
@@ -384,57 +379,6 @@ namespace Root
             }
         }
 
-        public bool cabDoorOpened = true;
-        public void HandleCabDoorButton()
-        {
-            if (cabDoorOpened)
-            {
-                CloseCabDoors();
-            }
-            else
-            {
-                OpenCabDoors();
-            }
-        }
-
-        private void OpenCabDoors()
-        {
-            cabDoorOpened = true;
-            LockCabDoorButtons();
-            foreach (var door in externalDoors)
-            {
-
-            }
-            Invoke(nameof(UnlockCabDoorButtons), 2f);
-        }
-
-        private void CloseCabDoors()
-        {
-            cabDoorOpened = false;
-            LockCabDoorButtons();
-            foreach (var door in externalDoors)
-            {
-
-            }
-            Invoke(nameof(UnlockCabDoorButtons), 2f);
-        }
-
-        private void LockCabDoorButtons()
-        {
-            foreach (var button in cabDoorButton)
-            {
-                button.Lock();
-            }
-        }
-
-        private void UnlockCabDoorButtons()
-        {
-            foreach (var button in cabDoorButton)
-            {
-                button.Unlock();
-            }
-        }
-
         public bool externalDoorsOpened = true;
         public void HandleExternalDoorButton()
         {
@@ -450,29 +394,33 @@ namespace Root
 
         private void OpenExternalDoors()
         {
-            externalDoorsOpened = true;
-            LockExternalDoorButtons();
             foreach (var door in externalDoors)
             {
                 Tween.Custom(0.99f, 0f, new TweenSettings(1f), f => {
                     door.SetFloat("Time", f);
                 });
             }
-            Invoke(nameof(UnlockExternalDoorButtons), 2f);
+            externalDoorsOpened = true;
+            
+            LockExternalDoorButtons(2f);
         }
 
         private void CloseExternalDoors(bool unlockOnceClosed)
         {
-            externalDoorsOpened = false;
-            LockExternalDoorButtons();
             foreach (var door in externalDoors)
             {
                 Tween.Custom(0f, 0.99f, new TweenSettings(1f), f => {
                     door.SetFloat("Time", f);
                 });
             }
-            if (unlockOnceClosed)
-                Invoke(nameof(UnlockExternalDoorButtons), 2f);
+            externalDoorsOpened = false;
+
+            if (unlockOnceClosed) {
+                LockExternalDoorButtons(2f);
+            }
+            else {
+                LockExternalDoorButtons();
+            }
         }
 
         private void LockExternalDoorButtons()
@@ -480,6 +428,14 @@ namespace Root
             foreach (var button in externalDoorButtons)
             {
                 button.Lock();
+            }
+        }
+        
+        private void LockExternalDoorButtons(float duration)
+        {
+            foreach (var button in externalDoorButtons)
+            {
+                button.LockForSeconds(duration);
             }
         }
 
