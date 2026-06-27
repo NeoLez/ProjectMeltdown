@@ -26,7 +26,6 @@ namespace Root
 
             if (visualContainer != null)
             {
-                visualContainer.visuals.layer = LayerMask.NameToLayer("GrabObject");
                 visualContainer.visuals.SetActive(false);
             }
 
@@ -77,8 +76,6 @@ namespace Root
             if (visualContainer != null)
             {
                 visualContainer.visuals.SetActive(true);
-                visualContainer.visuals.layer =
-                    LayerMask.NameToLayer("NotGrabbedObject");
             }
 
             Collider[] colliders =
@@ -113,7 +110,7 @@ namespace Root
                 {
                     visualContainer.visuals.SetActive(true);
                     visualContainer.visuals.layer =
-                        LayerMask.NameToLayer("NotGrabbedObject");
+                        LayerMask.NameToLayer("Interactable");
                 }
 
                 HeldItem.transform.SetParent(oldParent);
