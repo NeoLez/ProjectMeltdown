@@ -50,7 +50,7 @@ namespace Root
         [SerializeField] private float batteryDrain = 1f;
         [SerializeField] private float strainMultiplier = 0.5f;
         [SerializeField] private float batteryOutDecelerationRate = 0.5f;
-        [SerializeField] private float batteryStopTime = 5f;
+        [SerializeField] private float batteryStopTime = 0.1f;
 
         public TrainAlertSystem AlertSystem;
         [SerializeField] private AudioClip _descarriladoAudio;
@@ -98,10 +98,9 @@ namespace Root
                 return;
             }
 
-            float targetSpeed = speedController.GetTargetSpeed();
+            float targetSpeed = _powerLost ? 0 : speedController.GetTargetSpeed();
             float speedDifference = targetSpeed - _currentSpeed;
-
-            // MODIFICADO: si no hay bateria o se agoto la energia, dispara OnPowerLost y desacelera por friccion
+            
             if (!_engineEnabled || !ConsumeBattery(speedDifference))
             {
                 if (!_powerLost)
@@ -109,16 +108,6 @@ namespace Root
                     _powerLost = true;
                     OnPowerLost?.Invoke();
                 }
-
-                float deceleration = speedController.maxTrainSpeed / batteryStopTime;
-                _currentSpeed -= deceleration * Time.deltaTime;
-
-                if (_currentSpeed <= 0.01f)
-                {
-                    _currentSpeed = 0;
-                }
-
-                _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
             }
             else
             {
@@ -129,14 +118,12 @@ namespace Root
                 }
             }
 
-            float speedChange = CalculateSpeed(targetSpeed, speedDifference);
+            float speedChange = CalculateSpeedVariation(targetSpeed, speedDifference);
 
             _currentSpeed += speedChange;
             _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
 
             speedometerHorizontal.SetSpeed(_currentSpeed);
-
-            UpdateSounds(targetSpeed, speedDifference);
 
             MoveTrain();
 
@@ -150,17 +137,21 @@ namespace Root
             }
             else
             {
-                Debug.Log("a");
-                LockExternalDoorButtons();
-                if (isStopped)
-                {
-                    Debug.Log("b");
-                    TrainStarted();
+                if (!_powerLost) {
+                    UpdateSounds(targetSpeed, speedDifference);
+                    LockExternalDoorButtons();
+                    if (isStopped)
+                    {
+                        Debug.Log("b");
+                        TrainStarted();
+                    }
+                }
+                else {
+                    UpdateSounds(0, 0);
                 }
             }
         }
-
-        public float currentMaxSpeed;
+        
         public float currentDistanceBetweenPathpoints;
         public float currentDistanceTraveledToNextPathpoint;
         public int waypointIndex;
@@ -248,7 +239,7 @@ namespace Root
             SetContainerVisualsToTrainRelative();
         }
 
-        private float CalculateSpeed(float targetSpeed, float speedDifference)
+        private float CalculateSpeedVariation(float targetSpeed, float speedDifference)
         {
             var braking = brakeController.UseBrakeGetAmount() * Time.deltaTime;
             float speedChange = -braking;
@@ -265,7 +256,7 @@ namespace Root
             }
             else
             {
-                speedChange -= _frictionDecelerationRate * _currentSpeed * Time.deltaTime;
+                speedChange -= _frictionDecelerationRate * math.clamp(_currentSpeed / speedController.maxTrainSpeed, 0.5f, 1f) * Time.deltaTime;
             }
 
             return speedChange;
@@ -292,7 +283,8 @@ namespace Root
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
             if (battery.energy <= 0) return false;
-            battery.energy -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime; return true;
+            battery.energy -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime;
+            return true;
         }
 
         private void UpdateSounds(float targetSpeed, float speedDifference)
