@@ -96,6 +96,7 @@ namespace Root.Enemy
             if (_soundDestroy != null)
                 GameManager.AudioSystem.PlaySoundPositional(_soundDestroy, transform.position, GameManager.AudioSystem.VFX);
 
+            GetComponent<BloodSplatter>()?.SpawnBlood(_tanglerTentacleLatches[latchNumber].transform.position);
             onCut?.Invoke();
         }
 

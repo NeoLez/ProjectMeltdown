@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5422629343749368906}
   - component: {fileID: 7890181221209374021}
+  - component: {fileID: 1148892778306334309}
   m_Layer: 0
   m_Name: Tentacle
   m_TagString: Untagged
@@ -50,3 +51,23 @@ MonoBehaviour:
   reproduce: 1
   latchPoint: {fileID: 6654104598316610156, guid: b375d784dfcfa4c4abdc988db2fe4c7c, type: 3}
   tanglerSpawnDistanceOffset: 0.25
+--- !u!114 &1148892778306334309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5258067770386286561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bccabda94307b4680811666aa4deef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Enemy.BloodDecalOnDestroy
+  bloodDecals:
+  - {fileID: 388331473617946576, guid: 1a8d79f66f54e8947a925d05e95a8afc, type: 3}
+  splatterCount: 4
+  maxDistance: 10
+  surfaceMask:
+    serializedVersion: 2
+    m_Bits: 8
+  randomScale: {x: 0.1, y: 0.35}

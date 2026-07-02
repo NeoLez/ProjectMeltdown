@@ -112,6 +112,7 @@ namespace Root.Enemy
                 }
 
                 _isDead = true;
+                GetComponent<BloodSplatter>()?.SpawnBlood(transform.position);
                 _visuals.SetActive(false);
                 Instantiate(_particles, transform.position, Quaternion.identity, transform);
 

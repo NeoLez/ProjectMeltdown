@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6404018954352327870}
   - component: {fileID: 4330686972032972251}
   - component: {fileID: 918690774592338241}
+  - component: {fileID: 8691251589161023228}
   m_Layer: 0
   m_Name: Tangler
   m_TagString: Untagged
@@ -87,6 +88,26 @@ MonoBehaviour:
   _soundIdle: {fileID: 8300000, guid: abc20d35d10525a4c9dad0b4bfc133e0, type: 3}
   _soundLatch: {fileID: 8300000, guid: 70748e5dc93966b44b4b24c5b9568d36, type: 3}
   _soundDestroy: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
+--- !u!114 &8691251589161023228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2359937034688799026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bccabda94307b4680811666aa4deef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Enemy.BloodDecalOnDestroy
+  bloodDecals:
+  - {fileID: 388331473617946576, guid: 1a8d79f66f54e8947a925d05e95a8afc, type: 3}
+  splatterCount: 10
+  maxDistance: 20
+  surfaceMask:
+    serializedVersion: 2
+    m_Bits: 8
+  randomScale: {x: 0.4, y: 1}
 --- !u!1 &3454196259793415225
 GameObject:
   m_ObjectHideFlags: 0
