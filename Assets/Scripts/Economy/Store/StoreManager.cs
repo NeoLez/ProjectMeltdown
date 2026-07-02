@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 
 namespace Root
 {
-    public class StoreManager : MonoBehaviour
-    {
+    public class StoreManager : MonoBehaviour {
+        [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private List<StoreItemData> items;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
         [SerializeField] private List<Transform> priceCanvasSpawnPoint;
@@ -24,17 +24,25 @@ namespace Root
             GenerateStock();
         }
 
+        private bool _forcedSpawn;
         private void GenerateStock()
         {
             for (int i = 0; i < spawnPoints.Count; i++)
             {
                 MerchantHand hand = merchantHands[i];
                 Transform priceCanvasSpawn = priceCanvasSpawnPoint[i];
-                StoreItemData item = GetRandomItem();
+
+                StoreItemData item;
+                if (forcedSpawnItem != null && !_forcedSpawn) {
+                    item = forcedSpawnItem;
+                    _forcedSpawn = true;
+                }
+                else 
+                    item = GetRandomItem();
                 
-
+                
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
-
+                    
                 GameObject obj = Instantiate(item.prefab);
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
                 obj.GetComponent<StoreItemDisplay>().SetNotPurchased();

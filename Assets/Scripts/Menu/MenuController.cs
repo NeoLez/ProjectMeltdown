@@ -32,10 +32,14 @@ namespace Root
             pantallaMenu.SetActive(true);
         }
 
-        public void SelectClass(int classNumber)
-        {
+        private bool loadingScene;
+        public void SelectClass(int classNumber) {
+            if (loadingScene) return;
+            
+            loadingScene = true;
             GameManager.VeryUglyKitNumber = classNumber;
-            SceneManager.LoadScene("Train 1");
+            var op = SceneManager.LoadSceneAsync("Train 1");
+            op.allowSceneActivation = true;
             MouseHandler.ClearListAndSetToDefault();
         }
 

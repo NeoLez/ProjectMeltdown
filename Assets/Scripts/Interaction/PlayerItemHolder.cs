@@ -109,8 +109,6 @@ namespace Root
                 if (visualContainer != null)
                 {
                     visualContainer.visuals.SetActive(true);
-                    visualContainer.visuals.layer =
-                        LayerMask.NameToLayer("Interactable");
                 }
 
                 HeldItem.transform.SetParent(oldParent);
