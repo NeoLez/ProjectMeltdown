@@ -112,6 +112,10 @@ namespace Root.Enemy
                 }
 
                 _isDead = true;
+
+                foreach (Collider collider in GetComponentsInChildren<Collider>()){
+                    collider.enabled = false;
+                }
                 GetComponent<BloodSplatter>()?.SpawnBlood(transform.position);
                 _visuals.SetActive(false);
                 Instantiate(_particles, transform.position, Quaternion.identity, transform);
