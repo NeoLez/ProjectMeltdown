@@ -5,6 +5,7 @@ using PrimeTween;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 namespace Root
 {
@@ -67,16 +68,23 @@ namespace Root
         {
             _powerLost = true;
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
-            GameManager.Input.Interaction.Reset.performed += context => {
-                if (_descarrilado)
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            };
+            GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
             GameManager.Train = this;
 
-            foreach (var button in externalDoorButtons)
-            {
+            foreach (var button in externalDoorButtons){
                 button.OnClicked += HandleExternalDoorButton;
             }
+        }
+
+        private void HandleResetPerformed(InputAction.CallbackContext context)
+        {
+            if (_descarrilado)
+                SceneManager.LoadScene("Menu");
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Input.Interaction.Reset.performed -= HandleResetPerformed;
         }
 
         public bool IsStopped()
