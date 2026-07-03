@@ -44,10 +44,12 @@ namespace Root.Enemy
             Quaternion rotation = Quaternion.LookRotation(-hit.normal);
             rotation *= Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
 
+            Transform parent = transform.parent != null ? transform.parent.parent : null;
             GameObject decal = Instantiate(
                 prefab,
                 hit.point + hit.normal * 0.02f,
-                rotation);
+                rotation,
+                parent);
 
             float t = distance / maxDistance;
             float scale = Random.Range(randomScale.x, randomScale.y) * Mathf.Lerp(1.2f, 0.8f, t);
