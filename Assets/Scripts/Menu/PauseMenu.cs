@@ -26,6 +26,7 @@ namespace Root
 
             if (paused)
             {
+                Debug.Log("Pause Menu Locked Controls");
                 GameManager.Input.Movement.Disable();
                 GameManager.Input.CameraMovement.Disable();
                 GameManager.Input.Interaction.Disable();

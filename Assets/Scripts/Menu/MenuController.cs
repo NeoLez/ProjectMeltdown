@@ -39,8 +39,8 @@ namespace Root
             loadingScene = true;
             GameManager.VeryUglyKitNumber = classNumber;
             var op = SceneManager.LoadSceneAsync("Train 1");
-            op.allowSceneActivation = true;
             MouseHandler.ClearListAndSetToDefault();
+            op.allowSceneActivation = true;
         }
 
         public void Exit()

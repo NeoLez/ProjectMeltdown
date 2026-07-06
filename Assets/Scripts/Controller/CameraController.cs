@@ -50,6 +50,7 @@ public class CameraController : MonoBehaviour
     {
         _crosshairImage = crosshair.GetComponent<Image>();
         _input = GameManager.Input;
+        _input.CameraMovement.Enable();
         _input.Interaction.Interact.started += HandleInteraction;
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();

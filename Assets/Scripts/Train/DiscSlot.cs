@@ -7,7 +7,7 @@ namespace Root
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
-        [FormerlySerializedAs("_emergencyDisc")] [SerializeField] private EmergencyStopButton _emergencyStopButton;
+        [SerializeField] private EmergencyStopButton _emergencyStopButton;
         public BreakDisc Disc;
 
         private void Awake() {

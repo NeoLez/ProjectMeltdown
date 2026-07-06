@@ -41,7 +41,15 @@ namespace Root.Controller
                 {
                     if (i == MouseSettingsList.Count - 1)
                     {
-                        SetMouseSettings(MouseSettingsList[i - 1]);
+                        if (i > 0)
+                        {
+                            SetMouseSettings(MouseSettingsList[i - 1]);
+                        }
+                        else
+                        {
+                            Cursor.lockState = CursorLockMode.None;
+                            Cursor.visible = true;
+                        }
                     }
                     MouseSettingsList.RemoveAt(i);
                     break;
@@ -83,7 +91,6 @@ namespace Root.Controller
         /// <summary>
         /// Resets everything to default state, with an unlocked cursor. It should generally only be called before a scene change, where all elements that requested control of the object are no longer valid.
         /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void ClearListAndSetToDefault()
         {
             MouseSettingsList.Clear();
