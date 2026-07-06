@@ -25,7 +25,7 @@ namespace Root
 
             brakeController.Repair(fluid.repairAmount);
 
-            if (TryInsertBattery(fluid))
+            if (TryInsertBrakeFluid(fluid))
             {
                 holder.ForceClearHeldItem();
             }
@@ -38,7 +38,7 @@ namespace Root
             Destroy(fluid.gameObject);
         }
 
-        public bool TryInsertBattery(BrakeFluid fluid)
+        public bool TryInsertBrakeFluid(BrakeFluid fluid)
         {
 
             Rigidbody rb = fluid.GetComponent<Rigidbody>();
