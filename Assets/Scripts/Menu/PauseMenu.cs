@@ -1,14 +1,25 @@
 using Root.Controller;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Root
 {
     public class PauseMenu : MonoBehaviour
     {
         [SerializeField] private GameObject pausePanel;
+        [SerializeField] private Slider masterVolumeSlider;
+        [SerializeField] private Slider musicVolumeSlider;
+        [SerializeField] private Slider sfxVolumeSlider;
 
         private bool paused;
+
+        private void Awake()
+        {
+            masterVolumeSlider.onValueChanged.AddListener(SliderMasterVolume);
+            musicVolumeSlider.onValueChanged.AddListener(SliderMusicVolume);
+            sfxVolumeSlider.onValueChanged.AddListener(SliderSFXolume);
+        }
 
         private void Update()
         {
@@ -77,6 +88,13 @@ namespace Root
         public void SliderSFXolume(float value)
         {
             GameManager.AudioSystem.GeneralMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
+        }
+
+        private void OnDestroy()
+        {
+            masterVolumeSlider.onValueChanged.RemoveAllListeners();
+            musicVolumeSlider.onValueChanged.RemoveAllListeners();
+            sfxVolumeSlider.onValueChanged.RemoveAllListeners();
         }
     }
 }

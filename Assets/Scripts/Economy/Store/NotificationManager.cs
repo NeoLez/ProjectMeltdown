@@ -46,7 +46,6 @@ namespace Root
             notificationText.text = message;
 
             if (audioSource != null && notificationSound != null)
-                //audioSource.PlayOneShot(notificationSound);
                 GameManager.AudioSystem.PlaySound(notificationSound, GameManager.AudioSystem.VFX);
 
             yield return new WaitForSeconds(duration);

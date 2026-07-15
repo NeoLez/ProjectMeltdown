@@ -92,6 +92,13 @@ namespace Root
             return isStopped;
         }
 
+        private void Start()
+        {
+            GameManager.AudioSystem.AssignOutputMixerGroup(engineSound, GameManager.AudioSystem.VFX);
+            GameManager.AudioSystem.AssignOutputMixerGroup(rattleSound, GameManager.AudioSystem.VFX);
+            GameManager.AudioSystem.AssignOutputMixerGroup(strainSound, GameManager.AudioSystem.VFX);
+        }
+
         private bool isStopped = true;
         private void Update()
         {

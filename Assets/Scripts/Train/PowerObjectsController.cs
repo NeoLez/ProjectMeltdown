@@ -20,6 +20,7 @@ namespace Root
         private void Start()
         {
             DisablePower();
+            GameManager.AudioSystem.AssignOutputMixerGroup(_audio, GameManager.AudioSystem.VFX);
         }
 
         private void OnDestroy()
@@ -30,9 +31,9 @@ namespace Root
 
         private void DisablePower()
         {
-                _audio.volume = 0;
+            _audio.volume = 0;
 
-                foreach (var obj in objectsToDisable)
+            foreach (var obj in objectsToDisable)
             {
                 if (obj != null)
                     obj.SetActive(false);

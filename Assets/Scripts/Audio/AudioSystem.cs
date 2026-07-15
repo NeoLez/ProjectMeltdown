@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class AudioSystem
 {
@@ -102,5 +103,10 @@ public class AudioSystem
 
         audioSource.Play();
         return audioSource;
+    }
+
+    public void AssignOutputMixerGroup(AudioSource audioSource, AudioMixerGroup mixerGroup)
+    {
+        audioSource.outputAudioMixerGroup = mixerGroup;
     }
 }

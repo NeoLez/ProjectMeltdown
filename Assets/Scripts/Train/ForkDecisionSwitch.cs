@@ -18,7 +18,6 @@ namespace Root {
         }
 
         public void Toggle() {
-            //if (sound != null) AudioSource.PlayClipAtPoint(sound, transform.position);
             if (sound != null) GameManager.AudioSystem.PlaySoundPositional(sound, transform.position, GameManager.AudioSystem.VFX);
             if (right) TurnOff();
             else TurnOn();

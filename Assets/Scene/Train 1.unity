@@ -10354,6 +10354,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.PauseMenu
   pausePanel: {fileID: 1941903130}
+  masterVolumeSlider: {fileID: 756827163}
+  musicVolumeSlider: {fileID: 1390718045}
+  sfxVolumeSlider: {fileID: 2125423474}
 --- !u!114 &706262792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11205,19 +11208,7 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 706262791}
-        m_TargetAssemblyTypeName: Root.PauseMenu, Assembly-CSharp
-        m_MethodName: SliderMasterVolume
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &765228321
 GameObject:
   m_ObjectHideFlags: 0
@@ -17396,19 +17387,7 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 706262791}
-        m_TargetAssemblyTypeName: Root.PauseMenu, Assembly-CSharp
-        m_MethodName: SliderMusicVolume
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1391570779
 GameObject:
   m_ObjectHideFlags: 0
@@ -28492,19 +28471,7 @@ MonoBehaviour:
   m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 706262791}
-        m_TargetAssemblyTypeName: Root.PauseMenu, Assembly-CSharp
-        m_MethodName: SliderSFXolume
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!4 &2137077099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4960722468392748174, guid: bd67a53f6fa7c024196a91508f825f61, type: 3}

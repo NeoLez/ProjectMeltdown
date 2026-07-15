@@ -30,7 +30,6 @@ namespace Root {
 
         public override void StartInteraction() {
             if (isAnimating) return;
-            //if (interactSound != null) AudioSource.PlayClipAtPoint(interactSound, transform.position);
             if (interactSound != null) GameManager.AudioSystem.PlaySoundPositional(interactSound, transform.position, GameManager.AudioSystem.VFX);
             if (isCoverDown) {
                 OpenCover();
