@@ -100,7 +100,7 @@ namespace Root
                 if (!ui_descarrilado.activeInHierarchy)
                 {
                     StopTrainSounds(); 
-                    GameManager.AudioSystem.PlaySound(_descarriladoAudio);
+                    GameManager.AudioSystem.PlaySound(_descarriladoAudio, GameManager.AudioSystem.VFX);
                 }
                 ui_descarrilado.SetActive(true);
                 return;
@@ -225,7 +225,7 @@ namespace Root
         {
             isStopped = true;
             OnTrainStoppedMoving?.Invoke();
-            GameManager.AudioSystem.PlaySound(_trainReleaseAudio);
+            GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
             if (emergencyStopButton.IsBreaking())
             {
                 emergencyStopButton.FinishBraking();

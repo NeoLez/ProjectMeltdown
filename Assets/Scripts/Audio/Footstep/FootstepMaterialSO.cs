@@ -10,7 +10,7 @@ namespace SoundSystem
 
         public void PlaySound()
         {
-            GameManager.AudioSystem.PlaySound(sounds[Random.Range(0, sounds.Count - 1)]);
+            GameManager.AudioSystem.PlaySound(sounds[Random.Range(0, sounds.Count - 1)], GameManager.AudioSystem.VFX);
         }
     }
 }
