@@ -16,6 +16,7 @@ namespace Root
         public event Action OnBatteryRemoved;
 
         [SerializeField] private AudioClip _soundInsert;
+        [SerializeField] private AudioClip _soundInsert2;
         [SerializeField] private AudioClip _soundRemove;
 
         public override void Interact()
@@ -69,7 +70,11 @@ namespace Root
             yield return new WaitForSeconds(0.70f);
             visualEffect.SendEvent("OnPlay");
             if (_soundInsert != null)
+            {
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
+                GameManager.AudioSystem.PlaySoundPositional(_soundInsert2, transform.position, GameManager.AudioSystem.VFX);
+            }
+               
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
@@ -134,7 +139,7 @@ namespace Root
             train.SetEnginePower(false);
             OnBatteryRemoved?.Invoke();
             if (_soundRemove != null)
-                GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);
+                GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX, 0.6f);
             return battery;
         }
 

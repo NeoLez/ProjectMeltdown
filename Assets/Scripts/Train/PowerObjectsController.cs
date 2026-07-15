@@ -10,6 +10,7 @@ namespace Root
         [SerializeField] private List<PanelButton> buttonsToLock;
         [SerializeField] private List<PanelButton> buttonsToIgnore;
 
+        [SerializeField] private AudioSource _audio;
         private void Awake()
         {
             train.OnPowerLost += DisablePower;
@@ -29,7 +30,9 @@ namespace Root
 
         private void DisablePower()
         {
-            foreach (var obj in objectsToDisable)
+                _audio.volume = 0;
+
+                foreach (var obj in objectsToDisable)
             {
                 if (obj != null)
                     obj.SetActive(false);
@@ -46,6 +49,8 @@ namespace Root
 
         private void EnablePower()
         {
+            _audio.volume = 0.5f;
+
             foreach (var obj in objectsToDisable)
             {
                 if (obj != null)
