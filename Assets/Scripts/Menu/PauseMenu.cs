@@ -63,5 +63,20 @@ namespace Root
 
             SceneManager.LoadScene("Menu");
         }
+
+        public void SliderMasterVolume(float value)
+        {
+            GameManager.AudioSystem.GeneralMixer.SetFloat("MasterVolume", Mathf.Log10(value) * 20f);
+        }
+
+        public void SliderMusicVolume(float value)
+        {
+            GameManager.AudioSystem.GeneralMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20f);
+        }
+
+        public void SliderSFXolume(float value)
+        {
+            GameManager.AudioSystem.GeneralMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
+        }
     }
 }

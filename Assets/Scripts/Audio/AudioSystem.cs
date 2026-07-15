@@ -5,9 +5,11 @@ using UnityEngine.Audio;
 public class AudioSystem
 {
     public AudioSource NonPositionAudioSource;
+    public AudioSource MusicAudioSource;
     private List<AudioSource> currentlyLoopingSounds = new();
     public AudioMixerGroup Music;
     public AudioMixerGroup VFX;
+    public AudioMixer GeneralMixer;
 
     private List<AudioSource> pausedSources = new();
 
@@ -35,12 +37,28 @@ public class AudioSystem
         pausedSources.Clear();
     }
 
-    public void PlaySound(AudioClip audioClip, float volume = 1)
+    public void PlayMusic(AudioClip audioClip, AudioMixerGroup mixerGroup, float volume = 1)
     {
+        AudioSource audioSource = MusicAudioSource;
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.loop = true;
+        audioSource.outputAudioMixerGroup = mixerGroup;
+
+        audioSource.Play();
+    }
+
+    public void PlaySound(AudioClip audioClip, AudioMixerGroup mixerGroup, float volume = 1) 
+    {
+        AudioSource audioSource = NonPositionAudioSource;
+        audioSource.clip = audioClip;
+        audioSource.volume = volume;
+        audioSource.outputAudioMixerGroup = mixerGroup;
+
         NonPositionAudioSource?.PlayOneShot(audioClip, volume);
     }
 
-    public void PlaySoundPositional(AudioClip audioClip, Vector3 position, AudioMixerGroup mixerGroup, float volume = 1, float maxDistance = 50f)
+    public void PlaySoundPositional(AudioClip audioClip, Vector3 position, AudioMixerGroup mixerGroup, float volume = 1, float maxDistance = 50f) 
     {
         GameObject source = new GameObject("PositionalAudioSource");
         source.transform.position = position;
@@ -57,7 +75,7 @@ public class AudioSystem
         Object.Destroy(source, audioClip.length);
     }
 
-    public AudioSource PlaySoundLooping(AudioClip audioClip, Vector3 position, float volume = 1)
+    public AudioSource PlaySoundLooping(AudioClip audioClip, Vector3 position, AudioMixerGroup mixerGroup, float volume = 1)
     {
         GameObject go = new GameObject();
         go.transform.position = position;
@@ -66,18 +84,22 @@ public class AudioSystem
         audioSource.loop = true;
         audioSource.volume = volume;
         audioSource.clip = audioClip;
+        audioSource.outputAudioMixerGroup = mixerGroup;
+
         audioSource.Play();
         return audioSource;
     }
 
-    public AudioSource PlaySoundLooping(AudioClip audioClip, float volume = 1)
+    public AudioSource PlaySoundLooping(AudioClip audioClip, AudioMixerGroup mixerGroup, float volume = 1)
     {
         GameObject go = new GameObject();
         AudioSource audioSource = go.AddComponent<AudioSource>();
         audioSource.spatialBlend = 0;
         audioSource.loop = true;
         audioSource.volume = volume;
-        audioSource.clip = audioClip;
+        audioSource.clip = audioClip; 
+        audioSource.outputAudioMixerGroup = mixerGroup;
+
         audioSource.Play();
         return audioSource;
     }

@@ -30,7 +30,8 @@ namespace Root {
 
         public override void StartInteraction() {
             if (isAnimating) return;
-            if (interactSound != null) AudioSource.PlayClipAtPoint(interactSound, transform.position);
+            //if (interactSound != null) AudioSource.PlayClipAtPoint(interactSound, transform.position);
+            if (interactSound != null) GameManager.AudioSystem.PlaySoundPositional(interactSound, transform.position, GameManager.AudioSystem.VFX);
             if (isCoverDown) {
                 OpenCover();
                 return;
@@ -46,7 +47,7 @@ namespace Root {
             LowerButtonAndCloseCover();
             isBraking = true;
             usesLeft--;
-            GameManager.AudioSystem.PlaySound(stopSound);
+            GameManager.AudioSystem.PlaySound(stopSound, GameManager.AudioSystem.VFX);
             Debug.Log("Emergencia");
             _discSlot.Disc.SetDiscUsage();
         }
