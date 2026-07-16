@@ -9,6 +9,9 @@ namespace Root {
         
         private float _unlockTime;
         private bool _isLocked;
+
+        [SerializeField] private AudioClip _press;
+        [SerializeField] private AudioClip _door;
         private bool IsLocked() {
             return _isLocked;
         }
@@ -19,8 +22,10 @@ namespace Root {
 
         public override void Interact() {
             if (_isLocked) return;
-            Debug.Log("Interact");
+            //Debug.Log("Interact");
             OnClicked?.Invoke();
+            GameManager.AudioSystem.PlaySoundPositional(_press, transform.position, GameManager.AudioSystem.VFX, 0.5f);
+            GameManager.AudioSystem.PlaySoundPositional(_door, transform.position, GameManager.AudioSystem.VFX, 0.8f);
         }
 
         public void Lock() {
