@@ -5,6 +5,7 @@ public static class GameManager {
   public static PlayerInputActions Input;
   public static Player Player;
   public static Camera Camera;
+  public static CameraController CameraController;
   public static Train Train;
   public static MapGeneration MapGeneration;
   public static AudioSystem AudioSystem;

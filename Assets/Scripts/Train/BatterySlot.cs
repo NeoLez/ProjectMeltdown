@@ -69,6 +69,7 @@ namespace Root
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
             visualEffect.SendEvent("OnPlay");
+            GameManager.CameraController.Shake(0.15f, 0.1f);
             if (_soundInsert != null)
             {
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);

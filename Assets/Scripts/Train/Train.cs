@@ -56,7 +56,7 @@ namespace Root
         public TrainAlertSystem AlertSystem;
         [SerializeField] private AudioClip _descarriladoAudio;
         [SerializeField] private AudioClip _trainReleaseAudio;
-
+        [SerializeField] private AudioClip _screech;
         public event Action OnPowerLost;
         public event Action OnPowerRestored;
         public event Action OnTrainStartedMoving;
@@ -205,7 +205,8 @@ namespace Root
                         _descarriladoTimer = 0;
                         return;
                     }
-
+                    GameManager.AudioSystem.PlaySound(_screech, GameManager.AudioSystem.VFX, 0.4f);
+                    GameManager.CameraController.Shake(0.5f, 0.05f);
                     _descarriladoTimer += (_currentSpeed - currentWaypoint.maxSpeed) * Time.deltaTime;
                 }
                 else
@@ -232,6 +233,7 @@ namespace Root
         {
             isStopped = true;
             OnTrainStoppedMoving?.Invoke();
+            GameManager.CameraController.Shake(0.1f, 0.05f);
             GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
             if (emergencyStopButton.IsBreaking())
             {

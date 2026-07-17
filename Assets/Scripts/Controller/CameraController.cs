@@ -45,9 +45,13 @@ public class CameraController : MonoBehaviour
 
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
-    
-    private void Start()
+
+    private void Awake()
     {
+        GameManager.CameraController = this;
+    }
+    private void Start()
+    {        
         _crosshairImage = crosshair.GetComponent<Image>();
         _input = GameManager.Input;
         _input.CameraMovement.Enable();
