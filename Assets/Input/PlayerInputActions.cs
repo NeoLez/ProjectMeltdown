@@ -278,6 +278,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NPC"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c1dbaf7-0613-4508-8e97-68e507622437"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -311,6 +320,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33423b7c-fe6d-48ca-ac0e-816f02ac779c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NPC"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -394,6 +414,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_Interact = m_Interaction.FindAction("Interact", throwIfNotFound: true);
         m_Interaction_GoBack = m_Interaction.FindAction("GoBack", throwIfNotFound: true);
         m_Interaction_Reset = m_Interaction.FindAction("Reset", throwIfNotFound: true);
+        m_Interaction_NPC = m_Interaction.FindAction("NPC", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -704,6 +725,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_Interact;
     private readonly InputAction m_Interaction_GoBack;
     private readonly InputAction m_Interaction_Reset;
+    private readonly InputAction m_Interaction_NPC;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -727,6 +749,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/Reset".
         /// </summary>
         public InputAction @Reset => m_Wrapper.m_Interaction_Reset;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/NPC".
+        /// </summary>
+        public InputAction @NPC => m_Wrapper.m_Interaction_NPC;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -762,6 +788,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reset.started += instance.OnReset;
             @Reset.performed += instance.OnReset;
             @Reset.canceled += instance.OnReset;
+            @NPC.started += instance.OnNPC;
+            @NPC.performed += instance.OnNPC;
+            @NPC.canceled += instance.OnNPC;
         }
 
         /// <summary>
@@ -782,6 +811,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reset.started -= instance.OnReset;
             @Reset.performed -= instance.OnReset;
             @Reset.canceled -= instance.OnReset;
+            @NPC.started -= instance.OnNPC;
+            @NPC.performed -= instance.OnNPC;
+            @NPC.canceled -= instance.OnNPC;
         }
 
         /// <summary>
@@ -959,5 +991,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReset(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NPC" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNPC(InputAction.CallbackContext context);
     }
 }

@@ -9,6 +9,7 @@ public static class GameManager {
   public static Train Train;
   public static MapGeneration MapGeneration;
   public static AudioSystem AudioSystem;
+  public static DialogueManager DialogueManager;
   public static int VeryUglyKitNumber;
   public static readonly Vector2 RTSize = new(640,360);  
 
@@ -20,6 +21,7 @@ public static class GameManager {
       Input.CameraMovement.Enable();
       Input.Interaction.Enable();
       Input.Interaction.Interact.Enable();
+      Input.Interaction.NPC.Enable();
 
       AudioSystem = new AudioSystem();
 

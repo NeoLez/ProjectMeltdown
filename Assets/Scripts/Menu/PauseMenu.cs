@@ -43,7 +43,7 @@ namespace Root
                 GameManager.Input.Interaction.Disable();
 
                 GameManager.AudioSystem?.PauseAll();
-
+                GameManager.DialogueManager?.StopCurrentDialogue();
                 MouseHandler.RequestControl(CursorLockMode.None, true, this, false);
             }
             else
@@ -53,7 +53,7 @@ namespace Root
                 GameManager.Input.Interaction.Enable();
 
                 GameManager.AudioSystem?.ResumeAll();
-
+                GameManager.DialogueManager?.ResumeCurrentDialogue();
                 MouseHandler.RelinquishControl(this);
             }
         }
