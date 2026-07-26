@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
         _sentences = new Queue<string>();
     }
 
-    public void SetDialogueParameters(DialogueSO dialogue, TextMeshProUGUI text)
+    public void Initialize(DialogueSO dialogue, TextMeshProUGUI text)
     {
         _currentSpeaker = dialogue;
         _currentDisplayText = text;

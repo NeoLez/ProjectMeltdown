@@ -15,10 +15,6 @@ namespace Root
         private DialogueManager dialogueManager;
         private DialogueSO dialogue;
 
-        string speakerNameText;
-        string dialogueText;
-        private int _arrayIndex;
-
         private void Awake()
         {
             if (Instance == null)
@@ -46,12 +42,11 @@ namespace Root
         public void SetTextValues(DialogueSO data) 
         {
             dialogue = data;
-            speakerNameText = data.SpeakerName;
         }
 
         public void ShowSubtitle()
         {
-            dialogueManager.SetDialogueParameters(dialogue, subtitleText);
+            dialogueManager.Initialize(dialogue, subtitleText);
 
             HideOrViewCanvas(true);
         }
@@ -59,7 +54,7 @@ namespace Root
         public void HideSubtitle()
         {
             if (dialogueManager.IsTyping) return;
-            _arrayIndex=0;
+
             HideOrViewCanvas(false);
         }
 

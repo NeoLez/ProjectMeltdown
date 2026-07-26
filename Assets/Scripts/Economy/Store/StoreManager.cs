@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 namespace Root
 {
     public class StoreManager : MonoBehaviour {
+        [SerializeField] private bool isTutorialSpawn;
         [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private List<StoreItemData> items;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
@@ -15,13 +16,33 @@ namespace Root
         private List<StoreItemDisplay> itemsCreated = new();
 
         [SerializeField] private MerchantHand merchantHandPrefab;
+
+        [Header("Tutorial Courtesy Item")]
+        [SerializeField] private StoreItemData initialItemSpawn;
+        [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
+        [SerializeField] private Transform singlePriceSpawnPoint;
+        private List<MerchantHand> initialMerchantHands = new();
+        private StoreItemDisplay singleInitialItem;
+
         private void Start()
         {
-            foreach (var spawnPoint in spawnPoints) {
-                var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
-                merchantHands.Add(hand);
+            if(isTutorialSpawn)
+            {
+                var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
+                initialMerchantHands.Add(hand);
+                
+                GenerateCourtesyItem();
             }
-            GenerateStock();
+            else
+            {
+                foreach (var spawnPoint in spawnPoints)
+                {
+                    var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
+                    merchantHands.Add(hand);
+                }
+                GenerateStock();
+
+            }
         }
 
         private bool _forcedSpawn;
@@ -73,6 +94,49 @@ namespace Root
             }
         }
 
+        private void GenerateCourtesyItem()
+        {
+            MerchantHand hand = initialMerchantHands[0];
+            Transform priceCanvasSpawn = singlePriceSpawnPoint;
+
+            StoreItemData item;
+            if (forcedSpawnItem != null && !_forcedSpawn)
+            {
+                item = forcedSpawnItem;
+                _forcedSpawn = true;
+            }
+            else
+                item = initialItemSpawn;
+
+            GameObject obj = Instantiate(item.prefab);
+            obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
+            obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
+            obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
+                Debug.Log("Purchased item " + item.itemName);
+                boughtHand.HideHand();
+                initialMerchantHands.Remove(boughtHand);
+            };
+            singleInitialItem = obj.GetComponent<StoreItemDisplay>();
+            var objBehaviour = obj.transform.GetChild(0);
+            objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
+
+            GameObject canvasObj = Instantiate(priceCanvasPrefab,
+                priceCanvasSpawn.transform.position,
+                priceCanvasSpawn.rotation
+                );
+
+            PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
+
+            if (priceCanvas != null)
+                priceCanvas.Initialize(0);
+
+            StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
+
+            if (display != null)
+                display.Initialize(item, 0, priceCanvas);
+
+        }
+
         private void OnDestroy()
         {
             for (int i = itemsCreated.Count - 1; i >= 0; i--)
@@ -84,15 +148,39 @@ namespace Root
 
         public void ShowItems() {
             Debug.Log("a");
-            foreach (var hand in merchantHands) {
-                Debug.Log("b");
-                hand.ShowHand();
+
+            if(isTutorialSpawn)
+            {
+                foreach (var hand in initialMerchantHands)
+                {
+                    hand.ShowHand();
+                }
             }
+            else
+            {
+                foreach (var hand in merchantHands)
+                {
+                    Debug.Log("b");
+                    hand.ShowHand();
+                }
+            }                
         }
 
         public void HideItems() {
-            foreach (var hand in merchantHands) {
-                hand.HideHand();
+
+            if (isTutorialSpawn)
+            {
+                foreach (var hand in initialMerchantHands)
+                {
+                    hand.HideHand();
+                }
+            }
+            else
+            {
+                foreach (var hand in merchantHands)
+                {
+                    hand.HideHand();
+                }
             }
         }
 

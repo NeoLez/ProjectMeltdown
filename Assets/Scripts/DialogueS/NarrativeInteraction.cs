@@ -10,6 +10,7 @@ namespace Root
     {
         //mostrar algun feedback 
         [SerializeField] float maxDistance;
+        [SerializeField] LayerMask interactableEntityLayer;
 
         private PlayerInputActions _input;
         private InteractBehaviour _interactableEntity;
@@ -20,7 +21,7 @@ namespace Root
         {
             _input = GameManager.Input;
             _input.Interaction.Enable();
-            _input.Interaction.NPC.performed += TriggerNarrative;          
+            _input.Interaction.NPC.performed += HandleNarrativeInteraction;          
         }
 
         private void Start()
@@ -30,38 +31,37 @@ namespace Root
 
         private void OnDestroy()
         {
-            _input.Interaction.NPC.performed -= TriggerNarrative;
+            _input.Interaction.NPC.performed -= HandleNarrativeInteraction;
             DialogueManager.Instance.OnDialogueEnded -= ResetDialogue;
         }
 
-        private void FixedUpdate()
+
+        private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
-            if (_hasTriggeredOnce) return;
-            if(Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, maxDistance))
+            if (!_hasTriggeredOnce)
             {
-                var currentInteractable = raycastHit.collider.GetComponent<InteractBehaviour>();
+                if (TryFindInteractableNPC(out var currentInteractable))
+                {
+                    if (currentInteractable == _interactableEntity) return;
 
-                if (currentInteractable == _interactableEntity) return;
+                    _interactableEntity = currentInteractable;
 
-                _interactableEntity = currentInteractable;
-            }
-            else if (_interactableEntity != null)
-            {
-                _interactableEntity = null;
-            }
+                }
+                else if (_interactableEntity != null)
+                {
+                    _interactableEntity = null;
+                }
 
-        }
-
-        void TriggerNarrative(InputAction.CallbackContext _)
-        {
-            if(_interactableEntity!= null) 
-            {
-                _hasTriggeredOnce = true;
-                _interactableEntity.ExecuteDialogue();
             }
         }
 
-        void ResetDialogue()
+        private bool TryFindInteractableNPC(out InteractBehaviour interactable)
+        {
+            interactable = null;
+            return Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, maxDistance, interactableEntityLayer) && raycastHit.collider.gameObject.TryGetComponent(out interactable);
+        }
+
+        private void ResetDialogue()
         {
             _hasTriggeredOnce = false;
             _interactableEntity = null;

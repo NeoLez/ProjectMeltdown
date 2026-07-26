@@ -3,12 +3,16 @@ using UnityEngine;
 
 namespace Root
 {
-    public class NPCInteraction : InteractBehaviour
-    {   
+    public class MerchantInteraction : InteractBehaviour
+    {
+        [SerializeField] MerchantTrigger merchantTrigger;
+
         private void Start()
         {
             DialogueManager.Instance.OnDialogueStarted += StartedExecutingDialogue;
             DialogueManager.Instance.OnDialogueEnded += FinishedExecutingDialogue;
+
+            merchantTrigger._OnStoreShow?.Invoke(false);
         }
 
         private void OnDestroy()
@@ -34,14 +38,26 @@ namespace Root
             }
         }
 
+        public override void StartedExecutingDialogue()
+        {
+            GameManager.Input.Movement.Disable();
 
-    }
+            base.StartedExecutingDialogue();
+        }
 
-    public enum DialogueState
-    {
-        StartTalking,
-        IsTalking,
-        CanRepeatDialogue, 
-        FinishedTalking
+        public override void FinishedExecutingDialogue()
+        {       
+            GameManager.Input.Movement.Enable();
+
+            ShowStoreItems();
+            base.FinishedExecutingDialogue();
+        }
+
+       
+        public void ShowStoreItems()
+        {
+            merchantTrigger._OnStoreShow?.Invoke(true);
+        }
+
     }
 }

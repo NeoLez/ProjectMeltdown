@@ -1516,13 +1516,13 @@ GameObject:
   - component: {fileID: 204107711}
   - component: {fileID: 204107710}
   - component: {fileID: 204107709}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NPC provisional
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &204107709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1536,7 +1536,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.NPCInteraction
   dialogue: {fileID: 11400000, guid: 6d5ffb75b63e8b34dab32ab1de2fc585, type: 2}
-  subtitleManager: {fileID: 449647436}
 --- !u!65 &204107710
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18236,7 +18235,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 511
+    m_Bits: 1023
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 31762ee7b9252ce49bfd76add35a2c98, type: 2}
   m_TargetDisplay: 0
@@ -18281,6 +18280,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.NarrativeInteraction
   maxDistance: 5
+  interactableEntityLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &2002497076
 GameObject:
   m_ObjectHideFlags: 0
@@ -18853,7 +18855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ee24bbafd8ce1b44ba38ddbc6621ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.EconomyManager
-  currentMoney: 50
+  currentMoney: 0
 --- !u!4 &2027002876
 Transform:
   m_ObjectHideFlags: 0

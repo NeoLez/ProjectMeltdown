@@ -2,8 +2,14 @@ using UnityEngine;
 
 namespace Root
 {
-    public class InteractBehaviour : MonoBehaviour
+    public abstract class InteractBehaviour : MonoBehaviour
     {
-        public virtual void ExecuteDialogue(){ }
+        public DialogueSO dialogue;
+
+        public abstract void ExecuteDialogue();
+
+        public virtual void StartedExecutingDialogue() { }
+
+        public virtual void FinishedExecutingDialogue() { }
     }
 }

@@ -19,6 +19,7 @@ namespace Root
         {
             if (HasItem)
                 return;
+
             item.HasBeenPickedUp();
             HeldItem = item;
 
