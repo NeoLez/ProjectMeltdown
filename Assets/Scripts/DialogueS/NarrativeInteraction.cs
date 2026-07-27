@@ -1,8 +1,10 @@
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Root
 {
@@ -12,6 +14,10 @@ namespace Root
         [SerializeField] float maxDistance;
         [SerializeField] LayerMask interactableEntityLayer;
 
+        [SerializeField] private GameObject crosshair;
+        [SerializeField] private List<Sprite> _crosshairSprite; 
+
+        private Image _crosshairImage;
         private PlayerInputActions _input;
         private InteractBehaviour _interactableEntity;
 
@@ -26,15 +32,27 @@ namespace Root
 
         private void Start()
         {
+            _crosshairImage = crosshair.GetComponent<Image>();
+
             DialogueManager.Instance.OnDialogueEnded += ResetDialogue;
         }
 
-        private void OnDestroy()
+        private void Update()
         {
-            _input.Interaction.NPC.performed -= HandleNarrativeInteraction;
-            DialogueManager.Instance.OnDialogueEnded -= ResetDialogue;
-        }
+            if (_hasTriggeredOnce) return;
 
+            if (TryFindInteractableNPC(out _))
+            {
+                NotificationManager.Instance.ShowNotification("Pulsa E para conversar");
+
+                _crosshairImage.sprite = _crosshairSprite[1];
+            }
+            else
+            {
+                _crosshairImage.sprite = _crosshairSprite[0];
+                NotificationManager.Instance.ShowNotification("");
+            }
+        }
 
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
@@ -44,14 +62,24 @@ namespace Root
                 {
                     if (currentInteractable == _interactableEntity) return;
 
-                    _interactableEntity = currentInteractable;
-
+                    _interactableEntity = currentInteractable;            
                 }
                 else if (_interactableEntity != null)
                 {
                     _interactableEntity = null;
                 }
 
+            }
+
+            DialogueWithNPC();
+        }
+
+        private void DialogueWithNPC()
+        {
+            if (_interactableEntity != null)
+            {
+                _hasTriggeredOnce = true;
+                _interactableEntity.ExecuteDialogue();
             }
         }
 
@@ -63,8 +91,14 @@ namespace Root
 
         private void ResetDialogue()
         {
-            _hasTriggeredOnce = false;
+            //_hasTriggeredOnce = false;
             _interactableEntity = null;
+        }
+
+        private void OnDestroy()
+        {
+            _input.Interaction.NPC.performed -= HandleNarrativeInteraction;
+            DialogueManager.Instance.OnDialogueEnded -= ResetDialogue;
         }
 
     }
