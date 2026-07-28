@@ -13942,6 +13942,7 @@ GameObject:
   - component: {fileID: 1466652829}
   - component: {fileID: 1466652830}
   - component: {fileID: 1466652831}
+  - component: {fileID: 1466652833}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -14156,6 +14157,23 @@ MonoBehaviour:
   _dmg2: {fileID: 1587188776}
   _dmg3: {fileID: 1305639853}
   ui_muerte: {fileID: 94017699}
+--- !u!114 &1466652833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466652819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0315fe3dbafa57249b85b3c15fdf80b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.NarrativeInteraction
+  cam: {fileID: 592390505}
+  maxDistance: 5
+  interactableEntityLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &1467449334
 GameObject:
   m_ObjectHideFlags: 0
@@ -16151,6 +16169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
   IsTyping: 0
   textTypingSpeed: 0.05
+  isAudioPredictable: 0
 --- !u!4 &1711681389
 Transform:
   m_ObjectHideFlags: 0
@@ -18000,7 +18019,6 @@ GameObject:
   - component: {fileID: 1989975167}
   - component: {fileID: 1989975171}
   - component: {fileID: 1989975170}
-  - component: {fileID: 1989975172}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -18141,22 +18159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0446e49b3bbc435ab65c30cc51266fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.RegisterMainCamera
---- !u!114 &1989975172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989975165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0315fe3dbafa57249b85b3c15fdf80b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.NarrativeInteraction
-  maxDistance: 5
-  interactableEntityLayer:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!1 &2002497076
 GameObject:
   m_ObjectHideFlags: 0
