@@ -1,4 +1,3 @@
-using NUnit.Framework.Constraints;
 using Root;
 using System;
 using System.Collections;
@@ -13,11 +12,13 @@ public class DialogueManager : MonoBehaviour
     public bool IsTyping = false;
 
     [SerializeField] private float textTypingSpeed;
+    [SerializeField] bool isAudioPredictable;
 
     private Queue<string> _sentences;
     private string _currentSentence;
     private Coroutine _typingCoroutine;
     private DialogueSO _currentSpeaker;
+    private DialogueAudioInfoSO _currentSpeakerDialogueAudio;
     private TextMeshProUGUI _currentDisplayText;
 
     public event Action OnDialogueStarted;
@@ -29,6 +30,9 @@ public class DialogueManager : MonoBehaviour
     private bool _canInterruptTyping;
 
     private DialogueState _states;
+    private AudioSource _audioSource;
+    private DialogueSO _oldspeaker;
+    private Dictionary<string, DialogueAudioInfoSO> _audioInfoDictorary;
 
     private void Awake()
     {
@@ -38,6 +42,8 @@ public class DialogueManager : MonoBehaviour
         }
 
         GameManager.DialogueManager = this;
+
+        _audioSource = this.gameObject.AddComponent<AudioSource>();
     }
 
     private void Start()
@@ -49,6 +55,37 @@ public class DialogueManager : MonoBehaviour
     {
         _currentSpeaker = dialogue;
         _currentDisplayText = text;
+
+        InitializeAudioInfo();
+    }
+
+    private void InitializeAudioInfo()
+    {
+        if (_currentSpeaker.DialogueAudio.Length < 0) return;
+
+        _audioInfoDictorary = new Dictionary<string, DialogueAudioInfoSO>();
+
+        foreach (DialogueAudioInfoSO audio in _currentSpeaker.DialogueAudio)
+        {
+            _audioInfoDictorary.Add(audio.id, audio);
+        }
+
+    }
+
+    private void SetCurrentSpeakerAudio(string id)
+    {
+        DialogueAudioInfoSO audioInfo = null;
+
+        _audioInfoDictorary.TryGetValue(id, out audioInfo);
+
+        if (audioInfo != null)
+        {
+            _currentSpeakerDialogueAudio = audioInfo;
+        }
+        else
+        {
+            Debug.LogWarning("Failed to find audio info for id: " + id);
+        }
     }
 
     public void TriggerDialogue()
@@ -70,6 +107,8 @@ public class DialogueManager : MonoBehaviour
                 StartDialogue();
                 break;
             case DialogueState.FinishedTalking:
+                //nueva funcion que chequea si estoy interactuando con otro npc asi triggerear dialogo de nuevo
+                CheckContinueDialoging();
                 break;
             default:
                 break;
@@ -94,6 +133,17 @@ public class DialogueManager : MonoBehaviour
         return _states;
     }
 
+    private void CheckContinueDialoging()
+    {
+        OnDialogueStarted?.Invoke();
+        //necesito dispara el evento para obtener los datos
+        if (_oldspeaker != _currentSpeaker)
+        {
+            ChangeDialogueState(DialogueState.StartTalking);
+            CheckState();
+        }
+    }
+
     private void HandleTextSkip()
     {
         if (IsTyping)
@@ -112,6 +162,7 @@ public class DialogueManager : MonoBehaviour
 
         if (_currentDisplayText == null || _currentSpeaker == null) return;
 
+        _currentSpeaker.OnDialogueStarted?.Invoke();
         SetCurrentDialogue();
 
         _sentences.Clear();
@@ -138,12 +189,15 @@ public class DialogueManager : MonoBehaviour
         _currentSentence = _sentences.Dequeue();
 
         if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
+
+
+        SetCurrentSpeakerAudio(_currentSpeaker.DialogueAudio[0].id);
         _typingCoroutine = StartCoroutine(TypeSentence(_currentSentence));
     }
 
     private void FinishSentenceEarly()
     {
-        StopCoroutine(_typingCoroutine); 
+        StopCoroutine(_typingCoroutine);
 
         _currentDisplayText.text = IsSpeakerNameShowable();
         _currentDisplayText.text += _currentSentence;
@@ -155,12 +209,6 @@ public class DialogueManager : MonoBehaviour
     {
         IsTyping = true;
 
-       /* string prefix = "";
-        if (_currentSpeaker.IsAbleToShowSpeaker && !string.IsNullOrEmpty(_currentSpeaker.SpeakerName))
-        {
-            prefix = $"{_currentSpeaker.SpeakerName}: ";
-        }*/
-
         _currentDisplayText.text = IsSpeakerNameShowable();
 
         foreach (char letter in sentence.ToCharArray())
@@ -170,6 +218,7 @@ public class DialogueManager : MonoBehaviour
                 yield return null;
             }
 
+            PlayDialogueSound(letter, letter);
             _currentDisplayText.text += letter;
 
             yield return new WaitForSeconds(textTypingSpeed);
@@ -182,6 +231,51 @@ public class DialogueManager : MonoBehaviour
         IsTyping = false;
 
         //AutoHideText(); 
+    }
+
+    private void PlayDialogueSound(int currentDisplayedCharacterCount, char currentCharacter)
+    { 
+
+        AudioClip[] dialogueTypingSoundClips = _currentSpeakerDialogueAudio.dialogueTypingSounds;
+        int frequencyLevel = _currentSpeakerDialogueAudio.frecuencyLevel;
+        float minPitch = _currentSpeakerDialogueAudio.minPitch;
+        float maxPitch = _currentSpeakerDialogueAudio.maxPitch;
+
+        if (currentDisplayedCharacterCount % _currentSpeakerDialogueAudio.frecuencyLevel == 0)
+        {
+            AudioClip clip = null;
+            if (isAudioPredictable)
+            {
+                int hashCode = currentCharacter.GetHashCode();
+                int predictableIndex = hashCode % _currentSpeakerDialogueAudio.dialogueTypingSounds.Length;
+                clip = _currentSpeakerDialogueAudio.dialogueTypingSounds[predictableIndex];
+
+                int minPitchInt = (int)(minPitch * 100);
+                int maxPitchInt = (int)(maxPitch * 100);
+                int pitchRange = maxPitchInt - minPitchInt;
+
+                if (pitchRange != 0)
+                {
+                    int preedictablePitch = (hashCode % pitchRange) + minPitchInt;
+                    float predictablePitch2 = preedictablePitch / 100f;
+                    _audioSource.pitch = predictablePitch2;
+                }
+                else
+                {
+                    _audioSource.pitch = minPitch;
+                }
+            }
+            else
+            {
+                int randomIndex = UnityEngine.Random.Range(0, _currentSpeakerDialogueAudio.dialogueTypingSounds.Length);
+                clip = _currentSpeakerDialogueAudio.dialogueTypingSounds[randomIndex];
+
+                _audioSource.pitch = UnityEngine.Random.Range(_currentSpeakerDialogueAudio.minPitch, _currentSpeakerDialogueAudio.maxPitch);
+            }
+            _audioSource.PlayOneShot(clip);
+
+        }
+
     }
 
     IEnumerator FinishVisual()
@@ -202,10 +296,11 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var data in _currentSpeaker.DialogueData)
         {
-            foreach (string line in data.Text)
+            _currentData.Add(data.Text);
+           /* foreach (string line in data.Text)
             {
                 _currentData.Add(line);
-            }
+            }*/
         }
     }
 
@@ -234,9 +329,11 @@ public class DialogueManager : MonoBehaviour
         _sentences.Clear();
         _currentData.Clear();
 
+        _currentSpeaker.OnDialogueEnded?.Invoke();
         OnDialogueEnded?.Invoke();
-
         ChangeDialogueState(DialogueState.FinishedTalking);
+
+        _oldspeaker = _currentSpeaker;
     }
 
     public void StopCurrentDialogue()
@@ -248,5 +345,13 @@ public class DialogueManager : MonoBehaviour
     {
         _canInterruptTyping = false;
     }
+
+}
+public enum DialogueState
+{
+    StartTalking,
+    IsTalking,
+    CanRepeatDialogue,
+    FinishedTalking
 }
 

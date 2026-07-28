@@ -31,12 +31,12 @@ namespace Root
         {   
             if (_purchased) return;
 
-            //if (!EconomyManager.Instance.SpendMoney(_price))
-            //{
-            //    NotificationManager.Instance.ShowNotification("No tienes suficiente dinero");
-            //    return;
-            //}
-            //NotificationManager.Instance.ShowNotification($"Compraste {_data.itemName}");
+            if (!EconomyManager.Instance.SpendMoney(_price))
+            {
+                NotificationManager.Instance.ShowNotification("No tienes suficiente dinero");
+                return;
+            }
+            NotificationManager.Instance.ShowNotification($"Compraste {_data.itemName}");
             _purchased = true;
             OnPurchased?.Invoke(_storeHand, this);
             
@@ -44,18 +44,6 @@ namespace Root
             
             if (_priceCanvas != null)
                 _priceCanvas.Hide();
-        }
-
-        public bool IsAbleToPurchase()
-        {
-            if (!EconomyManager.Instance.SpendMoney(_price))
-            {
-                NotificationManager.Instance.ShowNotification("No tienes suficiente dinero");
-                return false;
-            }
-
-            NotificationManager.Instance.ShowNotification($"Compraste {_data.itemName}");
-            return true;
         }
 
         public void SetNotPurchased() {

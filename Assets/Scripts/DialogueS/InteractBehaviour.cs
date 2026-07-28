@@ -4,8 +4,9 @@ namespace Root
 {
     public abstract class InteractBehaviour : MonoBehaviour
     {
-        public DialogueSO dialogue;
-
+        public DialogueSO Dialogue;
+        //public bool CanMaintaingInteraction;
+        public bool hasBeenTriggeredOnce;
         public abstract void ExecuteDialogue();
 
         public virtual void StartedExecutingDialogue() { }
