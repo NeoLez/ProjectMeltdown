@@ -49,6 +49,8 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         _sentences = new Queue<string>();
+
+        GameManager.AudioSystem.AssignOutputMixerGroup(_audioSource, GameManager.AudioSystem.VFX);
     }
 
     public void Initialize(DialogueSO dialogue, TextMeshProUGUI text)

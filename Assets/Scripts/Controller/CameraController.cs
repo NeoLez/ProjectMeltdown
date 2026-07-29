@@ -1,8 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Root;
 using Root.Controller;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Timers;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
@@ -46,6 +48,8 @@ public class CameraController : MonoBehaviour
     public Timer walkCancelTimer = new Timer();
     public float stepSoundTime = 0;
 
+    private bool _limitRotation;
+    private Vector3 _currentEuler;
     private void Awake()
     {
         GameManager.CameraController = this;
@@ -59,6 +63,8 @@ public class CameraController : MonoBehaviour
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();
         Assert.IsNotNull(_playerItemHolder);
+
+        DialogueManager.Instance.OnDialogueEnded += Reset;
     }
 
     private void OnEnable()
@@ -69,6 +75,7 @@ public class CameraController : MonoBehaviour
     private void OnDestroy()
     {
         _input.Interaction.Interact.started -= HandleInteraction;
+        DialogueManager.Instance.OnDialogueEnded -= Reset;
     }
 
     private void HandleInteraction(InputAction.CallbackContext _)
@@ -142,18 +149,28 @@ public class CameraController : MonoBehaviour
         CalculateShakeOffset();
         cam.localPosition += GetShakeOffset();
 
-        yaw += _input.CameraMovement.MouseX.ReadValue<float>() * sensitivity;
-        pitch += _input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
+        if(!_limitRotation)
+        {
+            yaw += _input.CameraMovement.MouseX.ReadValue<float>() * sensitivity;
+            pitch += _input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
 
-        pitch = Mathf.Clamp(pitch, -89f, 89f);
-        if (yaw > 360)
-            yaw -= 360;
-        else if (yaw < 0)
-            yaw += 360;
+            pitch = Mathf.Clamp(pitch, -89f, 89f);
+            if (yaw > 360)
+                yaw -= 360;
+            else if (yaw < 0)
+                yaw += 360;
 
-        float target = -moveDir.x * sideSwayAngle;
-        currentSideSwayAngle = (target - currentSideSwayAngle) * swaySpeed + currentSideSwayAngle;
-        cam.localRotation = Quaternion.Euler(-pitch, yaw, currentSideSwayAngle);
+            float target = -moveDir.x * sideSwayAngle;
+            currentSideSwayAngle = (target - currentSideSwayAngle) * swaySpeed + currentSideSwayAngle;
+            cam.localRotation = Quaternion.Euler(-pitch, yaw, currentSideSwayAngle);
+        }
+    }
+
+    public float NormalizeAngle(float angle)
+    {
+        angle %= 360;
+        if (angle > 180) angle -= 360;
+        return angle;
     }
 
     private void HeadBob()
@@ -162,7 +179,42 @@ public class CameraController : MonoBehaviour
         cameraBobbingOffset.y = Mathf.Lerp(cameraBobbingOffset.y, s * verticalAmount * 1.4f, smooth * Time.deltaTime);
         cameraBobbingOffset.x = Mathf.Lerp(cameraBobbingOffset.x, Mathf.Cos((Time.time - startedWalk) * frequency / 2 + (float)Math.PI / 2) * horizontalAmount * 1.6f, smooth * Time.deltaTime);
     }
-    
+
+    public void FocusCamera(Transform newPivot)
+    {
+        _limitRotation = true;
+        StartCoroutine(RotateCamerTowardsNPC(newPivot));
+    }
+
+    private IEnumerator RotateCamerTowardsNPC(Transform newPivot)
+    {
+        float journeyProgress = 0f;
+        Quaternion targetRot = newPivot.rotation;
+
+        while (Quaternion.Angle(cam.rotation, targetRot) > 0.01f)
+        {
+            journeyProgress += Time.deltaTime * 0.5f;
+
+            float percentage = Mathf.Clamp01(journeyProgress);
+            cam.rotation = Quaternion.Slerp(cam.rotation, targetRot, percentage);
+
+            if (percentage >= 1f) break;
+
+            yield return null;
+        }
+
+        cam.rotation = targetRot;
+        _currentEuler = cam.localEulerAngles;
+    }
+
+    private void Reset()
+    {
+        _limitRotation = false;
+        pitch = -NormalizeAngle(_currentEuler.x);
+        yaw = NormalizeAngle(_currentEuler.y);
+    }
+
+
     public float shakeIntensity;
     public float targetShakeIntensity;
     public float shakeTime;

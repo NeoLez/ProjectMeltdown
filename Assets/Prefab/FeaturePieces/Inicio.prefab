@@ -372,6 +372,37 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &1592927316174811189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3908757576639613301}
+  m_Layer: 0
+  m_Name: Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3908757576639613301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592927316174811189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 2.187, y: -0.106, z: -2.957}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9047650242472675870}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1679359792831545701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2137,6 +2168,7 @@ Transform:
   - {fileID: 8152058697911082703}
   - {fileID: 341513260738403252}
   - {fileID: 4274265153838270622}
+  - {fileID: 3908757576639613301}
   m_Father: {fileID: 7354231312121814642}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &6021114565758251704
@@ -2377,6 +2409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f732182f20bac6646a314182dbf8b4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
+  Pivot: {fileID: 3908757576639613301}
   Dialogue: {fileID: 11400000, guid: 330a9258d1edad74da4bb8d86b258185, type: 2}
   hasBeenTriggeredOnce: 0
   merchantTrigger: {fileID: 975047838480511577}
