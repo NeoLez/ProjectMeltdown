@@ -33,10 +33,10 @@ namespace Root
 
             if (!EconomyManager.Instance.SpendMoney(_price))
             {
-                NotificationManager.Instance.ShowNotification("No tienes suficiente dinero");
+                NotificationManager.Instance.ShowNotification("You don't have enough money");
                 return;
             }
-            NotificationManager.Instance.ShowNotification($"Compraste {_data.itemName}");
+            NotificationManager.Instance.ShowNotification($"You bought {_data.itemName}");
             _purchased = true;
             OnPurchased?.Invoke(_storeHand, this);
             

@@ -52,11 +52,11 @@ namespace Root
 
             bootCanvas.SetActive(true);
 
-            bootText.text = "ACTIVANDO SISTEMAS.....";
+            bootText.text = "ACTIVATING SYSTEMS.....";
 
             yield return new WaitForSeconds(bootDuration);
 
-            bootText.text = "ACTIVADO";
+            bootText.text = "ACTIVATED";
 
             yield return new WaitForSeconds(activatedDuration);
 

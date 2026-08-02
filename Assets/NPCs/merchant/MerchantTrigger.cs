@@ -50,11 +50,13 @@ namespace Root
             if (show)
             {
                 _anim.SetBool("Appear", true);
+                CancelInvoke(nameof(DelayedShow));
                 Invoke(nameof(DelayedShow), 1f);
             }
             else 
             {
                 _anim.SetBool("Appear", false);
+                CancelInvoke(nameof(DelayedShow));
                 _storeManager.HideItems();
             }
 
