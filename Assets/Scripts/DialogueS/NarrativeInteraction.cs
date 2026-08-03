@@ -15,9 +15,11 @@ namespace Root
         [SerializeField] private Transform cameraPivot;
         [SerializeField] float maxDistance;
         [SerializeField] LayerMask interactableEntityLayer;
+        [SerializeField] private Canvas interactionPanel;
 
         private PlayerInputActions _input;
         private Transform _npcLookingPivot;
+        private bool isInteracting;
 
         private void Awake()
         {
@@ -26,18 +28,41 @@ namespace Root
             _input.Interaction.NPC.performed += HandleNarrativeInteraction;          
         }
 
+        private void Update()
+        {
+            if (isInteracting)  //si estoy interactuando salgo hasta que la interacción termino
+            {
+                interactionPanel.enabled = false;
+                return;
+            }
+            //si veo al npc, aparece cartel
+            if(TryFindInteractableNPC(out var currentInteractable))
+            {
+                interactionPanel.enabled = true;
+            }
+            else  //sino que se apague
+            {
+                interactionPanel.enabled = false;
+            }
+        }
 
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
             if (TryFindInteractableNPC(out var currentInteractable)) 
             {
-                if (currentInteractable.CheckPivot())   //preguntar si el dialogo termino o se puede repertir, que vuelva a generar la interaccion
+                if (currentInteractable.CheckPivot())
                 {
-                    if (currentInteractable.HasDialogueEnded()) return;
+                    if (currentInteractable.HasDialogueEnded())
+                    {
+                        //isInteracting = false; //fijarme la prox si tiene dialogo hago que siga interactuando 
+                        return;
+                    }
 
                     _npcLookingPivot = currentInteractable.Pivot;
 
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
+
+                    isInteracting = true;
                 }
 
                 currentInteractable.ExecuteDialogue();
