@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private float textTypingSpeed;
     [SerializeField] bool isAudioPredictable;
-
+    [SerializeField] TextMeshProUGUI skipText;
     private Queue<string> _sentences;
     private string _currentSentence;
     private Coroutine _typingCoroutine;
@@ -51,6 +51,8 @@ public class DialogueManager : MonoBehaviour
         _sentences = new Queue<string>();
 
         GameManager.AudioSystem.AssignOutputMixerGroup(_audioSource, GameManager.AudioSystem.VFX);
+
+        EnableTextSkip(false);
     }
 
     public void Initialize(DialogueSO dialogue, TextMeshProUGUI text)
@@ -210,7 +212,7 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator TypeSentence(string sentence)
     {
         IsTyping = true;
-
+        EnableTextSkip(false);
         _currentDisplayText.text = IsSpeakerNameShowable();
 
         foreach (char letter in sentence.ToCharArray())
@@ -232,6 +234,7 @@ public class DialogueManager : MonoBehaviour
         _arrayIndex++;
         IsTyping = false;
 
+        EnableTextSkip(true);
         //AutoHideText(); 
     }
 
@@ -291,6 +294,7 @@ public class DialogueManager : MonoBehaviour
 
         IsTyping = false;
 
+        EnableTextSkip(true);
         //AutoHideText(); 
     }
 
@@ -318,6 +322,10 @@ public class DialogueManager : MonoBehaviour
         return prefix;
     }
 
+    private void EnableTextSkip(bool enable)
+    {
+        skipText.enabled = enable;
+    }
 
     private void AutoHideText()
     {
