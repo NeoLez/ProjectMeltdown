@@ -287,6 +287,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Flashlight"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b5f56e1-259b-4270-b7eb-39adf12920cb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -364,6 +373,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""NPC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34002572-e724-4ffa-b8b3-23701c512828"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Flashlight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -448,6 +468,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_GoBack = m_Interaction.FindAction("GoBack", throwIfNotFound: true);
         m_Interaction_Reset = m_Interaction.FindAction("Reset", throwIfNotFound: true);
         m_Interaction_NPC = m_Interaction.FindAction("NPC", throwIfNotFound: true);
+        m_Interaction_Flashlight = m_Interaction.FindAction("Flashlight", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -759,6 +780,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_GoBack;
     private readonly InputAction m_Interaction_Reset;
     private readonly InputAction m_Interaction_NPC;
+    private readonly InputAction m_Interaction_Flashlight;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -786,6 +808,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/NPC".
         /// </summary>
         public InputAction @NPC => m_Wrapper.m_Interaction_NPC;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/Flashlight".
+        /// </summary>
+        public InputAction @Flashlight => m_Wrapper.m_Interaction_Flashlight;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -824,6 +850,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NPC.started += instance.OnNPC;
             @NPC.performed += instance.OnNPC;
             @NPC.canceled += instance.OnNPC;
+            @Flashlight.started += instance.OnFlashlight;
+            @Flashlight.performed += instance.OnFlashlight;
+            @Flashlight.canceled += instance.OnFlashlight;
         }
 
         /// <summary>
@@ -847,6 +876,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NPC.started -= instance.OnNPC;
             @NPC.performed -= instance.OnNPC;
             @NPC.canceled -= instance.OnNPC;
+            @Flashlight.started -= instance.OnFlashlight;
+            @Flashlight.performed -= instance.OnFlashlight;
+            @Flashlight.canceled -= instance.OnFlashlight;
         }
 
         /// <summary>
@@ -1031,5 +1063,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnNPC(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Flashlight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFlashlight(InputAction.CallbackContext context);
     }
 }
