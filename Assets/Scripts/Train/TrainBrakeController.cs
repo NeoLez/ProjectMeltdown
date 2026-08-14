@@ -87,5 +87,8 @@ namespace Root
             return currentDamage / brakeLevels[^1].maxDamage;
         }
         public int GetBrakeLevel() => currentBrakeLevel;
+
+        public float GetDamageAmount() => MathF.Round(currentDamage);
+
     }
 }

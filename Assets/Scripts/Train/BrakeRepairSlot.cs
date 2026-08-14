@@ -23,6 +23,12 @@ namespace Root
             if (fluid == null)
                 return;
 
+            if(brakeController.GetDamageAmount() <= 0)
+            {
+                return;
+            }
+
+            fluid.Consume(brakeController.GetDamageAmount());
             brakeController.Repair(fluid.repairAmount);
 
             if (TryInsertBrakeFluid(fluid))
@@ -35,7 +41,7 @@ namespace Root
             yield return new WaitForSeconds(0.02f);
             fluid.AnimatorOn();
             yield return new WaitForSeconds(2f);
-            Destroy(fluid.gameObject);
+            Destroy(fluid.gameObject); //evitar destruirlo
         }
 
         public bool TryInsertBrakeFluid(BrakeFluid fluid)
