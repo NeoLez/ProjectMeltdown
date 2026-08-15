@@ -1,16 +1,19 @@
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Root
 {
     public class BrakeFluid : MonoBehaviour
     {
-        public float repairAmount;
-        public float repairAmountLeft;
+        [Min(0)]
+        public float RepairAmount;
+
         [SerializeField] Animator _animator;
 
+        private float _repairAmountLeft;
         private void Start()
         {
-            repairAmountLeft = repairAmount;
+            _repairAmountLeft = RepairAmount;
         }
         public void AnimatorOn()
         {
@@ -20,8 +23,11 @@ namespace Root
 
         public void Consume(float damage)
         {
-            if (repairAmountLeft <= 0) return;
-            repairAmountLeft -= damage;
+            if (_repairAmountLeft <= 0) return;
+            _repairAmountLeft -= damage;
         }
+
+        public float GetRepairAmountLeft() => _repairAmountLeft;
+        
     }
 }

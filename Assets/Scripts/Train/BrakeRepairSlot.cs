@@ -6,6 +6,7 @@ namespace Root
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private TrainBrakeController brakeController;
+
         public override void Interact()
         {
             PlayerItemHolder holder =
@@ -29,24 +30,40 @@ namespace Root
             }
 
             fluid.Consume(brakeController.GetDamageAmount());
-            brakeController.Repair(fluid.repairAmount);
+            brakeController.Repair(fluid.RepairAmount);
 
-            if (TryInsertBrakeFluid(fluid))
+            if (TryInsertBrakeFluid(fluid, holder))
             {
                 holder.ForceClearHeldItem();
             }
         }
-        System.Collections.IEnumerator AnimTrigger(BrakeFluid fluid)
+        System.Collections.IEnumerator AnimTrigger(BrakeFluid fluid, PlayerItemHolder holder)
         {
+            PickupItem item = fluid.GetComponent<PickupItem>();
+
             yield return new WaitForSeconds(0.02f);
             fluid.AnimatorOn();
             yield return new WaitForSeconds(2f);
-            Destroy(fluid.gameObject); //evitar destruirlo
+            
+            if(fluid.GetRepairAmountLeft() >= 0)
+            {
+                Rigidbody rb = fluid.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.constraints = RigidbodyConstraints.None;
+                    rb.isKinematic = false;
+                }
+
+                holder.Pickup(item);
+            }
+            else
+            {
+                Destroy(fluid.gameObject);
+            }
         }
 
-        public bool TryInsertBrakeFluid(BrakeFluid fluid)
+        public bool TryInsertBrakeFluid(BrakeFluid fluid, PlayerItemHolder holder)
         {
-
             Rigidbody rb = fluid.GetComponent<Rigidbody>();
 
             if (rb != null)
@@ -58,7 +75,7 @@ namespace Root
             fluid.transform.SetParent(transform);
             fluid.transform.position = pivot.position;
             fluid.transform.rotation = pivot.rotation;
-            StartCoroutine(AnimTrigger(fluid));
+            StartCoroutine(AnimTrigger(fluid, holder));
             return true;
         }
 
