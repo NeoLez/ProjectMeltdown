@@ -9148,7 +9148,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -98.47443, y: -164.7409}
+  m_AnchoredPosition: {x: -98.47461, y: -164.74097}
   m_SizeDelta: {x: -824.3688, y: -1031.5546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &931634931
@@ -14415,8 +14415,10 @@ MonoBehaviour:
   sideSwayAngle: 1
   swaySpeed: 0.005
   horizontalAmount: 0.25
-  verticalAmount: 0.6
+  verticalAmount: 0.4
+  runningVerticalAmount: 0.8
   frequency: 16
+  runningFrequency: 24
   smooth: 2
   raycastLayerMask:
     serializedVersion: 2
@@ -14451,7 +14453,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  movementSpeed: 8
+  movementSpeed: 6
+  runningMovementSpeed: 12
   verticalJumpSpeed: 4
   _currentSurfaceNormal: {x: 0, y: 0, z: 0}
   _currentSlopeAngle: 0
@@ -15172,7 +15175,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -98.47443, y: -264}
+  m_AnchoredPosition: {x: -98.47461, y: -264}
   m_SizeDelta: {x: -824.3688, y: -1031.5546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1526696638
@@ -16033,7 +16036,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -98.47443, y: -354}
+  m_AnchoredPosition: {x: -98.47461, y: -354}
   m_SizeDelta: {x: -824.3688, y: -1031.5546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632259007

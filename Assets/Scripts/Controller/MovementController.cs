@@ -16,6 +16,7 @@ namespace Root.Controller
         [SerializeField] private float groundCheckRayLength;
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float movementSpeed;
+        [SerializeField] private float runningMovementSpeed;
         [SerializeField] private float verticalJumpSpeed;
 
         [SerializeField] private Vector3 _currentSurfaceNormal;
@@ -27,6 +28,7 @@ namespace Root.Controller
 
         [Header("Footsteps")]
         [SerializeField] private float footstepDistance = 1.5f;
+        [SerializeField] private float runningFootstepDistance = 2.5f;
 
         private bool jump;
         private float _distanceTravelled;
@@ -73,12 +75,12 @@ namespace Root.Controller
             Vector3 worldMoveDir = (_cameraController.GetHorizontalDirectionForwardVector() * input.y +
                                     _cameraController.GetHorizontalDirectionRightVector() * input.x).Swizzle_x0y();
 
-            _rb.linearVelocity = worldMoveDir * movementSpeed + Vector3.up * currentVerticalSpeed;
+            _rb.linearVelocity = worldMoveDir * (_input.Movement.Run.IsPressed() ? runningMovementSpeed : movementSpeed) + Vector3.up * currentVerticalSpeed;
 
             if (_currentState == CharacterState.Grounded && _rb.linearVelocity.magnitude > 0.1f)
             {
                 _distanceTravelled += Vector3.Distance(transform.position, _lastPosition);
-                if (_distanceTravelled >= footstepDistance)
+                if (_distanceTravelled >= (_input.Movement.Run.IsPressed() ? runningFootstepDistance : footstepDistance))
                 {
                     _distanceTravelled = 0;
                     PlayFootstep();

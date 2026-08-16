@@ -21,7 +21,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float swaySpeed;
     [SerializeField] private float horizontalAmount;
     [SerializeField] private float verticalAmount;
+    [SerializeField] private float runningVerticalAmount;
     [SerializeField] private float frequency;
+    [SerializeField] private float runningFrequency;
     [SerializeField] private float smooth;
     private Vector2 cameraBobbingOffset;
     private float currentSideSwayAngle;
@@ -174,9 +176,9 @@ public class CameraController : MonoBehaviour
 
     private void HeadBob()
     {
-        float s = Mathf.Sin((Time.time - startedWalk) * frequency + (float)Math.PI / 2);
-        cameraBobbingOffset.y = Mathf.Lerp(cameraBobbingOffset.y, s * verticalAmount * 1.4f, smooth * Time.deltaTime);
-        cameraBobbingOffset.x = Mathf.Lerp(cameraBobbingOffset.x, Mathf.Cos((Time.time - startedWalk) * frequency / 2 + (float)Math.PI / 2) * horizontalAmount * 1.6f, smooth * Time.deltaTime);
+        float s = Mathf.Sin((Time.time - startedWalk) * (_input.Movement.Run.IsPressed() ? runningFrequency : frequency) + (float)Math.PI / 2);
+        cameraBobbingOffset.y = Mathf.Lerp(cameraBobbingOffset.y, s * (_input.Movement.Run.IsPressed()? runningVerticalAmount : verticalAmount), smooth * Time.deltaTime);
+        cameraBobbingOffset.x = Mathf.Lerp(cameraBobbingOffset.x, Mathf.Cos((Time.time - startedWalk) * frequency / 2 + (float)Math.PI / 2) * horizontalAmount, smooth * Time.deltaTime);
     }
 
     public void FocusCamera(Transform newPivot)
