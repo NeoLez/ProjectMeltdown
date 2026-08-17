@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Root
         [SerializeField] BoxCollider _externalCollider;
         [SerializeField] List<BoxCollider> colliders;
         [SerializeField] private AudioClip sound;
+        public bool IsObjectOpen { get; private set; }
         private void Start()
         {
             _animator = _visual.GetComponent<Animator>();
@@ -22,8 +24,8 @@ namespace Root
             {
                 Colliders();
             }
-            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); _pivot.SetBool("Open", false);}
-            else {_animator.SetBool("Open", true); _pivot.SetBool("Open", true);}
+            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); _pivot.SetBool("Open", false); IsObjectOpen = false; }
+            else {_animator.SetBool("Open", true); _pivot.SetBool("Open", true); IsObjectOpen = true; }
             if (sound != null) GameManager.AudioSystem.PlaySoundPositional(sound, transform.position, GameManager.AudioSystem.VFX);
             if (_externalCollider != null) 
             {

@@ -24,6 +24,7 @@ namespace Root {
         [SerializeField] DiscSlot _discSlot;
         [SerializeField] private AudioClip stopSound;
         [SerializeField] private AudioClip interactSound;
+        [SerializeField] private TriggerAnimationByInteract _brakeDoorAnim;
         private void Awake() {
             coverEasing = Easing.Bounce(0.5f);
         }
@@ -36,7 +37,7 @@ namespace Root {
                 return;
             }
 
-            if (IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.Disc == null)
+            if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.Disc == null)
             {
                 Debug.Log("EmergenciaNO");
                 LowerAndRaiseButton();
