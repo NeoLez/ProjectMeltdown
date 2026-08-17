@@ -37,7 +37,7 @@ namespace Root {
                 return;
             }
 
-            if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.Disc == null)
+            if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.GetBreakDisc() == null)
             {
                 Debug.Log("EmergenciaNO");
                 LowerAndRaiseButton();
@@ -49,7 +49,7 @@ namespace Root {
             usesLeft--;
             GameManager.AudioSystem.PlaySound(stopSound, GameManager.AudioSystem.VFX);
             Debug.Log("Emergencia");
-            _discSlot.Disc.SetDiscUsage();
+            _discSlot.GetBreakDisc().SetDiscUsage();
         }
 
         public override void EndInteraction()

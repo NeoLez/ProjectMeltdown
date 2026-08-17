@@ -8,16 +8,16 @@ namespace Root
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
         [SerializeField] private EmergencyStopButton _emergencyStopButton;
-        public BreakDisc Disc;
+        private BreakDisc _disc;
 
         private void Awake() {
             train.OnTrainStartedMoving += (() => {
-                if (Disc == null) return;
-                Disc.GetComponent<VisualContainer>().goal = train.GetTrainPosition();
+                if (_disc == null) return;
+                _disc.GetComponent<VisualContainer>().goal = train.GetTrainPosition();
             });
             train.OnTrainStoppedMoving += (() => {
-                if (Disc == null) return;
-                Disc.GetComponent<VisualContainer>().goal = null;
+                if (_disc == null) return;
+                _disc.GetComponent<VisualContainer>().goal = null;
             });
         }
 
@@ -27,7 +27,7 @@ namespace Root
                 return;
 
             if (!holder.HasItem) {
-                if (Disc != null) {
+                if (_disc != null) {
                     BreakDisc disc = TakeDisc();
 
                     if (disc != null) {
@@ -39,11 +39,11 @@ namespace Root
                 }
             }
             else {
-                if (Disc == null) {
+                if (_disc == null) {
                     if(!holder.HeldItem.TryGetComponent(out BreakDisc Disc))
                         return;
 
-                    _emergencyStopButton.Repair(Disc.DiscUsage);
+                    _emergencyStopButton.Repair(Disc.GetDiscUsage());
 
                     if (TryInsertDisc(Disc))
                     {
@@ -55,12 +55,12 @@ namespace Root
         
         public BreakDisc TakeDisc()
         {
-            if (Disc == null)
+            if (this._disc == null)
                 return null;
 
-            BreakDisc _disc = Disc;
+            BreakDisc disc = _disc;
 
-            var rb = _disc.GetComponent<Rigidbody>();
+            var rb = disc.GetComponent<Rigidbody>();
 
             if (rb != null)
             {
@@ -68,11 +68,11 @@ namespace Root
                 rb.isKinematic = false;
             }
             _emergencyStopButton.Repair(0);
-            Disc = null;
-            return _disc;
+            this._disc = null;
+            return disc;
         }
         public bool TryInsertDisc(BreakDisc Disc) {
-            this.Disc = Disc;
+            this._disc = Disc;
 
             Rigidbody rb = Disc.GetComponent<Rigidbody>();
 
@@ -88,12 +88,17 @@ namespace Root
             return true;
         }
 
+        public BreakDisc GetBreakDisc()
+        {
+            return _disc;
+        }
+
         private void LateUpdate()
         {
-            if (Disc != null)
+            if (_disc != null)
             {
-                Disc.transform.position = pivot.position;
-                Disc.transform.rotation = pivot.rotation;
+                _disc.transform.position = pivot.position;
+                _disc.transform.rotation = pivot.rotation;
             }
         }
     }

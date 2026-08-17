@@ -5,13 +5,15 @@ namespace Root
 {
     public class BreakDisc : MonoBehaviour
     {
-        public int DiscUsage = 3;
+        [SerializeField] private int DiscUsage = 3;
         [SerializeField] List<GameObject> _object;
         //[SerializeField] Animator _animator;
-        /*public int GetDiscUsage()
+
+        public int GetDiscUsage()
         {
-            return(DiscUsage);  
-        }*/
+            return DiscUsage;  
+        }
+
         public void SetDiscUsage()
         {
             if (DiscUsage <= 0) return;
@@ -24,9 +26,9 @@ namespace Root
              for (int i = 0; i < 2; i++)
              {
                 if(a != i)
-                 {
-                      _object[i].SetActive(false);
-                 }
+                {
+                    _object[i].SetActive(false);
+                }
              }
             _object[a].SetActive(true);
         }
