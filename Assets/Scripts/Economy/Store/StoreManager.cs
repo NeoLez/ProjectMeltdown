@@ -22,7 +22,6 @@ namespace Root
         [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
         [SerializeField] private Transform singlePriceSpawnPoint;
         private List<MerchantHand> initialMerchantHands = new();
-        private StoreItemDisplay singleInitialItem;
 
         private void Start()
         {
@@ -112,11 +111,12 @@ namespace Root
             obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
             obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
-                Debug.Log("Purchased item " + item.item.name);
+                //Debug.Log("Purchased item " + item.item.name);
                 boughtHand.HideHand();
                 initialMerchantHands.Remove(boughtHand);
+                itemsCreated.Remove(i);
             };
-            singleInitialItem = obj.GetComponent<StoreItemDisplay>();
+            itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
             var objBehaviour = obj.transform.GetChild(0);
             objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
 
@@ -148,7 +148,6 @@ namespace Root
 
         public void ShowItems() {
             Debug.Log("a");
-
             if(isTutorialSpawn)
             {
                 foreach (var hand in initialMerchantHands)
