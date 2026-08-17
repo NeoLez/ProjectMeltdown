@@ -8,7 +8,7 @@ namespace Root
     public class StoreManager : MonoBehaviour {
         [SerializeField] private bool isTutorialSpawn;
         [SerializeField] private StoreItemData forcedSpawnItem;
-        [SerializeField] private List<StoreItemData> items;
+        [SerializeField] private StoreItemPoolSO storeItemPool;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
         [SerializeField] private List<Transform> priceCanvasSpawnPoint;
         [SerializeField] private GameObject priceCanvasPrefab;
@@ -59,7 +59,7 @@ namespace Root
                     _forcedSpawn = true;
                 }
                 else 
-                    item = GetRandomItem();
+                    item = storeItemPool.GetEntry();
                 
                 
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
@@ -182,26 +182,6 @@ namespace Root
                     hand.HideHand();
                 }
             }
-        }
-
-        private StoreItemData GetRandomItem()
-        {
-            int totalWeight = 0;
-
-            foreach (var item in items)
-                totalWeight += item.weight;
-
-            int randomWeight = Random.Range(0, totalWeight);
-
-            foreach (var item in items)
-            {
-                randomWeight -= item.weight;
-
-                if (randomWeight < 0)
-                    return item;
-            }
-
-            return items[0];
         }
     }
 }
