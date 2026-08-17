@@ -64,11 +64,11 @@ namespace Root
                 
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
                     
-                GameObject obj = Instantiate(item.prefab);
+                GameObject obj = Instantiate(item.item.GameObject);
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
                 obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
                 obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
-                    Debug.Log("Purchased item " + item.itemName);
+                    Debug.Log("Purchased item " + item.item.name);
                     boughtHand.HideHand();
                     itemsCreated.Remove(i);
                     merchantHands.Remove(boughtHand);
@@ -108,11 +108,11 @@ namespace Root
             else
                 item = initialItemSpawn;
 
-            GameObject obj = Instantiate(item.prefab);
+            GameObject obj = Instantiate(item.item.GameObject);
             obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
             obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
-                Debug.Log("Purchased item " + item.itemName);
+                Debug.Log("Purchased item " + item.item.name);
                 boughtHand.HideHand();
                 initialMerchantHands.Remove(boughtHand);
             };

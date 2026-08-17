@@ -3,11 +3,8 @@ using UnityEngine;
 namespace Root
 {
     [CreateAssetMenu(menuName = "Store/Store Item")]
-    public class StoreItemData : ScriptableObject
-    {
-        public string itemName;
-
-        public GameObject prefab;
+    public class StoreItemData : ScriptableObject {
+        public ItemSO item;
 
         public int minPrice = 100;
         public int maxPrice = 150;

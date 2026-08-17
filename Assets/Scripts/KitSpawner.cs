@@ -15,7 +15,7 @@ namespace Root {
             int Spawn = 0;
             foreach (var item in pool.items) {
                 Debug.Log(item.name);
-                SpawnItem(item, spawnPoints[Spawn]);
+                SpawnItem(item.GameObject, spawnPoints[Spawn]);
                 Spawn = (Spawn + 1) % pool.items.Count;
             }
         }

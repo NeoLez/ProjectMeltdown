@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Root
 {
@@ -45,7 +46,7 @@ namespace Root
 
         [SerializeField] private List<VisualContainer> containers;
         [SerializeField] private List<VisualContainer> objectsInsideTrain;
-        [SerializeField] private List<ItemInsideArea> itemInsideAreas;
+        [SerializeField] private List<ObjectInsideArea> ObjectInsideAreas;
 
         // MODIFICADO: campos de consumo de bateria + desaceleracion cuando se agota la bateria, independiente del freno normal
         [SerializeField] private float batteryDrain = 1f;
@@ -348,7 +349,7 @@ namespace Root
         private void MovePhysicalTrainToSimulationArea()
         {
             HashSet<VisualContainer> itemsInside = new();
-            foreach (var area in itemInsideAreas)
+            foreach (var area in ObjectInsideAreas)
             {
                 itemsInside.UnionWith(area._containers);
             }

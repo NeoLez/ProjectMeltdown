@@ -7,7 +7,7 @@ namespace Root
         [SerializeField] private ItemGenerationPoolSO pool;
         void Start() { 
             
-            var obj = Instantiate(pool.GetRandom());
+            var obj = Instantiate(pool.GetRandom().GameObject);
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = transform.parent;

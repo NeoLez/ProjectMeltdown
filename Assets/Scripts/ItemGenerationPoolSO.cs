@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Root {
     [CreateAssetMenu(fileName = "ItemGenerationPool", menuName = "SO/ItemGenerationPool")]
     public class ItemGenerationPoolSO : ScriptableObject {
-        public List<GameObject> items;
+        public List<ItemSO> items;
 
-        public GameObject GetRandom() {
+        public ItemSO GetRandom() {
             return items[Random.Range(0, items.Count)];
         }
     }

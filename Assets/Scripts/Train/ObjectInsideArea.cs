@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Root {
-    public class ItemInsideArea : MonoBehaviour {
+    public class ObjectInsideArea : MonoBehaviour {
         public HashSet<VisualContainer> _containers = new();
 
         private void OnTriggerEnter(Collider other) {
