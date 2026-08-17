@@ -23,10 +23,10 @@ namespace Root.Controller
 
         protected void UpdateMousePosition()
         {
-            if(!active) return;
 #if UNITY_EDITOR_LINUX
             return;
 #endif
+            if(!active) return;
             Mouse.current.WarpCursorPosition(_camera.WorldToScreenPoint(mousePivotPoint.position) * GameManager.GetResolutionRatio());
         }
 

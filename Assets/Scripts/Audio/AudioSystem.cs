@@ -17,7 +17,7 @@ public class AudioSystem
     public void PauseAll()
     {
         pausedSources.Clear();
-        AudioSource[] all = Object.FindObjectsOfType<AudioSource>();
+        AudioSource[] all = Object.FindObjectsByType<AudioSource>();
         foreach (AudioSource s in all)
         {
             if (s.isPlaying)

@@ -104,5 +104,7 @@ namespace Root.Enemy
         {
             return _isCut;
         }
+
+        public bool IsGenerating => _isGenerating;
     }
 }

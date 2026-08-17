@@ -8,7 +8,6 @@ namespace Root {
         public TrainAlertSO currentAlert;
         public event Action OnEventChanged;
 
-        private bool firstAdded = true;
         public void AddAlert(TrainAlertSO alert) {
             alerts.Add(alert);
             if(alerts.Count == 1) SetAlert();

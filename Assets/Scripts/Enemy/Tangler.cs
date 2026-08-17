@@ -13,7 +13,6 @@ namespace Root.Enemy
         [SerializeField] GameObject _particlesHit;
         [SerializeField] TanglerTentacle tentaclePrefab;
         [SerializeField] int maxTentacleQuantity = 3;
-        bool _maxTangle = false;
         [SerializeField] LayerMask layerMask;
 
         private Dictionary<int, TanglerTentacle> _tentacles = new();

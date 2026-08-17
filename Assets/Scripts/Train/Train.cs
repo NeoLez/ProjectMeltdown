@@ -6,7 +6,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Root
 {
@@ -51,8 +50,6 @@ namespace Root
         // MODIFICADO: campos de consumo de bateria + desaceleracion cuando se agota la bateria, independiente del freno normal
         [SerializeField] private float batteryDrain = 1f;
         [SerializeField] private float strainMultiplier = 0.5f;
-        [SerializeField] private float batteryOutDecelerationRate = 0.5f;
-        [SerializeField] private float batteryStopTime = 0.1f;
 
         public TrainAlertSystem AlertSystem;
         [SerializeField] private AudioClip _descarriladoAudio;
@@ -404,10 +401,9 @@ namespace Root
 
         private void OpenExternalDoors()
         {
-            foreach (var door in externalDoors)
-            {
-                Tween.Custom(0.99f, 0f, new TweenSettings(1f), f => {
-                    door.SetFloat("Time", f);
+            foreach (var door in externalDoors) {
+                Tween.Custom(door, startValue: 0.99f, endValue: 0f, duration: 1f, (animator, f) => {
+                    animator.SetFloat("Time", f);
                 });
             }
             externalDoorsOpened = true;
@@ -417,10 +413,9 @@ namespace Root
 
         private void CloseExternalDoors(bool unlockOnceClosed)
         {
-            foreach (var door in externalDoors)
-            {
-                Tween.Custom(0f, 0.99f, new TweenSettings(1f), f => {
-                    door.SetFloat("Time", f);
+            foreach (var door in externalDoors) {
+                Tween.Custom(door, startValue: 0f, endValue: 0.99f, duration: 1f, (animator, f) => {
+                    animator.SetFloat("Time", f);
                 });
             }
             externalDoorsOpened = false;

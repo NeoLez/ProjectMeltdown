@@ -36,7 +36,7 @@ namespace Root
                 NotificationManager.Instance.ShowNotification("You don't have enough money");
                 return;
             }
-            NotificationManager.Instance.ShowNotification($"You bought {_data.name}");
+            NotificationManager.Instance.ShowNotification($"You bought {_data.item.ItemName}");
             _purchased = true;
             OnPurchased?.Invoke(_storeHand, this);
             

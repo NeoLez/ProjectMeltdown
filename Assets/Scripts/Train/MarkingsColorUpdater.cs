@@ -10,13 +10,18 @@ namespace Root
         [SerializeField] Material safe;
         [SerializeField] Material limit;
         [SerializeField] Material warning;
-        [SerializeField] MeshRenderer renderer;
+        private MeshRenderer render;
+
+        private void Awake() {
+            render = GetComponent<MeshRenderer>();
+        }
+
         void Update()
         {
             var sp = train.GetCurrentMaxSpeed();
-            if (sp > speed) renderer.material = safe;
-            else if (sp < speed) renderer.material = warning;
-            else renderer.material = limit;
+            if (sp > speed) render.material = safe;
+            else if (sp < speed) render.material = warning;
+            else render.material = limit;
         }
     }
 }

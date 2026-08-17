@@ -5,7 +5,7 @@ namespace Root
     public class Drag : MonoBehaviour
     {
         public Rigidbody obj;
-        [SerializeField] private Transform camera;
+        [SerializeField] private Transform cam;
         [SerializeField] private float rayDistance;
         private float _distance;
         private void OnEnable()
@@ -29,7 +29,7 @@ namespace Root
         }
         private void StartDrag()
         {
-            if (Physics.Raycast(camera.position, camera.forward, out var hit, rayDistance))
+            if (Physics.Raycast(cam.position, cam.forward, out var hit, rayDistance))
             {
                 if (hit.rigidbody == null) return;
                 StoreItemDisplay store = hit.collider.GetComponentInParent<StoreItemDisplay>(); // interaccion al comprar
@@ -44,7 +44,7 @@ namespace Root
                     obj.useGravity = false;
                     comp.OnStartedDragging?.Invoke();
                     obj.constraints = RigidbodyConstraints.FreezeRotation;
-                    _distance = Vector3.Distance(obj.transform.position, camera.position);
+                    _distance = Vector3.Distance(obj.transform.position, cam.position);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Root
         private void Update()
         {
             if (obj == null) return;
-            obj.MovePosition(camera.position + _distance * camera.forward);
+            obj.MovePosition(cam.position + _distance * cam.forward);
         }
     }
 }
