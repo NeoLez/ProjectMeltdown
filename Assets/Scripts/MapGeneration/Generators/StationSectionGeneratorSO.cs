@@ -36,10 +36,10 @@ namespace Root {
                     
                     return obj1;
                 case 1:
-                    MapSection obj2 = Instantiate(settings.FeatureSectionPrefab);
+                    MapSection obj2 = Instantiate(settings.FeatureSectionPrefab.GetEntry());
                     obj2.isStation = true;
                     obj2.shouldConsumeAlert = true;
-                    GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert);
+                    GameManager.Train.AlertSystem.AddAlert(obj2.alert);
                     stage++;
                     return obj2;
                 case 2:
