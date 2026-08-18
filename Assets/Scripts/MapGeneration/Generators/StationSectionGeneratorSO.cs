@@ -36,6 +36,9 @@ namespace Root {
                     
                     return obj1;
                 case 1:
+                    Debug.Log(settings);
+                    Debug.Log(settings.FeatureSectionPrefab);
+                    Debug.Log(settings.FeatureSectionPrefab.GetEntry());
                     MapSection obj2 = Instantiate(settings.FeatureSectionPrefab.GetEntry());
                     obj2.isStation = true;
                     obj2.shouldConsumeAlert = true;
