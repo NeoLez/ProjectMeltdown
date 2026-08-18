@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Logger = Root.Log.Logger;
+using LogType = Root.Log.LogType;
 using Random = UnityEngine.Random;
 
 namespace Root {
@@ -66,7 +68,7 @@ namespace Root {
             map = new(mapHeight, mapWidth);
             _context = new();
             _context.currentNode = map.nodes[Random.Range(0, mapHeight), 0];
-            Debug.Log(map.ToString());
+            Log.Logger.Log(map.ToString(), LogType.WorldGen);
         }
 
         private void Start() {
@@ -88,7 +90,7 @@ namespace Root {
                 _context.lastNode = _context.currentNode;
                 _context.currentNode =  _sectionGeneratorSo.GetNextNode();
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
-                Debug.Log($"{_context.currentNode.feature} {_context.currentNode.height} {_context.currentNode.dist}");
+                Logger.Log($"{_context.currentNode.feature} {_context.currentNode.height} {_context.currentNode.dist}", LogType.WorldGen);
                 _sectionGeneratorSo.Initialize(_context);
             }
             
