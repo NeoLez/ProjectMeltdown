@@ -49,8 +49,7 @@ public class RTEventSystemRaycaster : BaseRaycaster
         PointerEventData eventData,
         List<RaycastResult> results)
     {
-        foreach (var graphic in FindObjectsByType<Graphic>(
-            FindObjectsSortMode.None))
+        foreach (var graphic in FindObjectsByType<Graphic>())
         {
             Canvas canvas = graphic.canvas;
 

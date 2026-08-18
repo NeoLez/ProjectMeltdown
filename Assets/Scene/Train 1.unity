@@ -531,50 +531,6 @@ MonoBehaviour:
   safe: {fileID: 2100000, guid: 186e832f02ae57d9b82246321a5241ef, type: 2}
   limit: {fileID: 2100000, guid: 4b28929a74ea87f4a9c16852fac2fb4a, type: 2}
   warning: {fileID: 2100000, guid: 134e0872c18475cb3bdff4c9fe808751, type: 2}
---- !u!1 &84285326
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 84285327}
-  - component: {fileID: 84285328}
-  m_Layer: 0
-  m_Name: Lights
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &84285327
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84285326}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.686, y: 1.125, z: 12.680002}
-  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 245185126}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &84285328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84285326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4083faccdde980549914127a57f353e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.LightSwitch
 --- !u!1 &94017699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1823,7 +1779,6 @@ Transform:
   - {fileID: 317288849}
   - {fileID: 1874893841}
   - {fileID: 913877671}
-  - {fileID: 84285327}
   - {fileID: 819585033}
   - {fileID: 2067365613128575668}
   - {fileID: 992571040}
@@ -14722,7 +14677,7 @@ MonoBehaviour:
   verticalJumpSpeed: 4
   _currentSurfaceNormal: {x: 0, y: 0, z: 0}
   _currentSlopeAngle: 0
-  maxSlopeAngle: 50
+  maxSlopeAngle: 30
   _currentPhysicsMaterial: {fileID: 0}
   currentVerticalSpeed: 0
   footstepDistance: 2.7
@@ -17032,6 +16987,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3436436941603648430, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
   m_PrefabInstance: {fileID: 1281983478}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1740927596 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3318387083066956081, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
+  m_PrefabInstance: {fileID: 1281983478}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e5899def407e94f88684e4b0dacbe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.TriggerAnimationByInteract
 --- !u!1 &1743614141
 GameObject:
   m_ObjectHideFlags: 0
@@ -18097,7 +18063,7 @@ MonoBehaviour:
   _discSlot: {fileID: 571778164}
   stopSound: {fileID: 8300000, guid: 64cd68e91505d884b9732e3e8ccb91ea, type: 3}
   interactSound: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _brakeDoorAnim: {fileID: 0}
+  _brakeDoorAnim: {fileID: 1740927596}
 --- !u!1 &1874893840
 GameObject:
   m_ObjectHideFlags: 0
