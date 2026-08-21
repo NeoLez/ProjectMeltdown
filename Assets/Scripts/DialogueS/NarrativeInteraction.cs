@@ -1,17 +1,12 @@
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Root.Controller;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace Root
 {
     public class NarrativeInteraction : MonoBehaviour
     {
+        //[SerializeField] Transform playerPos;
         [SerializeField] private Transform cameraPivot;
         [SerializeField] float maxDistance;
         [SerializeField] LayerMask interactableEntityLayer;
@@ -19,28 +14,29 @@ namespace Root
 
         private PlayerInputActions _input;
         private Transform _npcLookingPivot;
+        private Transform _npcPositionPivot;
         private bool isInteracting;
 
         private void Awake()
         {
             _input = GameManager.Input;
             _input.Interaction.Enable();
-            _input.Interaction.NPC.performed += HandleNarrativeInteraction;          
+            _input.Interaction.NPC.performed += HandleNarrativeInteraction;
         }
 
         private void Update()
         {
-            if (isInteracting)  //si estoy interactuando salgo hasta que la interacción termino
+            if (isInteracting)
             {
                 interactionPanel.enabled = false;
                 return;
             }
-            //si veo al npc, aparece cartel
-            if(TryFindInteractableNPC(out var currentInteractable))
+
+            if (TryFindInteractableNPC(out var currentInteractable))
             {
                 interactionPanel.enabled = true;
             }
-            else  //sino que se apague
+            else
             {
                 interactionPanel.enabled = false;
             }
@@ -48,9 +44,9 @@ namespace Root
 
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
-            if (TryFindInteractableNPC(out var currentInteractable)) 
+            if (TryFindInteractableNPC(out var currentInteractable))
             {
-                if (currentInteractable.CheckPivot())
+                if (currentInteractable.CheckPivot() && currentInteractable.CheckPosPivot())
                 {
                     if (currentInteractable.HasDialogueEnded())
                     {
@@ -59,7 +55,9 @@ namespace Root
                     }
 
                     _npcLookingPivot = currentInteractable.Pivot;
+                    _npcPositionPivot = currentInteractable.PlayerPivot;
 
+                    GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _npcPositionPivot.position);
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
 
                     isInteracting = true;
@@ -79,7 +77,6 @@ namespace Root
         {
             _input.Interaction.NPC.performed -= HandleNarrativeInteraction;
         }
-
 
     }
 }

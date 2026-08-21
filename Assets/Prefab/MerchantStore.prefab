@@ -75,6 +75,7 @@ Transform:
   m_Children:
   - {fileID: 5948379349620057790}
   - {fileID: 1554797399970967812}
+  - {fileID: 2437365859254406410}
   m_Father: {fileID: 5876689379157890076}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3779214615180345342
@@ -231,6 +232,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01246a4c811753f4eb60c524ed17b780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.StoreSpawnPoint
+--- !u!1 &4721095340840517956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2437365859254406410}
+  m_Layer: 0
+  m_Name: PosPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2437365859254406410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4721095340840517956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.62, y: -0.5052348, z: -1.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8696440288519381918}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &5299983843557067621
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
   Pivot: {fileID: 1554797399970967812}
+  PlayerPivot: {fileID: 2437365859254406410}
   Dialogue: {fileID: 11400000, guid: 330a9258d1edad74da4bb8d86b258185, type: 2}
   hasBeenTriggeredOnce: 0
   merchantTrigger: {fileID: 3325096227126921768}

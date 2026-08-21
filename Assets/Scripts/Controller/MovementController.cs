@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +30,7 @@ namespace Root.Controller
         [SerializeField] private float footstepDistance = 1.5f;
         [SerializeField] private float runningFootstepDistance = 2.5f;
 
+        [SerializeField] float interactionCenterSpeed;
         private bool jump;
         private float _distanceTravelled;
         private Vector3 _lastPosition;
@@ -44,11 +46,17 @@ namespace Root.Controller
             _input.Movement.Jump.performed += Jump;
 
             _lastPosition = transform.position;
+
+            DialogueManager.Instance.OnDialogueStarted += DisableMovement;
+            DialogueManager.Instance.OnDialogueEnded += EnableMovement;
         }
 
         private void OnDestroy()
         {
             _input.Movement.Jump.performed -= Jump;
+
+            DialogueManager.Instance.OnDialogueStarted -= DisableMovement;
+            DialogueManager.Instance.OnDialogueEnded -= EnableMovement;
         }
 
         private void FixedUpdate()
@@ -155,7 +163,7 @@ namespace Root.Controller
                 jump = true;
             }
         }
-        
+
         /*public void AdjustMovementSpeedWithSlope() {
             if (_currentSurfaceNormal != Vector3.zero && _currentSurfaceNormal != Vector3.up) {
                 float slopeSpeedCoefficient = angleBasedSpeedLimit.Evaluate(_currentSlopeAngle / 90f);
@@ -179,6 +187,42 @@ namespace Root.Controller
                 _speed = new Vector3(planeOppositeY.z * _speed.x - planeOppositeY.x * _speed.z, _speed.y, -planeOppositeX.z * _speed.x + planeOppositeX.x * _speed.z);
             }
         }*/
+
+        private void EnableMovement()
+        {
+            GameManager.Input.Movement.Enable();
+        }
+
+        private void DisableMovement()
+        {
+            GameManager.Input.Movement.Disable();
+        }
+
+        public void CenterPlayerDialogueInteraction(Transform cameraPivot, Vector3 targetPos)
+        {
+            StartCoroutine(CenterPosition(cameraPivot, targetPos));
+        }
+
+        private IEnumerator CenterPosition(Transform cameraPivot, Vector3 targetPos)
+        {
+            float journeyProgress = 0f;
+
+            Vector3 startPos = transform.position;
+
+            while (Vector3.Distance(transform.position, cameraPivot.position) > 0.001f)
+            {
+                journeyProgress += Time.deltaTime * interactionCenterSpeed;
+
+                float percentage = Mathf.Clamp01(journeyProgress);
+                transform.position = Vector3.Lerp(startPos, targetPos, percentage);
+
+                if (percentage >= 1f) break;
+
+                yield return null;
+            }
+
+            transform.position = targetPos;
+        }
 
         public CharacterState GetState()
         {

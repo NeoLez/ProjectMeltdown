@@ -42,14 +42,14 @@ namespace Root
 
         public override void StartedExecutingDialogue()
         {
-            GameManager.Input.Movement.Disable();
+            //GameManager.Input.Movement.Disable();
 
             base.StartedExecutingDialogue();
         }
 
         public override void FinishedExecutingDialogue()
         {       
-            GameManager.Input.Movement.Enable();
+            //GameManager.Input.Movement.Enable();
 
             if(!Dialogue.CanRepeatDialogue) hasBeenTriggeredOnce = true;
 

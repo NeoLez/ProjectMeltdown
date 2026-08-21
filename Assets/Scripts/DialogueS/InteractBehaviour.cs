@@ -5,6 +5,7 @@ namespace Root
     public abstract class InteractBehaviour : MonoBehaviour
     {
         public Transform Pivot;
+        public Transform PlayerPivot;
         public DialogueSO Dialogue;
         public bool hasBeenTriggeredOnce;
 
@@ -17,6 +18,17 @@ namespace Root
             }
 
             return Pivot;
+        }
+
+        public Transform CheckPosPivot()
+        {
+            if (PlayerPivot == null)
+            {
+                Debug.LogWarning("Asignar pivot");
+                return null;
+            }
+
+            return PlayerPivot;
         }
 
         public bool HasDialogueEnded()
