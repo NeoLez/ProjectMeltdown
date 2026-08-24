@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 namespace Root
 {
@@ -12,7 +13,11 @@ namespace Root
         [SerializeField] private GameObject panelOpciones;
         [SerializeField] private GameObject pantallaClases;
         [SerializeField] private GameObject panelInfoClase;
+        [SerializeField] private Slider masterVolumeSlider;
+        [SerializeField] private Slider musicVolumeSlider;
+        [SerializeField] private Slider sfxVolumeSlider;
 
+        // Localization
         [SerializeField] private TMP_Text nombreClase;
         [SerializeField] private TMP_Text descripcionClase;
         [SerializeField] private TMP_Text comienzaCon;
@@ -24,6 +29,10 @@ namespace Root
         {
             MouseHandler.ClearListAndSetToDefault();
             MouseHandler.RequestControl(CursorLockMode.None, true, this);
+
+            masterVolumeSlider.onValueChanged.AddListener(SliderMasterVolume);
+            musicVolumeSlider.onValueChanged.AddListener(SliderMusicVolume);
+            sfxVolumeSlider.onValueChanged.AddListener(SliderSFXVolume);
         }
 
         private void Start()
@@ -69,9 +78,7 @@ namespace Root
         public void SelectClass(int classNumber)
         {
             selectedClass = classNumber;
-
             panelInfoClase.SetActive(true);
-
             UpdateClassInfo();
         }
 
@@ -80,59 +87,50 @@ namespace Root
             if (selectedClass < 0)
                 return;
 
-            switch (selectedClass)
+            switch (selectedClass) // switch statement to update class info based on selectedClass
             {
                 case 0:
-                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_mechanic_name"
-                    );
-
-                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_mechanic_description"
-                    );
-
-                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_mechanic_starts_with"
-                    );
+                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_mechanic_name");
+                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_mechanic_description");
+                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_mechanic_starts_with");
                     break;
 
                 case 1:
-                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_electrician_name"
-                    );
-
-                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_electrician_description"
-                    );
-
-                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_electrician_starts_with"
-                    );
+                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_electrician_name");
+                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_electrician_description");
+                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_electrician_starts_with");
                     break;
 
                 case 2:
-                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_tycoon_name"
-                    );
-
-                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_tycoon_description"
-                    );
-
-                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString(
-                        "Classes",
-                        "class_tycoon_starts_with"
-                    );
+                    nombreClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_tycoon_name");
+                    descripcionClase.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_tycoon_description");
+                    comienzaCon.text = LocalizationSettings.StringDatabase.GetLocalizedString("Classes","class_tycoon_starts_with");
                     break;
             }
+        }
+
+        public void SliderMasterVolume(float value) 
+        {
+            if (GameManager.AudioSystem == null)
+                return;
+
+            GameManager.AudioSystem.GeneralMixer.SetFloat("MasterVolume",Mathf.Log10(value) * 20f);
+        }
+
+        public void SliderMusicVolume(float value)
+        {
+            if (GameManager.AudioSystem == null)
+                return;
+
+            GameManager.AudioSystem.GeneralMixer.SetFloat("MusicVolume",Mathf.Log10(value) * 20f);
+        }
+
+        public void SliderSFXVolume(float value)
+        {
+            if (GameManager.AudioSystem == null)
+                return;
+
+            GameManager.AudioSystem.GeneralMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
         }
 
         private void OnLocaleChanged(UnityEngine.Localization.Locale locale)
@@ -149,14 +147,11 @@ namespace Root
                 return;
 
             loadingScene = true;
-
             GameManager.VeryUglyKitNumber = selectedClass;
-
             var op = SceneManager.LoadSceneAsync("Train 1");
             MouseHandler.ClearListAndSetToDefault();
             op.allowSceneActivation = true;
         }
-
         public void Exit()
         {
             Application.Quit();
