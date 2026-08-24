@@ -117,8 +117,7 @@ namespace Root
                 itemsCreated.Remove(i);
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
-            var objBehaviour = obj.transform.GetChild(0);
-            objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
+            obj.GetComponent<Rigidbody>().isKinematic = true;
 
             GameObject canvasObj = Instantiate(priceCanvasPrefab,
                 priceCanvasSpawn.transform.position,
