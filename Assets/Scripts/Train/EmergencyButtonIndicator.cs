@@ -8,7 +8,7 @@ namespace Root
         [SerializeField] private TMP_Text discText;
         [SerializeField] private TMP_Text usageText;
         [SerializeField] DiscSlot discSlot;
-        private BreakDisc _breakDisc;
+        private BrakeDiscItem _breakDisc;
 
         public void Update()
         {

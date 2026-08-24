@@ -297,8 +297,8 @@ namespace Root
         {
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
-            if (battery.energy <= 0) return false;
-            battery.energy -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime;
+            if (battery.State.currentCharge <= 0) return false;
+            battery.State.currentCharge -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime;
             return true;
         }
 

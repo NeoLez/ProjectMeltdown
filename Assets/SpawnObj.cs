@@ -4,10 +4,10 @@ namespace Root
 {
     public class SpawnObj : MonoBehaviour
     {
-        [SerializeField] private ItemGenerationPoolSO pool;
+        [SerializeField] private ItemGenerationPoolSo pool;
         void Start() { 
             
-            var obj = Instantiate(pool.GetRandom().GameObject);
+            var obj = pool.GetRandom().CreatePhysicalItem();
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = transform.parent;

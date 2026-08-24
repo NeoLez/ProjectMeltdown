@@ -12,15 +12,15 @@ namespace Root
         {
             if (batteryPercentText == null) return;
 
-            Battery battery = generatorSlot.GetBattery();
+            TrainBatteryItem battery = generatorSlot.GetBattery();
 
-            if (battery == null || battery.maxEnergy <= 0f)
+            if (battery == null || battery.State.maxCharge <= 0f)
             {
                 batteryPercentText.text = "0%";
                 return;
             }
 
-            int percent = Mathf.RoundToInt((battery.energy / battery.maxEnergy) * 100f);
+            int percent = Mathf.RoundToInt((battery.State.currentCharge / battery.State.maxCharge) * 100f);
             percent = Mathf.Clamp(percent, 0, 100);
             batteryPercentText.text = $"{percent}%";
         }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.VFX;
 
 namespace Root
@@ -10,7 +11,7 @@ namespace Root
         [SerializeField] private Train train;
         [SerializeField] private IgnitionSwitch ignitionSwitch;
         [SerializeField] private VisualEffect visualEffect;
-        private Battery _battery;
+        private TrainBatteryItem _battery;
         private bool _animationEnd;
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
@@ -19,24 +20,22 @@ namespace Root
         [SerializeField] private AudioClip _soundInsert2;
         [SerializeField] private AudioClip _soundRemove;
 
+        [SerializeField] private ItemSo _batteryItemSO;
+        
         public override void Interact()
         {
-            PlayerItemHolder holder =
-                GameManager.Player.GetComponent<PlayerItemHolder>();
+            PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
 
             if (holder == null)
                 return;
 
             if (!holder.HasItem && _battery != null)
             {
-                Battery battery = TakeBattery();
+                TrainBatteryItem battery = TakeBattery();
 
                 if (battery != null)
                 {
-                    PickupItem pickup =
-                        battery.GetComponent<PickupItem>();
-
-                    holder.Pickup(pickup);
+                    holder.Pickup(battery);
                 }
 
                 return;
@@ -44,9 +43,10 @@ namespace Root
 
             if (!holder.HasItem)
                 return;
-
-            Battery batteryToInsert =
-                holder.HeldItem.GetComponent<Battery>();
+            
+            Assert.AreEqual(_batteryItemSO, holder.HeldItem.ItemSo);
+            TrainBatteryItem batteryToInsert = holder.HeldItem.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
+            batteryToInsert.itemState = holder.HeldItem;
 
             if (batteryToInsert == null)
                 return;
@@ -63,7 +63,7 @@ namespace Root
             }
         }
 
-        System.Collections.IEnumerator AnimTrigger(Battery battery)
+        System.Collections.IEnumerator AnimTrigger(TrainBatteryItem battery)
         {
             yield return new WaitForSeconds(0.02f);
             battery.AnimatorOn();
@@ -121,20 +121,14 @@ namespace Root
             OnBatteryRemoved?.Invoke();
         }
 
-        public Battery TakeBattery()
+        public TrainBatteryItem TakeBattery()
         {
             if (_battery == null)
                 return null;
 
-            Battery battery = _battery;
+            TrainBatteryItem battery = _battery;
 
-            var rb = battery.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.None;
-                rb.isKinematic = false;
-            }
+            battery.VisualOnly(false);
 
             _battery = null;
             train.SetEnginePower(false);
@@ -144,25 +138,19 @@ namespace Root
             return battery;
         }
 
-        public Battery GetBattery()
+        public TrainBatteryItem GetBattery()
         {
             return _battery;
         }
 
-        public bool TryInsertBattery(Battery battery)
+        public bool TryInsertBattery(TrainBatteryItem battery)
         {
             if (_battery != null)
                 return false;
 
             _battery = battery;
 
-            Rigidbody rb = battery.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                rb.isKinematic = true;
-            }
+            battery.VisualOnly(true);
 
             battery.transform.SetParent(transform);
             battery.transform.position = pivot.position;

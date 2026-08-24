@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Root
 {
@@ -8,7 +7,8 @@ namespace Root
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
         [SerializeField] private EmergencyStopButton _emergencyStopButton;
-        private BreakDisc _disc;
+        [SerializeField] private ItemSo BrakeDiscSO;
+        private BrakeDiscItem _disc;
 
         private void Awake() {
             train.OnTrainStartedMoving += (() => {
@@ -28,67 +28,53 @@ namespace Root
 
             if (!holder.HasItem) {
                 if (_disc != null) {
-                    BreakDisc disc = TakeDisc();
+                    BrakeDiscItem disc = TakeDisc();
 
                     if (disc != null) {
-                        PickupItem pickup =
-                            disc.GetComponent<PickupItem>();
-
-                        holder.Pickup(pickup);
+                        holder.Pickup(disc);
                     }
                 }
             }
             else {
                 if (_disc == null) {
-                    if(!holder.HeldItem.TryGetComponent(out BreakDisc Disc))
+                    if(holder.HeldItem.ItemSo != BrakeDiscSO)
                         return;
 
+                    var Disc = holder.HeldItem.ItemSo.CreatePhysicalItem() as BrakeDiscItem;
+                    Disc.itemState = holder.HeldItem;
+                    
                     _emergencyStopButton.Repair(Disc.GetDiscUsage());
 
-                    if (TryInsertDisc(Disc))
-                    {
-                        holder.ForceClearHeldItem();
-                    }
+                    TryInsertDisc(Disc);
+                    holder.ForceClearHeldItem();
                 }
             }
         }
         
-        public BreakDisc TakeDisc()
+        public BrakeDiscItem TakeDisc()
         {
-            if (this._disc == null)
+            if (_disc == null)
                 return null;
 
-            BreakDisc disc = _disc;
+            BrakeDiscItem disc = _disc;
 
-            var rb = disc.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.None;
-                rb.isKinematic = false;
-            }
+            _disc.VisualOnly(false);
+            
             _emergencyStopButton.Repair(0);
-            this._disc = null;
+            _disc = null;
             return disc;
         }
-        public bool TryInsertDisc(BreakDisc Disc) {
-            this._disc = Disc;
+        public void TryInsertDisc(BrakeDiscItem Disc) {
+            _disc = Disc;
 
-            Rigidbody rb = Disc.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                rb.isKinematic = true;
-            }
+            _disc.VisualOnly(true);
 
             Disc.transform.SetParent(transform);
             Disc.transform.position = pivot.position;
             Disc.transform.rotation = pivot.rotation;
-            return true;
         }
 
-        public BreakDisc GetBreakDisc()
+        public BrakeDiscItem GetBreakDisc()
         {
             return _disc;
         }

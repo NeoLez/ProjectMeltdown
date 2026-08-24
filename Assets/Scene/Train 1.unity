@@ -1854,6 +1854,7 @@ MonoBehaviour:
   _soundInsert: {fileID: 8300000, guid: 500df9fad4fc2b948b805d13a9f77398, type: 3}
   _soundInsert2: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
   _soundRemove: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
+  _batteryItemSO: {fileID: 11400000, guid: 2b8615748d0c3107fae9fe653e8faa6c, type: 2}
 --- !u!65 &248355530
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12310,6 +12311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.BrakeRepairSlot
   pivot: {fileID: 1223909718}
   brakeController: {fileID: 1427049396}
+  BrakeFluidItem: {fileID: 11400000, guid: ea8eaf31e97ddb5ad81474866889274b, type: 2}
 --- !u!1 &1248083524
 GameObject:
   m_ObjectHideFlags: 0
@@ -12811,6 +12813,10 @@ PrefabInstance:
       propertyPath: train
       value: 
       objectReference: {fileID: 1068053785}
+    - target: {fileID: 1495970033248846258, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
+      propertyPath: BrakeDiscSO
+      value: 
+      objectReference: {fileID: 11400000, guid: fd222d3021676a73facff0ab9cc00e77, type: 2}
     - target: {fileID: 1495970033248846258, guid: 42bbfeea572ae5643a78679fe13e0c0b, type: 3}
       propertyPath: _emergencyDisc
       value: 
@@ -14725,7 +14731,6 @@ MonoBehaviour:
   holdPoint: {fileID: 11784962}
   dropDistance: 0.5
   cameraPivot: {fileID: 592390505}
-  <HeldItem>k__BackingField: {fileID: 0}
 --- !u!114 &1466652831
 MonoBehaviour:
   m_ObjectHideFlags: 0

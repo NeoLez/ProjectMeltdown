@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Root {
     [CreateAssetMenu(fileName = "ItemGenerationPool", menuName = "SO/ItemGenerationPool")]
-    public class ItemGenerationPoolSO : ScriptableObject {
-        public List<ItemSO> items;
+    public class ItemGenerationPoolSo : ScriptableObject {
+        public List<ItemSo> items;
 
-        public ItemSO GetRandom() {
+        public ItemSo GetRandom() {
             return items[Random.Range(0, items.Count)];
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.VFX;
 
 namespace Root
@@ -18,13 +19,15 @@ namespace Root
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
 
-        private Battery _battery;
+        private TrainBatteryItem _battery;
         private bool _animationEnd;
 
         public event Action OnPowerRestored;
         public event Action OnPowerLost;
 
         private bool _powered = false;
+        
+        [SerializeField] private ItemSo _batteryItemSO;
 
         private void Start()
         {
@@ -38,19 +41,20 @@ namespace Root
 
             if (!holder.HasItem && _battery != null)
             {
-                Battery battery = TakeBattery();
+                TrainBatteryItem battery = TakeBattery();
                 if (battery != null)
                 {
-                    PickupItem pickup = battery.GetComponent<PickupItem>();
-                    holder.Pickup(pickup);
+                    holder.Pickup(battery);
                 }
                 return;
             }
 
             if (!holder.HasItem) return;
 
-            Battery batteryToInsert = holder.HeldItem.GetComponent<Battery>();
+            Assert.AreEqual(_batteryItemSO, holder.HeldItem.ItemSo);
+            TrainBatteryItem batteryToInsert = holder.HeldItem.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
             if (batteryToInsert == null) return;
+            batteryToInsert.itemState = holder.HeldItem;
 
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
             if (visual == null) return;
@@ -63,7 +67,7 @@ namespace Root
 
         private void Update()
         {
-            if (_battery == null || _battery.energy <= 0f)
+            if (_battery == null || _battery.State.currentCharge <= 0f)
             {
                 if (_powered)
                 {
@@ -76,7 +80,7 @@ namespace Root
                 return;
             }
 
-            _battery.energy -= batteryDrain * Time.deltaTime;
+            _battery.State.currentCharge -= batteryDrain * Time.deltaTime;
         }
 
         private void LateUpdate()
@@ -88,20 +92,14 @@ namespace Root
             }
         }
 
-        public bool TryInsertBattery(Battery battery)
+        public bool TryInsertBattery(TrainBatteryItem battery)
         {
             if (_battery != null)
                 return false;
 
             _battery = battery;
 
-            Rigidbody rb = battery.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                rb.isKinematic = true;
-            }
+            battery.VisualOnly(true);
 
             battery.transform.SetParent(transform);
             battery.transform.position = pivot.position;
@@ -112,20 +110,14 @@ namespace Root
             return true;
         }
 
-        public Battery TakeBattery()
+        public TrainBatteryItem TakeBattery()
         {
             if (_battery == null)
                 return null;
 
-            Battery battery = _battery;
+            TrainBatteryItem battery = _battery;
 
-            Rigidbody rb = battery.GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                rb.constraints = RigidbodyConstraints.None;
-                rb.isKinematic = false;
-            }
+            battery.VisualOnly(false);
 
             _battery = null;
             _animationEnd = false;
@@ -144,9 +136,9 @@ namespace Root
             return battery;
         }
 
-        public Battery GetBattery() => _battery;
+        public TrainBatteryItem GetBattery() => _battery;
 
-        System.Collections.IEnumerator AnimTrigger(Battery battery)
+        System.Collections.IEnumerator AnimTrigger(TrainBatteryItem battery)
         {
             _animationEnd = false;
 
