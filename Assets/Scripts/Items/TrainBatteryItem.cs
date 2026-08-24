@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root {
@@ -10,6 +11,10 @@ namespace Root {
         public void AnimatorOn()
         {
             animator.SetBool(Insert, true);
+        }
+
+        protected override bool IsStateTypeValid(ItemState state) {
+            return state is ItemChargeState;
         }
     }
 }

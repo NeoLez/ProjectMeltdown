@@ -2,7 +2,26 @@ using UnityEngine;
 
 namespace Root {
     public class PhysicalItem : InteractableNormalCamera {
+        
+#if UNITY_EDITOR     
         [SerializeField] private ItemSo defaultItemSo;
+        [ContextMenu("Generate Starting State")]
+        private void GenerateStateInEditor() {
+            if (defaultItemSo == null) {
+                Debug.LogWarning("You must assign an ItemSO to 'Default ItemSo' first!");
+                return;
+            }
+
+            var state = defaultItemSo.CreateState();
+            if (!IsStateTypeValid(state)) {
+                Debug.LogError("Unexpected State Type'" + state.GetType() + "'. Are you assigning the right ItemSO?");
+                return;
+            }
+            itemState = defaultItemSo.CreateState();
+            
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
         [SerializeField] [SerializeReference] public ItemState itemState;
         
         public override void Interact() {
@@ -32,20 +51,9 @@ namespace Root {
         }
         
         public virtual void StateUpdate() {}
-        
-        
-        [ContextMenu("Generate Starting State")]
-        private void GenerateStateInEditor() {
-            if (defaultItemSo == null) {
-                Debug.LogWarning("You must assign an ItemSO to 'Default ItemSo' first!");
-                return;
-            }
-            
-            itemState = defaultItemSo.CreateState();
 
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
-        }
+        protected virtual bool IsStateTypeValid(ItemState state) {
+            return true;
+        } 
     }
 }
