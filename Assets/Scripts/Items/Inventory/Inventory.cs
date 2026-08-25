@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -65,6 +66,11 @@ namespace Root {
             
             _items.Add(itemPivotTuple);
             return true;
+        }
+
+        public List<Vector2Int> GetInventorySlotPositions()
+        {
+            return _slots.Keys.ToList();
         }
         
         public bool RemoveItem(Vector2Int position, out InventoryItem inventoryItem) {
