@@ -51,12 +51,12 @@ namespace Root
             if (batteryToInsert == null)
                 return;
 
-            VisualContainer visual =
-                batteryToInsert.GetComponentInChildren<VisualContainer>();
-
+            VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
+            visual.goal = GameManager.Train.GetTrainPosition();
+            
             if (visual == null)
                 return;
-
+            
             if (TryInsertBattery(batteryToInsert))
             {
                 holder.ForceClearHeldItem();
@@ -79,17 +79,6 @@ namespace Root
             yield return new WaitForSeconds(0.10f);
 
             _animationEnd = true;
-        }
-
-        private void Awake() {
-            train.OnTrainStartedMoving += (() => {
-                if (_battery == null) return;
-                _battery.GetComponent<VisualContainer>().goal = train.GetTrainPosition();
-            });
-            train.OnTrainStoppedMoving += (() => {
-                if (_battery == null) return;
-                _battery.GetComponent<VisualContainer>().goal = null;
-            });
         }
 
         private void Update()
