@@ -386,6 +386,26 @@ namespace Root
             }
         }
 
+        public void AddObjectToContainers(VisualContainer container) {
+            objectsInsideTrain.Add(container);
+            if (!isStopped) {
+                container.goal = trainPosition;
+            }
+        }
+        
+        public void RemoveObjectFromContainers(VisualContainer container) {
+            objectsInsideTrain.Remove(container);
+            if (!isStopped) {
+                container.goal = null;
+            }
+        }
+
+        private void ClearNullObjectContainers() {
+            for (int i = objectsInsideTrain.Count - 1; i >= 0; i--) {
+                if (objectsInsideTrain[i] == null) objectsInsideTrain.RemoveAt(i);
+            }
+        }
+        
         public bool externalDoorsOpened = true;
         public void HandleExternalDoorButton()
         {

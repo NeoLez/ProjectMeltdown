@@ -23,6 +23,9 @@ namespace Root
             if (HasItem && HeldItem.ItemSo)
                 Drop();
 
+            if(!GameManager.Train.IsStopped())
+                GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
+            
             HeldItem = item.itemState;
             Debug.Log(HeldItem);
             Destroy(item.gameObject);
@@ -49,6 +52,9 @@ namespace Root
                 cameraPivot.position +
                 cameraPivot.forward * dropDistance;
 
+            if(!GameManager.Train.IsStopped())
+                GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
+            
             HeldItem = null;
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);

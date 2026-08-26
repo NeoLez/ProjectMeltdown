@@ -12,7 +12,7 @@ namespace Root {
             originCenter = GameManager.Train.transform;
         }
 
-        private void Update() {
+        private void LateUpdate() {
             if (visuals == null) return;
             if (goal == null) {
                 visuals.transform.position = transform.position;
