@@ -149,7 +149,7 @@ public class CameraController : MonoBehaviour
 
         Vector3 viewBobVector = GetHorizontalDirectionRightVector().Swizzle_x0y() * cameraBobbingOffset.x + Vector3.up * cameraBobbingOffset.y;
         cam.position = new Vector3(cameraPosition.position.x,
-            math.lerp(cam.position.y, cameraPosition.position.y, cameraSmoothing), cameraPosition.position.z);
+            math.lerp(cam.position.y, cameraPosition.position.y, cameraSmoothing), cameraPosition.position.z) + viewBobVector;
         CalculateShakeOffset();
         cam.localPosition += GetShakeOffset();
 
