@@ -43,6 +43,9 @@ namespace Root
                     var Disc = holder.HeldItem.ItemSo.CreatePhysicalItem() as BrakeDiscItem;
                     Disc.itemState = holder.HeldItem;
                     
+                    VisualContainer visual = Disc.GetComponentInChildren<VisualContainer>();
+                    visual.goal = GameManager.Train.GetTrainPosition();
+                    
                     _emergencyStopButton.Repair(Disc.GetDiscUsage());
 
                     TryInsertDisc(Disc);

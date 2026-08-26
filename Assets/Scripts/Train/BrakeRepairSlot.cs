@@ -12,25 +12,25 @@ namespace Root
         public override void Interact()
         {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
-            Debug.Log("a");
             if (holder == null || !holder.HasItem)
                 return;
-            Debug.Log("b");
             Assert.AreEqual(holder.HeldItem.ItemSo, BrakeFluidItem);
-            Debug.Log("c");
             BrakeFluidItem fluid = holder.HeldItem.ItemSo.CreatePhysicalItem() as BrakeFluidItem;
             fluid.VisualOnly(true);
-            Debug.Log("d");
+            
+            VisualContainer visual = fluid.GetComponentInChildren<VisualContainer>();
+            visual.goal = GameManager.Train.GetTrainPosition();
+            
             if (fluid == null)
                 return;
-            Debug.Log("e");
+            
             if(brakeController.GetDamageAmount() <= 0)
             {
                 return;
             }
-            Debug.Log("f");
+            
             fluid.Consume(brakeController.GetDamageAmount());
-            brakeController.Repair(fluid.State.currentCharge);
+            brakeController.Repair(-fluid.State.currentCharge);
 
             if (TryInsertBrakeFluid(fluid, holder))
             {
