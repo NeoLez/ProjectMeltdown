@@ -19147,6 +19147,7 @@ MonoBehaviour:
   cam: {fileID: 592390505}
   sensitivity: 0.05
   interactDistance: 3
+  cameraSmoothing: 0.25
   sideSwayAngle: 1
   swaySpeed: 0.005
   horizontalAmount: 0.25
@@ -19184,16 +19185,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
-  groundCheckRayLength: 1.12
+  groundCheckRayLength: 1.05
+  groundCheckRayLengthForNormalDetection: 1.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   movementSpeed: 6
   runningMovementSpeed: 12
-  verticalJumpSpeed: 4
+  movementSmoothing: 0.3
+  verticalJumpSpeed: 7
+  gravityMultiplier: 2.5
   _currentSurfaceNormal: {x: 0, y: 0, z: 0}
   _currentSlopeAngle: 0
-  maxSlopeAngle: 30
+  maxSlopeAngle: 50
+  slopeClimbSpeedFactorWalk: 0.45
+  slopeClimbSpeedFactorRun: 0.65
   _currentPhysicsMaterial: {fileID: 0}
   currentVerticalSpeed: 0
   footstepDistance: 2.7

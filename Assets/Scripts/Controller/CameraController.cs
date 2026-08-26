@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Timers;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
@@ -16,6 +17,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform cam;
     [SerializeField] public float sensitivity = 1;
     [SerializeField] public float interactDistance = 2;
+    [SerializeField] public float cameraSmoothing = 0.1f;
 
     [SerializeField] private float sideSwayAngle;
     [SerializeField] private float swaySpeed;
@@ -146,7 +148,8 @@ public class CameraController : MonoBehaviour
         }
 
         Vector3 viewBobVector = GetHorizontalDirectionRightVector().Swizzle_x0y() * cameraBobbingOffset.x + Vector3.up * cameraBobbingOffset.y;
-        cam.position = cameraPosition.position + viewBobVector;
+        cam.position = new Vector3(cameraPosition.position.x,
+            math.lerp(cam.position.y, cameraPosition.position.y, cameraSmoothing), cameraPosition.position.z);
         CalculateShakeOffset();
         cam.localPosition += GetShakeOffset();
 
@@ -255,14 +258,13 @@ public class CameraController : MonoBehaviour
 
     public void LockCamera()
     {
-        // MODIFICADO: pasa true para mostrar el crosshair cuando el cursor esta bloqueado
         MouseHandler.RequestControl(CursorLockMode.Locked, false, this, true);
+        cam.position = cameraPosition.position;
         if (crosshair != null) crosshair.SetActive(true);
     }
 
     public void UnlockCamera()
     {
-        // MODIFICADO: apaga el crosshair al desbloquear la camara
         if (crosshair != null) crosshair.SetActive(false);
         MouseHandler.RelinquishControl(this);
     }
