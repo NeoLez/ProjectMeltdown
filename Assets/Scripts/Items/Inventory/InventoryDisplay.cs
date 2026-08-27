@@ -3,6 +3,7 @@ using Timers;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Root {
     public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler {
@@ -12,6 +13,7 @@ namespace Root {
         private List<RectTransform> slots = new();
         private Vector2Int maxDimensions;
         private Dictionary<InventoryItem, InventoryItemDisplay> itemToItemDisplay = new();
+        [SerializeField] private float dragSmoothing;
         
         private void Start()
         {
@@ -58,31 +60,43 @@ namespace Root {
         private InventoryItemDisplay itemDisplayBeingDragged;
         private Vector2 originalRelativeDragPosition;
         private Vector2Int originalRelativeDragPositionSlot;
+        private Vector2Int correctedRelativeDragPositionSlot;
+        private InventoryItem.InventoryItemRotation draggingItemRotation;
         public void OnBeginDrag(PointerEventData eventData) {
+            if (draggingItem) return;
             var slotPos = MousePositionToSlotCoords(eventData.position);
             Debug.Log(slotPos);
             if (!inventory.GetItem(slotPos, out itemBeingDragged)) return;
 
             draggingItem = true;
             itemDisplayBeingDragged = itemToItemDisplay[itemBeingDragged];
-            Debug.Log(itemDisplayBeingDragged.name);
+            draggingItemRotation = itemBeingDragged.rotation;
 
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(itemDisplayBeingDragged.GetComponent<RectTransform>(), eventData.position, null, out originalRelativeDragPosition);
-
+            RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, eventData.position, null, out var localPointerPos);
+            originalRelativeDragPosition = localPointerPos - (Vector2)itemDisplayBeingDragged.GetComponent<RectTransform>().localPosition;
+            
             originalRelativeDragPositionSlot = MousePositionToSlotCoords(eventData.position) - itemBeingDragged._position;
+            correctedRelativeDragPositionSlot = originalRelativeDragPositionSlot;
         }
 
         public void OnDrag(PointerEventData eventData) {
+            
+        }
+        
+        public void Update() {
             if (!draggingItem) return;
-            Debug.Log(eventData.scrollDelta);
+            if (GameManager.Input.Inventory.RotateRight.WasCompletedThisFrame())
+                RotateDraggingItem();
             RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     parentRect, 
-                    eventData.position, 
-                    eventData.pressEventCamera, 
+                    Mouse.current.position.value, 
+                    null, 
                     out Vector2 localPointerPosition))
             {
-                itemDisplayBeingDragged.GetComponent<RectTransform>().localPosition = localPointerPosition - originalRelativeDragPosition;
+                var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
+                rect.localPosition = Vector3.Lerp(rect.localPosition, localPointerPosition - originalRelativeDragPosition, dragSmoothing);
             }
         }
 
@@ -95,15 +109,48 @@ namespace Root {
             }
 
             var inv = inventoryDisplay.inventory;
-            var pivotSlot = inventoryDisplay.MousePositionToSlotCoords(eventData.position) - originalRelativeDragPositionSlot;
+            var pivotSlot = inventoryDisplay.MousePositionToSlotCoords(eventData.position) - correctedRelativeDragPositionSlot;
+            var originalRotation = itemBeingDragged.rotation;
+            
+            itemBeingDragged.rotation = draggingItemRotation;
             if (!inv.IsAreaFree(itemBeingDragged.RotationCorrectedSize, pivotSlot, itemBeingDragged)) {
+                itemBeingDragged.rotation = originalRotation;
                 ReturnDraggedItem();
                 return;
             }
-
+            
+            itemBeingDragged.rotation = originalRotation;
             inventory.RemoveItem(itemBeingDragged._position, out _);
+            
+            itemBeingDragged.rotation = draggingItemRotation;
             inv.InsertItem(itemBeingDragged, pivotSlot);
             draggingItem = false;
+        }
+
+        private void RotateDraggingItem() {
+            Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(itemBeingDragged.Size, draggingItemRotation);
+            
+            draggingItemRotation = draggingItemRotation.RotateRight();
+            
+            var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
+            rect.localRotation = Quaternion.Euler(0, 0, (float)draggingItemRotation);
+            
+            originalRelativeDragPosition = new Vector2(originalRelativeDragPosition.y, -originalRelativeDragPosition.x);
+            
+            correctedRelativeDragPositionSlot = new Vector2Int(
+                correctedRelativeDragPositionSlot.y,
+                currentSize.x - 1 - correctedRelativeDragPositionSlot.x
+            );
+            
+            RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    parentRect, 
+                    Mouse.current.position.value, 
+                    null, 
+                    out Vector2 localPointerPosition))
+            {
+                rect.localPosition = localPointerPosition - originalRelativeDragPosition;
+            }
         }
 
         private void ReturnDraggedItem() {

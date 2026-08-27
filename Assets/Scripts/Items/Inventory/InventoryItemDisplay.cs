@@ -11,7 +11,12 @@ namespace Root {
         public Vector2 originalSize;
         public InventoryItem.InventoryItemRotation originalRotation;
         
+        private float cellSize; 
+        
         public virtual void Initialize(InventoryDisplay disp, InventoryItem item, Sprite itemIcon, Vector2Int size, Vector2 position, InventoryItem.InventoryItemRotation rotation) {
+            rectTransform = GetComponent<RectTransform>();
+            cellSize = rectTransform.sizeDelta.x; 
+            
             originalPosition = position;
             originalSize = size;
             originalRotation = rotation;
@@ -19,15 +24,16 @@ namespace Root {
             _inventoryItem = item;
             inventoryDisplay = disp;
 
+            rectTransform.sizeDelta *= size;
             SetPosition(position, rotation);
             
-            rectTransform.sizeDelta *= size;
             GetComponent<Image>().sprite = itemIcon;
         }
 
         public void SetPosition(Vector2 position, InventoryItem.InventoryItemRotation rotation) {
-            rectTransform = GetComponent<RectTransform>();
-            var iconSize = rectTransform.sizeDelta.x;
+            if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
+            float iconSize = cellSize > 0 ? cellSize : rectTransform.sizeDelta.x;
+
             switch (rotation) {
                 case InventoryItem.InventoryItemRotation.Quarter:
                     position += new Vector2(originalSize.y * iconSize, 0);
@@ -36,7 +42,7 @@ namespace Root {
                     position += new Vector2(originalSize.x * iconSize, originalSize.y * iconSize);
                     break;
                 case InventoryItem.InventoryItemRotation.ThreeQuarters:
-                    position += new Vector2(0, originalSize.y * iconSize);
+                    position += new Vector2(0, originalSize.x * iconSize); 
                     break;
             }
 

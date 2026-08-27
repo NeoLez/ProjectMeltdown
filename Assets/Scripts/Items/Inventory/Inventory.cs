@@ -101,7 +101,7 @@ namespace Root {
             inventoryItem = slot.InventoryItem;
             OnItemRemoved?.Invoke(inventoryItem);
             if (!SetSlotsToItem(slot.InventoryItem!.RotationCorrectedSize, slot.InventoryItem._position, null))
-                throw new Exception("wtf");
+                return false;
             _items.Remove(slot.InventoryItem);
             
             return true;

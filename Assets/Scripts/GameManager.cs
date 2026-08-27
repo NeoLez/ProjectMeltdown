@@ -22,7 +22,7 @@ public static class GameManager {
       Input.Interaction.Enable();
       Input.Interaction.Interact.Enable();
       Input.Interaction.NPC.Enable();
-
+      Input.Inventory.Enable();
       AudioSystem = new AudioSystem();
 
     }

@@ -31,4 +31,14 @@ namespace Root {
             return new Vector2Int(size.y, size.x); 
         }
     }
+
+    public static class InventoryItemRotationExtensions {
+        public static InventoryItem.InventoryItemRotation RotateRight(this InventoryItem.InventoryItemRotation rotation) {
+            return (InventoryItem.InventoryItemRotation)(((int)rotation + 270) % 360);
+        }
+        
+        public static InventoryItem.InventoryItemRotation RotateLeft(this InventoryItem.InventoryItemRotation rotation) {
+            return (InventoryItem.InventoryItemRotation)(((int)rotation + 90) % 360);
+        }
+    }
 }
