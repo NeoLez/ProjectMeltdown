@@ -21,6 +21,7 @@ namespace Root.Controller
             MouseHandler.RelinquishControl(this);
         }
 
+#pragma warning disable CS0162
         protected void UpdateMousePosition()
         {
 #if UNITY_EDITOR_LINUX
@@ -35,4 +36,5 @@ namespace Root.Controller
             _camera = cam;
         }
     }
+#pragma warning restore CS0162
 }
