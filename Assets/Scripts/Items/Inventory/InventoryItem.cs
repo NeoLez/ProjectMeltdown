@@ -3,12 +3,17 @@ using UnityEngine;
 namespace Root {
     public class InventoryItem{
         public ItemState itemState;
+        public Inventory Inventory;
         public InventoryItemRotation rotation;
         private Vector2Int _size;
-        public Vector2Int Size => GetRotationCorrectedSize(_size, rotation);
+        public Vector2Int _position;
+        public Vector2Int RotationCorrectedSize => GetRotationCorrectedSize(_size, rotation);
+        public Vector2Int Size => _size;
 
-        public InventoryItem(ItemState item, InventoryItemRotation itemRotation) {
+        public InventoryItem(Inventory inventory,ItemState item, Vector2Int position, InventoryItemRotation itemRotation) {
+            Inventory = inventory;
             itemState = item;
+            _position = position;
             rotation = itemRotation;
             _size = item.ItemSo.InventorySize;
         }
