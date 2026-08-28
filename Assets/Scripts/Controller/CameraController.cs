@@ -53,6 +53,7 @@ public class CameraController : MonoBehaviour
 
     private bool _limitRotation;
     private Vector3 _currentEuler;
+    private InteractableNormalCamera _currentInteractable;
     private void Awake()
     {
         GameManager.CameraController = this;
@@ -104,11 +105,17 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (!TryFindInteractableObject(out _))
+        if (!TryFindInteractableObject(out var interactable))
         {
+           if(_currentInteractable) _currentInteractable.ShowFeedback(false);
             _crosshairImage.sprite = _crosshairSprite[0];
         }
-        else _crosshairImage.sprite = _crosshairSprite[1];
+        else
+        {
+            interactable.ShowFeedback(true);
+            _currentInteractable = interactable;
+            _crosshairImage.sprite = _crosshairSprite[1];
+        }
     }
 
     private void LateUpdate()
