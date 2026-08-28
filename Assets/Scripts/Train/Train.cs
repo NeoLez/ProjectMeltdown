@@ -64,6 +64,7 @@ namespace Root
 
         private void Awake()
         {
+            containers.AddRange(GetComponentsInChildren<VisualContainer>().ToList());
             _powerLost = true;
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
