@@ -144,7 +144,6 @@ namespace Root
             {
                 if (!isStopped)
                 {
-                    Debug.Log("c");
                     TrainStopped();
                 }
             }
@@ -155,7 +154,6 @@ namespace Root
                     LockExternalDoorButtons();
                     if (isStopped)
                     {
-                        Debug.Log("b");
                         TrainStarted();
                     }
                 }

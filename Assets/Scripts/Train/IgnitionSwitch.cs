@@ -25,11 +25,7 @@ namespace Root
 
         private void Toggle()
         {
-            Debug.Log("Toggle");
-
             _engineOn = !_engineOn;
-
-            Debug.Log("EngineOn: " + _engineOn);
 
             GameManager.Train.SetEnginePower(_engineOn);
 

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Root {
@@ -9,7 +8,6 @@ namespace Root {
         [SerializeField] private Animator animator;
         public void AnimatorOn()
         {
-            Debug.Log("startAnimationFluid");
             animator.SetBool(Insert, true);
         }
         

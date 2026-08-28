@@ -6,32 +6,11 @@ using UnityEngine;
 
 namespace Root {
     public class Inventory : MonoBehaviour {
-        [SerializeField] private ItemSo itemSoToAdd;
-        [SerializeField] private InventoryItem.InventoryItemRotation rotation;
-        [SerializeField] private bool find;
-        [SerializeField] private int amount;
-        [SerializeField] private Vector2Int pos;
-
-        [ContextMenu("AddItem")]
-        private void AddItem() {
-            for (int i=0; i<amount; i++)
-                if (find)
-                    Debug.Log(InsertItem(itemSoToAdd.CreateState()));
-                else
-                    Debug.Log(InsertItem(itemSoToAdd.CreateState(), pos, rotation));
-        }
-        
-        [ContextMenu("RemoveItem")]
-        private void RemoveItem() {
-            RemoveItem(pos, out InventoryItem invItem);
-        }
-        
         private class InventorySlot {
             [CanBeNull] public InventoryItem InventoryItem;
             public bool IsFree => InventoryItem == null;
         }
-
-        public event Action OnRedraw;
+        
         public event Action<InventoryItem, Vector2Int> OnItemAdded;
         public event Action<InventoryItem> OnItemRemoved;
         
@@ -99,11 +78,21 @@ namespace Root {
             
             if (!_slots.TryGetValue(position, out InventorySlot slot) || slot.IsFree) return false;
             inventoryItem = slot.InventoryItem;
-            OnItemRemoved?.Invoke(inventoryItem);
             if (!SetSlotsToItem(slot.InventoryItem!.RotationCorrectedSize, slot.InventoryItem._position, null))
                 return false;
+            OnItemRemoved?.Invoke(inventoryItem);
             _items.Remove(slot.InventoryItem);
+
+            return true;
+        }
+
+        public bool RemoveItem(InventoryItem inventoryItem) {
+            if (!_items.Contains(inventoryItem)) return false;
+            if (!SetSlotsToItem(inventoryItem.RotationCorrectedSize, inventoryItem._position, null))
+                return false;
             
+            _items.Remove(inventoryItem);
+            OnItemRemoved?.Invoke(inventoryItem);
             return true;
         }
         
@@ -138,6 +127,10 @@ namespace Root {
 
             return true;
         }
+
+        public List<InventoryItem> GetItems() {
+            return _items.ToList();
+        }
         
         private bool TryFindFreeArea(Vector2Int baseSize, out Vector2Int position, out InventoryItem.InventoryItemRotation rotation) {
             position = Vector2Int.zero;
@@ -166,6 +159,36 @@ namespace Root {
             }
 
             return false;
+        }
+        
+        [Header("OptionsForTesting")]
+        [SerializeField] private ItemSo itemSoToAdd;
+        [SerializeField] private InventoryItem.InventoryItemRotation rotation;
+        [SerializeField] private bool find;
+        [SerializeField] private int amount;
+        [SerializeField] private Vector2Int pos;
+
+        [ContextMenu("AddItem")]
+        private void AddItem() {
+            for (int i=0; i<amount; i++)
+                if (find)
+                    Debug.Log(InsertItem(itemSoToAdd.CreateState()));
+                else
+                    Debug.Log(InsertItem(itemSoToAdd.CreateState(), pos, rotation));
+        }
+        
+        [ContextMenu("RemoveItem")]
+        private void RemoveItem() {
+            RemoveItem(pos, out InventoryItem invItem);
+        }
+
+        [ContextMenu("PrintItems")]
+        private void PrintItems() {
+            foreach (var item in _items) {
+                Debug.Log(item._position + " " + item.itemState.ItemSo.ItemName);
+            }
+
+            ;
         }
     }
 }

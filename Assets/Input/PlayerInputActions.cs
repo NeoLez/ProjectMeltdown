@@ -323,7 +323,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""7e9dcb28-aa45-4ae7-90d1-8c1b21b8cbd6"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
@@ -421,6 +421,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventoryToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""d44d75cf-ef05-4d3e-8f40-a69e9c65770a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PutHeldInInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""958ea7fb-f4b9-4968-ac45-346b9f40932a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropItemModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""66b4b06f-666d-4f6e-aa26-6b69f9321baa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -432,6 +459,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f21e74f-300e-47fa-969b-4730333c4752"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1207e1f-8db5-4574-910b-5bd73f12b917"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PutHeldInInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15730fa3-553a-47d7-b82b-1af49a92ca19"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropItemModifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -521,6 +581,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_RotateRight = m_Inventory.FindAction("RotateRight", throwIfNotFound: true);
+        m_Inventory_InventoryToggle = m_Inventory.FindAction("InventoryToggle", throwIfNotFound: true);
+        m_Inventory_PutHeldInInventory = m_Inventory.FindAction("PutHeldInInventory", throwIfNotFound: true);
+        m_Inventory_DropItemModifier = m_Inventory.FindAction("DropItemModifier", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -981,6 +1044,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
     private readonly InputAction m_Inventory_RotateRight;
+    private readonly InputAction m_Inventory_InventoryToggle;
+    private readonly InputAction m_Inventory_PutHeldInInventory;
+    private readonly InputAction m_Inventory_DropItemModifier;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inventory".
     /// </summary>
@@ -996,6 +1062,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inventory/RotateRight".
         /// </summary>
         public InputAction @RotateRight => m_Wrapper.m_Inventory_RotateRight;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/InventoryToggle".
+        /// </summary>
+        public InputAction @InventoryToggle => m_Wrapper.m_Inventory_InventoryToggle;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/PutHeldInInventory".
+        /// </summary>
+        public InputAction @PutHeldInInventory => m_Wrapper.m_Inventory_PutHeldInInventory;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/DropItemModifier".
+        /// </summary>
+        public InputAction @DropItemModifier => m_Wrapper.m_Inventory_DropItemModifier;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1025,6 +1103,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RotateRight.started += instance.OnRotateRight;
             @RotateRight.performed += instance.OnRotateRight;
             @RotateRight.canceled += instance.OnRotateRight;
+            @InventoryToggle.started += instance.OnInventoryToggle;
+            @InventoryToggle.performed += instance.OnInventoryToggle;
+            @InventoryToggle.canceled += instance.OnInventoryToggle;
+            @PutHeldInInventory.started += instance.OnPutHeldInInventory;
+            @PutHeldInInventory.performed += instance.OnPutHeldInInventory;
+            @PutHeldInInventory.canceled += instance.OnPutHeldInInventory;
+            @DropItemModifier.started += instance.OnDropItemModifier;
+            @DropItemModifier.performed += instance.OnDropItemModifier;
+            @DropItemModifier.canceled += instance.OnDropItemModifier;
         }
 
         /// <summary>
@@ -1039,6 +1126,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RotateRight.started -= instance.OnRotateRight;
             @RotateRight.performed -= instance.OnRotateRight;
             @RotateRight.canceled -= instance.OnRotateRight;
+            @InventoryToggle.started -= instance.OnInventoryToggle;
+            @InventoryToggle.performed -= instance.OnInventoryToggle;
+            @InventoryToggle.canceled -= instance.OnInventoryToggle;
+            @PutHeldInInventory.started -= instance.OnPutHeldInInventory;
+            @PutHeldInInventory.performed -= instance.OnPutHeldInInventory;
+            @PutHeldInInventory.canceled -= instance.OnPutHeldInInventory;
+            @DropItemModifier.started -= instance.OnDropItemModifier;
+            @DropItemModifier.performed -= instance.OnDropItemModifier;
+            @DropItemModifier.canceled -= instance.OnDropItemModifier;
         }
 
         /// <summary>
@@ -1252,5 +1348,26 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotateRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "InventoryToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInventoryToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PutHeldInInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPutHeldInInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DropItemModifier" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropItemModifier(InputAction.CallbackContext context);
     }
 }

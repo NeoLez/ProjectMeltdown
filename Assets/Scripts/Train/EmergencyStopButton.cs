@@ -1,5 +1,4 @@
 using PrimeTween;
-using System;
 using UnityEngine;
 
 namespace Root {
@@ -39,7 +38,6 @@ namespace Root {
 
             if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.GetBreakDisc() == null)
             {
-                Debug.Log("EmergenciaNO");
                 LowerAndRaiseButton();
                 return;
             }
@@ -48,7 +46,6 @@ namespace Root {
             isBraking = true;
             usesLeft--;
             GameManager.AudioSystem.PlaySound(stopSound, GameManager.AudioSystem.VFX);
-            Debug.Log("Emergencia");
             _discSlot.GetBreakDisc().SetDiscUsage();
         }
 

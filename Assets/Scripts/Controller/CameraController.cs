@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
         _crosshairImage = crosshair.GetComponent<Image>();
         _input = GameManager.Input;
         _input.CameraMovement.Enable();
-        _input.Interaction.Interact.started += HandleInteraction;
+        _input.Interaction.Interact.performed += HandleInteraction;
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();
         Assert.IsNotNull(_playerItemHolder);
@@ -77,7 +77,7 @@ public class CameraController : MonoBehaviour
 
     private void OnDestroy()
     {
-        _input.Interaction.Interact.started -= HandleInteraction;
+        _input.Interaction.Interact.performed -= HandleInteraction;
         DialogueManager.Instance.OnDialogueEnded -= Reset;
     }
 

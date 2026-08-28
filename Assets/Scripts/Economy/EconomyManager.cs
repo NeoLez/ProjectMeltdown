@@ -20,8 +20,6 @@ namespace Root
         {
             currentMoney += amount;
 
-            Debug.Log($"Dinero actual: ${currentMoney}");
-
             OnMoneyChanged?.Invoke(currentMoney);
         }
 
@@ -29,13 +27,10 @@ namespace Root
         {
             if (currentMoney < amount)
             {
-                Debug.Log("Dinero insuficiente");
                 return false;
             }
 
             currentMoney -= amount;
-
-            Debug.Log($"Dinero actual: ${currentMoney}");
 
             OnMoneyChanged?.Invoke(currentMoney);
 

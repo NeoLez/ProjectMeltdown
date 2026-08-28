@@ -10,6 +10,7 @@ public static class GameManager {
   public static MapGeneration MapGeneration;
   public static AudioSystem AudioSystem;
   public static DialogueManager DialogueManager;
+  public static PlayerInventoryUI PlayerInventoryUI;
   public static int VeryUglyKitNumber;
   public static readonly Vector2 RTSize = new(640,360);  
 

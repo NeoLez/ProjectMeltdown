@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Root {
-    public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler {
+    public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
         public Inventory inventory;
         public RectTransform slotPanelPrefab;
         public RectTransform inventoryBackground;
@@ -14,25 +14,53 @@ namespace Root {
         private Vector2Int maxDimensions;
         private Dictionary<InventoryItem, InventoryItemDisplay> itemToItemDisplay = new();
         [SerializeField] private float dragSmoothing;
+
+        public void LoadInventory(Inventory inv) {
+            if (inventory != null) {
+                inventory.OnItemAdded -= HandleOnItemAdded;
+                inventory.OnItemRemoved -= HandleOnItemRemoved;
+            }
+
+            inventory = inv;
+            inventory.OnItemAdded += HandleOnItemAdded;
+            inventory.OnItemRemoved += HandleOnItemRemoved;
+
+            Refresh();
+        }
         
-        private void Start()
-        {
+        private void HandleOnItemAdded(InventoryItem item, Vector2Int position) {
+            var obj = Instantiate(item.itemState.ItemSo.InventoryItemPrefab, transform);
+            itemToItemDisplay.Add(item, obj);
+            obj.Initialize(this, item, item.itemState.ItemSo.InventoryItemIcon, item.Size, (Vector2)position * slotPanelPrefab.sizeDelta.x, item.rotation);
+        }
+        
+        private void HandleOnItemRemoved(InventoryItem item) {
+            itemToItemDisplay.Remove(item, out var obj);
+            Destroy(obj.gameObject);
+        }
+
+        public void Refresh() {
+            maxDimensions = Vector2Int.zero;
+            if (inventory == null) return;
+            
+            foreach (var slot in slots) {
+                Destroy(slot.gameObject);
+            }
+            slots.Clear();
+            foreach (var displayItem in itemToItemDisplay.Values) {
+                Destroy(displayItem.gameObject);
+            }
+            itemToItemDisplay.Clear();
+
             Generate();
-            inventory.OnItemAdded += (item, position) => {
-                var obj = Instantiate(item.itemState.ItemSo.InventoryItemPrefab, transform);
-                itemToItemDisplay.Add(item, obj);
-                obj.Initialize(this, item, item.itemState.ItemSo.InventoryItemIcon, item.Size, (Vector2)position * slotPanelPrefab.sizeDelta.x, item.rotation);
-            };
-            inventory.OnItemRemoved += item => {
-                itemToItemDisplay.Remove(item, out var obj);
-                if (obj == null) return;
-                Destroy(obj.gameObject);
-            };
+            
+            foreach (var item in inventory.GetItems()) {
+                HandleOnItemAdded(item, item._position);
+            }
         }
 
         public void Generate()
         {
-            if (inventory == null) return;
             foreach (var position in inventory.GetInventorySlotPositions())
             {
                 var slot = Instantiate(slotPanelPrefab, transform);
@@ -42,10 +70,6 @@ namespace Root {
                 slots.Add(slot);
             }
             inventoryBackground.sizeDelta = new Vector2((maxDimensions.x + 1) * slots[0].sizeDelta.x, (maxDimensions.y + 1) * slots[0].sizeDelta.y);
-        }
-        
-        public void OnDrop(PointerEventData eventData) {
-            Debug.Log(eventData.position);
         }
 
         public Vector2Int MousePositionToSlotCoords(Vector2 mousePosition) {
@@ -65,7 +89,7 @@ namespace Root {
         public void OnBeginDrag(PointerEventData eventData) {
             if (draggingItem) return;
             var slotPos = MousePositionToSlotCoords(eventData.position);
-            Debug.Log(slotPos);
+            
             if (!inventory.GetItem(slotPos, out itemBeingDragged)) return;
 
             draggingItem = true;
@@ -120,7 +144,7 @@ namespace Root {
             }
             
             itemBeingDragged.rotation = originalRotation;
-            inventory.RemoveItem(itemBeingDragged._position, out _);
+            inventory.RemoveItem(itemBeingDragged);
             
             itemBeingDragged.rotation = draggingItemRotation;
             inv.InsertItem(itemBeingDragged, pivotSlot);
@@ -158,6 +182,15 @@ namespace Root {
             itemDisplayBeingDragged.SetPosition(itemDisplayBeingDragged.originalPosition, itemDisplayBeingDragged.originalRotation);
             itemBeingDragged = null;
             itemDisplayBeingDragged = null;
+        }
+
+        public void OnPointerClick(PointerEventData eventData) {
+            if (!GameManager.Input.Inventory.DropItemModifier.IsPressed()) return;
+            var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
+            if (playerItemHolder.HasItem) return;
+            if (!inventory.RemoveItem(MousePositionToSlotCoords(eventData.position), out var item)) return;
+
+            playerItemHolder.Pickup(item.itemState);
         }
     }
 }

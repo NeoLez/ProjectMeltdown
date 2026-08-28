@@ -111,7 +111,6 @@ namespace Root
             obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
             obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
-                //Debug.Log("Purchased item " + item.item.name);
                 boughtHand.HideHand();
                 initialMerchantHands.Remove(boughtHand);
                 itemsCreated.Remove(i);
@@ -146,7 +145,6 @@ namespace Root
         }
 
         public void ShowItems() {
-            Debug.Log("a");
             if(isTutorialSpawn)
             {
                 foreach (var hand in initialMerchantHands)
@@ -158,7 +156,6 @@ namespace Root
             {
                 foreach (var hand in merchantHands)
                 {
-                    Debug.Log("b");
                     hand.ShowHand();
                 }
             }                
