@@ -21,6 +21,8 @@ public class RTEventSystemRaycaster : BaseRaycaster
         if (!RemapToRT(eventData.position, out Vector2 rtPos))
             return;
 
+        eventData.position = rtPos;
+
         Ray ray = rtCamera.ScreenPointToRay(rtPos);
 
         if (Physics.Raycast(ray, out RaycastHit hit3D, 100f))
