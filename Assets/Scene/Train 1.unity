@@ -2548,6 +2548,7 @@ Transform:
   - {fileID: 1865754737}
   - {fileID: 1337434676}
   - {fileID: 3946933057912439668}
+  - {fileID: 250453950}
   - {fileID: 8254549951754450414}
   - {fileID: 543450653203369221}
   - {fileID: 165369795}
@@ -2555,7 +2556,6 @@ Transform:
   - {fileID: 799256848}
   - {fileID: 587866817}
   - {fileID: 536341158}
-  - {fileID: 250453950}
   - {fileID: 480284398}
   - {fileID: 2049680607}
   - {fileID: 1594934081}
@@ -11033,13 +11033,17 @@ PrefabInstance:
       value: luz para el tren 1_1
       objectReference: {fileID: 0}
     - target: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: cd9b9684e3453f34993dbea6b3c801d1, type: 2}
     - target: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8bf0c2b0592e2ac4abd029182d73b72d, type: 2}
+      objectReference: {fileID: 2100000, guid: f9e400e604582864b865d814a3423b61, type: 2}
     - target: {fileID: 5976024338367361290, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
       propertyPath: m_LocalScale.x
       value: 56.256096
@@ -22423,6 +22427,9 @@ MonoBehaviour:
   lights:
   - {fileID: 1442088707}
   - {fileID: 1935062307}
+  emissiveMat:
+  - {fileID: 3946933057912439669}
+  - {fileID: 2124531156}
   sensitivity: 0.005
   maxSwitchSpeed: 0.05
   minIntensity: 10
@@ -22433,6 +22440,7 @@ MonoBehaviour:
   maxRotation: 180
   visuals: {fileID: 242273397}
   percentage: 0
+  _emissiveMaxIntensity: 2
 --- !u!1 &1711681386
 GameObject:
   m_ObjectHideFlags: 0
@@ -28004,6 +28012,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124319538}
   m_CullTransparentMesh: 1
+--- !u!23 &2124531156 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
+  m_PrefabInstance: {fileID: 875735736}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2125171687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29374,6 +29387,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5976024338367361290, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
   m_PrefabInstance: {fileID: 5396782984077935738}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &3946933057912439669 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
+  m_PrefabInstance: {fileID: 5396782984077935738}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &4109396432360061695
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -29617,7 +29635,7 @@ PrefabInstance:
     - target: {fileID: 1407700061693158693, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8bf0c2b0592e2ac4abd029182d73b72d, type: 2}
+      objectReference: {fileID: 2100000, guid: f9e400e604582864b865d814a3423b61, type: 2}
     - target: {fileID: 5976024338367361290, guid: 55c6aa126eda23b4a94e918660a66c1c, type: 3}
       propertyPath: m_LocalScale.x
       value: 56.256096

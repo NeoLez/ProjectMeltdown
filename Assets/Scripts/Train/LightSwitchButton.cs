@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Root {
     public class LightSwitchButton : PanelButton {
         [SerializeField] private List<Light> lights;
+
         private bool _on = false;
         
         public Transform lightObject;
