@@ -27,6 +27,7 @@ namespace Root
         [SerializeField] private float percentage;
 
         [SerializeField] private float _emissiveMaxIntensity;
+
         private float _initialEmissive;
 
         private void Start()
@@ -69,7 +70,10 @@ namespace Root
                 Material[] mats = mat.materials;
                 _initialEmissive = mats[1].GetFloat("_LightIntensity");
                 _initialEmissive = lightSwitch.IsOn() ? math.lerp(0, _emissiveMaxIntensity, percentage) : 0;
+
+                mats[1].SetFloat("_LightIntensity", _initialEmissive);
             }
+
             UpdateMousePosition();
         }
     }
