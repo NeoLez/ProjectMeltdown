@@ -43,6 +43,7 @@ namespace Root
         [SerializeField] private Transform movementTeleport;
         [SerializeField] public Transform trainPosition;
 
+        [SerializeField] private Transform trainVisualsStatic;
         [SerializeField] private List<VisualContainer> containers;
         [SerializeField] private List<VisualContainer> objectsInsideTrain;
         [SerializeField] private List<ObjectInsideArea> ObjectInsideAreas;
@@ -65,6 +66,11 @@ namespace Root
         private void Awake()
         {
             containers.AddRange(GetComponentsInChildren<VisualContainer>().ToList());
+            foreach(var container in GetComponentsInChildren<VisualContainerStatic>().ToList())
+            {
+                container.SetToPosition(trainVisualsStatic);
+            }
+            
             _powerLost = true;
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;

@@ -24,9 +24,19 @@ namespace Root
             {
                 Colliders();
             }
-            if (_animator.GetBool("Open") == true) { _animator.SetBool("Open", false); _pivot.SetBool("Open", false); IsObjectOpen = false; }
-            else {_animator.SetBool("Open", true); _pivot.SetBool("Open", true); IsObjectOpen = true; }
-            if (sound != null) GameManager.AudioSystem.PlaySoundPositional(sound, transform.position, GameManager.AudioSystem.VFX);
+
+            if (_animator.GetBool("Open") == true) {
+                _animator.SetBool("Open", false);
+                _pivot.SetBool("Open", false);
+                IsObjectOpen = false;
+            }
+            else {
+                _animator.SetBool("Open", true); 
+                _pivot.SetBool("Open", true);
+                IsObjectOpen = true;
+            }
+            if (sound != null)
+                GameManager.AudioSystem.PlaySoundPositional(sound, transform.position, GameManager.AudioSystem.VFX);
             if (_externalCollider != null) 
             {
                 if (_externalCollider.enabled) { _externalCollider.enabled = false; }
