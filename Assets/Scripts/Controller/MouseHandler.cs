@@ -1,91 +1,57 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using Timers;
 using UnityEngine;
 using Cursor = UnityEngine.Cursor;
 
 namespace Root.Controller
 {
-    public static class MouseHandler
-    {
-        private static readonly List<MouseSettings> MouseSettingsList = new();
+    public static class MouseHandler {
+        private static readonly ClaimableValue<MouseSettings> MouseValue = new(SetMouseSettings, DefaultMouseSettings);
 
-        public static bool ShowCrosshair { get; private set; }
+        public static bool GetCrosshair() {
+            return MouseValue.GetCurrentValue().ShowCrosshair;
+        }
 
-        public static void RequestControl(
-            CursorLockMode lockState,
-            bool visible,
-            Component requester,
-            bool showCrosshair = false)
+        public static void RequestControl(CursorLockMode lockState, bool visible, Component requester, bool showCrosshair = false)
         {
-            var mouseSetting = new MouseSettings();
-            mouseSetting.lockState = lockState;
-            mouseSetting.visible = visible;
-            mouseSetting.requester = requester;
-            mouseSetting.showCrosshair = showCrosshair;
-
-            MouseSettingsList.Add(mouseSetting);
-            SetMouseSettings(mouseSetting);
+            MouseValue.RequestControl(new MouseSettings(lockState, visible, showCrosshair), requester);
         }
 
         public static void RelinquishControl(Component requester)
         {
-            for (int i = MouseSettingsList.Count - 1; i >= 0; i--)
-            {
-                if (MouseSettingsList[i].requester == null)
-                {
-                    MouseSettingsList.RemoveAt(i);
-                    continue;
-                }
-
-                if (MouseSettingsList[i].requester == requester)
-                {
-                    if (i == MouseSettingsList.Count - 1)
-                    {
-                        if (i > 0)
-                        {
-                            SetMouseSettings(MouseSettingsList[i - 1]);
-                        }
-                        else
-                        {
-                            Cursor.lockState = CursorLockMode.None;
-                            Cursor.visible = true;
-                        }
-                    }
-                    MouseSettingsList.RemoveAt(i);
-                    break;
-                }
-            }
+            MouseValue.RelinquishControl(requester);
         }
 
         private static void SetMouseSettings(MouseSettings mouseSetting)
         {
-            Cursor.lockState = mouseSetting.lockState;
-            Cursor.visible = mouseSetting.visible;
-
-            ShowCrosshair = mouseSetting.showCrosshair;
+            Cursor.lockState = mouseSetting.LockState;
+            Cursor.visible = mouseSetting.Visible;
         }
 
-        public struct MouseSettings
-        {
-            public CursorLockMode lockState;
-            public bool visible;
-            public Component requester;
-            public bool showCrosshair;
+        private static MouseSettings DefaultMouseSettings() {
+            return new MouseSettings(CursorLockMode.None, true, false);
+        }
 
+        private struct MouseSettings
+        {
+            public CursorLockMode LockState;
+            public bool Visible;
+            public bool ShowCrosshair;
+
+            public MouseSettings(CursorLockMode lockState, bool visible, bool showCrosshair) {
+                LockState = lockState;
+                Visible = visible;
+                ShowCrosshair = showCrosshair;
+            }
+            
             public override string ToString()
             {
-                return $"{lockState}, {visible}, {requester.name}\n";
+                return $"{LockState}, {Visible}, {ShowCrosshair}\n";
             }
         }
 
         public static void PrintState()
         {
-            StringBuilder sb = new();
-            foreach (var mouseSetting in MouseSettingsList)
-            {
-                sb.Append(mouseSetting.ToString());
-            }
-            Debug.Log(sb.ToString());
+            Debug.Log(MouseValue.ToString());
         }
         
         /// <summary>
@@ -93,9 +59,7 @@ namespace Root.Controller
         /// </summary>
         public static void ClearListAndSetToDefault()
         {
-            MouseSettingsList.Clear();
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            MouseValue.ClearListAndSetToDefault();
         }
     }
 }

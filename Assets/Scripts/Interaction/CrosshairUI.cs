@@ -13,6 +13,6 @@ public class CrosshairUI : MonoBehaviour
 
     private void Update()
     {
-        _rawImage.enabled = MouseHandler.ShowCrosshair;
+        _rawImage.enabled = MouseHandler.GetCrosshair();
     }
 }
