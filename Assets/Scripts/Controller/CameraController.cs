@@ -43,9 +43,8 @@ public class CameraController : MonoBehaviour
     private MovementController _movementController;
     private PlayerItemHolder _playerItemHolder;
 
-    // MODIFICADO: referencia al crosshair que se muestra cuando el cursor esta bloqueado
     [SerializeField] private GameObject crosshair;
-    [SerializeField] private List<Sprite> _crosshairSprite; //System collections Generic
+    [SerializeField] private List<Sprite> _crosshairSprite;
     private Image _crosshairImage;
 
     public Timer walkCancelTimer = new Timer();
@@ -54,10 +53,12 @@ public class CameraController : MonoBehaviour
     private bool _limitRotation;
     private Vector3 _currentEuler;
     private InteractableNormalCamera _currentInteractable;
+
     private void Awake()
     {
         GameManager.CameraController = this;
     }
+    
     private void Start()
     {        
         _crosshairImage = crosshair.GetComponent<Image>();
@@ -252,15 +253,15 @@ public class CameraController : MonoBehaviour
         }
         shakeIntensity = Mathf.Lerp(shakeIntensity, targetShakeIntensity, shakeIntensityLerp);
     }
-
-    public void AddPitch(float n)
+    
+    public void SyncToRotation(Quaternion targetWorldRotation)
     {
-        pitch += n;
-    }
-
-    public void AddYaw(float n)
-    {
-        yaw += n;
+        Quaternion targetLocalRotation = targetWorldRotation;
+        Vector3 euler = targetLocalRotation.eulerAngles;
+        pitch = Mathf.Clamp(-NormalizeAngle(euler.x), -89f, 89f);
+        yaw = NormalizeAngle(euler.y);
+        cam.localRotation = Quaternion.Euler(-pitch, yaw, currentSideSwayAngle);
+        cam.position = cameraPosition.position;
     }
 
     public void LockCamera()

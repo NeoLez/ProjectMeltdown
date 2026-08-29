@@ -29,8 +29,6 @@ namespace Root.Controller {
             if (!isActiveAndEnabled) return;
             if (ctx.started) HandleInteractionObjectSelection();
             
-            
-
             if (ctx.started)
             {
                 if (_selectedInteractable == null) return;
@@ -85,6 +83,11 @@ namespace Root.Controller {
                 return;
             }
             _selectedInteractable = component;
+        }
+        
+        public void SyncToRotation(Quaternion targetWorldRotation)
+        {
+            cam.transform.rotation = targetWorldRotation;
         }
     }
 }
