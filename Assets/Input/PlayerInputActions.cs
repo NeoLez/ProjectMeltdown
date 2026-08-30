@@ -465,7 +465,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1f21e74f-300e-47fa-969b-4730333c4752"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": ""Tap(duration=0.499)"",
                     ""processors"": """",
                     ""groups"": """",
@@ -476,7 +476,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d1207e1f-8db5-4574-910b-5bd73f12b917"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
@@ -487,7 +487,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""15730fa3-553a-47d7-b82b-1af49a92ca19"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
