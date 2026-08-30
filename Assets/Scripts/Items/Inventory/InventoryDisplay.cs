@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Timers;
 using Unity.Mathematics;
@@ -6,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Root {
-    public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
+    public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
         public Inventory inventory;
         public RectTransform slotPanelPrefab;
         public RectTransform inventoryBackground;
@@ -95,7 +96,8 @@ namespace Root {
             draggingItem = true;
             itemDisplayBeingDragged = itemToItemDisplay[itemBeingDragged];
             draggingItemRotation = itemBeingDragged.rotation;
-
+            
+            itemDisplayBeingDragged.SetSortingOrder(true);
             RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, eventData.position, null, out var localPointerPos);
             originalRelativeDragPosition = localPointerPos - (Vector2)itemDisplayBeingDragged.GetComponent<RectTransform>().localPosition;
@@ -120,7 +122,7 @@ namespace Root {
                     out Vector2 localPointerPosition))
             {
                 var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
-                rect.localPosition = Vector3.Lerp(rect.localPosition, localPointerPosition - originalRelativeDragPosition, dragSmoothing);
+                rect.localPosition = Vector3.Lerp(rect.localPosition, localPointerPosition - originalRelativeDragPosition, dragSmoothing * Time.deltaTime);
             }
         }
 
@@ -178,19 +180,30 @@ namespace Root {
         }
 
         private void ReturnDraggedItem() {
+            if (!draggingItem) return;
             draggingItem = false;
             itemDisplayBeingDragged.SetPosition(itemDisplayBeingDragged.originalPosition, itemDisplayBeingDragged.originalRotation);
+            itemDisplayBeingDragged.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            itemDisplayBeingDragged.SetSortingOrder(false);
             itemBeingDragged = null;
             itemDisplayBeingDragged = null;
         }
 
-        public void OnPointerClick(PointerEventData eventData) {
-            if (!GameManager.Input.Inventory.DropItemModifier.IsPressed()) return;
+        private void Awake() {
+            GameManager.Input.Inventory.DropItemModifier.performed += OnPointerClick;
+        }
+
+        public void OnPointerClick(InputAction.CallbackContext _) {
+            if (!gameObject.activeInHierarchy || inventory == null) return;
             var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
             if (playerItemHolder.HasItem) return;
-            if (!inventory.RemoveItem(MousePositionToSlotCoords(eventData.position), out var item)) return;
+            if (!inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) return;
 
             playerItemHolder.Pickup(item.itemState);
+        }
+
+        private void OnDisable() {
+            ReturnDraggedItem();
         }
     }
 }

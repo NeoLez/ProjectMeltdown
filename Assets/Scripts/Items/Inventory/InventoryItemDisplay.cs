@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Root {
-    [RequireComponent(typeof(RectTransform), typeof(Image))]
     public class InventoryItemDisplay : MonoBehaviour {
-        private RectTransform rectTransform;
+        [SerializeField] private RectTransform rectTransform;
+        [SerializeField] private Image image;
+        [SerializeField] private Canvas canvas;
+        [SerializeField] private int initialSortingOrder;
+        [SerializeField] private int draggingSortingOrder;
         private InventoryDisplay inventoryDisplay;
         private InventoryItem _inventoryItem;
         public Vector2 originalPosition;
@@ -14,7 +17,6 @@ namespace Root {
         private float cellSize; 
         
         public virtual void Initialize(InventoryDisplay disp, InventoryItem item, Sprite itemIcon, Vector2Int size, Vector2 position, InventoryItem.InventoryItemRotation rotation) {
-            rectTransform = GetComponent<RectTransform>();
             cellSize = rectTransform.sizeDelta.x; 
             
             originalPosition = position;
@@ -23,11 +25,12 @@ namespace Root {
 
             _inventoryItem = item;
             inventoryDisplay = disp;
+            canvas.sortingOrder = initialSortingOrder;
 
             rectTransform.sizeDelta *= size;
             SetPosition(position, rotation);
             
-            GetComponent<Image>().sprite = itemIcon;
+            image.sprite = itemIcon;
         }
 
         public void SetPosition(Vector2 position, InventoryItem.InventoryItemRotation rotation) {
@@ -48,6 +51,14 @@ namespace Root {
 
             rectTransform.anchoredPosition = position;
             rectTransform.rotation = Quaternion.Euler(0, 0, (int)rotation);
+        }
+
+        public void SetSortingOrder(bool dragging) {
+            if (dragging) {
+                canvas.sortingOrder = draggingSortingOrder;
+                return;
+            }
+            canvas.sortingOrder = initialSortingOrder;
         }
     }
 }

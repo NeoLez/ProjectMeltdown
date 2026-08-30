@@ -41,6 +41,7 @@ namespace Root
                 GameManager.Input.Movement.Disable();
                 GameManager.Input.CameraMovement.Disable();
                 GameManager.Input.Interaction.Disable();
+                GameManager.PlayerInventoryUI.CloseInventory();
 
                 GameManager.AudioSystem?.PauseAll();
                 GameManager.DialogueManager?.StopCurrentDialogue();
