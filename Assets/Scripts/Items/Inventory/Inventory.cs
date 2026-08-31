@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;using Root;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Root {
@@ -81,7 +81,7 @@ namespace Root {
             if (!SetSlotsToItem(slot.InventoryItem!.RotationCorrectedSize, slot.InventoryItem._position, null))
                 return false;
             OnItemRemoved?.Invoke(inventoryItem);
-            _items.Remove(slot.InventoryItem);
+            _items.Remove(inventoryItem);
 
             return true;
         }
@@ -105,6 +105,12 @@ namespace Root {
         }
 
         private bool SetSlotsToItem(Vector2Int size, Vector2Int position, [CanBeNull] InventoryItem item) {
+            for (int x = 0; x < size.x; x++) {
+                for (int y = 0; y < size.y; y++) {
+                    if (!_slots.ContainsKey(position + new Vector2Int(x, y))) return false;
+                }
+            }
+            
             for (int x = 0; x < size.x; x++) {
                 for (int y = 0; y < size.y; y++) {
                     if (!_slots.TryGetValue(position + new Vector2Int(x, y), out InventorySlot slot)) return false;
@@ -187,8 +193,6 @@ namespace Root {
             foreach (var item in _items) {
                 Debug.Log(item._position + " " + item.itemState.ItemSo.ItemName);
             }
-
-            ;
         }
     }
 }
