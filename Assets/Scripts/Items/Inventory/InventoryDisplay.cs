@@ -1,21 +1,31 @@
-using System;
 using System.Collections.Generic;
-using Timers;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Root {
-    public class InventoryDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+    public class InventoryDisplay : MonoBehaviour, IItemDragReceiver {
         public Inventory inventory;
         public RectTransform slotPanelPrefab;
         public RectTransform inventoryBackground;
-        private List<RectTransform> slots = new();
-        private Vector2Int maxDimensions;
-        private Dictionary<InventoryItem, InventoryItemDisplay> itemToItemDisplay = new();
+        private readonly List<RectTransform> _slots = new();
+        private Vector2Int _maxDimensions;
+        private readonly Dictionary<InventoryItem, InventoryItemDisplay> _itemToItemDisplay = new();
         [SerializeField] private float dragSmoothing;
 
+        private void Awake() {
+            GameManager.Input.Inventory.DropItemModifier.performed += HandleMoveToHand;
+        }
+
+        private void HandleMoveToHand(InputAction.CallbackContext _) {
+            if (!gameObject.activeInHierarchy || inventory == null) return;
+            var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
+            if (playerItemHolder.HasItem) return;
+            if (!inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) return;
+
+            playerItemHolder.Pickup(item.itemState);
+        }
+        
         public void LoadInventory(Inventory inv) {
             if (inventory != null) {
                 inventory.OnItemAdded -= HandleOnItemAdded;
@@ -31,27 +41,27 @@ namespace Root {
         
         private void HandleOnItemAdded(InventoryItem item, Vector2Int position) {
             var obj = Instantiate(item.itemState.ItemSo.InventoryItemPrefab, transform);
-            itemToItemDisplay.Add(item, obj);
-            obj.Initialize(this, item, item.itemState.ItemSo.InventoryItemIcon, item.Size, (Vector2)position * slotPanelPrefab.sizeDelta.x, item.rotation);
+            _itemToItemDisplay.Add(item, obj);
+            obj.Initialize(item, item.itemState.ItemSo.InventoryItemIcon, item.Size, (Vector2)position * slotPanelPrefab.sizeDelta.x, item.rotation);
         }
         
         private void HandleOnItemRemoved(InventoryItem item) {
-            itemToItemDisplay.Remove(item, out var obj);
+            _itemToItemDisplay.Remove(item, out var obj);
             Destroy(obj.gameObject);
         }
 
         public void Refresh() {
-            maxDimensions = Vector2Int.zero;
+            _maxDimensions = Vector2Int.zero;
             if (inventory == null) return;
             
-            foreach (var slot in slots) {
+            foreach (var slot in _slots) {
                 Destroy(slot.gameObject);
             }
-            slots.Clear();
-            foreach (var displayItem in itemToItemDisplay.Values) {
+            _slots.Clear();
+            foreach (var displayItem in _itemToItemDisplay.Values) {
                 Destroy(displayItem.gameObject);
             }
-            itemToItemDisplay.Clear();
+            _itemToItemDisplay.Clear();
 
             Generate();
             
@@ -60,164 +70,31 @@ namespace Root {
             }
         }
 
-        public void Generate()
+        private void Generate()
         {
             foreach (var position in inventory.GetInventorySlotPositions())
             {
                 var slot = Instantiate(slotPanelPrefab, transform);
-                maxDimensions.x = math.max(maxDimensions.x, position.x);
-                maxDimensions.y = math.max(maxDimensions.y, position.y);
+                _maxDimensions.x = math.max(_maxDimensions.x, position.x);
+                _maxDimensions.y = math.max(_maxDimensions.y, position.y);
                 slot.anchoredPosition += new Vector2(position.x, position.y) * slotPanelPrefab.sizeDelta.x;
-                slots.Add(slot);
+                _slots.Add(slot);
             }
-            inventoryBackground.sizeDelta = new Vector2((maxDimensions.x + 1) * slots[0].sizeDelta.x, (maxDimensions.y + 1) * slots[0].sizeDelta.y);
+            inventoryBackground.sizeDelta = new Vector2((_maxDimensions.x + 1) * _slots[0].sizeDelta.x, (_maxDimensions.y + 1) * _slots[0].sizeDelta.y);
         }
 
-        public Vector2Int MousePositionToSlotCoords(Vector2 mousePosition) {
+        private Vector2Int MousePositionToSlotCoords(Vector2 mousePosition) {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(inventoryBackground, mousePosition, null, out var relativePos);
             relativePos /= slotPanelPrefab.sizeDelta.x;
             return new Vector2Int((int)math.floor(relativePos.x), (int)math.floor(relativePos.y));
         }
 
-
-        private bool draggingItem;
-        private InventoryItem itemBeingDragged;
-        private InventoryItemDisplay itemDisplayBeingDragged;
-        private Vector2 originalRelativeDragPosition;
-        private Vector2Int originalRelativeDragPositionSlot;
-        private Vector2Int correctedRelativeDragPositionSlot;
-        private InventoryItem.InventoryItemRotation draggingItemRotation;
-        public void OnBeginDrag(PointerEventData eventData) {
-            if (draggingItem) return;
-            var slotPos = MousePositionToSlotCoords(eventData.position);
-            
-            if (!inventory.GetItem(slotPos, out itemBeingDragged)) return;
-
-            draggingItem = true;
-            itemDisplayBeingDragged = itemToItemDisplay[itemBeingDragged];
-            draggingItemRotation = itemBeingDragged.rotation;
-            
-            itemDisplayBeingDragged.SetSortingOrder(true);
-            RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, eventData.position, null, out var localPointerPos);
-            originalRelativeDragPosition = localPointerPos - (Vector2)itemDisplayBeingDragged.GetComponent<RectTransform>().localPosition;
-            
-            originalRelativeDragPositionSlot = MousePositionToSlotCoords(eventData.position) - itemBeingDragged._position;
-            correctedRelativeDragPositionSlot = originalRelativeDragPositionSlot;
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return inventory.IsAreaFree(size, MousePositionToSlotCoords(position), item);
         }
 
-        public void OnDrag(PointerEventData eventData) {
-            
-        }
-        
-        public void Update() {
-            if (!draggingItem) return;
-            RotateDraggingItem((int)GameManager.Input.Inventory.RotateItem.ReadValue<Vector2>().y); 
-                
-            RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    parentRect, 
-                    Mouse.current.position.value, 
-                    null, 
-                    out Vector2 localPointerPosition))
-            {
-                var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
-                rect.localPosition = Vector3.Lerp(rect.localPosition, localPointerPosition - originalRelativeDragPosition, dragSmoothing * Time.deltaTime);
-            }
-        }
-
-        public void OnEndDrag(PointerEventData eventData) {
-            if(!draggingItem) return;
-            
-            if (!UIUtility.GetFirstComponentUnderCursor(eventData, out InventoryDisplay inventoryDisplay)) {
-                ReturnDraggedItem();
-                return;
-            }
-
-            var inv = inventoryDisplay.inventory;
-            var pivotSlot = inventoryDisplay.MousePositionToSlotCoords(eventData.position) - correctedRelativeDragPositionSlot;
-            var originalRotation = itemBeingDragged.rotation;
-            
-            itemBeingDragged.rotation = draggingItemRotation;
-            if (!inv.IsAreaFree(itemBeingDragged.RotationCorrectedSize, pivotSlot, itemBeingDragged)) {
-                itemBeingDragged.rotation = originalRotation;
-                ReturnDraggedItem();
-                return;
-            }
-            
-            itemBeingDragged.rotation = originalRotation;
-            inventory.RemoveItem(itemBeingDragged);
-            
-            itemBeingDragged.rotation = draggingItemRotation;
-            inv.InsertItem(itemBeingDragged, pivotSlot);
-            draggingItem = false;
-        }
-
-        private void RotateDraggingItem(int direction) {
-            if (direction == 0) return;
-            Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(itemBeingDragged.Size, draggingItemRotation);
-    
-            if (direction == 1) 
-            {
-                draggingItemRotation = draggingItemRotation.RotateRight();
-                
-                originalRelativeDragPosition = new Vector2(originalRelativeDragPosition.y, -originalRelativeDragPosition.x);
-                
-                correctedRelativeDragPositionSlot = new Vector2Int(
-                    correctedRelativeDragPositionSlot.y,
-                    currentSize.x - 1 - correctedRelativeDragPositionSlot.x
-                );
-            } 
-            else if (direction == -1) 
-            {
-                draggingItemRotation = draggingItemRotation.RotateLeft();
-                
-                originalRelativeDragPosition = new Vector2(-originalRelativeDragPosition.y, originalRelativeDragPosition.x);
-                
-                correctedRelativeDragPositionSlot = new Vector2Int(
-                    currentSize.y - 1 - correctedRelativeDragPositionSlot.y,
-                    correctedRelativeDragPositionSlot.x
-                );
-            }
-
-            var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
-            rect.localRotation = Quaternion.Euler(0, 0, (float)draggingItemRotation);
-    
-            RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    parentRect, 
-                    Mouse.current.position.value, 
-                    null, 
-                    out Vector2 localPointerPosition))
-            {
-                rect.localPosition = localPointerPosition - originalRelativeDragPosition;
-            }
-        }
-
-        private void ReturnDraggedItem() {
-            if (!draggingItem) return;
-            draggingItem = false;
-            itemDisplayBeingDragged.SetPosition(itemDisplayBeingDragged.originalPosition, itemDisplayBeingDragged.originalRotation);
-            itemDisplayBeingDragged.SetSortingOrder(false);
-            itemBeingDragged = null;
-            itemDisplayBeingDragged = null;
-        }
-
-        private void Awake() {
-            GameManager.Input.Inventory.DropItemModifier.performed += OnPointerClick;
-        }
-
-        public void OnPointerClick(InputAction.CallbackContext _) {
-            if (!gameObject.activeInHierarchy || inventory == null) return;
-            var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
-            if (playerItemHolder.HasItem) return;
-            if (!inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) return;
-
-            playerItemHolder.Pickup(item.itemState);
-        }
-
-        private void OnDisable() {
-            ReturnDraggedItem();
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            return inventory.InsertItem(item.itemState, MousePositionToSlotCoords(position), rotation);
         }
     }
 }

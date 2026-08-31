@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Timers {
     public static class UIUtility
     {
-        public static bool GetFirstComponentUnderCursor<T>(PointerEventData pointerEventData, out T component) where T : Component
+        public static bool GetFirstComponentUnderCursor<T>(PointerEventData pointerEventData, out T component) where T : class
         {
             component = null;
             if (EventSystem.current == null) return false;
