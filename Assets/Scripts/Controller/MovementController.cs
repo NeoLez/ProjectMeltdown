@@ -113,6 +113,7 @@ namespace Root.Controller
         }
         
         public Vector3 SlopeAdjustmentSpeed(Vector3 moveDir) {
+            if (_currentSlopeAngle > maxSlopeAngle) return moveDir;
             float requiredY = -(moveDir.x * _currentSurfaceNormal.x + moveDir.z * _currentSurfaceNormal.z) / _currentSurfaceNormal.y;
             return new Vector3(0, requiredY, 0);
         }
