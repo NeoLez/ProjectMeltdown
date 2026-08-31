@@ -49,7 +49,7 @@ namespace Root {
                     break;
             }
 
-            rectTransform.anchoredPosition = position;
+            canvas.GetComponent<RectTransform>().anchoredPosition = position;
             rectTransform.rotation = Quaternion.Euler(0, 0, (int)rotation);
         }
 

@@ -414,15 +414,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""3c58a6ad-e1ed-45d7-b885-1e99449fc053"",
             ""actions"": [
                 {
-                    ""name"": ""RotateRight"",
-                    ""type"": ""Button"",
-                    ""id"": ""6a078eaa-05d8-4411-a9d4-4362e0108642"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""InventoryToggle"",
                     ""type"": ""Button"",
                     ""id"": ""d44d75cf-ef05-4d3e-8f40-a69e9c65770a"",
@@ -448,24 +439,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateItem"",
+                    ""type"": ""Value"",
+                    ""id"": ""083b9fc0-ff84-46f2-8dc1-2f2c88234584"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""a113edbd-bb81-48db-a1eb-70816bb2e5ba"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1f21e74f-300e-47fa-969b-4730333c4752"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": ""Tap(duration=0.499)"",
                     ""processors"": """",
                     ""groups"": """",
@@ -476,7 +465,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d1207e1f-8db5-4574-910b-5bd73f12b917"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
@@ -487,11 +476,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""15730fa3-553a-47d7-b82b-1af49a92ca19"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DropItemModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d123b86-f506-4825-a5b4-2a2e05b3b21e"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -580,10 +580,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_Flashlight = m_Interaction.FindAction("Flashlight", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_RotateRight = m_Inventory.FindAction("RotateRight", throwIfNotFound: true);
         m_Inventory_InventoryToggle = m_Inventory.FindAction("InventoryToggle", throwIfNotFound: true);
         m_Inventory_PutHeldInInventory = m_Inventory.FindAction("PutHeldInInventory", throwIfNotFound: true);
         m_Inventory_DropItemModifier = m_Inventory.FindAction("DropItemModifier", throwIfNotFound: true);
+        m_Inventory_RotateItem = m_Inventory.FindAction("RotateItem", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1043,10 +1043,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Inventory
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-    private readonly InputAction m_Inventory_RotateRight;
     private readonly InputAction m_Inventory_InventoryToggle;
     private readonly InputAction m_Inventory_PutHeldInInventory;
     private readonly InputAction m_Inventory_DropItemModifier;
+    private readonly InputAction m_Inventory_RotateItem;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inventory".
     /// </summary>
@@ -1059,10 +1059,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InventoryActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Inventory/RotateRight".
-        /// </summary>
-        public InputAction @RotateRight => m_Wrapper.m_Inventory_RotateRight;
-        /// <summary>
         /// Provides access to the underlying input action "Inventory/InventoryToggle".
         /// </summary>
         public InputAction @InventoryToggle => m_Wrapper.m_Inventory_InventoryToggle;
@@ -1074,6 +1070,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inventory/DropItemModifier".
         /// </summary>
         public InputAction @DropItemModifier => m_Wrapper.m_Inventory_DropItemModifier;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/RotateItem".
+        /// </summary>
+        public InputAction @RotateItem => m_Wrapper.m_Inventory_RotateItem;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1100,9 +1100,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-            @RotateRight.started += instance.OnRotateRight;
-            @RotateRight.performed += instance.OnRotateRight;
-            @RotateRight.canceled += instance.OnRotateRight;
             @InventoryToggle.started += instance.OnInventoryToggle;
             @InventoryToggle.performed += instance.OnInventoryToggle;
             @InventoryToggle.canceled += instance.OnInventoryToggle;
@@ -1112,6 +1109,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DropItemModifier.started += instance.OnDropItemModifier;
             @DropItemModifier.performed += instance.OnDropItemModifier;
             @DropItemModifier.canceled += instance.OnDropItemModifier;
+            @RotateItem.started += instance.OnRotateItem;
+            @RotateItem.performed += instance.OnRotateItem;
+            @RotateItem.canceled += instance.OnRotateItem;
         }
 
         /// <summary>
@@ -1123,9 +1123,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="InventoryActions" />
         private void UnregisterCallbacks(IInventoryActions instance)
         {
-            @RotateRight.started -= instance.OnRotateRight;
-            @RotateRight.performed -= instance.OnRotateRight;
-            @RotateRight.canceled -= instance.OnRotateRight;
             @InventoryToggle.started -= instance.OnInventoryToggle;
             @InventoryToggle.performed -= instance.OnInventoryToggle;
             @InventoryToggle.canceled -= instance.OnInventoryToggle;
@@ -1135,6 +1132,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DropItemModifier.started -= instance.OnDropItemModifier;
             @DropItemModifier.performed -= instance.OnDropItemModifier;
             @DropItemModifier.canceled -= instance.OnDropItemModifier;
+            @RotateItem.started -= instance.OnRotateItem;
+            @RotateItem.performed -= instance.OnRotateItem;
+            @RotateItem.canceled -= instance.OnRotateItem;
         }
 
         /// <summary>
@@ -1342,13 +1342,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IInventoryActions
     {
         /// <summary>
-        /// Method invoked when associated input action "RotateRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRotateRight(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "InventoryToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1369,5 +1362,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDropItemModifier(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateItem(InputAction.CallbackContext context);
     }
 }

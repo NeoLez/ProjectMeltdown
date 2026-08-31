@@ -112,8 +112,8 @@ namespace Root {
         
         public void Update() {
             if (!draggingItem) return;
-            if (GameManager.Input.Inventory.RotateRight.WasCompletedThisFrame())
-                RotateDraggingItem();
+            RotateDraggingItem((int)GameManager.Input.Inventory.RotateItem.ReadValue<Vector2>().y); 
+                
             RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     parentRect, 
@@ -153,21 +153,36 @@ namespace Root {
             draggingItem = false;
         }
 
-        private void RotateDraggingItem() {
+        private void RotateDraggingItem(int direction) {
+            if (direction == 0) return;
             Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(itemBeingDragged.Size, draggingItemRotation);
-            
-            draggingItemRotation = draggingItemRotation.RotateRight();
-            
+    
+            if (direction == 1) 
+            {
+                draggingItemRotation = draggingItemRotation.RotateRight();
+                
+                originalRelativeDragPosition = new Vector2(originalRelativeDragPosition.y, -originalRelativeDragPosition.x);
+                
+                correctedRelativeDragPositionSlot = new Vector2Int(
+                    correctedRelativeDragPositionSlot.y,
+                    currentSize.x - 1 - correctedRelativeDragPositionSlot.x
+                );
+            } 
+            else if (direction == -1) 
+            {
+                draggingItemRotation = draggingItemRotation.RotateLeft();
+                
+                originalRelativeDragPosition = new Vector2(-originalRelativeDragPosition.y, originalRelativeDragPosition.x);
+                
+                correctedRelativeDragPositionSlot = new Vector2Int(
+                    currentSize.y - 1 - correctedRelativeDragPositionSlot.y,
+                    correctedRelativeDragPositionSlot.x
+                );
+            }
+
             var rect = itemDisplayBeingDragged.GetComponent<RectTransform>();
             rect.localRotation = Quaternion.Euler(0, 0, (float)draggingItemRotation);
-            
-            originalRelativeDragPosition = new Vector2(originalRelativeDragPosition.y, -originalRelativeDragPosition.x);
-            
-            correctedRelativeDragPositionSlot = new Vector2Int(
-                correctedRelativeDragPositionSlot.y,
-                currentSize.x - 1 - correctedRelativeDragPositionSlot.x
-            );
-            
+    
             RectTransform parentRect = (RectTransform)itemDisplayBeingDragged.transform.parent;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     parentRect, 
@@ -183,7 +198,6 @@ namespace Root {
             if (!draggingItem) return;
             draggingItem = false;
             itemDisplayBeingDragged.SetPosition(itemDisplayBeingDragged.originalPosition, itemDisplayBeingDragged.originalRotation);
-            itemDisplayBeingDragged.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             itemDisplayBeingDragged.SetSortingOrder(false);
             itemBeingDragged = null;
             itemDisplayBeingDragged = null;
