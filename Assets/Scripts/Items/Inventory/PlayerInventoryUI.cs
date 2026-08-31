@@ -1,11 +1,14 @@
 using Root.Controller;
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Root {
-    public class PlayerInventoryUI : MonoBehaviour {
-        [SerializeField] InventoryDisplay playerInventory;
-        [SerializeField] InventoryDisplay otherInventory;
+    public class PlayerInventoryUI : Menu.Menu {
+        [FormerlySerializedAs("playerInventory")] [SerializeField] InventoryDisplay playerInventoryDisplay;
+        [FormerlySerializedAs("otherInventory")] [SerializeField] InventoryDisplay otherInventoryDisplay;
+        private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
         private void Awake() {
@@ -15,20 +18,46 @@ namespace Root {
 
         private void InventoryToggle(InputAction.CallbackContext _) {
             if (inventoryOpen) {
-                CloseInventory();
+                UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
             }
             else {
-                OpenPlayerInventory();
+                UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
             }
         }
 
-        public void OpenPlayerInventory() {
+        public void CloseInventory() {
+            if (!inventoryOpen) return;
+            UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
+        }
+
+        public void OpenInventory(Inventory inventory = null) {
+            _otherInventory = inventory;
             if (inventoryOpen) return;
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
+        }
+
+        public override void Open() {
+            base.Open();
+            ShowDisplays();
+        }
+
+        public override void Close() {
+            base.Close();
+            HideDisplays();
+        }
+
+        private void ShowDisplays() {
+            if (_otherInventory != null) {
+                otherInventoryDisplay.LoadInventory(_otherInventory);
+                otherInventoryDisplay.gameObject.SetActive(true);
+            }
+            
             if (!playerInventoryInitialized) {
-                playerInventory.LoadInventory(GameManager.Player.GetComponent<Inventory>());
+                playerInventoryDisplay.LoadInventory(GameManager.Player.GetComponent<Inventory>());
                 playerInventoryInitialized = true;
             }
-            playerInventory.gameObject.SetActive(true);
+            playerInventoryDisplay.gameObject.SetActive(true);
+            
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
@@ -36,30 +65,14 @@ namespace Root {
             inventoryOpen = true;
         }
 
-        public void CloseInventory() {
-            playerInventory.gameObject.SetActive(false);
-            otherInventory.gameObject.SetActive(false);
+        private void HideDisplays() {
+            playerInventoryDisplay.gameObject.SetActive(false);
+            otherInventoryDisplay.gameObject.SetActive(false);
             MouseHandler.RelinquishControl(this);
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Enable();
             inventoryOpen = false;
-        }
-
-        public void OpenInventory(Inventory inventory) {
-            if (inventoryOpen) return;
-            otherInventory.LoadInventory(inventory);
-            if (!playerInventoryInitialized) {
-                playerInventory.LoadInventory(GameManager.Player.GetComponent<Inventory>());
-                playerInventoryInitialized = true;
-            }
-            playerInventory.gameObject.SetActive(true);
-            otherInventory.gameObject.SetActive(true);
-            MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
-            GameManager.Input.Movement.Disable();
-            GameManager.Input.CameraMovement.Disable();
-            GameManager.Input.Interaction.Disable();
-            inventoryOpen = true;
         }
     }
 }

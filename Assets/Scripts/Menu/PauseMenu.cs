@@ -1,11 +1,12 @@
 using Root.Controller;
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Root
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : Menu.Menu
     {
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private Slider masterVolumeSlider;
@@ -25,44 +26,45 @@ namespace Root
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                TogglePause();
+                if (paused)
+                    UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
+                else
+                    UIManager.Instance.OpenMenu(UIManager.UITypes.PauseMenu);
             }
         }
 
-        public void TogglePause()
-        {
-            paused = !paused;
+        public override void Open() {
+            base.Open();
+            paused = true;
+            pausePanel.SetActive(true);
+            
+            Debug.Log("Pause Menu Locked Controls");
+            GameManager.Input.Movement.Disable();
+            GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Interaction.Disable();
+            GameManager.PlayerInventoryUI.CloseInventory();
 
-            pausePanel.SetActive(paused);
+            GameManager.AudioSystem?.PauseAll();
+            GameManager.DialogueManager?.StopCurrentDialogue();
+            MouseHandler.RequestControl(CursorLockMode.None, true, this, false);
+        }
+        
+        public override void Close() {
+            base.Close();
+            paused = false;
+            pausePanel.SetActive(false);
+            GameManager.Input.Movement.Enable();
+            GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Interaction.Enable();
 
-            if (paused)
-            {
-                Debug.Log("Pause Menu Locked Controls");
-                GameManager.Input.Movement.Disable();
-                GameManager.Input.CameraMovement.Disable();
-                GameManager.Input.Interaction.Disable();
-                GameManager.PlayerInventoryUI.CloseInventory();
-
-                GameManager.AudioSystem?.PauseAll();
-                GameManager.DialogueManager?.StopCurrentDialogue();
-                MouseHandler.RequestControl(CursorLockMode.None, true, this, false);
-            }
-            else
-            {
-                GameManager.Input.Movement.Enable();
-                GameManager.Input.CameraMovement.Enable();
-                GameManager.Input.Interaction.Enable();
-
-                GameManager.AudioSystem?.ResumeAll();
-                GameManager.DialogueManager?.ResumeCurrentDialogue();
-                MouseHandler.RelinquishControl(this);
-            }
+            GameManager.AudioSystem?.ResumeAll();
+            GameManager.DialogueManager?.ResumeCurrentDialogue();
+            MouseHandler.RelinquishControl(this);
         }
 
-        public void Resume()
-        {
+        public void Resume() {
             if (paused)
-                TogglePause();
+                UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
         }
 
         public void ReturnToMenu()
