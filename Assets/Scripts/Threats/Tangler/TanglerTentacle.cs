@@ -29,23 +29,23 @@ namespace Root.Enemy
             _soundDestroy = destroy;
         }
 
-        public void Spawn(Vector3 origin, float distance, Vector3 direction)
+        public void Spawn(Transform origin, float distance, Vector3 direction)
         {
             StartCoroutine(SpawnAlongRay(origin, distance, direction));
         }
 
-        private IEnumerator SpawnAlongRay(Vector3 origin, float distance, Vector3 direction)
+        private IEnumerator SpawnAlongRay(Transform origin, float distance, Vector3 direction)
         {
             int objectCount = Mathf.CeilToInt(distance / spacing);
             Quaternion spawnRotation = Quaternion.LookRotation(direction);
             for (int i = 0; i <= objectCount; i++)
             {
                 float currentDistance = i * spacing;
-                Vector3 spawnPosition = origin + (direction * currentDistance);
+                Vector3 spawnPosition = origin.position + (direction * currentDistance);
 
                 if (reproduce && objectCount == i)
                 {
-                    AttemtReproduction(origin + direction * (distance - tanglerSpawnDistanceOffset));
+                    AttemtReproduction(origin.position + direction * (distance - tanglerSpawnDistanceOffset));
                 }
                 else
                 {

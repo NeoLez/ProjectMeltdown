@@ -86,7 +86,7 @@ namespace Root.Enemy
 
                 tentacle.onCut += HandleOnTentacleCut;
                 tentacle.SetSounds(_soundLatch, _soundDestroy);
-                tentacle.Spawn(transform.position, hit.distance, randomDirection);
+                tentacle.Spawn(transform, hit.distance, randomDirection);
             }
             else
             {
