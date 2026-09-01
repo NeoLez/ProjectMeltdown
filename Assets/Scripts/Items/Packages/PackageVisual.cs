@@ -32,7 +32,7 @@ namespace Root
             m_Text.text = string.Format(format, value);
         }
 
-        public void SetCanvasVisibility(bool enable)
+        public void SetCanvasVisibility(bool enable) //TODO-agregarle algun fade in fade out con el alfa
         {
             displayCanvas.enabled = enable;
         }

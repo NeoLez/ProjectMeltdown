@@ -106,16 +106,26 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (!TryFindInteractableObject(out var interactable))
+        TryFindInteractableObject(out var newInteractable);
+
+        if (_currentInteractable != newInteractable)
         {
-           if(_currentInteractable) _currentInteractable.ShowFeedback(false);
-            _crosshairImage.sprite = _crosshairSprite[0];
-        }
-        else
-        {
-            interactable.ShowFeedback(true);
-            _currentInteractable = interactable;
-            _crosshairImage.sprite = _crosshairSprite[1];
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.ShowFeedback(false);
+            }
+
+            _currentInteractable = newInteractable;
+
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.ShowFeedback(true);
+                _crosshairImage.sprite = _crosshairSprite[1];
+            }
+            else
+            {
+                _crosshairImage.sprite = _crosshairSprite[0];
+            }
         }
     }
 

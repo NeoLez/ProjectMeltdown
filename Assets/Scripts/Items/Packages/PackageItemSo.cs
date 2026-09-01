@@ -7,17 +7,39 @@ namespace Root
     {
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField] public ClimateConditions PackageAffectConditions { get; private set; }
-        [field: SerializeField] public float AmountOfLife { get; private set; }
-        [field: SerializeField] public float DamageMultiplier { get; private set; }
-        [field: SerializeField] public float TimeVariable { get; private set; } //cambiar el nombre, esta horrible
-        [field: SerializeField] public int PackageValue { get; private set; }
+        [field: SerializeField] public TypeOfPackage TypeOfPackage { get; private set; }
+
+        public float PackageDurabilityLevel { get; private set; }
+
+        [Header("Price Settings")]
+        [field: SerializeField] public int MaxPriceValue { get; private set; }
+        [Min(0)]
+        [field: SerializeField] public int MinPriceValue { get; private set; }
+
+        [Header("Duraility Settings")]
+        [field: SerializeField] public float MaxDurability { get; private set; }
+
+        [SerializeField] string packageID;
+        public string PackageID => packageID;
+
+        private int generatedValue;
+        public int PackageRandomPriceGenerator()
+        {
+            return generatedValue = Random.Range(MinPriceValue, MaxPriceValue);
+        }
+
+        public int GetGeneratedNumber()
+        {
+            return generatedValue;
+        }
+
     }
 
-    public enum ClimateConditions
+    public enum TypeOfPackage
     {
-        Humid,
-        Hot,
-        Cold
+        Food,
+        Supply
+        //me qude sin ideas
     }
+
 }

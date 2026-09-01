@@ -19,7 +19,7 @@ namespace Root
         public ItemState HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
-
+        public PackagesSystemController packageController;
         public void Pickup(PhysicalItem item)
         {
             if (HasItem && HeldItem.ItemSo)
@@ -55,9 +55,15 @@ namespace Root
         {
             if (!HasItem)
                 return;
-            
+
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
+
+            var algo = physicalItem.GetComponent<PackageController>();
+            if (algo)
+            {
+                packageController.CheckData(algo);
+            }
             
             physicalItem.transform.position =
                 cameraPivot.position +
@@ -69,6 +75,7 @@ namespace Root
             HeldItem = null;
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);
+
         }
 
         private void SaveHeldItem(InputAction.CallbackContext _) {

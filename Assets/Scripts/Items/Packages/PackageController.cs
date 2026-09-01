@@ -5,12 +5,13 @@ namespace Root
     [RequireComponent (typeof (PackageVisual))]
     public class PackageController : PhysicalItem
     {
-        [SerializeField] private PackageItemSo packageConditions;
+        [SerializeField] private PackageItemSo packageData;
+        [SerializeField] private PackageClimateConditionsSO packageConditions;
         //[SerializeField] private GameObject[] packageStates;
 
         [SerializeField] private float damageMultiplier;
-        private float _currentLife;
-        private float _currentValue;
+        public float _currentLife { get; private set; }
+        public int _currentValue { get; private set; }
         private bool _isInAffectionZone;
         private bool _timerHasEnded;
         //ver si agregarle unos multiplicadores por zonas mas "irradiadas" de esa condicion
@@ -19,21 +20,28 @@ namespace Root
         private float _timer;
         private float _timerDuration;
 
-        private PackageVisual _visuals;
+        [SerializeField] PackageVisual _visuals;
+        public PackageItemSo GetSO() => packageData;
+
+        private void Awake()
+        {
+            PackagesSystemController.packages.Add(this);
+        }
 
         private void Start()
         {
-            _visuals = GetComponent<PackageVisual>();
-            InitializePackage();
+            //_visuals = GetComponent<PackageVisual>();
+
+            //SetTimerDuration();
         }
 
-        private void InitializePackage()
+        public void InitializePackageData(int currentPrice, float currentDurability)
         {
-            _currentLife = packageConditions.AmountOfLife;
-            _currentValue = packageConditions.PackageValue;
-            SetTimerDuration();
+            _currentLife = currentDurability;
 
-            _visuals.SetDisplayValue(packageConditions.PackageValue);
+            _currentValue = currentPrice;
+
+            _visuals.SetDisplayValue(currentPrice);
         }
 
         private void Update()
@@ -79,7 +87,7 @@ namespace Root
                 return;
             }
 
-            _visuals.SetPackageCondition(_currentLife, packageConditions.AmountOfLife);
+            _visuals.SetPackageCondition(_currentLife, packageData.PackageDurabilityLevel);
             //aca hacer un switch dependiendo del estad, pueden ser 3
 
             //hacer el total dividido la vida del paquete
@@ -114,7 +122,7 @@ namespace Root
 
         public void SetTimerDuration()
         {
-            _timerDuration = packageConditions.TimeVariable;
+            _timerDuration = packageConditions.DamageCooldown;
         }
 
         //ponerle valor a cada paquete en base a su condiconde vida útil
@@ -123,6 +131,6 @@ namespace Root
             //sacar un porcentaje total de la vida, si se va disminuyendo, restarle un valor minimo en lo posible (balancear)
             //que el visualizador se vaya actualizando
             _visuals.SetDisplayValue(_currentValue);
-        }
+        }  
     }
 }
