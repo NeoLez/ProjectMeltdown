@@ -8,20 +8,22 @@ namespace Root
         [SerializeField] private PackageItemSo packageData;
         [SerializeField] private PackageClimateConditionsSO packageConditions;
         //[SerializeField] private GameObject[] packageStates;
+        [SerializeField] PackageVisual _visuals;
 
+        [HideInInspector]
         [SerializeField] private float damageMultiplier;
-        public float _currentLife { get; private set; }
-        public int _currentValue { get; private set; }
-        private bool _isInAffectionZone;
-        private bool _timerHasEnded;
+
+        private float _currentDurability;
+        private int _currentValue;
+
         //ver si agregarle unos multiplicadores por zonas mas "irradiadas" de esa condicion
         //(no olvidar que se pause cuando pausas el juego!!)
-
+        private bool _isInAffectionZone;
+        private bool _timerHasEnded;
         private float _timer;
         private float _timerDuration;
-
-        [SerializeField] PackageVisual _visuals;
         public PackageItemSo GetSO() => packageData;
+
 
         private void Awake()
         {
@@ -30,18 +32,22 @@ namespace Root
 
         private void Start()
         {
-            //_visuals = GetComponent<PackageVisual>();
+            if(_visuals!=null)
+            {
+                _visuals = GetComponent<PackageVisual>();
+            }
 
             //SetTimerDuration();
         }
 
         public void InitializePackageData(int currentPrice, float currentDurability)
         {
-            _currentLife = currentDurability;
+            _currentDurability = currentDurability;
 
             _currentValue = currentPrice;
 
             _visuals.SetDisplayValue(currentPrice);
+            _visuals.SetPackageCondition(_currentDurability, packageData.PackageDurabilityLevel);
         }
 
         private void Update()
@@ -72,13 +78,13 @@ namespace Root
         //en base a la condicion, que se le vaya descontando un porcentaje
         private void AffectLifeSpawn()
         {
-            if (_currentLife <= 0)
+            if (_currentDurability <= 0)
             {
                 KillPackage();
                 return;
             }
 
-            _currentLife -= Mathf.Abs(damageMultiplier * Time.deltaTime);
+            _currentDurability -= Mathf.Abs(damageMultiplier * Time.deltaTime);
 
             //Debug.Log(_currentLife);
             if (HasTimerEnded())
@@ -87,7 +93,7 @@ namespace Root
                 return;
             }
 
-            _visuals.SetPackageCondition(_currentLife, packageData.PackageDurabilityLevel);
+            _visuals.SetPackageCondition(_currentDurability, packageData.PackageDurabilityLevel);
             //aca hacer un switch dependiendo del estad, pueden ser 3
 
             //hacer el total dividido la vida del paquete
@@ -123,6 +129,16 @@ namespace Root
         public void SetTimerDuration()
         {
             _timerDuration = packageConditions.DamageCooldown;
+        }
+
+        public int GetPrice()
+        {
+            return _currentValue;
+        }
+
+        public float GetDurabilityState()
+        {
+            return _currentDurability;
         }
 
         //ponerle valor a cada paquete en base a su condiconde vida útil

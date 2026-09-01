@@ -9,28 +9,39 @@ namespace Root
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public TypeOfPackage TypeOfPackage { get; private set; }
 
-        public float PackageDurabilityLevel { get; private set; }
-
         [Header("Price Settings")]
         [field: SerializeField] public int MaxPriceValue { get; private set; }
         [Min(0)]
         [field: SerializeField] public int MinPriceValue { get; private set; }
 
         [Header("Duraility Settings")]
+        public float PackageDurabilityLevel { get; private set; }
         [field: SerializeField] public float MaxDurability { get; private set; }
 
-        [SerializeField] string packageID;
-        public string PackageID => packageID;
+        public string PackageID => _packageID;
 
-        private int generatedValue;
+        private string _packageID;
+        private int _generatedValue;
         public int PackageRandomPriceGenerator()
         {
-            return generatedValue = Random.Range(MinPriceValue, MaxPriceValue);
+            return _generatedValue = Random.Range(MinPriceValue, MaxPriceValue);
         }
 
         public int GetGeneratedNumber()
         {
-            return generatedValue;
+            return _generatedValue;
+        }
+
+        const string glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
+        public string GenerateUniqueID()
+        {
+            int charAmount = Random.Range(0, 8);
+            for (int i = 0; i < charAmount; i++)
+            {
+                _packageID += glyphs[Random.Range(0, glyphs.Length)];
+            }
+
+            return _packageID;
         }
 
     }

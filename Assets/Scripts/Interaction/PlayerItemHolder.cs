@@ -59,10 +59,10 @@ namespace Root
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
 
-            var algo = physicalItem.GetComponent<PackageController>();
-            if (algo)
+            var deliveryPackage = physicalItem.GetComponent<PackageController>();
+            if (deliveryPackage)
             {
-                packageController.CheckData(algo);
+                packageController.CheckData(deliveryPackage);
             }
             
             physicalItem.transform.position =
