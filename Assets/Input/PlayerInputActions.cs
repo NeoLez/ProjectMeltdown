@@ -316,6 +316,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Wallet"",
+                    ""type"": ""Button"",
+                    ""id"": ""541d1f2f-04ef-46b8-b25f-832843956669"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -404,6 +413,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Flashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc5b9106-a9c1-486e-94bc-6da81d5b20a5"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Wallet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -578,6 +598,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_Reset = m_Interaction.FindAction("Reset", throwIfNotFound: true);
         m_Interaction_NPC = m_Interaction.FindAction("NPC", throwIfNotFound: true);
         m_Interaction_Flashlight = m_Interaction.FindAction("Flashlight", throwIfNotFound: true);
+        m_Interaction_Wallet = m_Interaction.FindAction("Wallet", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_InventoryToggle = m_Inventory.FindAction("InventoryToggle", throwIfNotFound: true);
@@ -908,6 +929,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_Reset;
     private readonly InputAction m_Interaction_NPC;
     private readonly InputAction m_Interaction_Flashlight;
+    private readonly InputAction m_Interaction_Wallet;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -939,6 +961,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/Flashlight".
         /// </summary>
         public InputAction @Flashlight => m_Wrapper.m_Interaction_Flashlight;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/Wallet".
+        /// </summary>
+        public InputAction @Wallet => m_Wrapper.m_Interaction_Wallet;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -980,6 +1006,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Flashlight.started += instance.OnFlashlight;
             @Flashlight.performed += instance.OnFlashlight;
             @Flashlight.canceled += instance.OnFlashlight;
+            @Wallet.started += instance.OnWallet;
+            @Wallet.performed += instance.OnWallet;
+            @Wallet.canceled += instance.OnWallet;
         }
 
         /// <summary>
@@ -1006,6 +1035,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Flashlight.started -= instance.OnFlashlight;
             @Flashlight.performed -= instance.OnFlashlight;
             @Flashlight.canceled -= instance.OnFlashlight;
+            @Wallet.started -= instance.OnWallet;
+            @Wallet.performed -= instance.OnWallet;
+            @Wallet.canceled -= instance.OnWallet;
         }
 
         /// <summary>
@@ -1333,6 +1365,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFlashlight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Wallet" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnWallet(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Inventory" which allows adding and removing callbacks.

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
+using Root.Managers; 
 
 public class Flashlight : MonoBehaviour
 {
@@ -10,13 +11,10 @@ public class Flashlight : MonoBehaviour
     [SerializeField] private AudioClip toggleOnClip;
     [SerializeField] private AudioClip toggleOffClip;
 
-    private PlayerInputActions inputActions;
     private bool isOn = false;
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
-
         if (audioSource != null && sfxMixerGroup != null)
         {
             audioSource.outputAudioMixerGroup = sfxMixerGroup;
@@ -25,14 +23,12 @@ public class Flashlight : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.Interaction.Enable();
-        inputActions.Interaction.Flashlight.performed += ToggleFlashlight;
+        GameManager.Input.Interaction.Flashlight.performed += ToggleFlashlight;
     }
 
     private void OnDisable()
     {
-        inputActions.Interaction.Flashlight.performed -= ToggleFlashlight;
-        inputActions.Interaction.Disable();
+        GameManager.Input.Interaction.Flashlight.performed -= ToggleFlashlight;
     }
 
     private void ToggleFlashlight(InputAction.CallbackContext context)

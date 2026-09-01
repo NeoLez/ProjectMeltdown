@@ -14,11 +14,7 @@ namespace Root
             if (walletPrefab == null || walletAnchor == null)
                 return;
 
-            _walletInstance = Instantiate(
-                walletPrefab,
-                walletAnchor.position,
-                walletAnchor.rotation,
-                walletAnchor);
+            _walletInstance = Instantiate(walletPrefab,walletAnchor.position,walletAnchor.rotation,walletAnchor);
         }
     }
 }

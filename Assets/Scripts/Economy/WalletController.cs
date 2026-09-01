@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
+using Root.Managers; 
 
 namespace Root
 {
@@ -9,16 +11,24 @@ namespace Root
         [SerializeField] private GameObject moneyText;
 
         private bool _opened;
+        private bool _isAnimating;
 
-        private static readonly int OpenHash =
-            Animator.StringToHash("Open");
+        private static readonly int OpenHash = Animator.StringToHash("Open");
 
-        private void Update()
+        private void OnEnable()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                ToggleWallet();
-            }
+            GameManager.Input.Interaction.Wallet.performed += OnWalletPerformed;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.Input.Interaction.Wallet.performed -= OnWalletPerformed;
+        }
+
+        private void OnWalletPerformed(InputAction.CallbackContext ctx)
+        {
+            if (_isAnimating) return; 
+            ToggleWallet();
         }
 
         private void ToggleWallet()
@@ -26,22 +36,23 @@ namespace Root
             _opened = !_opened;
             animator.SetBool(OpenHash, _opened);
 
-            if (_opened)
-                StartCoroutine(ShowMoneyAfterAnimation());
-            else
+            if (!_opened)
                 moneyText.SetActive(false);
+
+            StartCoroutine(PlayAnimation()); 
         }
 
-        private IEnumerator ShowMoneyAfterAnimation()
+        private IEnumerator PlayAnimation() 
         {
-            // Espera que empiece la transición
+            _isAnimating = true;
             yield return null;
-
-            // Espera que termine la animación de apertura
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
             yield return new WaitForSeconds(state.length);
 
-            moneyText.SetActive(true);
+            if (_opened)
+                moneyText.SetActive(true);
+
+            _isAnimating = false;
         }
 
         public void ShowMoney()
