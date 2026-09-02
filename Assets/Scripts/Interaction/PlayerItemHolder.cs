@@ -19,7 +19,6 @@ namespace Root
         public ItemState HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
-        public PackagesSystemController packageController;
         public void Pickup(PhysicalItem item)
         {
             if (HasItem && HeldItem.ItemSo)
@@ -62,7 +61,7 @@ namespace Root
             var deliveryPackage = physicalItem.GetComponent<PackageController>();
             if (deliveryPackage)
             {
-                packageController.CheckData(deliveryPackage);
+                PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
             }
             
             physicalItem.transform.position =

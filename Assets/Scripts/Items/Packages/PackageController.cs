@@ -25,18 +25,12 @@ namespace Root
         public PackageItemSo GetSO() => packageData;
 
 
-        private void Awake()
-        {
-            PackagesSystemController.packages.Add(this);
-        }
-
         private void Start()
         {
             if(_visuals!=null)
             {
                 _visuals = GetComponent<PackageVisual>();
             }
-
             //SetTimerDuration();
         }
 

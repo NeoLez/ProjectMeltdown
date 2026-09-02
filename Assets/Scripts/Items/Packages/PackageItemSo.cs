@@ -15,7 +15,7 @@ namespace Root
         [field: SerializeField] public int MinPriceValue { get; private set; }
 
         [Header("Duraility Settings")]
-        public float PackageDurabilityLevel { get; private set; }
+        [field: SerializeField] public float PackageDurabilityLevel { get; private set; }
         [field: SerializeField] public float MaxDurability { get; private set; }
 
         public string PackageID => _packageID;

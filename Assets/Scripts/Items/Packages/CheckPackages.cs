@@ -7,7 +7,7 @@ namespace Root
     public class CheckPackages : MonoBehaviour
     {
         [SerializeField] private int amountOfPackagesToDeliver;
-        private List<PackageController> packages;
+        private List<PackageController> packages = new();
         private int _currentSum;
 
         private void CheckGoal()
@@ -15,17 +15,20 @@ namespace Root
             if (amountOfPackagesToDeliver == _currentSum)
             {
                 //Ui de victoria
+                PackagesSystemController.Instance.CheckPackageConditions();
+                return;
             }
         }
-        //un trigger que se encargue de chequear la cantidad de paquetes, su estado y darte dinero
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out PackageController packageController))
             {
-                if (!packages.Contains(packageController)) //crear una lista para que no se sumen si los vuelvo a dropear 
+                if (!packages.Contains(packageController))
                 {
                     packages.Add(packageController);
                     _currentSum++;
+                    //hacer que no puedas agarrarlos mas una vez puestos?
 
                     CheckGoal();
                 }
