@@ -12,7 +12,7 @@ namespace Root
 
         public void Update()
         {
-            if (discSlot.GetBreakDisc() == null)
+            if (discSlot.GetBrakeDisc() == null)
             {
                 discText.text = "There is no emergency disc inserted";
                 usageText.enabled = false;
@@ -21,7 +21,7 @@ namespace Root
 
             discText.text = "Emergency disc inserted";
 
-            _breakDisc = discSlot.GetBreakDisc();
+            _breakDisc = discSlot.GetBrakeDisc();
 
             if(_breakDisc != null)
             {

@@ -27,10 +27,10 @@ namespace Root.Controller {
         private void HandleInteraction(InputAction.CallbackContext ctx)
         {
             if (!isActiveAndEnabled) return;
-            if (ctx.started) HandleInteractionObjectSelection();
             
             if (ctx.started)
             {
+                HandleInteractionObjectSelection();
                 if (_selectedInteractable == null) return;
                 _selectedInteractable.StartInteraction();
             }

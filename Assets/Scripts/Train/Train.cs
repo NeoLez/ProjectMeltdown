@@ -200,7 +200,7 @@ namespace Root
                 waypointIndex++;
                 nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
 
-                if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBreaking())
+                if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBraking())
                 {
                     if (_descarriladoTimer >= tiempoDescarrilamiento && !godmode)
                     {
@@ -238,7 +238,7 @@ namespace Root
             OnTrainStoppedMoving?.Invoke();
             GameManager.CameraController.Shake(0.1f, 0.05f);
             GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
-            if (emergencyStopButton.IsBreaking())
+            if (emergencyStopButton.IsBraking())
             {
                 emergencyStopButton.FinishBraking();
             }
@@ -265,7 +265,7 @@ namespace Root
             float speedChange = -braking;
             brakeController.Damage(braking * (targetSpeed + _currentSpeed) / (2 * speedController.maxTrainSpeed));
 
-            if (emergencyStopButton.IsBreaking())
+            if (emergencyStopButton.IsBraking())
             {
                 speedChange -= emergencyStopButton.brakeSpeed * Time.deltaTime;
             }

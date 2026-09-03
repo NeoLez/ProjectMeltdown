@@ -26,7 +26,6 @@ namespace Root.Managers {
         }
 
         public bool OpenMenu(UITypes type) {
-            Debug.Log(_lockedUI[type]);
             if (_lockedUI[type] >= 1) return false;
             Open(GetMenuFromType(type));
             return true;

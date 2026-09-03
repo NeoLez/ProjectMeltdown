@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Root {
     public class EmergencyStopButton : Interactable {
-        public int maxUses;
         public int usesLeft;
         public bool isBraking;
         
@@ -36,7 +35,7 @@ namespace Root {
                 return;
             }
 
-            if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.GetBreakDisc() == null)
+            if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.GetBrakeDisc() == null)
             {
                 LowerAndRaiseButton();
                 return;
@@ -46,7 +45,7 @@ namespace Root {
             isBraking = true;
             usesLeft--;
             GameManager.AudioSystem.PlaySound(stopSound, GameManager.AudioSystem.VFX);
-            _discSlot.GetBreakDisc().SetDiscUsage();
+            _discSlot.GetBrakeDisc().SetDiscUsage();
         }
 
         public override void EndInteraction()
@@ -86,7 +85,7 @@ namespace Root {
             Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => RaiseButton());
         }
         
-        public bool IsBreaking() {
+        public bool IsBraking() {
             return isBraking;
         }
         

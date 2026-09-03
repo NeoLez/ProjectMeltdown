@@ -12,6 +12,7 @@ namespace Root {
         private VisualContainer visualContainer;
         
         private void Awake() {
+            GameManager.CameraPivot = this;
             visualContainer = GetComponent<VisualContainer>();
             
             visualContainer.OnMatchRealPosition += SyncExitTrain;

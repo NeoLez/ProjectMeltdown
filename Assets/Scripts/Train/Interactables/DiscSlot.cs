@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class DiscSlot : InteractableNormalCamera
+    public class DiscSlot : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
@@ -36,21 +36,11 @@ namespace Root
                 }
             }
             else {
-                if (_disc == null) {
-                    if(holder.HeldItem.ItemSo != BrakeDiscSO)
-                        return;
+                if(_disc != null || holder.HeldItem.ItemSo != BrakeDiscSO)
+                    return;
 
-                    var Disc = holder.HeldItem.ItemSo.CreatePhysicalItem() as BrakeDiscItem;
-                    Disc.itemState = holder.HeldItem;
-                    
-                    VisualContainer visual = Disc.GetComponentInChildren<VisualContainer>();
-                    visual.goal = GameManager.Train.GetTrainPosition();
-                    
-                    _emergencyStopButton.Repair(Disc.GetDiscUsage());
-
-                    TryInsertDisc(Disc);
-                    holder.ForceClearHeldItem();
-                }
+                TryInsertDisc(holder.HeldItem);
+                holder.ForceClearHeldItem();
             }
         }
         
@@ -67,7 +57,15 @@ namespace Root
             _disc = null;
             return disc;
         }
-        public void TryInsertDisc(BrakeDiscItem Disc) {
+        public void TryInsertDisc(ItemState state) {
+            var Disc = state.ItemSo.CreatePhysicalItem() as BrakeDiscItem;
+            Disc.itemState = state;
+                    
+            VisualContainer visual = Disc.GetComponentInChildren<VisualContainer>();
+            visual.goal = GameManager.Train.GetTrainPosition();
+                    
+            _emergencyStopButton.Repair(Disc.GetDiscUsage());
+            
             _disc = Disc;
 
             _disc.VisualOnly(true);
@@ -77,7 +75,7 @@ namespace Root
             Disc.transform.rotation = pivot.rotation;
         }
 
-        public BrakeDiscItem GetBreakDisc()
+        public BrakeDiscItem GetBrakeDisc()
         {
             return _disc;
         }
@@ -89,6 +87,15 @@ namespace Root
                 _disc.transform.position = pivot.position;
                 _disc.transform.rotation = pivot.rotation;
             }
+        }
+
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return _disc == null && item.itemState.ItemSo == BrakeDiscSO;
+        }
+
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            TryInsertDisc(item.itemState);
+            return true;
         }
     }
 }
