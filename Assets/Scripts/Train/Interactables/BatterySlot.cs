@@ -5,7 +5,7 @@ using UnityEngine.VFX;
 
 namespace Root
 {
-    public class BatterySlot : InteractableNormalCamera
+    public class BatterySlot : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
@@ -44,20 +44,8 @@ namespace Root
             if (!holder.HasItem)
                 return;
             
-            Assert.AreEqual(_batteryItemSO, holder.HeldItem.ItemSo);
-            TrainBatteryItem batteryToInsert = holder.HeldItem.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
-            batteryToInsert.itemState = holder.HeldItem;
-
-            if (batteryToInsert == null)
-                return;
-
-            VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
-            visual.goal = GameManager.Train.GetTrainPosition();
             
-            if (visual == null)
-                return;
-            
-            if (TryInsertBattery(batteryToInsert))
+            if (TryInsertBattery(holder.HeldItem))
             {
                 holder.ForceClearHeldItem();
             }
@@ -132,20 +120,33 @@ namespace Root
             return _battery;
         }
 
-        public bool TryInsertBattery(TrainBatteryItem battery)
+        public bool TryInsertBattery(ItemState item)
         {
+            Assert.AreEqual(_batteryItemSO, item.ItemSo);
+            TrainBatteryItem batteryToInsert = item.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
+            batteryToInsert.itemState = item;
+
+            if (batteryToInsert == null)
+                return false;
+
+            VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
+            visual.goal = GameManager.Train.GetTrainPosition();
+            
+            if (visual == null)
+                return false;
+            
             if (_battery != null)
                 return false;
 
-            _battery = battery;
+            _battery = batteryToInsert;
 
-            battery.VisualOnly(true);
+            batteryToInsert.VisualOnly(true);
 
-            battery.transform.SetParent(transform);
-            battery.transform.position = pivot.position;
-            battery.transform.rotation = pivot.rotation;
+            batteryToInsert.transform.SetParent(transform);
+            batteryToInsert.transform.position = pivot.position;
+            batteryToInsert.transform.rotation = pivot.rotation;
             OnBatteryInserted?.Invoke();
-            StartCoroutine(AnimTrigger(battery));
+            StartCoroutine(AnimTrigger(batteryToInsert));
 
             if (ignitionSwitch.IsEngineOn())
             {
@@ -153,6 +154,14 @@ namespace Root
             }
 
             return true;
+        }
+
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return item.itemState.ItemSo == _batteryItemSO && _battery == null;
+        }
+        
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            return TryInsertBattery(item.itemState);
         }
     }
 }

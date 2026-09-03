@@ -2,6 +2,7 @@ using Timers;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Root {
@@ -112,8 +113,15 @@ namespace Root {
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
             Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(_inventoryItem.Size, _currentRotation);
             
-            if (!UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) ||
-                !receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
+            if (!UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver)) {
+                receiver = GetWorldDragReceiver();
+                if (receiver == null) {
+                    ReturnItem();
+                    return;
+                }
+            }
+
+            if (!receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
                 ReturnItem();
                 return;
             }
@@ -166,6 +174,17 @@ namespace Root {
             Transform parentTransform = canvas.transform.parent;
             Vector3 worldBottomLeft = parentTransform.TransformPoint(localBottomLeft);
             return RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera, worldBottomLeft);
+        }
+
+        private IItemDragReceiver GetWorldDragReceiver() {
+            var mousePosition = Pointer.current.position.value;
+            Ray ray = GameManager.Camera.ScreenPointToRay(mousePosition/GameManager.GetResolutionRatio());
+            if (!Physics.Raycast(ray, out var hit, GameManager.CameraController.interactDistance) ||
+                !hit.collider.gameObject.TryGetComponent<IItemDragReceiver>(out var component)) {
+                return null;
+            }
+
+            return component;
         }
     }
 }
