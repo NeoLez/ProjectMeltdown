@@ -34,26 +34,11 @@ namespace Root {
             originalPosition = position;
             originalSize = size;
             originalRotation = rotation;
-                        
+            
             image.sprite = itemIcon;
         }
 
         private void SetPosition(Vector2 position, InventoryItem.InventoryItemRotation rotation) {
-            if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
-            float iconSize = _cellSize > 0 ? _cellSize : rectTransform.sizeDelta.x;
-
-            switch (rotation) {
-                case InventoryItem.InventoryItemRotation.Quarter:
-                    position += new Vector2(originalSize.y * iconSize, 0);
-                    break;
-                case InventoryItem.InventoryItemRotation.Half:
-                    position += new Vector2(originalSize.x * iconSize, originalSize.y * iconSize);
-                    break;
-                case InventoryItem.InventoryItemRotation.ThreeQuarters:
-                    position += new Vector2(0, originalSize.x * iconSize); 
-                    break;
-            }
-
             canvas.GetComponent<RectTransform>().anchoredPosition = position + GetCurrentVisualOffset(rotation);
             rectTransform.rotation = Quaternion.Euler(0, 0, (int)rotation);
         }
