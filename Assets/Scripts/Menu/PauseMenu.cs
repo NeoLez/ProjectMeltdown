@@ -26,6 +26,12 @@ namespace Root
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                if (PromptManager.Instance != null && PromptManager.Instance.IsOpen) 
+                {
+                    PromptManager.Instance.Cancel();
+                    return; 
+                }
+
                 if (paused)
                     UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
                 else
@@ -69,13 +75,14 @@ namespace Root
 
         public void ReturnToMenu()
         {
-            GameManager.AudioSystem?.ResumeAll();
-            GameManager.Input.Enable();
-
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-
-            SceneManager.LoadScene("Menu");
+            PromptManager.Instance.ShowPrompt("confirm_return_menu_message", () =>{
+                GameManager.AudioSystem?.ResumeAll();
+                GameManager.Input.Enable();
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                MouseHandler.RelinquishControl(this);
+                SceneManager.LoadScene("Menu");
+            });
         }
 
         public void SliderMasterVolume(float value)
