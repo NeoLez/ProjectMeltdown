@@ -97,7 +97,7 @@ namespace Root {
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
             Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(_inventoryItem.Size, _currentRotation);
 
-            if (!UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) || 
+            if (!(UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) || TryGetWorldDragReceiver(out receiver)) ||
                 !receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) 
             {
                 _targetSize = dragSizeMultiplier;
@@ -113,22 +113,11 @@ namespace Root {
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
             Vector2Int currentSize = InventoryItem.GetRotationCorrectedSize(_inventoryItem.Size, _currentRotation);
             
-            if (!UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver)) {
-                receiver = GetWorldDragReceiver();
-                if (receiver == null) {
-                    Debug.Log("a");
-                    ReturnItem();
-                    return;
-                }
-                Debug.Log("b");
-            }
-
-            if (!receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
-                Debug.Log("c");
+            if (!(UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) || TryGetWorldDragReceiver(out receiver)) ||
+                !receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
                 ReturnItem();
                 return;
             }
-            Debug.Log("d");
 
             _inventoryItem.Inventory.RemoveItem(_inventoryItem);
             receiver.TakeItem(correctedScreenPos, _currentRotation, _inventoryItem);
@@ -180,15 +169,16 @@ namespace Root {
             return RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera, worldBottomLeft);
         }
 
-        private IItemDragReceiver GetWorldDragReceiver() {
+        private bool TryGetWorldDragReceiver(out IItemDragReceiver receiver) {
+            receiver = null;
             var mousePosition = Pointer.current.position.value;
             Ray ray = GameManager.CameraPivot.ScreenPointToRay(mousePosition/GameManager.GetResolutionRatio());
             if (!Physics.Raycast(ray, out var hit, GameManager.CameraController.interactDistance) ||
-                !hit.collider.gameObject.TryGetComponent<IItemDragReceiver>(out var component)) {
-                return null;
+                !hit.collider.gameObject.TryGetComponent(out receiver)) {
+                return false;
             }
 
-            return component;
+            return true;
         }
     }
 }
