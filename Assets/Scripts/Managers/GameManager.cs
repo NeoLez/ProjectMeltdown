@@ -12,6 +12,7 @@ public static class GameManager {
   public static AudioSystem AudioSystem;
   public static DialogueManager DialogueManager;
   public static PlayerInventoryUI PlayerInventoryUI;
+  public static WalletController Wallet;
   public static int VeryUglyKitNumber;
   public static readonly Vector2 RTSize = new(640,360);  
 

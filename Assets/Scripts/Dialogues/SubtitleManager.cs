@@ -46,6 +46,15 @@ namespace Root
 
         public void ShowSubtitle()
         {
+            GameManager.Input.Inventory.Disable();
+            GameManager.Input.Movement.Disable();
+            GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Interaction.Wallet.Disable();
+            GameManager.Input.Menu.Pause.Disable();
+            GameManager.Input.Interaction.Wallet.Disable();
+            if (GameManager.Wallet.IsOpened) {
+                GameManager.Wallet.ToggleWallet();
+            }
             dialogueManager.Initialize(dialogue, subtitleText);
 
             HideOrViewCanvas(true);
@@ -53,6 +62,12 @@ namespace Root
 
         public void HideSubtitle()
         {
+            GameManager.Input.Inventory.Enable();
+            GameManager.Input.Movement.Enable();
+            GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Interaction.Wallet.Enable();
+            GameManager.Input.Menu.Pause.Enable();
+            GameManager.Input.Interaction.Wallet.Enable();
             if (dialogueManager.IsTyping) return;
 
             HideOrViewCanvas(false);

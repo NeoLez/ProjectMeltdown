@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
@@ -11,7 +12,12 @@ namespace Root
         [SerializeField] private GameObject moneyText;
 
         private bool _opened;
+        public bool IsOpened => _opened;
         private bool _isAnimating;
+
+        private void Awake() {
+            GameManager.Wallet = this;
+        }
 
         private static readonly int OpenHash = Animator.StringToHash("Open");
 
@@ -31,7 +37,7 @@ namespace Root
             ToggleWallet();
         }
 
-        private void ToggleWallet()
+        public void ToggleWallet()
         {
             _opened = !_opened;
             animator.SetBool(OpenHash, _opened);
