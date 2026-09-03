@@ -59,14 +59,19 @@ namespace Root
             physicalItem.itemState = HeldItem;
 
             var deliveryPackage = physicalItem.GetComponent<PackageController>();
-            if (deliveryPackage)
-            {
-                PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
+
+            if(deliveryPackage) PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
+
+            if (CheckIfDeliveryPostNearby(out var component) && deliveryPackage)
+            {              
+                deliveryPackage.transform.position = component.DropPivot.position;
             }
-            
-            physicalItem.transform.position =
+            else
+            {
+                physicalItem.transform.position =
                 cameraPivot.position +
                 cameraPivot.forward * dropDistance;
+            }
 
             if(!GameManager.Train.IsStopped())
                 GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
@@ -75,6 +80,12 @@ namespace Root
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);
 
+        }
+
+        public bool CheckIfDeliveryPostNearby(out PackageDeliverPost packagePost) 
+        {
+            packagePost = null;
+            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out var hit, 7f) && hit.collider.gameObject.TryGetComponent(out packagePost);
         }
 
         private void SaveHeldItem(InputAction.CallbackContext _) {

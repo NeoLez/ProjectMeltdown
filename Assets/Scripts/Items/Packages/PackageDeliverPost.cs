@@ -7,8 +7,10 @@ namespace Root
     public class PackageDeliverPost : MonoBehaviour
     {
         [SerializeField] private int amountOfPackagesToDeliver;
+        [SerializeField] private Transform dropPivot;
+        public Transform DropPivot => dropPivot;
 
-        private List<PackageController> packages = new();
+        private Dictionary<string, PackageController> _depositedPackages = new();
         private int _currentSum;
 
         private void CheckGoal()
@@ -24,16 +26,29 @@ namespace Root
         {
             if (other.TryGetComponent(out PackageController packageController))
             {
-                if (!packages.Contains(packageController))
+                if (CheckDepositedPackages(packageController))
                 {
-                    packages.Add(packageController);
+                    _depositedPackages.Add(packageController.GetSO().PackageID, packageController);
                     _currentSum++;
-                    //hacer que no puedas agarrarlos mas una vez puestos?
 
                     CheckGoal();
                 }
                 
             }
+        }
+
+        private bool CheckDepositedPackages(PackageController packageController)
+        {
+            if (!_depositedPackages.TryGetValue(packageController.GetSO().PackageID, out var generatedPrice))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void OnDestroy()
+        {
+            _depositedPackages.Clear();
         }
     }
 }
