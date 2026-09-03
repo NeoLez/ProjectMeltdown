@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.VFX;
 
 namespace Root
@@ -85,19 +84,7 @@ namespace Root
                 _battery.transform.rotation = pivot.rotation;
             }
         }
-
-        public void RemoveBattery()
-        {
-            if (_battery == null)
-                return;
-
-            var rb = _battery.GetComponent<Rigidbody>();
-            rb.constraints = RigidbodyConstraints.None;
-            _battery = null;
-            train.SetEnginePower(false);
-            OnBatteryRemoved?.Invoke();
-        }
-
+        
         public TrainBatteryItem TakeBattery()
         {
             if (_battery == null)
@@ -120,24 +107,16 @@ namespace Root
             return _battery;
         }
 
-        public bool TryInsertBattery(ItemState item)
-        {
-            Assert.AreEqual(_batteryItemSO, item.ItemSo);
+        public bool TryInsertBattery(ItemState item) {
+            if (_batteryItemSO != item.ItemSo || _battery != null) return false; 
+            
             TrainBatteryItem batteryToInsert = item.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
             batteryToInsert.itemState = item;
-
-            if (batteryToInsert == null)
-                return false;
+            
 
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
             visual.goal = GameManager.Train.GetTrainPosition();
             
-            if (visual == null)
-                return false;
-            
-            if (_battery != null)
-                return false;
-
             _battery = batteryToInsert;
 
             batteryToInsert.VisualOnly(true);
