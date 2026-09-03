@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Root
 {
-    public class CheckPackages : MonoBehaviour
+    public class PackageDeliverPost : MonoBehaviour
     {
         [SerializeField] private int amountOfPackagesToDeliver;
+
         private List<PackageController> packages = new();
         private int _currentSum;
 
@@ -14,7 +15,6 @@ namespace Root
         {
             if (amountOfPackagesToDeliver == _currentSum)
             {
-                //Ui de victoria
                 PackagesSystemController.Instance.CheckPackageConditions();
                 return;
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,10 @@ namespace Root
 
         [SerializeField] private Transform instancePivot;
         [SerializeField] private GameObject[] packagesToDeliver;
-        [SerializeField] PackageTrigger _visuals;
+        [SerializeField] private PackageObjectivesUI _visuals;
+        [SerializeField] private MapGeneration mapGeneration;
+
+        public Action OnDeliveryStationReached;
         private void Awake()
         {
             if (Instance == null)
@@ -26,6 +30,11 @@ namespace Root
         {
             _visuals.ChangeCanvas(false);
             GeneratePackages();
+        }
+
+        private void Update()
+        {
+            GetNextStationToDeliver();
         }
 
         public void GeneratePackages()
@@ -52,8 +61,7 @@ namespace Root
                 }
             }
             _visuals.ChangeCanvas(true);
-            //Debug.Log("Tiene que llevar " + _currentSpawnedPackages.Count);
-            _visuals.ChangeUi("Tiene que llevar " + _currentSpawnedPackages.Count);
+            _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
         }
 
         public void RetrieveCurrentPackageData(PackageController package)
@@ -71,25 +79,18 @@ namespace Root
 
             EconomyManager.Instance.AddMoney(_packagePriceSum);
 
-            _visuals.ChangeUi("You've delivered all packages");
-            _visuals.ChangeCanvas(false);
+            _visuals.ChangeUi("Entregaste todos los paquetes");
+            NotificationManager.Instance.ShowNotification("+ $" + _packagePriceSum);
         }
-        private void EvaluatePackageConditions()
-        {            
-            //condiciones--> si tenes todos suma el promedio de los 3. Si estan todos con la vida mayor a tanto, se suma tanto; plantear tres casos?
-            //chequear estado de los paquetes y que dependiend de su vida, te de un porcenataje extra de dinero más uno de base
-        }
+
         public void SumCurrentPackages()
         {
             foreach (PackageController package in _currentSpawnedPackages)
             {
                 _packagePriceSum += package.GetPrice();
             }
-
-            //injectar estos valores a una UI
         }
 
-        //prevencion contemporanea
         private void OnDestroy()
         {
             CleanReferences();
@@ -102,6 +103,16 @@ namespace Root
                 _currentSpawnedPackages.Clear();
             }
             _packagePricesDict.Clear();
+        }
+
+        //el mismo controller se encarga de chequear en donde instanciar las zonas de delivery de paquetes segun x condiciones de cada paquete
+        public void GetNextStationToDeliver()
+        {
+            if(mapGeneration.IsTrainInStation())
+            {
+                OnDeliveryStationReached?.Invoke(); //aca cuando llegue a la estacion, si mi info coincide, activo a la zona de delivery de todos lo que hipoteticamente tenga activos jajaj
+                return;
+            }
         }
     }
 }

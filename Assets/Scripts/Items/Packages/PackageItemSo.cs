@@ -50,7 +50,6 @@ namespace Root
     {
         Food,
         Supply
-        //me qude sin ideas
     }
 
 }
