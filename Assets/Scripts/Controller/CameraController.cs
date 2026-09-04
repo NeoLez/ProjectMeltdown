@@ -109,10 +109,8 @@ public class CameraController : MonoBehaviour
 
         if (_currentInteractable != newInteractable || newInteractable == null)
         {
-            Debug.Log("a");
             if (_currentInteractable != null)
             {
-                Debug.Log("b");
                 _currentInteractable.ShowFeedback(false);
             }
 
@@ -120,13 +118,11 @@ public class CameraController : MonoBehaviour
 
             if (_currentInteractable != null)
             {
-                Debug.Log(newInteractable.gameObject.name);
                 _currentInteractable.ShowFeedback(true);
                 _crosshairImage.sprite = _crosshairSprite[1];
             }
             else
             {
-                Debug.Log("c");
                 _crosshairImage.sprite = _crosshairSprite[0];
             }
         }
