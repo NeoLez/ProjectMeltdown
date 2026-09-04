@@ -101,6 +101,7 @@ namespace Root
 
         private void OnDestroy()
         {
+            GameManager.Input.Menu.Pause.performed -= HandleInput; 
             masterVolumeSlider.onValueChanged.RemoveAllListeners();
             musicVolumeSlider.onValueChanged.RemoveAllListeners();
             sfxVolumeSlider.onValueChanged.RemoveAllListeners();
