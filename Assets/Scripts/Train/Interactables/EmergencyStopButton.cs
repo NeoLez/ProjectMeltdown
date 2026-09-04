@@ -1,3 +1,4 @@
+using System;
 using PrimeTween;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ namespace Root {
     public class EmergencyStopButton : Interactable {
         public int usesLeft;
         public bool isBraking;
+        public event Action OnBrake;
         
         public float brakeSpeed;
 
@@ -46,6 +48,7 @@ namespace Root {
             usesLeft--;
             GameManager.AudioSystem.PlaySound(stopSound, GameManager.AudioSystem.VFX);
             _discSlot.GetBrakeDisc().SetDiscUsage();
+            OnBrake?.Invoke();
         }
 
         public override void EndInteraction()
