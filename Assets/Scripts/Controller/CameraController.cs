@@ -104,14 +104,15 @@ public class CameraController : MonoBehaviour
         return Physics.Raycast(cam.position, cam.forward, out var hit, interactDistance, raycastLayerMask) && hit.collider.gameObject.TryGetComponent(out interactable);
     }
 
-    private void Update()
-    {
+    private void Update() {
         TryFindInteractableObject(out var newInteractable);
 
-        if (_currentInteractable != newInteractable)
+        if (_currentInteractable != newInteractable || newInteractable == null)
         {
+            Debug.Log("a");
             if (_currentInteractable != null)
             {
+                Debug.Log("b");
                 _currentInteractable.ShowFeedback(false);
             }
 
@@ -119,11 +120,13 @@ public class CameraController : MonoBehaviour
 
             if (_currentInteractable != null)
             {
+                Debug.Log(newInteractable.gameObject.name);
                 _currentInteractable.ShowFeedback(true);
                 _crosshairImage.sprite = _crosshairSprite[1];
             }
             else
             {
+                Debug.Log("c");
                 _crosshairImage.sprite = _crosshairSprite[0];
             }
         }
