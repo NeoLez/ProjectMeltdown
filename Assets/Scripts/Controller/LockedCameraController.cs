@@ -71,6 +71,7 @@ namespace Root.Controller {
         private void GoBack(InputAction.CallbackContext _) {
             GameManager.Player.GetComponent<CameraController>().enabled = true;
             _input.Movement.Enable();
+            _input.Inventory.Enable();
             enabled = false;
         }
         

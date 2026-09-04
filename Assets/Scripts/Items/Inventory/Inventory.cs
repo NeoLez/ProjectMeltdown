@@ -138,7 +138,7 @@ namespace Root {
             return _items.ToList();
         }
         
-        private bool TryFindFreeArea(Vector2Int baseSize, out Vector2Int position, out InventoryItem.InventoryItemRotation rotation) {
+        public bool TryFindFreeArea(Vector2Int baseSize, out Vector2Int position, out InventoryItem.InventoryItemRotation rotation, InventoryItem item = null) {
             position = Vector2Int.zero;
             rotation = InventoryItem.InventoryItemRotation.Zero;
 
@@ -155,7 +155,7 @@ namespace Root {
                     for (int x = 0; x <= Size.x - rotatedSize.x; x++) {
                         Vector2Int currentPosition = new Vector2Int(x, y);
                         
-                        if (IsAreaFree(rotatedSize, currentPosition)) {
+                        if (IsAreaFree(rotatedSize, currentPosition, item)) {
                             position = currentPosition;
                             rotation = currentRotation;
                             return true; 

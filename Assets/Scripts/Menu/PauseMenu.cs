@@ -1,6 +1,7 @@
 using Root.Controller;
 using Root.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,23 +21,21 @@ namespace Root
             masterVolumeSlider.onValueChanged.AddListener(SliderMasterVolume);
             musicVolumeSlider.onValueChanged.AddListener(SliderMusicVolume);
             sfxVolumeSlider.onValueChanged.AddListener(SliderSFXolume);
+            GameManager.Input.Menu.Pause.performed += HandleInput;
         }
 
-        private void Update()
+        private void HandleInput(InputAction.CallbackContext _)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (PromptManager.Instance != null && PromptManager.Instance.IsOpen) 
             {
-                if (PromptManager.Instance != null && PromptManager.Instance.IsOpen) 
-                {
-                    PromptManager.Instance.Cancel();
-                    return; 
-                }
-
-                if (paused)
-                    UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
-                else
-                    UIManager.Instance.OpenMenu(UIManager.UITypes.PauseMenu);
+                PromptManager.Instance.Cancel();
+                return; 
             }
+
+            if (paused)
+                UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
+            else
+                UIManager.Instance.OpenMenu(UIManager.UITypes.PauseMenu);
         }
 
         public override void Open() {

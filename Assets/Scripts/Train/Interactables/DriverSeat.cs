@@ -1,4 +1,5 @@
 using Root.Controller;
+using Root.Managers;
 using UnityEngine;
 
 namespace Root {
@@ -17,6 +18,8 @@ namespace Root {
 
             GameManager.Player.GetComponent<CameraController>().enabled = false;
             GameManager.Input.Movement.Disable();
+            GameManager.Input.Inventory.Disable();
+            UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
             _cameraController.enabled = true;
         }
     }
