@@ -10,7 +10,7 @@ namespace Root
         [SerializeField] private Transform dropPivot;
         public Transform DropPivot => dropPivot;
 
-        private Dictionary<string, PackageController> _depositedPackages = new();
+        private Dictionary<string, DeliveryPackageItem> _depositedPackages = new();
         private int _currentSum;
 
         private void CheckGoal()
@@ -24,7 +24,7 @@ namespace Root
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out PackageController packageController))
+            if (other.TryGetComponent(out DeliveryPackageItem packageController))
             {
                 if (CheckDepositedPackages(packageController))
                 {
@@ -37,7 +37,7 @@ namespace Root
             }
         }
 
-        private bool CheckDepositedPackages(PackageController packageController)
+        private bool CheckDepositedPackages(DeliveryPackageItem packageController)
         {
             if (!_depositedPackages.TryGetValue(packageController.GetSO().PackageID, out var generatedPrice))
             {

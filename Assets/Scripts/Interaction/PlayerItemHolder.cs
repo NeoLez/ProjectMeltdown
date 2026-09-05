@@ -58,7 +58,7 @@ namespace Root
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
 
-            var deliveryPackage = physicalItem.GetComponent<PackageController>();
+            var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
             if(deliveryPackage) PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
 

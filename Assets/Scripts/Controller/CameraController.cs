@@ -68,8 +68,6 @@ public class CameraController : MonoBehaviour
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();
         Assert.IsNotNull(_playerItemHolder);
-
-        DialogueManager.Instance.OnDialogueEnded += Reset;
     }
 
     private void OnEnable()
@@ -80,7 +78,7 @@ public class CameraController : MonoBehaviour
     private void OnDestroy()
     {
         _input.Interaction.Interact.performed -= HandleInteraction;
-        DialogueManager.Instance.OnDialogueEnded -= Reset;
+        DialogueManager.Instance.OnDialogueEnded -= EnableNormalMovement;
     }
 
     private void HandleInteraction(InputAction.CallbackContext _)
@@ -203,6 +201,8 @@ public class CameraController : MonoBehaviour
 
     public void FocusCamera(Transform newPivot)
     {
+        DialogueManager.Instance.OnDialogueEnded += EnableNormalMovement;
+
         _limitRotation = true;
         StartCoroutine(RotateCamerTowardsNPC(newPivot));
     }
@@ -228,7 +228,7 @@ public class CameraController : MonoBehaviour
         _currentEuler = cam.localEulerAngles;
     }
 
-    private void Reset()
+    private void EnableNormalMovement()
     {
         _limitRotation = false;
         pitch = -NormalizeAngle(_currentEuler.x);

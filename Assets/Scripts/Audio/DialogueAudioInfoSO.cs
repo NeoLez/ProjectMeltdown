@@ -1,23 +1,21 @@
 using UnityEngine;
 
-namespace Root
+[CreateAssetMenu(fileName = "DialogueAudio", menuName = "SO/DialogueAudioInfo")]
+public class DialogueAudioInfoSO : ScriptableObject
 {
-    [CreateAssetMenu(fileName = "DialogueAudio", menuName = "SO/DialogueAudioInfo")]
-    public class DialogueAudioInfoSO : ScriptableObject
-    {
-        public string id;
+    public string id;
 
-        public AudioClip[] dialogueTypingSounds;
+    public AudioClip[] dialogueTypingSounds;
 
-        [Range(1, 5)]
-        public int frecuencyLevel;
+    [Range(1, 5)]
+    public int frecuencyLevel;
 
-        [Range(-3,3)]
-        public float minPitch = 0.5f;
+    [Range(-3,3)]
+    public float minPitch = 0.5f;
 
-        [Range(-3, 3)]
-        public float maxPitch = 2f;
+    [Range(-3, 3)]
+    public float maxPitch = 2f;
 
-        //considerar cambiar los sonidos basados en el humor de los personajes??
-    }
+    //considerar cambiar los sonidos basados en el humor de los personajes??
 }
+

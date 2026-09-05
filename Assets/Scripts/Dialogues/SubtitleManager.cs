@@ -55,7 +55,7 @@ namespace Root
             if (GameManager.Wallet.IsOpened) {
                 GameManager.Wallet.ToggleWallet();
             }
-            dialogueManager.Initialize(dialogue, subtitleText);
+            dialogueManager.Initialize(dialogue, subtitleText, dialogue.HasChoices);
 
             HideOrViewCanvas(true);
         }

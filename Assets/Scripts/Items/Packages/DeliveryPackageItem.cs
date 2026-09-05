@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Root
 {
     [RequireComponent (typeof (PackageVisual))]
-    public class PackageController : PhysicalItem
+    public class DeliveryPackageItem : PhysicalItem
     {
         [SerializeField] private PackageItemSo packageData;
         [SerializeField] private PackageClimateConditionsSO packageConditions;

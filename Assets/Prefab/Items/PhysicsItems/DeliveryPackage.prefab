@@ -357,10 +357,10 @@ GameObject:
   m_Component:
   - component: {fileID: 383741620108785082}
   - component: {fileID: 4533733887749348139}
-  - component: {fileID: 2497258017769102117}
   - component: {fileID: 4856435053597045943}
   - component: {fileID: 4018819358515913386}
   - component: {fileID: 4882277203028833108}
+  - component: {fileID: 2620834895875380594}
   m_Layer: 7
   m_Name: DeliveryPackage
   m_TagString: Untagged
@@ -407,32 +407,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.71731544, z: 1.2997408}
   m_Center: {x: 0, y: -0.07963884, z: 0.098798275}
---- !u!114 &2497258017769102117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5985484139083966924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54e1545ad579e184bacbd196feb2ac52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.PackageController
-  defaultItemSo: {fileID: 11400000, guid: 53191d0ebd2ef2942846357825634096, type: 2}
-  itemState:
-    rid: 8713237777094017088
-  packageData: {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
-  packageConditions: {fileID: 0}
-  _visuals: {fileID: 4882277203028833108}
-  damageMultiplier: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 8713237777094017088
-      type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
-      data:
-        <ItemSo>k__BackingField: {fileID: 11400000, guid: 53191d0ebd2ef2942846357825634096, type: 2}
 --- !u!54 &4856435053597045943
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -492,6 +466,30 @@ MonoBehaviour:
   m_Image: {fileID: 1615323372510865102}
   format: '{0}$'
   canvasHeight: 0.8
+--- !u!114 &2620834895875380594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0c6c3c1ea3aeb4da21346e0363b4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryPackageItem
+  defaultItemSo: {fileID: 11400000, guid: 53191d0ebd2ef2942846357825634096, type: 2}
+  itemState:
+    rid: -2
+  packageData: {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
+  packageConditions: {fileID: 0}
+  _visuals: {fileID: 4882277203028833108}
+  damageMultiplier: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1001 &5218654574486138494
 PrefabInstance:
   m_ObjectHideFlags: 0

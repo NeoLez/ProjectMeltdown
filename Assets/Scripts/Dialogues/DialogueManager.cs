@@ -1,9 +1,11 @@
-using Root;
+using Root.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,9 +13,15 @@ public class DialogueManager : MonoBehaviour
 
     public bool IsTyping = false;
 
+    [Header("Dialogue Config")]
     [SerializeField] private float textTypingSpeed;
-    [SerializeField] bool isAudioPredictable;
-    [SerializeField] TextMeshProUGUI skipText;
+    [SerializeField] private bool isAudioPredictable;
+    [SerializeField] private TextMeshProUGUI skipText;
+
+    [Header("Dialogue Options")]
+    [SerializeField] private Button[] choiceOptions;
+    private TextMeshProUGUI[] _choicesText;
+
     private Queue<string> _sentences;
     private string _currentSentence;
     private Coroutine _typingCoroutine;
@@ -53,14 +61,41 @@ public class DialogueManager : MonoBehaviour
         GameManager.AudioSystem.AssignOutputMixerGroup(_audioSource, GameManager.AudioSystem.VFX);
 
         EnableTextSkip(false);
+
+        EnableDisableChoices(false);
     }
 
-    public void Initialize(DialogueSO dialogue, TextMeshProUGUI text)
+    public void Initialize(DialogueSO dialogue, TextMeshProUGUI text, bool hasChoisingSystem)
     {
+        if (hasChoisingSystem) InitialiceChoices();
+
         _currentSpeaker = dialogue;
         _currentDisplayText = text;
 
         InitializeAudioInfo();
+    }
+
+    private void InitialiceChoices()
+    {
+        _choicesText = new TextMeshProUGUI[choiceOptions.Length];
+
+        int index = 0;
+        foreach (var choice in choiceOptions)
+        {
+            int currentIndex = index;
+
+            _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
+            choiceOptions[index].onClick.AddListener(()=>StopDialogue(currentIndex));
+            index++;
+        }
+    }
+
+    private void EnableDisableChoices(bool state)
+    {
+        for (int i = 0; i < choiceOptions.Length; i++)
+        {
+            choiceOptions[i].gameObject.SetActive(state);
+        }
     }
 
     private void InitializeAudioInfo()
@@ -186,7 +221,14 @@ public class DialogueManager : MonoBehaviour
     {
         if (_sentences.Count == 0)
         {
-            EndDialogue(_currentSpeaker);
+            if(_currentSpeaker.HasChoices)
+            {
+                DisplayChoices();
+            }
+            else
+            {
+                EndDialogue(_currentSpeaker);
+            }
             return;
         }
 
@@ -303,10 +345,6 @@ public class DialogueManager : MonoBehaviour
         foreach (var data in _currentSpeaker.DialogueData)
         {
             _currentData.Add(data.Text);
-           /* foreach (string line in data.Text)
-            {
-                _currentData.Add(line);
-            }*/
         }
     }
 
@@ -334,6 +372,8 @@ public class DialogueManager : MonoBehaviour
 
     private void EndDialogue(DialogueSO dialogue)
     {
+        MouseHandler.RelinquishControl(this);
+
         _arrayIndex = 0;
         _currentDisplayText.text = "";
         _sentences.Clear();
@@ -346,6 +386,7 @@ public class DialogueManager : MonoBehaviour
         _oldspeaker = _currentSpeaker;
     }
 
+
     public void StopCurrentDialogue()
     {
         _canInterruptTyping = true;
@@ -356,7 +397,42 @@ public class DialogueManager : MonoBehaviour
         _canInterruptTyping = false;
     }
 
+    private void DisplayChoices()
+    {
+        MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
+
+        List<DialogueChoices> currentChoices=new();
+
+        for (int i = 0; i < _currentSpeaker.DialogueChoices.Length; i++)
+        {
+            currentChoices.Add(_currentSpeaker.DialogueChoices[i]);
+        }
+
+        if (currentChoices.Count > choiceOptions.Length) return;
+
+        int index = 0;
+        foreach (var choice in currentChoices)
+        {
+            choiceOptions[index].gameObject.SetActive(true);
+            _choicesText[index].text = choice.Text;
+            index++;
+        }
+
+        /*for (int i = index; i < choiceOptions.Length; i++) //disable tha remaining dialogue options
+        {
+            choiceOptions[i].gameObject.SetActive(false);
+        }*/
+    }
+    private void StopDialogue(int seletecButtonIndex)
+    {
+        _currentSpeaker.OnSelectedChoice?.Invoke(seletecButtonIndex);
+
+        EnableDisableChoices(false);
+        EndDialogue(_currentSpeaker);
+    }
+
 }
+
 public enum DialogueState
 {
     StartTalking,

@@ -10,10 +10,8 @@ namespace Root
 
         private Dictionary<string, int> _packagePricesDict = new();
         private int _packagePriceSum;
-        private List<PackageController> _currentSpawnedPackages = new();
+        private List<DeliveryPackageItem> _currentSpawnedPackages = new();
 
-        [SerializeField] private Transform instancePivot;
-        [SerializeField] private GameObject[] packagesToDeliver;
         [SerializeField] private PackageObjectivesUI _visuals;
         [SerializeField] private MapGeneration mapGeneration;
 
@@ -29,7 +27,6 @@ namespace Root
         private void Start()
         {
             _visuals.ChangeCanvas(false);
-            GeneratePackages();
         }
 
         private void Update()
@@ -37,13 +34,13 @@ namespace Root
             GetNextStationToDeliver();
         }
 
-        public void GeneratePackages()
+        public void GeneratePackages(Transform instancePivot, GameObject[] packagesToDeliver) //aca cambiarle a que le tengas que pasar por parametro
         {
             for (int i = 0; i < packagesToDeliver.Length; i++)
             {
                 GameObject prefab = Instantiate(packagesToDeliver[i], instancePivot, true);
 
-                PackageController currentPackage = prefab.GetComponent<PackageController>();
+                DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
                 _currentSpawnedPackages.Add(currentPackage);
             }
 
@@ -54,7 +51,7 @@ namespace Root
         {
             if (_currentSpawnedPackages.Count > 0)
             {
-                foreach (PackageController package in _currentSpawnedPackages)
+                foreach (DeliveryPackageItem package in _currentSpawnedPackages)
                 {
                     package.InitializePackageData(package.GetSO().PackageRandomPriceGenerator(), package.GetSO().PackageDurabilityLevel);
                     _packagePricesDict.Add(package.GetSO().GenerateUniqueID(), package.GetSO().GetGeneratedNumber());
@@ -64,7 +61,7 @@ namespace Root
             _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
         }
 
-        public void RetrieveCurrentPackageData(PackageController package)
+        public void RetrieveCurrentPackageData(DeliveryPackageItem package)
         {
             if (_packagePricesDict.TryGetValue(package.GetSO().PackageID, out var generatedPrice))
             {
@@ -85,7 +82,7 @@ namespace Root
 
         public void SumCurrentPackages()
         {
-            foreach (PackageController package in _currentSpawnedPackages)
+            foreach (DeliveryPackageItem package in _currentSpawnedPackages)
             {
                 _packagePriceSum += package.GetPrice();
             }
