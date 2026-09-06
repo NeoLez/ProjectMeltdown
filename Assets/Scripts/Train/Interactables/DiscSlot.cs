@@ -97,5 +97,8 @@ namespace Root
             TryInsertDisc(item.itemState);
             return true;
         }
+
+        public void ClearFeedback() {
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace Root {
         [SerializeField] private int draggingSortingOrder;
         [SerializeField] private float dragSizeMultiplier = 1.2f;
         [SerializeField] private float dragSmoothing = 25;
+        [SerializeField] private float dragAlpha = 0.9f;
+        [SerializeField] private float dragAlphaSmoothing = 25f;
         [SerializeField] private float sizeChangeSmoothing = 25;
         private InventoryItem _inventoryItem;
         public Vector2 originalPosition;
@@ -73,9 +75,13 @@ namespace Root {
             var canvasTransform = (RectTransform)canvas.transform;
             canvasTransform.anchoredPosition = Vector2.Lerp(canvasTransform.anchoredPosition, _targetPosition, dragSmoothing * Time.deltaTime);
             canvasTransform.localScale = Vector3.Lerp(canvasTransform.localScale, new Vector3(_targetSize, _targetSize, 1), sizeChangeSmoothing * Time.deltaTime);
+            var color = image.color;
+            color.a = math.lerp(color.a, dragAlpha, dragAlphaSmoothing * Time.deltaTime);
+            image.color = color;
             RotateDraggingItem((int)GameManager.Input.Inventory.RotateItem.ReadValue<Vector2>().y);
         }
 
+        private IItemDragReceiver _previousReceiver;
         public void OnDrag(PointerEventData eventData) {
             _targetPosition = GetRelativePosition(eventData.position);
             
@@ -90,6 +96,11 @@ namespace Root {
             else {
                 _targetSize = 1;
             }
+            
+            if(receiver != _previousReceiver) {
+                _previousReceiver?.ClearFeedback();
+                _previousReceiver = receiver;
+            }
         }
 
         public void OnEndDrag(PointerEventData eventData) {
@@ -101,17 +112,22 @@ namespace Root {
             if (!(UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) || TryGetWorldDragReceiver(out receiver)) ||
                 !receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
                 ReturnItem();
+                receiver.ClearFeedback();
                 return;
             }
 
             _inventoryItem.Inventory.RemoveItem(_inventoryItem);
             receiver.TakeItem(correctedScreenPos, _currentRotation, _inventoryItem);
+            receiver.ClearFeedback();
         }
 
         private void ReturnItem() {
             _isBeingDragged = false;
             var canvasTransform = (RectTransform)canvas.transform;
             canvasTransform.localScale = new Vector3(1, 1, 1);
+            var color = image.color;
+            color.a = 1;
+            image.color = color;
             SetSortingOrder(false);
             SetPosition(originalPosition, originalRotation);
         }

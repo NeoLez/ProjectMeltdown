@@ -142,5 +142,8 @@ namespace Root
         public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
             return TryInsertBattery(item.itemState);
         }
+
+        public void ClearFeedback() {
+        }
     }
 }

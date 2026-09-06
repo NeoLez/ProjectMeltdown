@@ -22,5 +22,8 @@ namespace Root {
 
             return item.Inventory.InsertItem(_playerItemHolder.HeldItem);
         }
+
+        public void ClearFeedback() {
+        }
     }
 }
