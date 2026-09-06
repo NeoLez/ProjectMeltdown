@@ -33,6 +33,7 @@ public struct DialogueData
     public string Text;
     [Min(0)]
     [SerializeField] float textDuration;
+    public bool HasChoices;
     public readonly float TextDuration => textDuration;
 }
 

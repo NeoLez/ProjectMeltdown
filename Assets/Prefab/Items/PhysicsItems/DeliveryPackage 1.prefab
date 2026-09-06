@@ -446,7 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 749b9f4f9e524410a1a3a62c877a30b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainer
-  visuals: {fileID: 0}
+  visuals: {fileID: 5370295668348679622}
   originCenter: {fileID: 0}
   goal: {fileID: 0}
 --- !u!114 &4882277203028833108
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryPackageItem
   defaultItemSo: {fileID: 11400000, guid: c0ca7b22a20a3e84e9c2eba866d67faa, type: 2}
   itemState:
-    rid: -2
+    rid: 5718201661435412540
   packageData: {fileID: 11400000, guid: 9844bc2be8fdc0346a40796041096534, type: 2}
   packageConditions: {fileID: 0}
   _visuals: {fileID: 4882277203028833108}
@@ -488,8 +488,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 5718201661435412540
+      type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
+      data:
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: c0ca7b22a20a3e84e9c2eba866d67faa, type: 2}
 --- !u!1001 &1247262983299259576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -566,5 +568,10 @@ PrefabInstance:
 --- !u!4 &321326420261901169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1529745848184033225, guid: b433a0c384d945f4ea0894b1a146bd06, type: 3}
+  m_PrefabInstance: {fileID: 1247262983299259576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5370295668348679622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6613593666151131518, guid: b433a0c384d945f4ea0894b1a146bd06, type: 3}
   m_PrefabInstance: {fileID: 1247262983299259576}
   m_PrefabAsset: {fileID: 0}

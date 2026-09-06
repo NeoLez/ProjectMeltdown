@@ -36,6 +36,7 @@ public class DialogueManager : MonoBehaviour
     private float _currentTextDuration;
     private int _arrayIndex;
     private bool _canInterruptTyping;
+    private bool hasChosenOption;
 
     private DialogueState _states;
     private AudioSource _audioSource;
@@ -191,7 +192,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            DisplayNextSentence();
+            if (!hasChosenOption) DisplayNextSentence();
         }
     }
 
@@ -216,22 +217,13 @@ public class DialogueManager : MonoBehaviour
         ChangeDialogueState(DialogueState.IsTalking);
     }
 
-
     public void DisplayNextSentence()
     {
         if (_sentences.Count == 0)
         {
-            if(_currentSpeaker.HasChoices)
-            {
-                DisplayChoices();
-            }
-            else
-            {
-                EndDialogue(_currentSpeaker);
-            }
+            EndDialogue(_currentSpeaker);
             return;
         }
-
         _currentSentence = _sentences.Dequeue();
 
         if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
@@ -247,6 +239,9 @@ public class DialogueManager : MonoBehaviour
 
         _currentDisplayText.text = IsSpeakerNameShowable();
         _currentDisplayText.text += _currentSentence;
+
+        if (_currentSpeaker.DialogueData[_arrayIndex].HasChoices) DisplayChoices();
+        _arrayIndex++;
 
         StartCoroutine(FinishVisual());
     }
@@ -271,8 +266,11 @@ public class DialogueManager : MonoBehaviour
         }
 
         _currentTextDuration = _currentSpeaker.DialogueData[_arrayIndex].TextDuration;
-        yield return new WaitForSeconds(_currentTextDuration);
 
+        if (_currentSpeaker.DialogueData[_arrayIndex].HasChoices) DisplayChoices();
+
+        yield return new WaitForSeconds(_currentTextDuration);
+        
         _arrayIndex++;
         IsTyping = false;
 
@@ -362,7 +360,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EnableTextSkip(bool enable)
     {
-        skipText.enabled = enable;
+        skipText.enabled = hasChosenOption ? !enable : enable;
     }
 
     private void AutoHideText()
@@ -399,6 +397,7 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
+        hasChosenOption = true;
         MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
         List<DialogueChoices> currentChoices=new();
@@ -417,7 +416,6 @@ public class DialogueManager : MonoBehaviour
             _choicesText[index].text = choice.Text;
             index++;
         }
-
         /*for (int i = index; i < choiceOptions.Length; i++) //disable tha remaining dialogue options
         {
             choiceOptions[i].gameObject.SetActive(false);
@@ -425,10 +423,19 @@ public class DialogueManager : MonoBehaviour
     }
     private void StopDialogue(int seletecButtonIndex)
     {
+        hasChosenOption = false;
         _currentSpeaker.OnSelectedChoice?.Invoke(seletecButtonIndex);
 
         EnableDisableChoices(false);
-        EndDialogue(_currentSpeaker);
+        
+        if(_sentences.Count>0)
+        {
+            DisplayNextSentence();
+        }
+        else
+        {
+            EndDialogue(_currentSpeaker);
+        }
     }
 
 }

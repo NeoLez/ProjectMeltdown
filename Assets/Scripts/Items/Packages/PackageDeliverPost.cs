@@ -26,10 +26,11 @@ namespace Root
         {
             if (other.TryGetComponent(out DeliveryPackageItem packageController))
             {
-                if (CheckDepositedPackages(packageController))
+                if (IsPackageDeposited(packageController))
                 {
                     _depositedPackages.Add(packageController.GetSO().PackageID, packageController);
                     _currentSum++;
+                    Destroy(packageController.gameObject, 0.5f);
 
                     CheckGoal();
                 }
@@ -37,7 +38,7 @@ namespace Root
             }
         }
 
-        private bool CheckDepositedPackages(DeliveryPackageItem packageController)
+        private bool IsPackageDeposited(DeliveryPackageItem packageController)
         {
             if (!_depositedPackages.TryGetValue(packageController.GetSO().PackageID, out var generatedPrice))
             {
