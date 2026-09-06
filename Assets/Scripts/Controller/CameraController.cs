@@ -3,6 +3,7 @@ using Root.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Root.Managers;
 using Timers;
 using Unity.Mathematics;
 using UnityEngine;
@@ -165,8 +166,7 @@ public class CameraController : MonoBehaviour
         Vector3 viewBobVector = GetHorizontalDirectionRightVector().Swizzle_x0y() * cameraBobbingOffset.x + Vector3.up * cameraBobbingOffset.y;
         cam.position = new Vector3(cameraPosition.position.x,
             math.lerp(cam.position.y, cameraPosition.position.y, cameraSmoothing), cameraPosition.position.z) + viewBobVector;
-        CalculateShakeOffset();
-        cam.localPosition += GetShakeOffset();
+        cam.localPosition += CameraShakeManager.Instance.GetShakeOffset();
 
         if(!_limitRotation)
         {
@@ -236,32 +236,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    public float shakeIntensity;
-    public float targetShakeIntensity;
-    public float shakeTime;
-    public float shakeIntensityLerp;
-    public float shakeLerpBetweenRandomVectors;
-    private Vector3 GetShakeOffset()
-    {
-        return new Vector3(
-            Random.Range(-1f, 1f) * shakeIntensity,
-            Random.Range(-1f, 1f) * shakeIntensity,
-            0f
-        );
-    }
-
-    public void Shake(float intensity, float time) {
-        targetShakeIntensity = intensity;
-        shakeTime = time + Time.time;
-    }
-
-    private void CalculateShakeOffset() {
-        if (shakeTime < Time.time) {
-            shakeIntensity = Mathf.Lerp(shakeIntensity, 0, shakeIntensityLerp);
-            return;
-        }
-        shakeIntensity = Mathf.Lerp(shakeIntensity, targetShakeIntensity, shakeIntensityLerp);
-    }
+    
     
     public void SyncToRotation(Quaternion targetWorldRotation)
     {

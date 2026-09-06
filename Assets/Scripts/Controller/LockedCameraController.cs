@@ -1,3 +1,4 @@
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,7 +50,7 @@ namespace Root.Controller {
             mousePos.y /= Screen.height / MouseSensitivity;
             mousePos.x /= Screen.width / MouseSensitivity;
             
-            cam.transform.position = cameraTarget.position;
+            cam.transform.position = cameraTarget.position + CameraShakeManager.Instance.GetShakeOffset() / 2;
             
             Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * lerpSensitivity, mousePos.x * lerpSensitivity, 0f);
             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, targetRotation, Speed * Time.deltaTime);
