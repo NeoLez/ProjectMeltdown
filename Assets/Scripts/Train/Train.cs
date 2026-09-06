@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PrimeTween;
+using Root.Managers;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -209,7 +210,7 @@ namespace Root
                         return;
                     }
                     GameManager.AudioSystem.PlaySound(_screech, GameManager.AudioSystem.VFX, 0.4f);
-                    GameManager.CameraController.Shake(0.5f, 0.05f);
+                    CameraShakeManager.Instance.Shake(0.5f*(_descarriladoTimer/tiempoDescarrilamiento), 0.05f);
                     _descarriladoTimer += (_currentSpeed - currentWaypoint.maxSpeed) * Time.deltaTime;
                 }
                 else
@@ -236,7 +237,7 @@ namespace Root
         {
             isStopped = true;
             OnTrainStoppedMoving?.Invoke();
-            GameManager.CameraController.Shake(0.1f, 0.05f);
+            CameraShakeManager.Instance.Shake(0.1f, 0.05f);
             GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
             if (emergencyStopButton.IsBraking())
             {

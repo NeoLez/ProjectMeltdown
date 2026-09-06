@@ -1,4 +1,5 @@
 using System;
+using Root.Managers;
 using UnityEngine;
 
 namespace Root {
@@ -24,7 +25,7 @@ namespace Root {
             if (_isLocked) return;
             //Debug.Log("Interact");
             OnClicked?.Invoke();
-            GameManager.CameraController.Shake(0.1f, 0.05f);
+            CameraShakeManager.Instance.Shake(0.1f, 0.05f);
             if (_press != null || _door != null)
             {
                 GameManager.AudioSystem.PlaySoundPositional(_press, transform.position, GameManager.AudioSystem.VFX, 0.5f);

@@ -1,3 +1,4 @@
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -60,7 +61,7 @@ namespace Root
 
             if (Time.time >= _cooldown)
             {
-                GameManager.CameraController.Shake(0.5f, 0.1f);
+                CameraShakeManager.Instance.Shake(0.5f, 0.1f);
                 _currentHealth -= dmg;
                 _currentHealth = Mathf.Clamp(_currentHealth, 0f, _maxHealth);
                 _regeneration = true;
