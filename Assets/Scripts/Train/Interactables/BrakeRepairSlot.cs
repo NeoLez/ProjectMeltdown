@@ -61,6 +61,9 @@ namespace Root
         public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
             return TryInsertBrakeFluid(item.itemState);
         }
+
+        public void ClearFeedback() {
+        }
     }
 
 }

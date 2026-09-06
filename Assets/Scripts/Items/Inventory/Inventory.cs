@@ -133,6 +133,25 @@ namespace Root {
 
             return true;
         }
+        
+        public bool IsAreaFree(Vector2Int size, Vector2Int position, out List<Vector2Int> overlaps, InventoryItem item = null) {
+            overlaps = new();
+            bool res = true;
+            for (int x = 0; x < size.x; x++) {
+                for (int y = 0; y < size.y; y++) {
+                    if (!_slots.TryGetValue(position + new Vector2Int(x, y), out InventorySlot slot)) {
+                        res = false;
+                        continue;
+                    }
+                    if (slot.IsFree) continue;
+                    if (slot.InventoryItem == item) continue;
+                    res = false;
+                    overlaps.Add(new Vector2Int(x, y) + position);
+                }
+            }
+
+            return res;
+        }
 
         public List<InventoryItem> GetItems() {
             return _items.ToList();
