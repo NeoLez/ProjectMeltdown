@@ -134,7 +134,7 @@ namespace Root {
             return true;
         }
         
-        public bool IsAreaFree(Vector2Int size, Vector2Int position, out HashSet<Vector2Int> overlaps, InventoryItem item = null) {
+        public bool IsAreaFree(Vector2Int size, Vector2Int position, out List<Vector2Int> overlaps, InventoryItem item = null) {
             overlaps = new();
             bool res = true;
             for (int x = 0; x < size.x; x++) {
