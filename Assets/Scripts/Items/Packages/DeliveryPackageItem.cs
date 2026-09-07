@@ -41,7 +41,6 @@ namespace Root
             _currentValue = currentPrice;
 
             _visuals.SetDisplayValue(currentPrice);
-            _visuals.SetPackageCondition(_currentDurability, packageData.PackageDurabilityLevel);
         }
 
         private void Update()
@@ -86,8 +85,6 @@ namespace Root
                 StartDrainingLife();
                 return;
             }
-
-            _visuals.SetPackageCondition(_currentDurability, packageData.PackageDurabilityLevel);
             //aca hacer un switch dependiendo del estad, pueden ser 3
 
             //hacer el total dividido la vida del paquete

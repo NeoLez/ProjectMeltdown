@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace Root
 
         [SerializeField] private PackageObjectivesUI _visuals;
         [SerializeField] private MapGeneration mapGeneration;
+        [SerializeField] private float fixedSpawnTime;
+        [SerializeField] private float verticalOffset;
 
         public Action OnDeliveryStationReached;
         private void Awake()
@@ -34,14 +37,25 @@ namespace Root
             GetNextStationToDeliver();
         }
 
-        public void GeneratePackages(Transform instancePivot, GameObject[] packagesToDeliver) //aca cambiarle a que le tengas que pasar por parametro
+        public void EnablePackageGeneration(Transform instancePivot, GameObject[] packagesToDeliver)
         {
+            StartCoroutine(GeneratePackages(instancePivot, packagesToDeliver));
+        }
+
+        IEnumerator GeneratePackages(Transform instancePivot, GameObject[] packagesToDeliver)
+        {
+            Vector3 newPos = instancePivot.position;
             for (int i = 0; i < packagesToDeliver.Length; i++)
             {
-                GameObject prefab = Instantiate(packagesToDeliver[i], instancePivot, true);
+                GameObject prefab = Instantiate(packagesToDeliver[i]);
+                prefab.transform.position = instancePivot.transform.position;
 
                 DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
                 _currentSpawnedPackages.Add(currentPackage);
+
+                yield return new WaitForSeconds(fixedSpawnTime);
+
+                newPos += Vector3.up * verticalOffset;
             }
 
             PackagesCheck();

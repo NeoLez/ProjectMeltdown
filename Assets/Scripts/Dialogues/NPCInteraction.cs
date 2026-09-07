@@ -64,7 +64,7 @@ namespace Root
         //previo un sistema de eleccion
         public void GivePlayerMission()
         {
-            PackagesSystemController.Instance.GeneratePackages(instancePivot, packagesToDeliver);
+            PackagesSystemController.Instance.EnablePackageGeneration(instancePivot, packagesToDeliver);
         }
         //que el chabon ya venga con una mision creada, solo la activa cuando vos la elegis
     }

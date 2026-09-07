@@ -62,9 +62,9 @@ namespace Root
 
             if(deliveryPackage) PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
 
-            if (CheckIfDeliveryPostNearby(out var component) && deliveryPackage)
-            {              
-                deliveryPackage.transform.position = component.DropPivot.position;
+            if (CheckIfDeliveryPostNearby(out var deliveryPost) && deliveryPackage)
+            {
+                deliveryPost.DepositPackage(deliveryPackage);
             }
             else
             {
