@@ -7,16 +7,18 @@ namespace Root
         [SerializeField] private Transform instancePivot;
         [SerializeField] private GameObject[] packagesToDeliver;
 
-        private void Start()
+        protected override void Awake()
         {
-            Dialogue.OnDialogueEnded += FinishedExecutingDialogue;
             Dialogue.OnSelectedChoice += ChosingOptions;
+
+            base.Awake();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
-            Dialogue.OnDialogueEnded -= FinishedExecutingDialogue;
             Dialogue.OnSelectedChoice -= ChosingOptions;
+
+            base.OnDestroy();
         }
 
         public override void ExecuteDialogue()

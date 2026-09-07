@@ -15,7 +15,8 @@ namespace Root
         private PlayerInputActions _input;
         private Transform _npcLookingPivot;
         private Transform _npcPositionPivot;
-        private bool isInteracting;
+        private bool _isInteracting;
+        private InteractBehaviour _currentInterractable;
 
         private void Awake()
         {
@@ -26,51 +27,71 @@ namespace Root
 
         private void Update()
         {
-            if (isInteracting)
+            if (!TryFindInteractableNPC(out var currentInteractable))
             {
+                _currentInterractable = null;
                 interactionPanel.enabled = false;
                 return;
             }
 
-            if (TryFindInteractableNPC(out var currentInteractable))
-            {
-                interactionPanel.enabled = true;
-            }
-            else
-            {
-                interactionPanel.enabled = false;
-            }
+            _currentInterractable = currentInteractable;
+
+            ShowCanvas();
+        }
+
+        private void ShowCanvas()
+        {
+            bool canInteract = !_isInteracting && !_currentInterractable.HasDialoguePermenantlyEnded();
+            interactionPanel.enabled = canInteract;
         }
 
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
             if (TryFindInteractableNPC(out var currentInteractable))
             {
+                if (currentInteractable.HasDialoguePermenantlyEnded()) return;
+
                 if (currentInteractable.CheckPivot() && currentInteractable.CheckPosPivot())
                 {
-                    if (currentInteractable.HasDialogueEnded())
-                    {
-                        //isInteracting = false; //fijarme la prox si tiene dialogo hago que siga interactuando 
-                        return;
-                    }
-
                     _npcLookingPivot = currentInteractable.Pivot;
                     _npcPositionPivot = currentInteractable.PlayerPivot;
 
                     GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _npcPositionPivot.position);
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
-
-                    isInteracting = true;
                 }
+
+                currentInteractable.OnInteractionStarted += StartInteraction;
+                currentInteractable.OnInteractionEnded += EndInteraction;
 
                 currentInteractable.ExecuteDialogue();
             }
         }
 
-        private bool TryFindInteractableNPC(out InteractBehaviour interactable) //evitar poder interactuar con otros cuando estoy ya con uno
+        private bool TryFindInteractableNPC(out InteractBehaviour interactable)
         {
             interactable = null;
-            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out RaycastHit raycastHit, maxDistance, interactableEntityLayer) && raycastHit.collider.gameObject.TryGetComponent(out interactable);
+            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out RaycastHit raycastHit, maxDistance, interactableEntityLayer) &&
+                raycastHit.collider.gameObject.TryGetComponent(out interactable);
+        }
+
+
+        private void StartInteraction()
+        {
+            _isInteracting = true;
+            if (_currentInterractable != null)
+            {
+                _currentInterractable.OnInteractionStarted -= StartInteraction;
+            }
+
+        }
+        private void EndInteraction()
+        {
+            _isInteracting = false;
+
+            if (_currentInterractable != null)
+            {
+                _currentInterractable.OnInteractionEnded -= EndInteraction;
+            }
         }
 
         private void OnDestroy()

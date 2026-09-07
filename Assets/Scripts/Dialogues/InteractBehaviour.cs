@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root
@@ -8,6 +9,21 @@ namespace Root
         public Transform PlayerPivot;
         public DialogueSO Dialogue;
         public bool hasBeenTriggeredOnce;
+
+        public Action OnInteractionEnded;
+        public Action OnInteractionStarted;
+
+        protected virtual void Awake()
+        {
+            Dialogue.OnDialogueStarted += StartedExecutingDialogue;
+            Dialogue.OnDialogueEnded += FinishedExecutingDialogue;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            Dialogue.OnDialogueStarted -= StartedExecutingDialogue;
+            Dialogue.OnDialogueEnded -= FinishedExecutingDialogue;
+        }
 
         public Transform CheckPivot()
         {
@@ -31,14 +47,26 @@ namespace Root
             return PlayerPivot;
         }
 
-        public bool HasDialogueEnded()
+        public bool HasDialoguePermenantlyEnded()
         {
             return !Dialogue.CanRepeatDialogue && hasBeenTriggeredOnce;
         }
+
+        public bool HasDialogueEnded()
+        {
+            return Dialogue.CanRepeatDialogue;
+        }
+
         public abstract void ExecuteDialogue();
 
-        public virtual void StartedExecutingDialogue() { }
+        public virtual void StartedExecutingDialogue() {
 
-        public virtual void FinishedExecutingDialogue() { }
+            OnInteractionStarted?.Invoke();
+        }
+
+        public virtual void FinishedExecutingDialogue() {
+
+            OnInteractionEnded?.Invoke();
+        }
     }
 }

@@ -9,16 +9,7 @@ namespace Root
 
         private void Start()
         {
-            Dialogue.OnDialogueStarted += StartedExecutingDialogue;
-            Dialogue.OnDialogueEnded += FinishedExecutingDialogue;
-
             merchantTrigger._OnStoreShow?.Invoke(false);
-        }
-
-        private void OnDestroy()
-        {
-            Dialogue.OnDialogueStarted -= StartedExecutingDialogue;
-            Dialogue.OnDialogueEnded -= FinishedExecutingDialogue;
         }
 
         public override void ExecuteDialogue()
@@ -40,17 +31,8 @@ namespace Root
             }
         }
 
-        public override void StartedExecutingDialogue()
-        {
-            //GameManager.Input.Movement.Disable();
-
-            base.StartedExecutingDialogue();
-        }
-
         public override void FinishedExecutingDialogue()
         {       
-            //GameManager.Input.Movement.Enable();
-
             if(!Dialogue.CanRepeatDialogue) hasBeenTriggeredOnce = true;
 
             ShowStoreItems();
