@@ -51,6 +51,7 @@ namespace Root
                 int randomIndex = UnityEngine.Random.Range(0, availablePackages.Length);
                 GameObject prefab = Instantiate(availablePackages[randomIndex]);
 
+                prefab.transform.parent = instancePivot.parent;
                 prefab.transform.position = instancePivot.transform.position;
 
                 DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
