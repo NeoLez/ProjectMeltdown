@@ -6,8 +6,9 @@ using UnityEngine.Serialization;
 
 namespace Root {
     public class PlayerInventoryUI : Menu.Menu {
-        [FormerlySerializedAs("playerInventory")] [SerializeField] InventoryDisplay playerInventoryDisplay;
-        [FormerlySerializedAs("otherInventory")] [SerializeField] InventoryDisplay otherInventoryDisplay;
+        [SerializeField] InventoryDisplay playerInventoryDisplay;
+        [SerializeField] InventoryDisplay otherInventoryDisplay;
+        [SerializeField] HandHeldInventorySlot handHeldInventorySlot;
         private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
@@ -52,6 +53,9 @@ namespace Root {
                 otherInventoryDisplay.gameObject.SetActive(true);
             }
             
+            handHeldInventorySlot.gameObject.SetActive(true);
+            handHeldInventorySlot.UpdateVisuals();
+            
             if (!playerInventoryInitialized) {
                 playerInventoryDisplay.LoadInventory(GameManager.Player.GetComponent<Inventory>());
                 playerInventoryInitialized = true;
@@ -67,6 +71,7 @@ namespace Root {
 
         private void HideDisplays() {
             playerInventoryDisplay.gameObject.SetActive(false);
+            handHeldInventorySlot.gameObject.SetActive(false);
             otherInventoryDisplay.gameObject.SetActive(false);
             MouseHandler.RelinquishControl(this);
             GameManager.Input.Movement.Enable();

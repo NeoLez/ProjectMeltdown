@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root {
@@ -9,6 +10,8 @@ namespace Root {
         public Vector2Int _position;
         public Vector2Int RotationCorrectedSize => GetRotationCorrectedSize(_size, rotation);
         public Vector2Int Size => _size;
+        
+        public Action ReallyUglyFixForNow;
 
         public InventoryItem(Inventory inventory,ItemState item, Vector2Int position, InventoryItemRotation itemRotation) {
             Inventory = inventory;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ namespace Root
         [SerializeField] private float dropDistance = 1.5f;
         [SerializeField] private Transform cameraPivot;
         [SerializeField] private AudioClip cantMoveToInventorySound;
+        public event Action OnItemChanged;
         
         private void Awake() {
             HeldItem = null;
@@ -35,6 +37,8 @@ namespace Root
             currentHeldVisual = Instantiate(item.itemState.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
+            
+            OnItemChanged?.Invoke();
         }
         
         public void Pickup(ItemState item)
@@ -48,6 +52,8 @@ namespace Root
             currentHeldVisual = Instantiate(item.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
+            
+            OnItemChanged?.Invoke();
         }
         
 
@@ -80,6 +86,8 @@ namespace Root
             HeldItem = null;
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);
+            
+            OnItemChanged?.Invoke();
 
         }
 
@@ -95,14 +103,15 @@ namespace Root
                 GameManager.AudioSystem.PlaySound(cantMoveToInventorySound, GameManager.AudioSystem.VFX);
                 return;
             }
+            OnItemChanged?.Invoke();
             ForceClearHeldItem();
         }
 
-        public void ForceClearHeldItem()
-        {
+        public void ForceClearHeldItem() {
+            if (HeldItem == null) return;
             HeldItem = null;
-            if (currentHeldVisual != null)
-                Destroy(currentHeldVisual);
+            Destroy(currentHeldVisual);
+            OnItemChanged?.Invoke();
         }
     }
 }

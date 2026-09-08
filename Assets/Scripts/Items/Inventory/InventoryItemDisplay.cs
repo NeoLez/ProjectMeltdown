@@ -17,7 +17,7 @@ namespace Root {
         [SerializeField] private float dragAlpha = 0.9f;
         [SerializeField] private float dragAlphaSmoothing = 25f;
         [SerializeField] private float sizeChangeSmoothing = 25;
-        private InventoryItem _inventoryItem;
+        public InventoryItem _inventoryItem;
         public Vector2 originalPosition;
         public Vector2 originalSize;
         public InventoryItem.InventoryItemRotation originalRotation;
@@ -118,7 +118,8 @@ namespace Root {
                 return;
             }
 
-            _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+            _inventoryItem.Inventory?.RemoveItem(_inventoryItem);
+            _inventoryItem.ReallyUglyFixForNow?.Invoke();
             receiver.TakeItem(correctedScreenPos, _currentRotation, _inventoryItem);
             receiver.ClearFeedback();
         }
