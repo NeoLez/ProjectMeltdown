@@ -5,7 +5,6 @@ namespace Root
     public class NPCInteraction : InteractBehaviour
     {
         [SerializeField] private Transform instancePivot;
-        [SerializeField] private GameObject[] packagesToDeliver;
 
         protected override void Awake()
         {
@@ -66,7 +65,7 @@ namespace Root
         //previo un sistema de eleccion
         public void GivePlayerMission()
         {
-            PackagesSystemController.Instance.EnablePackageGeneration(instancePivot, packagesToDeliver);
+            PackagesSystemController.Instance.EnablePackageGeneration(instancePivot, 3);
         }
         //que el chabon ya venga con una mision creada, solo la activa cuando vos la elegis
     }

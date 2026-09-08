@@ -22,6 +22,8 @@ namespace Root
         public ItemState HeldItem { get; private set; }
 
         public bool HasItem => HeldItem != null;
+
+        private PackageData _currentPackage = null;
         public void Pickup(PhysicalItem item)
         {
             if (HasItem && HeldItem.ItemSo)
@@ -31,6 +33,9 @@ namespace Root
                 GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
             
             HeldItem = item.itemState;
+
+            if(item.TryGetComponent(out DeliveryPackageItem deliveryPackage)) _currentPackage = deliveryPackage.PackageData;
+
             Destroy(item.gameObject);
             
             if (item.itemState.ItemSo.HeldItemGameObject == null) return;
@@ -67,7 +72,7 @@ namespace Root
 
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
-            if(deliveryPackage) PackagesSystemController.Instance.RetrieveCurrentPackageData(deliveryPackage);
+            if (deliveryPackage) deliveryPackage.SetPackageData(_currentPackage);
 
             if (CheckIfDeliveryPostNearby(out var deliveryPost) && deliveryPackage)
             {
@@ -84,6 +89,7 @@ namespace Root
                 GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
             
             HeldItem = null;
+            _currentPackage = null;
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);
             

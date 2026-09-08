@@ -9,14 +9,15 @@ namespace Root
     {
         public static PackagesSystemController Instance;
 
-        private Dictionary<string, int> _packagePricesDict = new();
-        private int _packagePriceSum;
-        private List<DeliveryPackageItem> _currentSpawnedPackages = new();
+        [SerializeField] private GameObject[] availablePackages;
 
         [SerializeField] private PackageObjectivesUI _visuals;
         [SerializeField] private MapGeneration mapGeneration;
         [SerializeField] private float fixedSpawnTime;
         [SerializeField] private float verticalOffset;
+
+        private int _packagePriceSum;
+        private List<DeliveryPackageItem> _currentSpawnedPackages = new();
 
         public Action OnDeliveryStationReached;
         private void Awake()
@@ -37,17 +38,19 @@ namespace Root
             GetNextStationToDeliver();
         }
 
-        public void EnablePackageGeneration(Transform instancePivot, GameObject[] packagesToDeliver)
+        public void EnablePackageGeneration(Transform instancePivot, int amount)
         {
-            StartCoroutine(GeneratePackages(instancePivot, packagesToDeliver));
+            StartCoroutine(GeneratePackages(instancePivot, amount));
         }
 
-        IEnumerator GeneratePackages(Transform instancePivot, GameObject[] packagesToDeliver)
+        private IEnumerator GeneratePackages(Transform instancePivot, int amountToSpawn)
         {
             Vector3 newPos = instancePivot.position;
-            for (int i = 0; i < packagesToDeliver.Length; i++)
+            for (int i = 0; i < amountToSpawn; i++)
             {
-                GameObject prefab = Instantiate(packagesToDeliver[i]);
+                int randomIndex = UnityEngine.Random.Range(0, availablePackages.Length);
+                GameObject prefab = Instantiate(availablePackages[randomIndex]);
+
                 prefab.transform.position = instancePivot.transform.position;
 
                 DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
@@ -67,21 +70,11 @@ namespace Root
             {
                 foreach (DeliveryPackageItem package in _currentSpawnedPackages)
                 {
-                    package.InitializePackageData(package.GetSO().PackageRandomPriceGenerator(), package.GetSO().PackageDurabilityLevel);
-                    _packagePricesDict.Add(package.GetSO().GenerateUniqueID(), package.GetSO().GetGeneratedNumber());
+                    package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.Durability);
                 }
             }
             _visuals.ChangeCanvas(true);
             _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
-        }
-
-        public void RetrieveCurrentPackageData(DeliveryPackageItem package)
-        {
-            if (_packagePricesDict.TryGetValue(package.GetSO().PackageID, out var generatedPrice))
-            {
-                package.InitializePackageData(generatedPrice, package.GetSO().PackageDurabilityLevel); 
-            }
-          
         }
 
         public void CheckPackageConditions()
@@ -113,7 +106,6 @@ namespace Root
             {
                 _currentSpawnedPackages.Clear();
             }
-            _packagePricesDict.Clear();
         }
 
         //el mismo controller se encarga de chequear en donde instanciar las zonas de delivery de paquetes segun x condiciones de cada paquete

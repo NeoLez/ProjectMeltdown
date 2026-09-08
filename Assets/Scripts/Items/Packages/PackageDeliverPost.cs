@@ -52,7 +52,7 @@ namespace Root
         {
             if (IsPackageDeposited(packageController))
             {
-                _depositedPackages.Add(packageController.GetSO().PackageID, packageController);
+                _depositedPackages.TryAdd(packageController.PackageData.PackageID, packageController);
                 _currentSum++;
 
                 RefreshSumAmount(packageController.GetPrice());
@@ -70,7 +70,7 @@ namespace Root
 
         private bool IsPackageDeposited(DeliveryPackageItem packageController)
         {
-            if (!_depositedPackages.TryGetValue(packageController.GetSO().PackageID, out var generatedPrice))
+            if (!_depositedPackages.TryGetValue(packageController.PackageData.PackageID, out var generatedPrice))
             {
                 return true;
             }
