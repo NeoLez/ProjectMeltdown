@@ -2462,9 +2462,6 @@ MonoBehaviour:
   Dialogue: {fileID: 11400000, guid: 4cbed44a165439e4a9db37d89bbb3f7e, type: 2}
   hasBeenTriggeredOnce: 0
   instancePivot: {fileID: 6474579147791861864}
-  packagesToDeliver:
-  - {fileID: 5985484139083966924, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
-  - {fileID: 5985484139083966924, guid: 8320433605e76b741a055cbbbffddc3f, type: 3}
 --- !u!1 &5855171405753748647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3636,7 +3633,7 @@ Transform:
   m_GameObject: {fileID: 8859464331815199779}
   serializedVersion: 2
   m_LocalRotation: {x: -0.38229665, y: -0.5948546, z: 0.5948522, w: -0.3822934}
-  m_LocalPosition: {x: 5.75, y: -2.148, z: -28.78}
+  m_LocalPosition: {x: 5.75, y: -2.192, z: -28.78}
   m_LocalScale: {x: 0.3933922, y: 0.3933922, z: 0.021727838}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3654,13 +3651,13 @@ ParticleSystem:
   simulationSpeed: 6.7
   stopAction: 0
   cullingMode: 0
-  ringBufferMode: 0
+  ringBufferMode: 2
   ringBufferLoopRange: {x: 0, y: 1}
-  emitterVelocityMode: 1
+  emitterVelocityMode: 0
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 0
+  useUnscaledTime: 1
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
@@ -3717,7 +3714,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 0
+  scalingMode: 1
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -3778,7 +3775,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.7
+      scalar: 0.02
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4054,7 +4051,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -4107,7 +4104,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -4160,7 +4157,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotation:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -4214,7 +4211,7 @@ ParticleSystem:
     randomizeRotationDirection: 0
     gravitySource: 0
     maxNumParticles: 100
-    customEmitterVelocity: {x: 0, y: 0, z: 0}
+    customEmitterVelocity: {x: 5.22, y: 0.05, z: 1.2}
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -4273,7 +4270,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 0
+    type: 5
     angle: 17.69458
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -4281,7 +4278,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 9.181261, y: 5.229533, z: 1}
+    m_Scale: {x: 12.62, y: 8.57, z: 0}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -5100,7 +5097,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -5684,7 +5681,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
   InheritVelocityModule:
     enabled: 0
     m_Mode: 0
