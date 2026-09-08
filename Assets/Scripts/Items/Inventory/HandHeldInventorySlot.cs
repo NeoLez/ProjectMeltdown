@@ -42,7 +42,7 @@ namespace Root {
         }
 
         public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
-            return item == _inventoryItemDisplay._inventoryItem || !_playerItemHolder.HasItem ||
+            return item == _inventoryItemDisplay?._inventoryItem || !_playerItemHolder.HasItem ||
                    item.Inventory.TryFindFreeArea(_playerItemHolder.HeldItem.ItemSo.InventorySize, out _, out _, item);
         }
 
