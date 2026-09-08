@@ -83,6 +83,7 @@ namespace Root {
 
         private IItemDragReceiver _previousReceiver;
         public void OnDrag(PointerEventData eventData) {
+            if (!_isBeingDragged) return;
             _targetPosition = GetRelativePosition(eventData.position);
             
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
@@ -104,6 +105,7 @@ namespace Root {
         }
 
         public void OnEndDrag(PointerEventData eventData) {
+            if (!_isBeingDragged) return;
             _isBeingDragged = false;
     
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
@@ -112,7 +114,7 @@ namespace Root {
             if (!(UIUtility.GetFirstComponentUnderCursor(eventData, out IItemDragReceiver receiver) || TryGetWorldDragReceiver(out receiver)) ||
                 !receiver.CanTakeItem(correctedScreenPos, currentSize, _inventoryItem)) {
                 ReturnItem();
-                receiver.ClearFeedback();
+                receiver?.ClearFeedback();
                 return;
             }
 
@@ -123,6 +125,7 @@ namespace Root {
 
         private void ReturnItem() {
             _isBeingDragged = false;
+            _previousReceiver?.ClearFeedback();
             var canvasTransform = (RectTransform)canvas.transform;
             canvasTransform.localScale = new Vector3(1, 1, 1);
             var color = image.color;

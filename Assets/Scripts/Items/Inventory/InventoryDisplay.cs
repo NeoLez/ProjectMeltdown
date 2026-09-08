@@ -26,8 +26,10 @@ namespace Root {
         private void HandleMoveToHand(InputAction.CallbackContext _) {
             if (!gameObject.activeInHierarchy || inventory == null) return;
             var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
-            if (playerItemHolder.HasItem) return;
-            if (!inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) return;
+            if (playerItemHolder.HasItem ||
+                !inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) {
+                return;
+            }
 
             playerItemHolder.Pickup(item.itemState);
         }

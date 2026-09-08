@@ -2361,7 +2361,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &593477868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2399,6 +2399,7 @@ MonoBehaviour:
   dragSmoothing: 30
   slotFreeColor: {r: 0, g: 1, b: 0, a: 1}
   slotObstructedColor: {r: 1, g: 0, b: 0, a: 1}
+  cantMoveToInventorySound: {fileID: 8300000, guid: 8eed9ccdc46ad064ab5bd4fb6605d1e6, type: 3}
 --- !u!114 &593477871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3716,7 +3717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &799876254
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3754,6 +3755,7 @@ MonoBehaviour:
   dragSmoothing: 30
   slotFreeColor: {r: 0, g: 1, b: 0, a: 1}
   slotObstructedColor: {r: 1, g: 0, b: 0, a: 1}
+  cantMoveToInventorySound: {fileID: 8300000, guid: 8eed9ccdc46ad064ab5bd4fb6605d1e6, type: 3}
 --- !u!114 &799876257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5327,7 +5329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.PackagesSystemController
   _visuals: {fileID: 65997429}
   mapGeneration: {fileID: 100897460}
-  fixedSpawnTime: 0.5
+  fixedSpawnTime: 0
   verticalOffset: 0
 --- !u!4 &979660838
 Transform:
@@ -10135,6 +10137,10 @@ PrefabInstance:
       propertyPath: packageController
       value: 
       objectReference: {fileID: 979660837}
+    - target: {fileID: 5723899337962232338, guid: edac4c4ef4e89b6b5a9c8183d0de000a, type: 3}
+      propertyPath: cantMoveToInventorySound
+      value: 
+      objectReference: {fileID: 8300000, guid: 8eed9ccdc46ad064ab5bd4fb6605d1e6, type: 3}
     - target: {fileID: 6407890618767639448, guid: edac4c4ef4e89b6b5a9c8183d0de000a, type: 3}
       propertyPath: m_Name
       value: Player

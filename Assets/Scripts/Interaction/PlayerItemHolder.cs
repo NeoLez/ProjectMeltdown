@@ -8,7 +8,8 @@ namespace Root
         [SerializeField] private Transform holdPoint;
         [SerializeField] private float dropDistance = 1.5f;
         [SerializeField] private Transform cameraPivot;
-
+        [SerializeField] private AudioClip cantMoveToInventorySound;
+        
         private void Awake() {
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
@@ -90,8 +91,11 @@ namespace Root
 
         private void SaveHeldItem(InputAction.CallbackContext _) {
             if (!HasItem) return;
-            if(GetComponent<Inventory>().InsertItem(HeldItem))
-                ForceClearHeldItem();
+            if(!GetComponent<Inventory>().InsertItem(HeldItem)) {
+                GameManager.AudioSystem.PlaySound(cantMoveToInventorySound, GameManager.AudioSystem.VFX);
+                return;
+            }
+            ForceClearHeldItem();
         }
 
         public void ForceClearHeldItem()
