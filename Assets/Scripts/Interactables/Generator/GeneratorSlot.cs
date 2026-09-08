@@ -5,7 +5,7 @@ using UnityEngine.VFX;
 
 namespace Root
 {
-    public class GeneratorSlot : InteractableNormalCamera
+    public class GeneratorSlot : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private VisualEffect visualEffect;
@@ -59,7 +59,7 @@ namespace Root
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
             if (visual == null) return;
 
-            if (TryInsertBattery(batteryToInsert))
+            if (TryInsertBattery(batteryToInsert.State))
             {
                 holder.ForceClearHeldItem();
             }
@@ -92,20 +92,26 @@ namespace Root
             }
         }
 
-        public bool TryInsertBattery(TrainBatteryItem battery)
+        public bool TryInsertBattery(ItemState item)
         {
-            if (_battery != null)
-                return false;
+            if (_batteryItemSO != item.ItemSo || _battery != null) return false; 
+            
+            TrainBatteryItem batteryToInsert = item.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
+            batteryToInsert.itemState = item;
+            
 
-            _battery = battery;
+            VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
+            visual.goal = GameManager.Train.GetTrainPosition();
 
-            battery.VisualOnly(true);
+            _battery = batteryToInsert;
 
-            battery.transform.SetParent(transform);
-            battery.transform.position = pivot.position;
-            battery.transform.rotation = pivot.rotation;
+            _battery.VisualOnly(true);
 
-            StartCoroutine(AnimTrigger(battery));
+            _battery.transform.SetParent(transform);
+            _battery.transform.position = pivot.position;
+            _battery.transform.rotation = pivot.rotation;
+
+            StartCoroutine(AnimTrigger(_battery));
 
             return true;
         }
@@ -169,6 +175,17 @@ namespace Root
         {
             if (emergencyLight != null)
                 emergencyLight.enabled = active;
+        }
+
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return item.itemState.ItemSo == _batteryItemSO && _battery == null;
+        }
+
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            return TryInsertBattery(item.itemState);
+        }
+
+        public void ClearFeedback() {
         }
     }
 }
