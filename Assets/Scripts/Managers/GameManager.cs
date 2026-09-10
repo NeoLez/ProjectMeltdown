@@ -15,6 +15,7 @@ public static class GameManager {
   public static WalletController Wallet;
   public static int VeryUglyKitNumber;
   public static readonly Vector2 RTSize = new(640,360);  
+  public static int seed;
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
   private static void CreateInput() {

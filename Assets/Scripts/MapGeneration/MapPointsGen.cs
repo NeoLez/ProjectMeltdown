@@ -12,6 +12,7 @@ namespace Root {
             public List<Node> InConnections = new();
             public List<Node> OutConnections = new();
             public Feature feature;
+            
 
             public Node(int height, int dist)
             {
@@ -33,26 +34,28 @@ namespace Root {
             STATION,
             ABANDONED_STATION,
         }
-
-        public static Feature GetFeature() {
-            float chance = Random.value;
-            
-            if (chance <= 0.6f) {
-                return Feature.TUNNEL;
-            }
-            if (chance <= 0.8f) 
-            {
-                 return Feature.ABANDONED_STATION;
-            }
-            else { return Feature.STATION; }
-                
-        }
         
         public class Map {
+            private System.Random _random;
             public int height, width;
             public Node[,] nodes;
 
-            public Map(int height, int width) {
+            public Feature GetFeature() {
+                float chance = (float)_random.NextDouble();
+            
+                if (chance <= 0.6f) {
+                    return Feature.TUNNEL;
+                }
+                if (chance <= 0.8f) 
+                {
+                    return Feature.ABANDONED_STATION;
+                }
+                else { return Feature.STATION; }
+                
+            }
+            
+            public Map(int height, int width, int seed) {
+                _random = new System.Random(seed);
                 this.height = height;
                 this.width = width;
                 nodes = new Node[height, width];
@@ -90,7 +93,7 @@ namespace Root {
                             continue;
                         }
                         
-                        if (Random.value <= connectionChance) {
+                        if (_random.NextDouble() <= connectionChance) {
                             int direction;
                             int targetX;
                             int targetY = y + 1;
@@ -101,7 +104,7 @@ namespace Root {
                                 direction = -1;
                             }
                             else {
-                                direction = Random.Range(0, 2);
+                                direction = _random.Next(0, 2);
                                 if (direction == 0) {
                                     direction = -1;
                                 }

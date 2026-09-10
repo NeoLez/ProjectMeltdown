@@ -65,10 +65,10 @@ namespace Root {
             _rebaseCounter = countUntilRebase;
             
             GameManager.MapGeneration = this;
-            map = new(mapHeight, mapWidth);
+            map = new(mapHeight, mapWidth, GameManager.seed);
             _context = new();
             _context.currentNode = map.nodes[Random.Range(0, mapHeight), 0];
-            Log.Logger.Log(map.ToString(), LogType.WorldGen);
+            Logger.Log(map.ToString(), LogType.WorldGen);
         }
 
         private void Start() {
