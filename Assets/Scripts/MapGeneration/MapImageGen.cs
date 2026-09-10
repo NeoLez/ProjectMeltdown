@@ -79,6 +79,7 @@ namespace Root
             mate.mainTexture = arrowTexture;
             
             OneShotRenderSystem.Instance.Render(renderTexture);
+            gameObject.SetActive(false);
         }
 
         private Vector2 GetCoords(int y, int x) {
