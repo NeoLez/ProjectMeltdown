@@ -24,6 +24,9 @@ namespace Root.Managers {
             _lockedUI.Add(UITypes.Inventory, 0);
             _lockedUI.Add(UITypes.GameOver, 0);
         }
+        private void OnDestroy() {
+            if (Instance == this) Instance = null;
+        }
 
         public bool OpenMenu(UITypes type) {
             if (_lockedUI[type] >= 1) return false;

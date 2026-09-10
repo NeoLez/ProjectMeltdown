@@ -27,6 +27,8 @@ namespace Root
 
         private void Awake()
         {
+
+
             MouseHandler.ClearListAndSetToDefault();
             MouseHandler.RequestControl(CursorLockMode.None, true, this);
 
@@ -148,9 +150,8 @@ namespace Root
 
             loadingScene = true;
             GameManager.VeryUglyKitNumber = selectedClass;
-            var op = SceneManager.LoadSceneAsync("Train 1");
+            LoadingScreen.Instance.LoadScene("Train 1");
             MouseHandler.ClearListAndSetToDefault();
-            op.allowSceneActivation = true;
         }
         public void Exit()
         {

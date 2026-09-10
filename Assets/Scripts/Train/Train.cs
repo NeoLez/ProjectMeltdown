@@ -85,7 +85,7 @@ namespace Root
         private void HandleResetPerformed(InputAction.CallbackContext context)
         {
             if (_descarrilado)
-                SceneManager.LoadScene("Menu");
+                LoadingScreen.Instance.LoadScene("Menu");
         }
 
         private void OnDestroy()

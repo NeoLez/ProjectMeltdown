@@ -7,6 +7,8 @@ namespace Root
 {
     public class HealthControl : MonoBehaviour
     {
+        public static event System.Action OnPlayerDied;
+        public static bool IsPlayerDead { get; private set; }
         [SerializeField] float _maxHealth = 100f;
         [SerializeField] float _currentHealth = 100f;
         bool _regeneration = false;
@@ -34,11 +36,12 @@ namespace Root
         private void HandleResetPerformed(InputAction.CallbackContext context)
         {
             if (_muerto)
-                SceneManager.LoadScene("Menu");
+                LoadingScreen.Instance.LoadScene("Menu");
         }
         private void Start()
         {
             _currentHealth = _maxHealth;
+            IsPlayerDead = false;
 
             GameManager.AudioSystem?.ResumeAll();
             GameManager.Input.Movement.Enable();
@@ -121,6 +124,7 @@ namespace Root
         {
             _muerto = true;
             _regeneration = false;
+            IsPlayerDead = true;
 
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
@@ -128,6 +132,7 @@ namespace Root
             GameManager.AudioSystem?.PauseAll();
 
             ui_muerte.SetActive(true);
+            OnPlayerDied?.Invoke(); 
         }
     }
 }

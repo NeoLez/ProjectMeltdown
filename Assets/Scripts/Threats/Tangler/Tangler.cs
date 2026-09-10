@@ -38,6 +38,11 @@ namespace Root.Enemy
         {
             _lastTentacleSpawnTime = Time.time;
             _animator = _visuals.GetComponent<Animator>();
+
+            if (HealthControl.IsPlayerDead) 
+            {
+                enabled = false;
+            }
         }
 
         private void Start()
@@ -137,6 +142,22 @@ namespace Root.Enemy
         {
             _lastTentacleSpawnTime = Time.time;
             _tentacleAmount--;
+        }
+
+        private void OnEnable() 
+        {
+            HealthControl.OnPlayerDied += HandlePlayerDied;
+        }
+
+        private void OnDisable() 
+        {
+            HealthControl.OnPlayerDied -= HandlePlayerDied;
+        }
+
+        private void HandlePlayerDied() 
+        {
+            enabled = false; 
+            if (_idleLoop != null) _idleLoop.Stop();
         }
     }
 }

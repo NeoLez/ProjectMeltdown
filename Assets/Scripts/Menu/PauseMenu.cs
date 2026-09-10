@@ -42,7 +42,6 @@ namespace Root
             base.Open();
             paused = true;
             pausePanel.SetActive(true);
-            
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
             GameManager.Input.Interaction.Disable();
@@ -79,7 +78,7 @@ namespace Root
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 MouseHandler.RelinquishControl(this);
-                SceneManager.LoadScene("Menu");
+                LoadingScreen.Instance.LoadScene("Menu");
             });
         }
 
