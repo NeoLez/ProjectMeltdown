@@ -2,6 +2,7 @@ using System;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Root
 {
@@ -11,13 +12,27 @@ namespace Root
         [SerializeField] private float dropDistance = 1.5f;
         [SerializeField] private Transform cameraPivot;
         [SerializeField] private AudioClip cantMoveToInventorySound;
+        [SerializeField] private Image crosshair;
         public event Action OnItemChanged;
-        
+
+
         private void Awake() {
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
         }
-
+        private void Update()
+        {
+            if (!HasItem)
+            {
+                crosshair.fillAmount = 0;
+                return;
+            }                
+            if (Input.GetKeyUp(KeyCode.R)) { crosshair.fillAmount = 0; }
+            else if (Input.GetKey(KeyCode.R))
+            {
+                crosshair.fillAmount += 0.020f;
+            }            
+        }
         private GameObject currentHeldVisual;
 
         public ItemState HeldItem { get; private set; }
@@ -123,7 +138,7 @@ namespace Root
             Destroy(currentHeldVisual);
             OnItemChanged?.Invoke();
         }
-
+        
         private void OnDestroy() {
             GameManager.Input.Inventory.PutHeldInInventory.performed -= SaveHeldItem;
         }
