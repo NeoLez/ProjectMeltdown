@@ -4,11 +4,13 @@ using Random = UnityEngine.Random;
 namespace Root {
     public class KitSpawner : MonoBehaviour {
         public ItemGenerationPoolSo[] pools;
+        public int[] startingMoney;
         public Transform[] spawnPoints;
         
         private void Start() {
             Debug.Log("Spawning Kit " + GameManager.VeryUglyKitNumber);
             SpawnItems(pools[GameManager.VeryUglyKitNumber]);
+            EconomyManager.Instance.AddMoney(startingMoney[GameManager.VeryUglyKitNumber]);
         }
 
         private void SpawnItems(ItemGenerationPoolSo pool) {
