@@ -119,5 +119,9 @@ namespace Root
             Destroy(currentHeldVisual);
             OnItemChanged?.Invoke();
         }
+
+        private void OnDestroy() {
+            GameManager.Input.Inventory.PutHeldInInventory.performed -= SaveHeldItem;
+        }
     }
 }

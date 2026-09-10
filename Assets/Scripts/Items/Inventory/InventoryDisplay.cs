@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -139,6 +140,10 @@ namespace Root {
             foreach (var pos in _positionsChanged) {
                 _slots[pos].GetComponent<Image>().color = color;
             }
+        }
+
+        private void OnDestroy() {
+            GameManager.Input.Inventory.DropItemModifier.performed -= HandleMoveToHand;
         }
     }
 }

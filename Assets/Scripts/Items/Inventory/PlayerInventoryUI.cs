@@ -1,3 +1,4 @@
+using System;
 using Root.Controller;
 using Root.Managers;
 using UnityEngine;
@@ -78,6 +79,10 @@ namespace Root {
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Enable();
             inventoryOpen = false;
+        }
+
+        private void OnDestroy() {
+            GameManager.Input.Inventory.InventoryToggle.performed -= InventoryToggle;
         }
     }
 }
