@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -39,6 +40,43 @@ namespace Root {
             private System.Random _random;
             public int height, width;
             public Node[,] nodes;
+
+            /// <summary>
+            /// Analyzes all nodes starting from the one at coordinates [<paramref name="startHeight"/>, <paramref name="startLength"/>] until a given <paramref name="maxDepth"/>>
+            /// </summary>
+            /// <returns>Nodes that satisfy the <paramref name="predicate"/> (Node nodeToAnalyze, int currentDepth) => valid/invalid as a list of tuples where the int value is the depth</returns>
+            public List<ValueTuple<Node, int>> GetNodesThatMatch(int startHeight, int startLength, Func<Node, int, bool> predicate, int maxDepth) {
+                if (startHeight < 0 || startLength < 0 || startHeight >= height || startLength >= width) return null;
+                List<ValueTuple<Node, int>> results = new();
+                Queue<Node> nodesToAnalyzeCurrentLevel = new();
+                Queue<Node> nodesToAnalyzeNextLevel = new();
+                HashSet<Node> visited = new();
+                var startingNode = nodes[startHeight, startLength];
+                nodesToAnalyzeCurrentLevel.Enqueue(startingNode);
+                visited.Add(startingNode);
+                
+                int depth = 0;
+                while (depth <= maxDepth) {
+                    var node = nodesToAnalyzeCurrentLevel.Dequeue();
+                    if(predicate(node, depth))
+                        results.Add((node, depth));
+                    
+                    foreach (var outNode in node.OutConnections) {
+                        if (depth < maxDepth && !visited.Contains(outNode)) {
+                            nodesToAnalyzeNextLevel.Enqueue(outNode);
+                            visited.Add(outNode);
+                        }
+                    }
+
+                    if (nodesToAnalyzeCurrentLevel.Count == 0) {
+                        if (nodesToAnalyzeNextLevel.Count == 0) break;
+                        (nodesToAnalyzeCurrentLevel, nodesToAnalyzeNextLevel) = (nodesToAnalyzeNextLevel, nodesToAnalyzeCurrentLevel);
+                        depth++;
+                    }
+                }
+
+                return results;
+            }
 
             public Feature GetFeature() {
                 float chance = (float)_random.NextDouble();
