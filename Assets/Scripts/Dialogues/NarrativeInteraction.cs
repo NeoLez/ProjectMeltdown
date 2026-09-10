@@ -49,6 +49,8 @@ namespace Root
         {
             if (TryFindInteractableNPC(out var currentInteractable))
             {
+                if (!currentInteractable.HasDialogue()) return;
+
                 if (currentInteractable.HasDialoguePermenantlyEnded()) return;
 
                 if (currentInteractable.CheckPivot() && currentInteractable.CheckPosPivot())

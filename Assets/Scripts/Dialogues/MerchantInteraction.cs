@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Root
@@ -10,7 +9,15 @@ namespace Root
         [SerializeField] StoreManager storeManager;
         private void Start()
         {
-            merchantTrigger._OnStoreShow?.Invoke(false);
+            if (!HasDialogue())
+            {
+                HandleInteraction(false);
+                merchantTrigger._OnStoreShow?.Invoke(true);
+            }
+            else
+            {
+                merchantTrigger._OnStoreShow?.Invoke(false);
+            }             
         }
 
         public override void StartedExecutingDialogue()
@@ -32,10 +39,9 @@ namespace Root
 
         void TriggerDialogue()
         {
-            if (Dialogue != null)
-            {
-                DialogueManager.Instance.TriggerDialogue();
-            }
+            if (Dialogue == null) return;
+
+            DialogueManager.Instance.TriggerDialogue();
         }
 
         public override void FinishedExecutingDialogue()
@@ -49,7 +55,7 @@ namespace Root
 
             base.FinishedExecutingDialogue();
         }
-        
+
         private void ShowStoreItems()
         {
             merchantTrigger._OnStoreShow?.Invoke(true);

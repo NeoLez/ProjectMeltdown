@@ -15,14 +15,26 @@ namespace Root
 
         protected virtual void Awake()
         {
-            Dialogue.OnDialogueStarted += StartedExecutingDialogue;
-            Dialogue.OnDialogueEnded += FinishedExecutingDialogue;
+            if (HasDialogue())
+            {
+                Dialogue.OnDialogueStarted += StartedExecutingDialogue;
+                Dialogue.OnDialogueEnded += FinishedExecutingDialogue;
+            }
         }
 
         protected virtual void OnDestroy()
         {
-            Dialogue.OnDialogueStarted -= StartedExecutingDialogue;
-            Dialogue.OnDialogueEnded -= FinishedExecutingDialogue;
+            if (HasDialogue())
+            {
+                Dialogue.OnDialogueStarted -= StartedExecutingDialogue;
+                Dialogue.OnDialogueEnded -= FinishedExecutingDialogue;
+            }
+
+        }
+
+        public bool HasDialogue()
+        {
+            return Dialogue;
         }
 
         public Transform CheckPivot()
@@ -49,6 +61,8 @@ namespace Root
 
         public bool HasDialoguePermenantlyEnded()
         {
+            if (Dialogue == null) return false;
+
             return !Dialogue.CanRepeatDialogue && hasBeenTriggeredOnce;
         }
 
