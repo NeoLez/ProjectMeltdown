@@ -1,3 +1,4 @@
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -17,12 +18,15 @@ namespace Root {
         }
 
         public PhysicalItem CreatePhysicalItem() {
-            var obj = Instantiate(PhysicalItemPrefab);
-            return obj;
+            var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
+            var physicalItem = obj.GetComponent<PhysicalItem>();
+            physicalItem.itemState = PhysicalItemPrefab.itemState.Clone();
+            return physicalItem;
         }
 
         private void OnValidate() {
-            Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 });
+            Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 }, "InventorySize must be 1x1 or greater");
+            Assert.IsNotNull(PhysicalItemPrefab.GetComponent<ItemPoolable>(), "PhysicalItemPrefab doesn't have a Poolable component");
         }
     }
 }

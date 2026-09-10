@@ -32,7 +32,7 @@ namespace Root
         }
 
         private void Update() {
-            if (!_purchased) {
+            if (!_purchased && _storeHand != null) {
                 transform.rotation = _storeHand.objectPivot.rotation;
                 transform.position = _storeHand.objectPivot.transform.position + (_storeItemPivot.position - transform.position);
             }

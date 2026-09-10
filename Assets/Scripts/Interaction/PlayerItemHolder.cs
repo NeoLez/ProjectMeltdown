@@ -1,4 +1,5 @@
 using System;
+using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,7 @@ namespace Root
         public bool HasItem => HeldItem != null;
 
         private PackageData _currentPackage = null;
+
         public void Pickup(PhysicalItem item)
         {
             if (HasItem && HeldItem.ItemSo)
@@ -36,17 +38,17 @@ namespace Root
             if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
 
             if (item.TryGetComponent(out DeliveryPackageItem deliveryPackage)) _currentPackage = deliveryPackage.PackageData;
-
-            Destroy(item.gameObject);
             
             if (item.itemState.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.itemState.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
             
+            PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
+            
             OnItemChanged?.Invoke();
         }
-        
+
         public void Pickup(ItemState item)
         {
             if (HasItem && HeldItem.ItemSo)
@@ -61,7 +63,7 @@ namespace Root
             
             OnItemChanged?.Invoke();
         }
-        
+
 
         public void Drop()
         {
@@ -70,6 +72,7 @@ namespace Root
 
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
+            Debug.Log("wtf", physicalItem);
 
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 

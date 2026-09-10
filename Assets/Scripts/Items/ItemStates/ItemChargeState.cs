@@ -10,5 +10,12 @@ namespace Root {
         public override string ToString() {
             return $"MaxCharge: {maxCharge}, CurrentCharge: {currentCharge}";
         }
+
+        public override ItemState Clone() {
+            var clone = new ItemChargeState(ItemSo);
+            clone.maxCharge = maxCharge;
+            clone.currentCharge = currentCharge;
+            return clone;
+        }
     }
 }

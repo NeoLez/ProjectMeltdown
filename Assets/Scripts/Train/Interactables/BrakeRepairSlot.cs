@@ -1,3 +1,4 @@
+using Root.Managers;
 using UnityEngine;
 
 namespace Root
@@ -28,11 +29,11 @@ namespace Root
             if(fluid.GetRepairAmountLeft() >= 0)
             {
                 Debug.Log("Fluid should be returned to player or dropped, not implemented for now");
-                Destroy(fluid.gameObject);
+                PoolManager.ReturnObjectToPool(fluid.gameObject.GetComponent<Poolable>());
             }
             else
             {
-                Destroy(fluid.gameObject);
+                PoolManager.ReturnObjectToPool(fluid.gameObject.GetComponent<Poolable>());
             }
         }
 

@@ -9,5 +9,11 @@ namespace Root {
         public override string ToString() {
             return usesLeft.ToString();
         }
+
+        public override ItemState Clone() {
+            var clone = new ItemConsumableState(ItemSo);
+            clone.usesLeft = usesLeft;
+            return clone;
+        }
     }
 }

@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 4018819358515913386}
   - component: {fileID: 4882277203028833108}
   - component: {fileID: 2620834895875380594}
+  - component: {fileID: -8832558550012325980}
   m_Layer: 7
   m_Name: DeliveryPackage
   m_TagString: Untagged
@@ -404,6 +405,10 @@ MonoBehaviour:
   defaultItemSo: {fileID: 11400000, guid: 53191d0ebd2ef2942846357825634096, type: 2}
   itemState:
     rid: 5718201661435412539
+  PackageData:
+    Id: 
+    Price: 0
+    Durability: 0
   packageData: {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
   packageConditions: {fileID: 0}
   _visuals: {fileID: 4882277203028833108}
@@ -415,6 +420,18 @@ MonoBehaviour:
       type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
       data:
         <ItemSo>k__BackingField: {fileID: 11400000, guid: 53191d0ebd2ef2942846357825634096, type: 2}
+--- !u!114 &-8832558550012325980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
 --- !u!1001 &5218654574486138494
 PrefabInstance:
   m_ObjectHideFlags: 0

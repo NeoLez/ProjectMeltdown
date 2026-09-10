@@ -8,5 +8,9 @@ namespace Root {
         public ItemState(ItemSo itemSo) {
             ItemSo = itemSo;
         }
+
+        public virtual ItemState Clone() {
+            return new ItemState(ItemSo);
+        }
     }
 }
