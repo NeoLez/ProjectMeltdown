@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root.Menu {
     public class MenuInputSeed : MonoBehaviour {
@@ -17,6 +18,12 @@ namespace Root.Menu {
             }
         
             return hash;
+        }
+
+        private void OnDestroy() {
+            if (inputField.text == string.Empty) {
+                GameManager.seed = new Random((int)Time.time).Next();
+            }
         }
     }
 }
