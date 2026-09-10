@@ -5,7 +5,8 @@ using Random = UnityEngine.Random;
 
 namespace Root
 {
-    public class StoreManager : MonoBehaviour {
+    public class StoreManager : MonoBehaviour
+    {
         [SerializeField] private bool isTutorialSpawn;
         [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private StoreItemPoolSO storeItemPool;
@@ -22,8 +23,9 @@ namespace Root
         [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
         [SerializeField] private Transform singlePriceSpawnPoint;
         private List<MerchantHand> initialMerchantHands = new();
-        public bool HasBoughtSingleItem { get; private set; }
+        public bool HasBoughtSingleItem => !isTutorialSpawn;
 
+        public Action OnRegenarateStock;
 
         private void Start()
         {
@@ -41,6 +43,11 @@ namespace Root
             }
             else
             {
+                if (OnRegenarateStock != null)
+                {
+                    OnRegenarateStock -= GenerateStoreItems;
+                }
+
                 foreach (var spawnPoint in spawnPoints)
                 {
                     var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
@@ -59,20 +66,22 @@ namespace Root
                 Transform priceCanvasSpawn = priceCanvasSpawnPoint[i];
 
                 StoreItemData item;
-                if (forcedSpawnItem != null && !_forcedSpawn) {
+                if (forcedSpawnItem != null && !_forcedSpawn)
+                {
                     item = forcedSpawnItem;
                     _forcedSpawn = true;
                 }
-                else 
+                else
                     item = storeItemPool.GetEntry();
-                
-                
+
+
                 int price = Random.Range(item.minPrice, item.maxPrice + 1);
-                    
+
                 GameObject obj = item.item.CreatePhysicalItem().gameObject;
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
                 obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
-                obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
+                obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
+                {
                     Debug.Log("Purchased item " + item.item.name);
                     boughtHand.HideHand();
                     itemsCreated.Remove(i);
@@ -116,14 +125,15 @@ namespace Root
             GameObject obj = item.item.CreatePhysicalItem().gameObject;
             obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
-            obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) => {
+            obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
+            {
                 boughtHand.HideHand();
                 initialMerchantHands.Remove(boughtHand);
                 itemsCreated.Remove(i);
             };
             obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
             {
-                HasBoughtSingleItem = true;
+                OnRegenarateStock += GenerateStoreItems;
                 isTutorialSpawn = false;
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
@@ -154,12 +164,13 @@ namespace Root
                     Destroy(itemsCreated[i].gameObject);
             }
 
-            HasBoughtSingleItem = false;
+            OnRegenarateStock -= GenerateStoreItems;
         }
 
-        public void ShowItems() {
+        public void ShowItems()
+        {
 
-            if(isTutorialSpawn)
+            if (isTutorialSpawn)
             {
                 foreach (var hand in initialMerchantHands)
                 {
@@ -172,10 +183,11 @@ namespace Root
                 {
                     hand.ShowHand();
                 }
-            }                
+            }
         }
 
-        public void HideItems() {
+        public void HideItems()
+        {
 
             if (isTutorialSpawn)
             {

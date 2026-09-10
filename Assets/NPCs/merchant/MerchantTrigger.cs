@@ -41,7 +41,7 @@ namespace Root
 
             if(_storeManager.HasBoughtSingleItem)
             {
-                _storeManager.GenerateStoreItems();
+                _storeManager.OnRegenarateStock?.Invoke();
             }
         }
 
