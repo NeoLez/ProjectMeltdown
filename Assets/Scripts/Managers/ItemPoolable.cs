@@ -14,9 +14,11 @@ namespace Root.Managers {
             rigidbody.angularVelocity = Vector3.zero;
             rigidbody.rotation = Quaternion.identity;
             rigidbody.transform.rotation = Quaternion.identity;
-            var storeItemDisplay = GetComponent<StoreItemDisplay>();
-            storeItemDisplay._storeHand = null;
-            storeItemDisplay._purchased = true;
+            if(item.TryGetComponent(out StoreItemDisplay storeDisplay))
+            {
+                storeDisplay._storeHand = null;
+                storeDisplay._purchased = true;
+            }
         }
     }
 }

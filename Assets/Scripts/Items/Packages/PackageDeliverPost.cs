@@ -50,31 +50,18 @@ namespace Root
 
         public void DepositPackage(DeliveryPackageItem packageController)
         {
-            if (IsPackageDeposited(packageController))
-            {
-                _depositedPackages.TryAdd(packageController.PackageData.PackageID, packageController);
-                _currentSum++;
+            _currentSum++;
 
-                RefreshSumAmount(packageController.GetPrice());
-                Destroy(packageController.gameObject, 0.5f);
+            RefreshSumAmount(packageController.GetPrice());
+            Destroy(packageController.gameObject, 0.5f);
 
-                CheckGoal();
-            }
+            CheckGoal();
         }
 
         private void RefreshSumAmount(int amount)
         {
             _currentPackageSum += amount;
             priceCounter.text = string.Format(_format, _currentPackageSum);
-        }
-
-        private bool IsPackageDeposited(DeliveryPackageItem packageController)
-        {
-            if (!_depositedPackages.TryGetValue(packageController.PackageData.PackageID, out var generatedPrice))
-            {
-                return true;
-            }
-            return false;
         }
 
         private void OnDestroy()
