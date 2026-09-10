@@ -1,9 +1,7 @@
-using System;
 using Root.Controller;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Root {
     public class PlayerInventoryUI : Menu.Menu {
@@ -33,8 +31,8 @@ namespace Root {
         }
 
         public void OpenInventory(Inventory inventory = null) {
-            _otherInventory = inventory;
             if (inventoryOpen) return;
+            _otherInventory = inventory;
             UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
         }
 
