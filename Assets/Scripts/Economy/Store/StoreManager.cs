@@ -22,14 +22,21 @@ namespace Root
         [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
         [SerializeField] private Transform singlePriceSpawnPoint;
         private List<MerchantHand> initialMerchantHands = new();
+        public bool HasBoughtSingleItem { get; private set; }
+
 
         private void Start()
         {
-            if(isTutorialSpawn)
+            GenerateStoreItems();
+        }
+
+        public void GenerateStoreItems()
+        {
+            if (isTutorialSpawn)
             {
                 var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
                 initialMerchantHands.Add(hand);
-                
+
                 GenerateCourtesyItem();
             }
             else
@@ -40,7 +47,6 @@ namespace Root
                     merchantHands.Add(hand);
                 }
                 GenerateStock();
-
             }
         }
 
@@ -73,7 +79,7 @@ namespace Root
                     merchantHands.Remove(boughtHand);
                 };
                 itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
-                var objBehaviour = obj.transform.GetChild(0);
+                var objBehaviour = obj.transform;
                 objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
 
                 GameObject canvasObj = Instantiate(priceCanvasPrefab,
@@ -115,6 +121,11 @@ namespace Root
                 initialMerchantHands.Remove(boughtHand);
                 itemsCreated.Remove(i);
             };
+            obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
+            {
+                HasBoughtSingleItem = true;
+                isTutorialSpawn = false;
+            };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
             obj.GetComponent<Rigidbody>().isKinematic = true;
 
@@ -142,9 +153,12 @@ namespace Root
                 if (itemsCreated[i] != null)
                     Destroy(itemsCreated[i].gameObject);
             }
+
+            HasBoughtSingleItem = false;
         }
 
         public void ShowItems() {
+
             if(isTutorialSpawn)
             {
                 foreach (var hand in initialMerchantHands)

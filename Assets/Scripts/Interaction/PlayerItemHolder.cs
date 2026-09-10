@@ -33,8 +33,9 @@ namespace Root
                 GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
             
             HeldItem = item.itemState;
+            if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
 
-            if(item.TryGetComponent(out DeliveryPackageItem deliveryPackage)) _currentPackage = deliveryPackage.PackageData;
+            if (item.TryGetComponent(out DeliveryPackageItem deliveryPackage)) _currentPackage = deliveryPackage.PackageData;
 
             Destroy(item.gameObject);
             

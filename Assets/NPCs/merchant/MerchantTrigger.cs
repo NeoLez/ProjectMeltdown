@@ -9,7 +9,7 @@ namespace Root
         [SerializeField] GameObject _face;
         [SerializeField] StoreManager _storeManager;
         [SerializeField] Collider triggerCollider;
-
+        [SerializeField] MerchantInteraction merchantDialogue;
 
         Animator _anim;
         public Action<bool> _OnStoreShow;
@@ -38,6 +38,11 @@ namespace Root
         {
             if (other.gameObject != GameManager.Player.gameObject) return;
             HandleStore(false);
+
+            if(_storeManager.HasBoughtSingleItem)
+            {
+                _storeManager.GenerateStoreItems();
+            }
         }
 
         public void DelayedShow()

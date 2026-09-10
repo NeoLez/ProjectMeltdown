@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root {
@@ -5,5 +6,7 @@ namespace Root {
         public abstract void Interact();
 
         public virtual void ShowFeedback(bool canShow) { }
+
+        public Action OnInteraction;
     }
 }

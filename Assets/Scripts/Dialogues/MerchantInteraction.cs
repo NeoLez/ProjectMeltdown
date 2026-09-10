@@ -6,12 +6,19 @@ namespace Root
     public class MerchantInteraction : InteractBehaviour
     {
         [SerializeField] MerchantTrigger merchantTrigger;
-
+        [SerializeField] Collider dialogueTrigger;
+        [SerializeField] StoreManager storeManager;
         private void Start()
         {
             merchantTrigger._OnStoreShow?.Invoke(false);
         }
 
+        public override void StartedExecutingDialogue()
+        {
+            HandleInteraction(true);
+
+            base.StartedExecutingDialogue();
+        }
         public override void ExecuteDialogue()
         {
             if (!gameObject.activeInHierarchy) return;
@@ -32,18 +39,25 @@ namespace Root
         }
 
         public override void FinishedExecutingDialogue()
-        {       
-            if(!Dialogue.CanRepeatDialogue) hasBeenTriggeredOnce = true;
-
+        {
+            if (!Dialogue.CanRepeatDialogue)
+            {
+                hasBeenTriggeredOnce = true;
+                HandleInteraction(false);
+            }
             ShowStoreItems();
+
             base.FinishedExecutingDialogue();
         }
-
-       
-        public void ShowStoreItems()
+        
+        private void ShowStoreItems()
         {
             merchantTrigger._OnStoreShow?.Invoke(true);
         }
 
+        private void HandleInteraction(bool enable)
+        {
+            dialogueTrigger.enabled = enable ? true : false;
+        }
     }
 }

@@ -13,6 +13,17 @@ namespace Root
         [SerializeField] private Transform _storeItemPivot;
         public event Action<MerchantHand, StoreItemDisplay> OnPurchased;
 
+        public event Action OnSingleItemBought;
+
+        private void Awake()
+        {
+            OnInteraction += Interaction;
+        }
+
+        private void OnDestroy()
+        {
+            OnInteraction += Interaction;
+        }
         public void Initialize(StoreItemData data, int price, PriceCanvas priceCanvas)
         {
             _data = data;
@@ -27,7 +38,7 @@ namespace Root
             }
         }
 
-        public override void Interact()
+        public void Interaction()
         {   
             if (_purchased) return;
 
@@ -39,8 +50,9 @@ namespace Root
             NotificationManager.Instance.ShowNotification($"You bought {_data.item.ItemName}");
             _purchased = true;
             OnPurchased?.Invoke(_storeHand, this);
-            
-            transform.GetChild(0).GetComponent<Rigidbody>().isKinematic = false;
+            OnSingleItemBought?.Invoke();
+
+            transform.GetComponent<Rigidbody>().isKinematic = false;
             
             if (_priceCanvas != null)
                 _priceCanvas.Hide();
@@ -48,6 +60,11 @@ namespace Root
 
         public void SetNotPurchased() {
             _purchased = false;
+        }
+
+        public override void Interact()
+        {
+            throw new NotImplementedException();
         }
     }
 }
