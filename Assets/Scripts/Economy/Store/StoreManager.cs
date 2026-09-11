@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Timers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +14,7 @@ namespace Root
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
         [SerializeField] private List<Transform> priceCanvasSpawnPoint;
         [SerializeField] private GameObject priceCanvasPrefab;
+        [SerializeField] private MapSection mapSection;
         private List<MerchantHand> merchantHands = new();
         private List<StoreItemDisplay> itemsCreated = new();
 
@@ -26,10 +28,12 @@ namespace Root
         public bool HasBoughtSingleItem => !isTutorialSpawn;
 
         public Action OnRegenarateStock;
-
+        private System.Random _random;
+        
         private void Start()
         {
             GenerateStoreItems();
+            _random  = new System.Random(mapSection.GetMapSectionSeed() + SeedUtils.TextToSeed("Shop"));
         }
 
         public void GenerateStoreItems()
@@ -72,10 +76,10 @@ namespace Root
                     _forcedSpawn = true;
                 }
                 else
-                    item = storeItemPool.GetEntry();
+                    item = storeItemPool.GetEntry(_random);
 
 
-                int price = Random.Range(item.minPrice, item.maxPrice + 1);
+                int price = _random.Next(item.minPrice, item.maxPrice + 1);
 
                 GameObject obj = item.item.CreatePhysicalItem().gameObject;
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;

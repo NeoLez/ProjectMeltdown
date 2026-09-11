@@ -83,6 +83,7 @@ namespace Root {
 
         public SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
+        private int mapSectionID;
         
         private bool CreateRandom() {
             if(!_sectionGeneratorSo.CanGenerate() && !_sectionGeneratorSo.HasFinished()) return false;
@@ -92,13 +93,15 @@ namespace Root {
                 _context.lastNode = _context.currentNode;
                 _context.currentNode =  _sectionGeneratorSo.GetNextNode();
                 _context.currentSeed = GameManager.seed + SeedUtils.Combine(new [] {_context.currentNode.height, _context.currentNode.dist});
+                mapSectionID = 0;
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
                 Logger.Log($"{_context.currentNode.feature} {_context.currentNode.height} {_context.currentNode.dist}", LogType.WorldGen);
                 _sectionGeneratorSo.Initialize(_context);
             }
-            
+
             section = _sectionGeneratorSo.Create();
-            section.Initialize();
+            section.Initialize(_context.currentNode, mapSectionID);
+            mapSectionID++;
 
             section.transform.parent = root;
             Transform end = IncomingSections.Count != 0 ? IncomingSections[^1].end : (PastSections.Count != 0 ? PastSections[0].end : transform);
