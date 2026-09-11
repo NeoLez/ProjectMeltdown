@@ -1,3 +1,4 @@
+using Timers;
 using TMPro;
 using UnityEngine;
 using Random = System.Random;
@@ -7,17 +8,7 @@ namespace Root.Menu {
         [SerializeField] public TMP_InputField inputField;
 
         public void SetSeed() {
-            GameManager.seed = TextToSeed(inputField.text);
-        }
-
-        private int TextToSeed(string text) {
-            int hash = 23;
-        
-            foreach (char c in text) {
-                hash = hash * 31 + c; 
-            }
-        
-            return hash;
+            GameManager.seed = SeedUtils.TextToSeed(inputField.text);
         }
 
         private void OnDestroy() {

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/StationSelectionGenerator")]
@@ -7,9 +8,11 @@ namespace Root {
         public StationSectionGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
+        private Random random;
         
         public override void Initialize(MapGeneration.MapGenerationContext context) {
             _context = context;
+            random = new Random(context.currentSeed);
             hasFinished = false;
             stage = 0;
             count = 0;
@@ -36,7 +39,7 @@ namespace Root {
                     
                     return obj1;
                 case 1:
-                    MapSection obj2 = Instantiate(settings.FeatureSectionPrefab.GetEntry());
+                    MapSection obj2 = Instantiate(settings.FeatureSectionPrefab.GetEntry(random));
                     obj2.isStation = true;
                     obj2.shouldConsumeAlert = true;
                     GameManager.Train.AlertSystem.AddAlert(obj2.alert);

@@ -9,5 +9,9 @@ namespace Root {
         public ItemSo GetRandom() {
             return items[Random.Range(0, items.Count)];
         }
+        
+        public ItemSo GetRandom(System.Random random) {
+            return items[random.Next(0, items.Count)];
+        }
     }
 }

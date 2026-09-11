@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelSectionGenerator")]
@@ -8,9 +9,11 @@ namespace Root {
         public TunnelSectionGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
+        private Random random;
         
         public override void Initialize(MapGeneration.MapGenerationContext context) {
             _context = context;
+            random = new Random(context.currentSeed);
             hasFinished = false;
             currentRepetition = 0;
             trackSectionsCreated = 0;
@@ -26,11 +29,11 @@ namespace Root {
             if (hasFinished) throw new Exception();
 
             if (currentRepetition == 0) {
-                var rand = UnityEngine.Random.Range(0, settings.mapSections.Count);
+                var rand = random.Next(0, settings.mapSections.Count);
                 var key = settings.mapSections.Keys.ElementAt(rand);
                 var speed = settings.mapSections[key];
-                TunnelSectionGeneratorSettingsSO.MapSectionListing nextSectionListing = speed[UnityEngine.Random.Range(0, speed.Count)];
-                currentRepetition = UnityEngine.Random.Range(nextSectionListing.minRepetition, nextSectionListing.maxRepetition + 1);
+                TunnelSectionGeneratorSettingsSO.MapSectionListing nextSectionListing = speed[random.Next(0, speed.Count)];
+                currentRepetition = random.Next(nextSectionListing.minRepetition, nextSectionListing.maxRepetition + 1);
                 currentSection = nextSectionListing.mapSection;
                 GameManager.Train.AlertSystem.AddAlert(currentSection.alert);
                 trackSectionsCreated++;

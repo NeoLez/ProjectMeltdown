@@ -1,3 +1,4 @@
+using Timers;
 using UnityEngine;
 
 namespace Root
@@ -5,9 +6,10 @@ namespace Root
     public class SpawnObj : MonoBehaviour
     {
         [SerializeField] private ItemGenerationPoolSo pool;
-        void Start() { 
-            
-            var obj = pool.GetRandom().CreatePhysicalItem();
+        void Start() {
+            var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
+            System.Random random = new (seed);
+            var obj = pool.GetRandom(random).CreatePhysicalItem();
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = transform.parent;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Timers;
 using UnityEngine;
 using Logger = Root.Log.Logger;
 using LogType = Root.Log.LogType;
@@ -29,6 +30,7 @@ namespace Root {
         {
             public MapPointsGen.Node currentNode;
             public MapPointsGen.Node lastNode;
+            public int currentSeed;
         }
         MapGenerationContext _context;
 
@@ -67,7 +69,7 @@ namespace Root {
             GameManager.MapGeneration = this;
             map = new(mapHeight, mapWidth, GameManager.seed);
             _context = new();
-            _context.currentNode = map.nodes[Random.Range(0, mapHeight), 0];
+            _context.currentNode = map.nodes[new System.Random(GameManager.seed).Next(0, mapHeight), 0];
             Logger.Log(map.ToString(), LogType.WorldGen);
         }
 
@@ -89,6 +91,7 @@ namespace Root {
             {
                 _context.lastNode = _context.currentNode;
                 _context.currentNode =  _sectionGeneratorSo.GetNextNode();
+                _context.currentSeed = GameManager.seed + SeedUtils.Combine(new [] {_context.currentNode.height, _context.currentNode.dist});
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
                 Logger.Log($"{_context.currentNode.feature} {_context.currentNode.height} {_context.currentNode.dist}", LogType.WorldGen);
                 _sectionGeneratorSo.Initialize(_context);
