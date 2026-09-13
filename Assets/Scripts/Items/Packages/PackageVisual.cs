@@ -7,8 +7,6 @@ namespace Root
     public class PackageVisual : MonoBehaviour
     {
         [SerializeField] private Canvas displayCanvas;
-        [SerializeField] private TMP_Text m_Text;
-        [SerializeField] private string format = "{0}$";
         [SerializeField] private float canvasHeight;
 
         Camera _playerCamera;
@@ -24,11 +22,6 @@ namespace Root
             if (!displayCanvas.isActiveAndEnabled) return;
 
             FollowCamera();
-        }
-
-        public void SetDisplayValue(float value)
-        {
-            m_Text.text = string.Format(format, value);
         }
 
         public void SetCanvasVisibility(bool enable) //TODO-agregarle algun fade in fade out con el alfa

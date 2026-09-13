@@ -10,7 +10,7 @@ namespace Root
         [SerializeField] private PackageItemSo packageData;
         [SerializeField] private PackageClimateConditionsSO packageConditions;
         //[SerializeField] private GameObject[] packageStates;
-        [SerializeField] PackageVisual _visuals;
+        //[SerializeField] PackageVisual _visuals;
 
         [HideInInspector]
         [SerializeField] private float damageMultiplier;
@@ -27,10 +27,10 @@ namespace Root
 
         private void Start()
         {
-            if(_visuals!=null)
-            {
-                _visuals = GetComponent<PackageVisual>();
-            }
+            //if(_visuals!=null)
+            //{
+            //    _visuals = GetComponent<PackageVisual>();
+            //}
             //SetTimerDuration();
 
             PackageData.SetPackageOwner(this);
@@ -44,19 +44,11 @@ namespace Root
             _currentValue = currentPrice;
 
             PackageData = new PackageData(id, currentPrice, currentDurability);
-            _visuals.SetDisplayValue(currentPrice);
         }
 
         public void SetPackageData(PackageData newData)
         {
             PackageData = newData;
-
-            RefreshUI();
-        }
-
-        private void RefreshUI()
-        {
-            _visuals.SetDisplayValue(PackageData.Price);
         }
 
         private void Update()
@@ -69,7 +61,6 @@ namespace Root
         {
             base.ShowFeedback(canShow);
 
-            _visuals.SetCanvasVisibility(canShow);      
         }
 
         #region Not Finished
@@ -111,7 +102,6 @@ namespace Root
         {
             //sacar un porcentaje total de la vida, si se va disminuyendo, restarle un valor minimo en lo posible (balancear)
             //que el visualizador se vaya actualizando
-            _visuals.SetDisplayValue(_currentValue);
         }
 
         private void StartDrainingLife()

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.ReloadAttribute;
 
 namespace Root
 {
@@ -10,6 +11,7 @@ namespace Root
         public static PackagesSystemController Instance;
 
         [SerializeField] private GameObject[] availablePackages;
+        [SerializeField] private PackageStampGenerator packageStampGenerator;
 
         [SerializeField] private PackageObjectivesUI _visuals;
         [SerializeField] private MapGeneration mapGeneration;
@@ -41,6 +43,8 @@ namespace Root
         public void EnablePackageGeneration(Transform instancePivot, int amount)
         {
             StartCoroutine(GeneratePackages(instancePivot, amount));
+
+            packageStampGenerator.EnableCanvas(true);
         }
 
         private IEnumerator GeneratePackages(Transform instancePivot, int amountToSpawn)
@@ -61,22 +65,26 @@ namespace Root
                 yield return new WaitForSeconds(fixedSpawnTime);
 
                 newPos += Vector3.up * verticalOffset;
+
+                InitializePackges(currentPackage);
+                
+                yield return new WaitForSeconds(0.1f);
             }
 
-            PackagesCheck();
+            packageStampGenerator.EnableCanvas(false);
+            _visuals.ChangeCanvas(true);
+            _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
         }
 
-        public void PackagesCheck()
+        private void InitializePackges(DeliveryPackageItem package)
         {
             if (_currentSpawnedPackages.Count > 0)
             {
-                foreach (DeliveryPackageItem package in _currentSpawnedPackages)
-                {
-                    package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.Durability);
-                }
+                package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.Durability);
+
+                var currentpackage = package.GetComponentInChildren<DeliveryPackageItem>();
+                packageStampGenerator.CreateStamp(currentpackage.gameObject);        
             }
-            _visuals.ChangeCanvas(true);
-            _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
         }
 
         public void CheckPackageConditions()

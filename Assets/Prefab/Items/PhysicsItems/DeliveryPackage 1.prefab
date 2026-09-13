@@ -186,7 +186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6508826760052235116
 RectTransform:
   m_ObjectHideFlags: 0
@@ -306,6 +306,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 546305659477950973}
   - {fileID: 6508826760052235116}
   - {fileID: 3481032908148788174}
   - {fileID: 8735776296580978922}
@@ -371,7 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 749b9f4f9e524410a1a3a62c877a30b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainer
-  visuals: {fileID: 0}
+  visuals: {fileID: 594220053906453470}
   originCenter: {fileID: 0}
   goal: {fileID: 0}
 --- !u!114 &4882277203028833108
@@ -381,7 +382,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5985484139083966924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6df728cf6a5326488e72a765bf7228b, type: 3}
   m_Name: 
@@ -411,7 +412,6 @@ MonoBehaviour:
     Durability: 0
   packageData: {fileID: 11400000, guid: 9844bc2be8fdc0346a40796041096534, type: 2}
   packageConditions: {fileID: 0}
-  _visuals: {fileID: 4882277203028833108}
   damageMultiplier: 0
   references:
     version: 2
@@ -432,6 +432,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
+--- !u!1 &6187420000804503293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 546305659477950973}
+  - component: {fileID: 8615194490362279716}
+  m_Layer: 0
+  m_Name: PackageStamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &546305659477950973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6187420000804503293}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.011000156, y: 0.63100004, z: -0.020000458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 383741620108785082}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &8615194490362279716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6187420000804503293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
+  m_Material: {fileID: 2100000, guid: c697645e93280aaad95d1384154bfc02, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.25}
+  m_Size: {x: 1, y: 1, z: 0.5}
+  m_FadeFactor: 0
+  m_VisibleInScene: 1
+  version: 1
+  m_DecalLayerMask: 1
 --- !u!1001 &7649741286728142257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -505,6 +566,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 249546951a21e244991fe808830dd766, type: 3}
+--- !u!1 &594220053906453470 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7067907953282776687, guid: 249546951a21e244991fe808830dd766, type: 3}
+  m_PrefabInstance: {fileID: 7649741286728142257}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8735776296580978922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1374408683327231323, guid: 249546951a21e244991fe808830dd766, type: 3}
