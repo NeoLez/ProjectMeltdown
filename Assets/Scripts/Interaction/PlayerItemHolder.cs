@@ -13,6 +13,7 @@ namespace Root
         [SerializeField] private Transform cameraPivot;
         [SerializeField] private AudioClip cantMoveToInventorySound;
         [SerializeField] private Image crosshair;
+        [SerializeField] private float _throwStrenght = 999f;
 
         public event Action OnItemChanged;
         public ItemState HeldItem { get; private set; }
@@ -90,7 +91,7 @@ namespace Root
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
             Debug.Log("wtf", physicalItem);
-
+            var rbItem = physicalItem.GetComponent<Rigidbody>();
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
             if (deliveryPackage) deliveryPackage.SetPackageData(_currentPackage);
@@ -101,6 +102,7 @@ namespace Root
             }
             else
             {
+                rbItem.AddForce(cameraPivot.forward * _throwStrenght, ForceMode.Force);
                 physicalItem.transform.position =
                 cameraPivot.position +
                 cameraPivot.forward * dropDistance;
