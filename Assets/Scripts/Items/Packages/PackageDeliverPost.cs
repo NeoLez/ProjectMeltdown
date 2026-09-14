@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace Root
     {
         [SerializeField] private int amountOfPackagesToDeliver;
         [SerializeField] private Transform dropPivot;
-
+        [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
         private string _format = "{0}$";
         public Transform DropPivot => dropPivot;
@@ -17,51 +19,60 @@ namespace Root
         private int _currentSum;
 
         private int _currentPackageSum;
+        private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
+        private int _animStateClose = Animator.StringToHash("CloseDepositDoor");
+
+        private bool _isAnimating;
+        private bool _hasCompletedGoal;
 
         private void Start()
         {
             RefreshSumAmount(0);
         }
 
+        public void DepositPackage(DeliveryPackageItem packageController)
+        {
+            if (_hasCompletedGoal) return;
+            if (_isAnimating) return;
+            
+            StartCoroutine(TriggerDepositAnims());
+
+            _currentSum++;
+            RefreshSumAmount(packageController.GetPrice());
+            Destroy(packageController.gameObject, 0.5f);
+
+            CheckGoal();
+        }
         private void CheckGoal()
         {
             if (amountOfPackagesToDeliver == _currentSum)
             {
                 PackagesSystemController.Instance.CheckPackageConditions();
+                _hasCompletedGoal = true;
                 return;
             }
         }
 
-        /* private void OnTriggerEnter(Collider other)
-         {
-             if (other.TryGetComponent(out DeliveryPackageItem packageController))
-             {
-                 if (IsPackageDeposited(packageController))
-                 {
-                     _depositedPackages.Add(packageController.GetSO().PackageID, packageController);
-                     _currentSum++;
-                     Destroy(packageController.gameObject, 0.5f);
-
-                     CheckGoal();
-                 }
-
-             }
-         }*/
-
-        public void DepositPackage(DeliveryPackageItem packageController)
+        private IEnumerator TriggerDepositAnims()
         {
-            _currentSum++;
-
-            RefreshSumAmount(packageController.GetPrice());
-            Destroy(packageController.gameObject, 0.5f);
-
-            CheckGoal();
+            _isAnimating = true;
+            animator.SetTrigger(_animStateOpen);
+            yield return new WaitForSeconds(1);
+            animator.SetTrigger(_animStateClose);
+            _isAnimating = false;
         }
 
         private void RefreshSumAmount(int amount)
         {
             _currentPackageSum += amount;
             priceCounter.text = string.Format(_format, _currentPackageSum);
+
+            PackagesSystemController.Instance.SumCurrentDeposited(_currentPackageSum);
+        }
+
+        public bool HasReachedDepositGoal()
+        {
+            return _hasCompletedGoal;
         }
 
         private void OnDestroy()

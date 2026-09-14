@@ -89,33 +89,17 @@ namespace Root
 
         public void CheckPackageConditions()
         {
-            SumCurrentPackages();
-
             EconomyManager.Instance.AddMoney(_packagePriceSum);
 
             _visuals.ChangeUi("Entregaste todos los paquetes");
             NotificationManager.Instance.ShowNotification("+ $" + _packagePriceSum);
+
+            _packagePriceSum = 0;
         }
 
-        public void SumCurrentPackages()
+        public void SumCurrentDeposited(int amount)
         {
-            foreach (DeliveryPackageItem package in _currentSpawnedPackages)
-            {
-                _packagePriceSum += package.GetPrice();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            CleanReferences();
-        }
-
-        private void CleanReferences()
-        {
-            if (_currentSpawnedPackages.Count > 0)
-            {
-                _currentSpawnedPackages.Clear();
-            }
+            _packagePriceSum = amount;
         }
 
         //el mismo controller se encarga de chequear en donde instanciar las zonas de delivery de paquetes segun x condiciones de cada paquete
@@ -125,6 +109,13 @@ namespace Root
             {
                 OnDeliveryStationReached?.Invoke(); //aca cuando llegue a la estacion, si mi info coincide, activo a la zona de delivery de todos lo que hipoteticamente tenga activos jajaj
                 return;
+            }
+        }
+        private void OnDestroy()
+        {
+            if (_currentSpawnedPackages.Count > 0)
+            {
+                _currentSpawnedPackages.Clear();
             }
         }
     }

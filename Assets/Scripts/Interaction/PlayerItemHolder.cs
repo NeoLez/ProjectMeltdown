@@ -119,7 +119,7 @@ namespace Root
         public bool CheckIfDeliveryPostNearby(out PackageDeliverPost packagePost) 
         {
             packagePost = null;
-            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out var hit, 7f) && hit.collider.gameObject.TryGetComponent(out packagePost);
+            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out var hit, 7f) && hit.collider.gameObject.TryGetComponent(out packagePost) && !packagePost.HasReachedDepositGoal();
         }
 
         private void SaveHeldItem(InputAction.CallbackContext _) {
