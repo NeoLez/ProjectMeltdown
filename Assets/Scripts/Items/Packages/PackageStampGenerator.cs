@@ -1,7 +1,5 @@
 using TMPro;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
-using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -15,23 +13,22 @@ namespace Root
 
         private int width;
         private int height;
-        private CanvasScaler m_Canvas;
+        private CanvasScaler _canvasScaler;
 
         private void Awake()
         {
-            m_Canvas = GetComponent<CanvasScaler>();
+            _canvasScaler = GetComponent<CanvasScaler>();
         }
 
         private void Start()
         {
-            EnableCanvas(false);
             SetTextureResolution();
         }
 
         private void SetTextureResolution()
         {
-            var x = m_Canvas.referenceResolution.x;
-            var y = m_Canvas.referenceResolution.y;
+            var x = _canvasScaler.referenceResolution.x;
+            var y = _canvasScaler.referenceResolution.y;
             width = (int)x;
             height = (int)y;
         }
@@ -46,7 +43,7 @@ namespace Root
             var r = obj.GetComponentInChildren<DecalProjector>();
             var mate = new Material(r.material);
             r.material = mate;
-            r.material.SetTexture("_Texture",render);
+            r.material.SetTexture("_Texture", render);
 
             OneShotRenderSystem.Instance.Render(render);
 

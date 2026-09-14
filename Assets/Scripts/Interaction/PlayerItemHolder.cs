@@ -13,33 +13,35 @@ namespace Root
         [SerializeField] private Transform cameraPivot;
         [SerializeField] private AudioClip cantMoveToInventorySound;
         [SerializeField] private Image crosshair;
+
         public event Action OnItemChanged;
+        public ItemState HeldItem { get; private set; }
 
+        public bool HasItem => HeldItem != null;
 
-        private void Awake() {
+        private GameObject currentHeldVisual;
+
+        private PackageData _currentPackage = null;
+
+        private void Awake()
+        {
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
         }
+
         private void Update()
         {
             if (!HasItem)
             {
                 crosshair.fillAmount = 0;
                 return;
-            }                
+            }
             if (Input.GetKeyUp(KeyCode.R)) { crosshair.fillAmount = 0; }
             else if (Input.GetKey(KeyCode.R))
             {
                 crosshair.fillAmount += 3f * Time.deltaTime;
-            }            
+            }
         }
-        private GameObject currentHeldVisual;
-
-        public ItemState HeldItem { get; private set; }
-
-        public bool HasItem => HeldItem != null;
-
-        private PackageData _currentPackage = null;
 
         public void Pickup(PhysicalItem item)
         {

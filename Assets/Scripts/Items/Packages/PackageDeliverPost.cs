@@ -12,13 +12,13 @@ namespace Root
         [SerializeField] private Transform dropPivot;
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
-        private string _format = "{0}$";
         public Transform DropPivot => dropPivot;
 
-        private Dictionary<string, DeliveryPackageItem> _depositedPackages = new();
-        private int _currentSum;
+        private string _format = "{0}$";
 
+        private List<int> _depositedPackages = new();
         private int _currentPackageSum;
+
         private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
         private int _animStateClose = Animator.StringToHash("CloseDepositDoor");
 
@@ -37,7 +37,7 @@ namespace Root
             
             StartCoroutine(TriggerDepositAnims());
 
-            _currentSum++;
+            _depositedPackages.Add(1);
             RefreshSumAmount(packageController.GetPrice());
             Destroy(packageController.gameObject, 0.5f);
 
@@ -45,7 +45,7 @@ namespace Root
         }
         private void CheckGoal()
         {
-            if (amountOfPackagesToDeliver == _currentSum)
+            if (amountOfPackagesToDeliver == _depositedPackages.Count)
             {
                 PackagesSystemController.Instance.CheckPackageConditions();
                 _hasCompletedGoal = true;
