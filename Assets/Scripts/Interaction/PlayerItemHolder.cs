@@ -30,7 +30,7 @@ namespace Root
             if (Input.GetKeyUp(KeyCode.R)) { crosshair.fillAmount = 0; }
             else if (Input.GetKey(KeyCode.R))
             {
-                crosshair.fillAmount += 0.020f;
+                crosshair.fillAmount += 3f * Time.deltaTime;
             }            
         }
         private GameObject currentHeldVisual;
