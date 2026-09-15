@@ -1,4 +1,5 @@
 using Root.Controller;
+using Root.Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,7 +28,7 @@ namespace Root
 
         private void Awake()
         {
-
+            PoolManager.Reset();
 
             MouseHandler.ClearListAndSetToDefault();
             MouseHandler.RequestControl(CursorLockMode.None, true, this);
@@ -152,6 +153,7 @@ namespace Root
             GameManager.VeryUglyKitNumber = selectedClass;
             LoadingScreen.Instance.LoadScene("Train 1");
             MouseHandler.ClearListAndSetToDefault();
+            PoolManager.Reset();
         }
         public void Exit()
         {

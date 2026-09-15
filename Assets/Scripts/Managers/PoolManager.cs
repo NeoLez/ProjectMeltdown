@@ -33,5 +33,10 @@ namespace Root.Managers {
             pool.Enqueue(obj);
             Debug.Log(pool.Count);
         }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        public static void Reset() {
+            Pools.Clear();
+        }
     }
 }
