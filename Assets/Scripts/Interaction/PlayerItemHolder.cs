@@ -90,6 +90,7 @@ namespace Root
 
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
+            physicalItem.transform.parent = null;
             Debug.Log("wtf", physicalItem);
             var rbItem = physicalItem.GetComponent<Rigidbody>();
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
