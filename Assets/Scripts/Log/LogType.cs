@@ -4,6 +4,7 @@
     {
         Store,
         WorldGen,
+        Pool,
         Test,
     }
 }
