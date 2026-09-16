@@ -162,7 +162,7 @@ namespace Root
         private string _packageID;
         private int _generatedPrice;
 
-        public string PackageID => _packageID;
+        public bool PackageID => string.IsNullOrEmpty(Id);
         public PackageData(string id, int price, float durability)
         {
             Id = id;

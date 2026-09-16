@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,7 +23,7 @@ namespace Root
 
         private GameObject currentHeldVisual;
 
-        private PackageData _currentPackage = null;
+        private Dictionary<string, PackageData> _currentPackageData = new();
 
         private void Awake()
         {
@@ -55,7 +56,10 @@ namespace Root
             HeldItem = item.itemState;
             if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
 
-            if (item.TryGetComponent(out DeliveryPackageItem deliveryPackage)) _currentPackage = deliveryPackage.PackageData;
+            if (item.TryGetComponent(out DeliveryPackageItem deliveryPackage))
+            {
+                _currentPackageData.Add(deliveryPackage.PackageData.Id, deliveryPackage.PackageData);
+            }
             
             if (item.itemState.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.itemState.ItemSo.HeldItemGameObject, holdPoint);
@@ -73,7 +77,7 @@ namespace Root
                 Drop();
             
             HeldItem = item;
-            
+
             if (item.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
@@ -95,7 +99,11 @@ namespace Root
             var rbItem = physicalItem.GetComponent<Rigidbody>();
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
-            if (deliveryPackage) deliveryPackage.SetPackageData(_currentPackage);
+            if (deliveryPackage && _currentPackageData.TryGetValue(deliveryPackage.PackageData.Id, out PackageData data))
+            {
+                deliveryPackage.SetPackageData(data);
+                _currentPackageData.Remove(deliveryPackage.PackageData.Id);
+            }
 
             if (CheckIfDeliveryPostNearby(out var deliveryPost) && deliveryPackage)
             {
@@ -113,7 +121,6 @@ namespace Root
                 GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
             
             HeldItem = null;
-            _currentPackage = null;
             if (currentHeldVisual != null)
                 Destroy(currentHeldVisual);
             
@@ -146,6 +153,7 @@ namespace Root
         
         private void OnDestroy() {
             GameManager.Input.Inventory.PutHeldInInventory.performed -= SaveHeldItem;
+            _currentPackageData.Clear();
         }
     }
 }
