@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
-using Root.Managers; 
+using Root.Managers;
 
 namespace Root
 {
@@ -14,9 +14,14 @@ namespace Root
         private bool _opened;
         public bool IsOpened => _opened;
         private bool _isAnimating;
+        public bool IsAnimating => _isAnimating;
+        public static bool CanInteract => GameManager.Wallet == null || (!GameManager.Wallet.IsOpened && !GameManager.Wallet.IsAnimating);
 
-        private void Awake() {
+
+        private void Awake()
+        {
             GameManager.Wallet = this;
+            animator.Play("Wallet_Close", 0, 1f);
         }
 
         private static readonly int OpenHash = Animator.StringToHash("Open");
@@ -33,7 +38,8 @@ namespace Root
 
         private void OnWalletPerformed(InputAction.CallbackContext ctx)
         {
-            if (_isAnimating) return; 
+            if (_isAnimating) return;
+            if (!_opened && GameManager.ItemHolder != null && GameManager.ItemHolder.HasItem) return;
             ToggleWallet();
         }
 
@@ -45,10 +51,10 @@ namespace Root
             if (!_opened)
                 moneyText.SetActive(false);
 
-            StartCoroutine(PlayAnimation()); 
+            StartCoroutine(PlayAnimation());
         }
 
-        private IEnumerator PlayAnimation() 
+        private IEnumerator PlayAnimation()
         {
             _isAnimating = true;
             yield return null;
