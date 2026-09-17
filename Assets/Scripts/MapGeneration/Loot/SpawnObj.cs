@@ -7,6 +7,7 @@ namespace Root
     {
         [SerializeField] private ItemGenerationPoolSo pool;
         void Start() {
+            //TODO: Since this uses global positions it could be unstable in the long run due to small changes in the rebase calculation. Maybe switch to local position respective to the MapSection?
             var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
             System.Random random = new (seed);
             var obj = pool.GetRandom(random).CreatePhysicalItem();

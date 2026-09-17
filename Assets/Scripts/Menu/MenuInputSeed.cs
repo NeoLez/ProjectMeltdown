@@ -13,7 +13,7 @@ namespace Root.Menu {
 
         private void OnDestroy() {
             if (inputField.text == string.Empty) {
-                GameManager.seed = new Random((int)Time.time).Next();
+                GameManager.seed = new Random().Next();
             }
         }
     }
