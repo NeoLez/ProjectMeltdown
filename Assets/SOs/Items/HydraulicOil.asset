@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930a0e19b1de46ec94a2cb05c9201093, type: 3}
+  m_Name: HydraulicOil
+  m_EditorClassIdentifier: Assembly-CSharp::Root.ItemChargeStateSo
+  <PhysicalItemPrefab>k__BackingField: {fileID: 5806968461464638997, guid: 6a8791702f6512c33a2df84b84dc6e88, type: 3}
+  <InventoryItemPrefab>k__BackingField: {fileID: 387963753239021078, guid: 067061a3a5af5b1acbf77127aee7fac0, type: 3}
+  <InventoryItemIcon>k__BackingField: {fileID: 0}
+  <HeldItemGameObject>k__BackingField: {fileID: 4982989793235443847, guid: d307e21c4f0d94d66a20022f8b17668b, type: 3}
+  <ItemName>k__BackingField: Hydraulic Oil
+  <Description>k__BackingField: Can be used to reactivate old hydraulic machinery
+  <InventorySize>k__BackingField: {x: 1, y: 1}
+  <DefaultItemState>k__BackingField:
+    rid: 5244131007146229760
+  references:
+    version: 2
+    RefIds:
+    - rid: 5244131007146229760
+      type: {class: ItemChargeState, ns: Root, asm: Assembly-CSharp}
+      data:
+        <ItemSo>k__BackingField: {fileID: 11400000}
+        maxCharge: 30
+        currentCharge: 30

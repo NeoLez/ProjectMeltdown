@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000037748947, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.391915, y: 0.424405, z: 0.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6627293733762963480}
   - {fileID: 2240951685157188492}
@@ -99,16 +99,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed44fc730731405bbe66f6a531f96148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.PhysicalItem
-  defaultItemSo: {fileID: 0}
+  defaultItemSo: {fileID: 11400000, guid: e01aef54afa3200c58db25d0740292f2, type: 2}
   itemState:
-    rid: 3120210049669005371
+    rid: 5244131007146229761
   references:
     version: 2
     RefIds:
-    - rid: 3120210049669005371
-      type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
+    - rid: 5244131007146229761
+      type: {class: ItemChargeState, ns: Root, asm: Assembly-CSharp}
       data:
-        <ItemSo>k__BackingField: {fileID: 0}
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: e01aef54afa3200c58db25d0740292f2, type: 2}
+        maxCharge: 30
+        currentCharge: 30
 --- !u!114 &9202769338696551044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +267,7 @@ Transform:
   m_GameObject: {fileID: 7300382601702299213}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.555, z: 0}
+  m_LocalPosition: {x: 0, y: 0.824, z: -0.308}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
