@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Root {
-    public class InventoryItemDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+    public class InventoryItemDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private Image image;
         [SerializeField] private Canvas canvas;
@@ -184,6 +184,15 @@ namespace Root {
             }
 
             return true;
+        }
+
+        public void OnPointerClick(PointerEventData eventData) {
+            if (_isBeingDragged) return;
+            if (!PlayerInventoryUI.Instance.IsQuickTransferPossible(_inventoryItem.Inventory, out Inventory destination)) return;
+
+            if (destination.InsertItem(_inventoryItem.itemState)) {
+                _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+            }
         }
     }
 }

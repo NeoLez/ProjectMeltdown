@@ -497,6 +497,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Tap(duration=0.3)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickMoveModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""15562d18-2a13-4ca0-acbd-6099c7c2cda1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -552,6 +561,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e7d5bc01-377d-44d8-8a41-472655125c07"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickMoveModifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -675,6 +695,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Inventory_RotateItem = m_Inventory.FindAction("RotateItem", throwIfNotFound: true);
         m_Inventory_AlternativeCloseInventory = m_Inventory.FindAction("AlternativeCloseInventory", throwIfNotFound: true);
         m_Inventory_DropItem = m_Inventory.FindAction("DropItem", throwIfNotFound: true);
+        m_Inventory_QuickMoveModifier = m_Inventory.FindAction("QuickMoveModifier", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
@@ -1165,6 +1186,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_RotateItem;
     private readonly InputAction m_Inventory_AlternativeCloseInventory;
     private readonly InputAction m_Inventory_DropItem;
+    private readonly InputAction m_Inventory_QuickMoveModifier;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inventory".
     /// </summary>
@@ -1196,6 +1218,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Inventory/DropItem".
         /// </summary>
         public InputAction @DropItem => m_Wrapper.m_Inventory_DropItem;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/QuickMoveModifier".
+        /// </summary>
+        public InputAction @QuickMoveModifier => m_Wrapper.m_Inventory_QuickMoveModifier;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1237,6 +1263,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DropItem.started += instance.OnDropItem;
             @DropItem.performed += instance.OnDropItem;
             @DropItem.canceled += instance.OnDropItem;
+            @QuickMoveModifier.started += instance.OnQuickMoveModifier;
+            @QuickMoveModifier.performed += instance.OnQuickMoveModifier;
+            @QuickMoveModifier.canceled += instance.OnQuickMoveModifier;
         }
 
         /// <summary>
@@ -1263,6 +1292,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @DropItem.started -= instance.OnDropItem;
             @DropItem.performed -= instance.OnDropItem;
             @DropItem.canceled -= instance.OnDropItem;
+            @QuickMoveModifier.started -= instance.OnQuickMoveModifier;
+            @QuickMoveModifier.performed -= instance.OnQuickMoveModifier;
+            @QuickMoveModifier.canceled -= instance.OnQuickMoveModifier;
         }
 
         /// <summary>
@@ -1614,6 +1646,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDropItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "QuickMoveModifier" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnQuickMoveModifier(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

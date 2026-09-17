@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Root {
     public class PlayerInventoryUI : Menu.Menu {
+        public static PlayerInventoryUI Instance { get; private set; }
         [SerializeField] InventoryDisplay playerInventoryDisplay;
         [SerializeField] InventoryDisplay otherInventoryDisplay;
         [SerializeField] HandHeldInventorySlot handHeldInventorySlot;
@@ -15,6 +16,7 @@ namespace Root {
             GameManager.PlayerInventoryUI = this;
             GameManager.Input.Inventory.InventoryToggle.performed += InventoryToggle;
             GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose;
+            Instance = this;
         }
 
         private void InventoryToggle(InputAction.CallbackContext _) {
@@ -85,6 +87,21 @@ namespace Root {
             GameManager.Input.Interaction.Enable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             inventoryOpen = false;
+        }
+
+        public bool IsQuickTransferPossible(Inventory inventory, out Inventory destination) {
+            destination = null;
+            if (_otherInventory == null) return false;
+            
+            if (inventory == playerInventoryDisplay.inventory) {
+                destination = _otherInventory;
+                return true;
+            }else if (inventory == _otherInventory) {
+                destination = playerInventoryDisplay.inventory;
+                return true;
+            }
+
+            return false;
         }
 
         private void OnDestroy() {
