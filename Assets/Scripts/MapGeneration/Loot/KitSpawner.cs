@@ -7,7 +7,6 @@ namespace Root {
         public int[] startingMoney;
         
         private void Start() {
-            Debug.Log("Spawning Kit " + GameManager.VeryUglyKitNumber);
             SpawnItems(pools[GameManager.VeryUglyKitNumber]);
             EconomyManager.Instance.AddMoney(startingMoney[GameManager.VeryUglyKitNumber]);
         }

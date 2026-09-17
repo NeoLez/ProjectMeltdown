@@ -27,6 +27,7 @@ public static class GameManager {
       Input.Interaction.Interact.Enable();
       Input.Interaction.NPC.Enable();
       Input.Inventory.Enable();
+      Input.Inventory.AlternativeCloseInventory.Disable();
       AudioSystem = new AudioSystem();
 
     }

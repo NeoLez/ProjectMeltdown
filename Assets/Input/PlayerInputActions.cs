@@ -325,13 +325,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractLockedCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""7bca3a28-2aa4-4569-aa3c-eaf79798fd82"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""7e9dcb28-aa45-4ae7-90d1-8c1b21b8cbd6"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -419,11 +428,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc5b9106-a9c1-486e-94bc-6da81d5b20a5"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Wallet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93a78dee-d2e2-4961-bac4-8823bce4e068"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InteractLockedCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -452,15 +472,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""DropItemModifier"",
-                    ""type"": ""Button"",
-                    ""id"": ""66b4b06f-666d-4f6e-aa26-6b69f9321baa"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""RotateItem"",
                     ""type"": ""Value"",
                     ""id"": ""083b9fc0-ff84-46f2-8dc1-2f2c88234584"",
@@ -468,13 +479,31 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""AlternativeCloseInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""546ae723-ef97-44bc-9963-b673e40a5abf"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""39c0b4b3-8e4a-4874-8a77-a649cd6bbfd9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Tap(duration=0.3)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""1f21e74f-300e-47fa-969b-4730333c4752"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": ""Tap(duration=0.499)"",
                     ""processors"": """",
                     ""groups"": """",
@@ -485,22 +514,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d1207e1f-8db5-4574-910b-5bd73f12b917"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": ""Hold"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Hold(duration=0.6)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PutHeldInInventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""15730fa3-553a-47d7-b82b-1af49a92ca19"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""DropItemModifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -512,6 +530,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bec6a462-5c12-438a-9978-55144f6809d7"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AlternativeCloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ef3f822-9509-4293-9775-a63ec5ee7315"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DropItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -627,12 +667,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_NPC = m_Interaction.FindAction("NPC", throwIfNotFound: true);
         m_Interaction_Flashlight = m_Interaction.FindAction("Flashlight", throwIfNotFound: true);
         m_Interaction_Wallet = m_Interaction.FindAction("Wallet", throwIfNotFound: true);
+        m_Interaction_InteractLockedCamera = m_Interaction.FindAction("InteractLockedCamera", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_InventoryToggle = m_Inventory.FindAction("InventoryToggle", throwIfNotFound: true);
         m_Inventory_PutHeldInInventory = m_Inventory.FindAction("PutHeldInInventory", throwIfNotFound: true);
-        m_Inventory_DropItemModifier = m_Inventory.FindAction("DropItemModifier", throwIfNotFound: true);
         m_Inventory_RotateItem = m_Inventory.FindAction("RotateItem", throwIfNotFound: true);
+        m_Inventory_AlternativeCloseInventory = m_Inventory.FindAction("AlternativeCloseInventory", throwIfNotFound: true);
+        m_Inventory_DropItem = m_Inventory.FindAction("DropItem", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
@@ -962,6 +1004,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_NPC;
     private readonly InputAction m_Interaction_Flashlight;
     private readonly InputAction m_Interaction_Wallet;
+    private readonly InputAction m_Interaction_InteractLockedCamera;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -997,6 +1040,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/Wallet".
         /// </summary>
         public InputAction @Wallet => m_Wrapper.m_Interaction_Wallet;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/InteractLockedCamera".
+        /// </summary>
+        public InputAction @InteractLockedCamera => m_Wrapper.m_Interaction_InteractLockedCamera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1041,6 +1088,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Wallet.started += instance.OnWallet;
             @Wallet.performed += instance.OnWallet;
             @Wallet.canceled += instance.OnWallet;
+            @InteractLockedCamera.started += instance.OnInteractLockedCamera;
+            @InteractLockedCamera.performed += instance.OnInteractLockedCamera;
+            @InteractLockedCamera.canceled += instance.OnInteractLockedCamera;
         }
 
         /// <summary>
@@ -1070,6 +1120,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Wallet.started -= instance.OnWallet;
             @Wallet.performed -= instance.OnWallet;
             @Wallet.canceled -= instance.OnWallet;
+            @InteractLockedCamera.started -= instance.OnInteractLockedCamera;
+            @InteractLockedCamera.performed -= instance.OnInteractLockedCamera;
+            @InteractLockedCamera.canceled -= instance.OnInteractLockedCamera;
         }
 
         /// <summary>
@@ -1109,8 +1162,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
     private readonly InputAction m_Inventory_InventoryToggle;
     private readonly InputAction m_Inventory_PutHeldInInventory;
-    private readonly InputAction m_Inventory_DropItemModifier;
     private readonly InputAction m_Inventory_RotateItem;
+    private readonly InputAction m_Inventory_AlternativeCloseInventory;
+    private readonly InputAction m_Inventory_DropItem;
     /// <summary>
     /// Provides access to input actions defined in input action map "Inventory".
     /// </summary>
@@ -1131,13 +1185,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @PutHeldInInventory => m_Wrapper.m_Inventory_PutHeldInInventory;
         /// <summary>
-        /// Provides access to the underlying input action "Inventory/DropItemModifier".
-        /// </summary>
-        public InputAction @DropItemModifier => m_Wrapper.m_Inventory_DropItemModifier;
-        /// <summary>
         /// Provides access to the underlying input action "Inventory/RotateItem".
         /// </summary>
         public InputAction @RotateItem => m_Wrapper.m_Inventory_RotateItem;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/AlternativeCloseInventory".
+        /// </summary>
+        public InputAction @AlternativeCloseInventory => m_Wrapper.m_Inventory_AlternativeCloseInventory;
+        /// <summary>
+        /// Provides access to the underlying input action "Inventory/DropItem".
+        /// </summary>
+        public InputAction @DropItem => m_Wrapper.m_Inventory_DropItem;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1170,12 +1228,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PutHeldInInventory.started += instance.OnPutHeldInInventory;
             @PutHeldInInventory.performed += instance.OnPutHeldInInventory;
             @PutHeldInInventory.canceled += instance.OnPutHeldInInventory;
-            @DropItemModifier.started += instance.OnDropItemModifier;
-            @DropItemModifier.performed += instance.OnDropItemModifier;
-            @DropItemModifier.canceled += instance.OnDropItemModifier;
             @RotateItem.started += instance.OnRotateItem;
             @RotateItem.performed += instance.OnRotateItem;
             @RotateItem.canceled += instance.OnRotateItem;
+            @AlternativeCloseInventory.started += instance.OnAlternativeCloseInventory;
+            @AlternativeCloseInventory.performed += instance.OnAlternativeCloseInventory;
+            @AlternativeCloseInventory.canceled += instance.OnAlternativeCloseInventory;
+            @DropItem.started += instance.OnDropItem;
+            @DropItem.performed += instance.OnDropItem;
+            @DropItem.canceled += instance.OnDropItem;
         }
 
         /// <summary>
@@ -1193,12 +1254,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PutHeldInInventory.started -= instance.OnPutHeldInInventory;
             @PutHeldInInventory.performed -= instance.OnPutHeldInInventory;
             @PutHeldInInventory.canceled -= instance.OnPutHeldInInventory;
-            @DropItemModifier.started -= instance.OnDropItemModifier;
-            @DropItemModifier.performed -= instance.OnDropItemModifier;
-            @DropItemModifier.canceled -= instance.OnDropItemModifier;
             @RotateItem.started -= instance.OnRotateItem;
             @RotateItem.performed -= instance.OnRotateItem;
             @RotateItem.canceled -= instance.OnRotateItem;
+            @AlternativeCloseInventory.started -= instance.OnAlternativeCloseInventory;
+            @AlternativeCloseInventory.performed -= instance.OnAlternativeCloseInventory;
+            @AlternativeCloseInventory.canceled -= instance.OnAlternativeCloseInventory;
+            @DropItem.started -= instance.OnDropItem;
+            @DropItem.performed -= instance.OnDropItem;
+            @DropItem.canceled -= instance.OnDropItem;
         }
 
         /// <summary>
@@ -1500,6 +1564,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnWallet(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "InteractLockedCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteractLockedCamera(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Inventory" which allows adding and removing callbacks.
@@ -1523,19 +1594,26 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPutHeldInInventory(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "DropItemModifier" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDropItemModifier(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "RotateItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotateItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "AlternativeCloseInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAlternativeCloseInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DropItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropItem(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

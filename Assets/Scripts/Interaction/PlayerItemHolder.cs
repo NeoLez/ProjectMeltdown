@@ -29,6 +29,7 @@ namespace Root
         {
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
+            GameManager.Input.Inventory.DropItem.performed += Drop;
         }
 
         private void Update()
@@ -38,10 +39,10 @@ namespace Root
                 crosshair.fillAmount = 0;
                 return;
             }
-            if (Input.GetKeyUp(KeyCode.R)) { crosshair.fillAmount = 0; }
-            else if (Input.GetKey(KeyCode.R))
+            if (GameManager.Input.Inventory.PutHeldInInventory.WasReleasedThisFrame()) { crosshair.fillAmount = 0; }
+            else if (GameManager.Input.Inventory.PutHeldInInventory.IsPressed())
             {
-                crosshair.fillAmount += 3f * Time.deltaTime;
+                crosshair.fillAmount += Time.deltaTime / 0.6f;
             }
         }
 
@@ -95,7 +96,7 @@ namespace Root
             var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
             physicalItem.itemState = HeldItem;
             physicalItem.transform.parent = null;
-            Debug.Log("wtf", physicalItem);
+            
             var rbItem = physicalItem.GetComponent<Rigidbody>();
             var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
@@ -126,6 +127,10 @@ namespace Root
             
             OnItemChanged?.Invoke();
 
+        }
+
+        private void Drop(InputAction.CallbackContext _) {
+            Drop();
         }
 
         public bool CheckIfDeliveryPostNearby(out PackageDeliverPost packagePost) 

@@ -20,7 +20,7 @@ namespace Root {
         [SerializeField] private Color slotObstructedColor = Color.red;
 
         private void Awake() {
-            GameManager.Input.Inventory.DropItemModifier.performed += HandleMoveToHand;
+            GameManager.Input.Inventory.PutHeldInInventory.performed += HandleMoveToHand;
         }
 
         private void HandleMoveToHand(InputAction.CallbackContext _) {
@@ -143,7 +143,7 @@ namespace Root {
         }
 
         private void OnDestroy() {
-            GameManager.Input.Inventory.DropItemModifier.performed -= HandleMoveToHand;
+            GameManager.Input.Inventory.PutHeldInInventory.performed -= HandleMoveToHand;
         }
     }
 }

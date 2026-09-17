@@ -14,6 +14,7 @@ namespace Root {
         private void Awake() {
             GameManager.PlayerInventoryUI = this;
             GameManager.Input.Inventory.InventoryToggle.performed += InventoryToggle;
+            GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose;
         }
 
         private void InventoryToggle(InputAction.CallbackContext _) {
@@ -23,6 +24,11 @@ namespace Root {
             else {
                 OpenInventory();
             }
+        }
+
+        private void InventoryClose(InputAction.CallbackContext val) {
+            if(inventoryOpen)
+                InventoryToggle(val);
         }
 
         public void CloseInventory() {
@@ -65,6 +71,7 @@ namespace Root {
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
             GameManager.Input.Interaction.Disable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Enable();
             inventoryOpen = true;
         }
 
@@ -76,11 +83,13 @@ namespace Root {
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Enable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             inventoryOpen = false;
         }
 
         private void OnDestroy() {
             GameManager.Input.Inventory.InventoryToggle.performed -= InventoryToggle;
+            GameManager.Input.Inventory.AlternativeCloseInventory.performed -= InventoryClose;
         }
     }
 }

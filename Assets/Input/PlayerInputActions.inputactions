@@ -239,13 +239,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InteractLockedCamera",
+                    "type": "Button",
+                    "id": "7bca3a28-2aa4-4569-aa3c-eaf79798fd82",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "7e9dcb28-aa45-4ae7-90d1-8c1b21b8cbd6",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -333,11 +342,22 @@
                 {
                     "name": "",
                     "id": "bc5b9106-a9c1-486e-94bc-6da81d5b20a5",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Wallet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93a78dee-d2e2-4961-bac4-8823bce4e068",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractLockedCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -366,15 +386,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DropItemModifier",
-                    "type": "Button",
-                    "id": "66b4b06f-666d-4f6e-aa26-6b69f9321baa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "RotateItem",
                     "type": "Value",
                     "id": "083b9fc0-ff84-46f2-8dc1-2f2c88234584",
@@ -382,13 +393,31 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "AlternativeCloseInventory",
+                    "type": "Button",
+                    "id": "546ae723-ef97-44bc-9963-b673e40a5abf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DropItem",
+                    "type": "Button",
+                    "id": "39c0b4b3-8e4a-4874-8a77-a649cd6bbfd9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap(duration=0.3)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "1f21e74f-300e-47fa-969b-4730333c4752",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/tab",
                     "interactions": "Tap(duration=0.499)",
                     "processors": "",
                     "groups": "",
@@ -399,22 +428,11 @@
                 {
                     "name": "",
                     "id": "d1207e1f-8db5-4574-910b-5bd73f12b917",
-                    "path": "<Keyboard>/r",
-                    "interactions": "Hold",
+                    "path": "<Keyboard>/q",
+                    "interactions": "Hold(duration=0.6)",
                     "processors": "",
                     "groups": "",
                     "action": "PutHeldInInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "15730fa3-553a-47d7-b82b-1af49a92ca19",
-                    "path": "<Keyboard>/r",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DropItemModifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -426,6 +444,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bec6a462-5c12-438a-9978-55144f6809d7",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AlternativeCloseInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ef3f822-9509-4293-9775-a63ec5ee7315",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DropItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

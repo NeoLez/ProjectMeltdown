@@ -16,13 +16,13 @@ namespace Root.Controller {
 
         private void Awake() {
             _input = GameManager.Input;
-            _input.Interaction.Interact.started += HandleInteraction;
-            _input.Interaction.Interact.canceled += HandleInteraction;
+            _input.Interaction.InteractLockedCamera.started += HandleInteraction;
+            _input.Interaction.InteractLockedCamera.canceled += HandleInteraction;
         }
 
         private void OnDestroy() {
-            _input.Interaction.Interact.started -= HandleInteraction;
-            _input.Interaction.Interact.canceled -= HandleInteraction;
+            _input.Interaction.InteractLockedCamera.started -= HandleInteraction;
+            _input.Interaction.InteractLockedCamera.canceled -= HandleInteraction;
         }
 
         private void HandleInteraction(InputAction.CallbackContext ctx)
