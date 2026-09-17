@@ -376,8 +376,8 @@ GameObject:
   - component: {fileID: 383741620108785082}
   - component: {fileID: 4533733887749348139}
   - component: {fileID: 4856435053597045943}
-  - component: {fileID: -8832558550012325980}
   - component: {fileID: 1285358921924878234}
+  - component: {fileID: 3561632790734204523}
   m_Layer: 7
   m_Name: DeliveryPackage
   m_TagString: Untagged
@@ -451,18 +451,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-8832558550012325980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5985484139083966924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
 --- !u!114 &1285358921924878234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +466,18 @@ MonoBehaviour:
   visuals: {fileID: 5548577866610911290}
   originCenter: {fileID: 0}
   goal: {fileID: 0}
+--- !u!114 &3561632790734204523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
 --- !u!1001 &1740641247972459392
 PrefabInstance:
   m_ObjectHideFlags: 0

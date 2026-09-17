@@ -137,7 +137,7 @@ namespace Root
         }
         #endregion
 
-        public int GetPrice()
+        public int GetCurrentPrice()
         {
             return _currentValue;
         }
@@ -161,6 +161,7 @@ namespace Root
 
         private string _packageID;
         private int _generatedPrice;
+        private int _generatedDurability;
 
         public bool PackageID => string.IsNullOrEmpty(Id);
         public PackageData(string id, int price, float durability)
@@ -180,10 +181,6 @@ namespace Root
             return _generatedPrice = Random.Range(_package.GetSO().MinPriceValue, _package.GetSO().MaxPriceValue);
         }
 
-        public int GetGeneratedPrice()
-        {
-            return _generatedPrice;
-        }
 
         public string GenerateUniqueID()
         {
@@ -193,6 +190,21 @@ namespace Root
                 _packageID += glyphs[Random.Range(0, glyphs.Length)];
             }
             return _packageID;
+        }
+
+        public int GenerateDurability()
+        {
+            return _generatedDurability = Random.Range(_package.GetSO().MinDurability, _package.GetSO().MaxDurability);
+        }
+
+        public int GetPrice()
+        {
+            return _generatedPrice;
+        }
+
+        public int GetDurability()
+        {
+            return _generatedDurability;
         }
     }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.ReloadAttribute;
+using UnityEngine.InputSystem;
 
 namespace Root
 {
@@ -22,6 +22,8 @@ namespace Root
         private List<DeliveryPackageItem> _currentSpawnedPackages = new();
 
         public Action OnDeliveryStationReached;
+
+        private PlayerInputActions _input;
         private void Awake()
         {
             if (Instance == null)
@@ -30,24 +32,19 @@ namespace Root
             }
         }
 
-        private void Start()
-        {
-            _visuals.ChangeCanvas(false);
-        }
-
         private void Update()
         {
             GetNextStationToDeliver();
         }
 
-        public void EnablePackageGeneration(Transform instancePivot, int amount)
+        public void EnablePackageGeneration(NPCInteraction perpetrator, Transform instancePivot, int amount)
         {
-            StartCoroutine(GeneratePackages(instancePivot, amount));
+            StartCoroutine(GeneratePackages(perpetrator, instancePivot, amount));
 
             packageStampGenerator.EnableCanvas(true);
         }
 
-        private IEnumerator GeneratePackages(Transform instancePivot, int amountToSpawn)
+        private IEnumerator GeneratePackages(NPCInteraction perpetrator, Transform instancePivot, int amountToSpawn)
         {
             Vector3 newPos = instancePivot.position;
             for (int i = 0; i < amountToSpawn; i++)
@@ -72,15 +69,18 @@ namespace Root
             }
 
             packageStampGenerator.EnableCanvas(false);
-            _visuals.ChangeCanvas(true);
-            _visuals.ChangeUi("Tenes que entregar " + _currentSpawnedPackages.Count + " paquetes a la proxima estacion");
+
+            _visuals.ActivateNotification();
+            _visuals.SetNewObjective(perpetrator.Mission);
+
+            //MissionsManager.Instance.RegisterMission(perpetrator.Mission);
         }
 
         private void InitializePackges(DeliveryPackageItem package)
         {
             if (_currentSpawnedPackages.Count > 0)
             {
-                package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.Durability);
+                package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.GenerateDurability());
 
                 var currentpackage = package.GetComponentInChildren<DeliveryPackageItem>();
                 packageStampGenerator.CreateStamp(currentpackage.gameObject);        
@@ -91,7 +91,7 @@ namespace Root
         {
             EconomyManager.Instance.AddMoney(_packagePriceSum);
 
-            _visuals.ChangeUi("Entregaste todos los paquetes");
+            _visuals.ClearCurrentObjective();
             NotificationManager.Instance.ShowNotification("+ $" + _packagePriceSum);
 
             _packagePriceSum = 0;

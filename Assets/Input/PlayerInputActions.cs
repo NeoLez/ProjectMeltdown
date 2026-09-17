@@ -334,6 +334,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Objectives"",
+                    ""type"": ""Button"",
+                    ""id"": ""a51dbb3f-45c6-49ef-8099-bcc5b0dbb020"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -444,6 +453,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""InteractLockedCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc0739c6-4ffb-47bb-b33e-8fd2027af242"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Objectives"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -688,6 +708,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Interaction_Flashlight = m_Interaction.FindAction("Flashlight", throwIfNotFound: true);
         m_Interaction_Wallet = m_Interaction.FindAction("Wallet", throwIfNotFound: true);
         m_Interaction_InteractLockedCamera = m_Interaction.FindAction("InteractLockedCamera", throwIfNotFound: true);
+        m_Interaction_Objectives = m_Interaction.FindAction("Objectives", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_InventoryToggle = m_Inventory.FindAction("InventoryToggle", throwIfNotFound: true);
@@ -1026,6 +1047,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interaction_Flashlight;
     private readonly InputAction m_Interaction_Wallet;
     private readonly InputAction m_Interaction_InteractLockedCamera;
+    private readonly InputAction m_Interaction_Objectives;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interaction".
     /// </summary>
@@ -1065,6 +1087,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Interaction/InteractLockedCamera".
         /// </summary>
         public InputAction @InteractLockedCamera => m_Wrapper.m_Interaction_InteractLockedCamera;
+        /// <summary>
+        /// Provides access to the underlying input action "Interaction/Objectives".
+        /// </summary>
+        public InputAction @Objectives => m_Wrapper.m_Interaction_Objectives;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1112,6 +1138,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @InteractLockedCamera.started += instance.OnInteractLockedCamera;
             @InteractLockedCamera.performed += instance.OnInteractLockedCamera;
             @InteractLockedCamera.canceled += instance.OnInteractLockedCamera;
+            @Objectives.started += instance.OnObjectives;
+            @Objectives.performed += instance.OnObjectives;
+            @Objectives.canceled += instance.OnObjectives;
         }
 
         /// <summary>
@@ -1144,6 +1173,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @InteractLockedCamera.started -= instance.OnInteractLockedCamera;
             @InteractLockedCamera.performed -= instance.OnInteractLockedCamera;
             @InteractLockedCamera.canceled -= instance.OnInteractLockedCamera;
+            @Objectives.started -= instance.OnObjectives;
+            @Objectives.performed -= instance.OnObjectives;
+            @Objectives.canceled -= instance.OnObjectives;
         }
 
         /// <summary>
@@ -1603,6 +1635,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteractLockedCamera(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Objectives" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnObjectives(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Inventory" which allows adding and removing callbacks.

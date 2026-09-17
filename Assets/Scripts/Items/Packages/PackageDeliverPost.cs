@@ -30,6 +30,12 @@ namespace Root
             RefreshSumAmount(0);
         }
 
+        public void MissionsCheck(List<MissionObjectiveSO> activeMissions)
+        {
+            //aca registro en mis variable locales todo su info
+            //cuando termino de entregar, reemplazo los valores de esas variables por la "sigueinte mision"
+        }
+
         public void DepositPackage(DeliveryPackageItem packageController)
         {
             if (_hasCompletedGoal) return;
@@ -38,12 +44,12 @@ namespace Root
             StartCoroutine(TriggerDepositAnims());
 
             _depositedPackages.Add(1);
-            RefreshSumAmount(packageController.GetPrice());
+            RefreshSumAmount(packageController.GetCurrentPrice());
             Destroy(packageController.gameObject, 0.5f);
 
             CheckGoal();
         }
-        private void CheckGoal()
+        private void CheckGoal() //cambiar!!
         {
             if (amountOfPackagesToDeliver == _depositedPackages.Count)
             {

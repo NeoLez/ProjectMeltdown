@@ -15,7 +15,10 @@ namespace Root
         [field: SerializeField] public int MinPriceValue { get; private set; }
 
         [Header("Duraility Settings")]
-        [field: SerializeField] public float MaxDurability { get; private set; }
+        [field: SerializeField] public int MaxDurability { get; private set; }
+
+        [Min(0)]
+        [field: SerializeField] public int MinDurability { get; private set; }
 
     }
     public enum TypeOfPackage
