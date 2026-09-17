@@ -12,6 +12,7 @@ namespace Root {
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
+        [field: SerializeField, SerializeReference] public ItemState DefaultItemState { get; private set; }
 
         public virtual ItemState CreateState() {
             return new ItemState(this);
@@ -28,5 +29,17 @@ namespace Root {
             Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 }, "InventorySize must be 1x1 or greater");
             Assert.IsNotNull(PhysicalItemPrefab.GetComponent<ItemPoolable>(), "PhysicalItemPrefab doesn't have a Poolable component");
         }
+        
+        
+        
+        
+        
+#if UNITY_EDITOR     
+        [ContextMenu("Generate Starting State")]
+        private void GenerateStateInEditor() {
+            DefaultItemState = CreateState();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
     }
 }
