@@ -187,7 +187,7 @@ namespace Root {
         }
 
         public void OnPointerClick(PointerEventData eventData) {
-            if (_isBeingDragged) return;
+            if (_isBeingDragged || !GameManager.Input.Inventory.QuickMoveModifier.IsPressed()) return;
             if (!PlayerInventoryUI.Instance.IsQuickTransferPossible(_inventoryItem.Inventory, out Inventory destination)) return;
 
             if (destination.InsertItem(_inventoryItem.itemState)) {
