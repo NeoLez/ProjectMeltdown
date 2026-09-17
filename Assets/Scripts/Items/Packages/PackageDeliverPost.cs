@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class PackageDeliverPost : MonoBehaviour
+    public class PackageDeliverPost : InteractableNormalCamera
     {
         [SerializeField] private int amountOfPackagesToDeliver;
         [SerializeField] private Transform dropPivot;
@@ -49,7 +49,7 @@ namespace Root
 
             CheckGoal();
         }
-        private void CheckGoal() //cambiar!!
+        private void CheckGoal()
         {
             if (amountOfPackagesToDeliver == _depositedPackages.Count)
             {
@@ -84,6 +84,20 @@ namespace Root
         private void OnDestroy()
         {
             _depositedPackages.Clear();
+        }
+
+        public override void Interact()
+        {
+            PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
+
+            if (holder == null) return;
+
+            if (!holder.HasItem) return;
+
+            holder.CanLauchItem(false);
+            holder.Drop();
+
+            DepositPackage(holder.DeliveryPackage);
         }
     }
 }

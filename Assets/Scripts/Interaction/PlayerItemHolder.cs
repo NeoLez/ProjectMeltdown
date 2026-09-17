@@ -24,7 +24,9 @@ namespace Root
         private GameObject currentHeldVisual;
 
         private Dictionary<string, PackageData> _currentPackageData = new();
+        public DeliveryPackageItem DeliveryPackage { get; private set;}
 
+        private bool _canLauchItem = true;
         private void Awake()
         {
             GameManager.ItemHolder = this;
@@ -101,19 +103,15 @@ namespace Root
             physicalItem.transform.parent = null;
             
             var rbItem = physicalItem.GetComponent<Rigidbody>();
-            var deliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
+            DeliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
 
-            if (deliveryPackage && _currentPackageData.TryGetValue(deliveryPackage.PackageData.Id, out PackageData data))
+            if (DeliveryPackage && _currentPackageData.TryGetValue(DeliveryPackage.PackageData.Id, out PackageData data))
             {
-                deliveryPackage.SetPackageData(data);
-                _currentPackageData.Remove(deliveryPackage.PackageData.Id);
+                DeliveryPackage.SetPackageData(data);
+                _currentPackageData.Remove(DeliveryPackage.PackageData.Id);
             }
 
-            if (CheckIfDeliveryPostNearby(out var deliveryPost) && deliveryPackage)
-            {
-                deliveryPost.DepositPackage(deliveryPackage);
-            }
-            else
+            if(_canLauchItem)
             {
                 rbItem.AddForce(cameraPivot.forward * _throwStrenght, ForceMode.Force);
                 physicalItem.transform.position =
@@ -121,7 +119,7 @@ namespace Root
                 cameraPivot.forward * dropDistance;
             }
 
-            if(!GameManager.Train.IsStopped())
+            if (!GameManager.Train.IsStopped())
                 GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
             
             HeldItem = null;
@@ -129,17 +127,11 @@ namespace Root
                 Destroy(currentHeldVisual);
             
             OnItemChanged?.Invoke();
-
+            CanLauchItem(true);
         }
 
         private void Drop(InputAction.CallbackContext _) {
             Drop();
-        }
-
-        public bool CheckIfDeliveryPostNearby(out PackageDeliverPost packagePost) 
-        {
-            packagePost = null;
-            return Physics.Raycast(cameraPivot.position, cameraPivot.forward, out var hit, 7f) && hit.collider.gameObject.TryGetComponent(out packagePost) && !packagePost.HasReachedDepositGoal();
         }
 
         private void SaveHeldItem(InputAction.CallbackContext _) {
@@ -150,6 +142,11 @@ namespace Root
             }
             OnItemChanged?.Invoke();
             ForceClearHeldItem();
+        }
+
+        public void CanLauchItem(bool state)
+        {
+            _canLauchItem = state;
         }
 
         public void ForceClearHeldItem() {
