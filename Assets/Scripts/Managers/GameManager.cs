@@ -13,6 +13,7 @@ public static class GameManager {
   public static DialogueManager DialogueManager;
   public static PlayerInventoryUI PlayerInventoryUI;
   public static WalletController Wallet;
+  public static PlayerItemHolder ItemHolder;
   public static int VeryUglyKitNumber;
   public static readonly Vector2 RTSize = new(640,360);  
   public static int seed;

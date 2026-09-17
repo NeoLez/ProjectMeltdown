@@ -27,6 +27,7 @@ namespace Root
 
         private void Awake()
         {
+            GameManager.ItemHolder = this;
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
             GameManager.Input.Inventory.DropItem.performed += Drop;
@@ -48,6 +49,7 @@ namespace Root
 
         public void Pickup(PhysicalItem item)
         {
+            if (!WalletController.CanInteract) return;
             if (HasItem && HeldItem.ItemSo)
                 Drop();
 
@@ -74,6 +76,7 @@ namespace Root
 
         public void Pickup(ItemState item)
         {
+            if (!WalletController.CanInteract) return;
             if (HasItem && HeldItem.ItemSo)
                 Drop();
             

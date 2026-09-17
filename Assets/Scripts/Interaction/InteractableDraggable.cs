@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Root;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Root.Controller
@@ -8,9 +9,10 @@ namespace Root.Controller
         [SerializeField] private Transform mousePivotPoint;
         private Camera _camera;
         protected bool active;
-        
+
         public override void StartInteraction()
         {
+            if (!WalletController.CanInteract) return;
             active = true;
             MouseHandler.RequestControl(CursorLockMode.Confined, false, this);
         }
