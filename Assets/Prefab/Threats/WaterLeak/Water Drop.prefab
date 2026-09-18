@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6463321314185952660}
   - component: {fileID: 773797570249003339}
   - component: {fileID: 3320733892642858752}
-  - component: {fileID: -4081529143947515121}
+  - component: {fileID: 4298715306397751499}
   - component: {fileID: 5324418540865723921}
   m_Layer: 0
   m_Name: Water Drop
@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9.16, y: 6.17, z: -31.30604}
-  m_LocalScale: {x: 0.23986, y: 0.23986, z: 0.23986}
+  m_LocalScale: {x: 16, y: 16, z: 16}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777958299647120172}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4864056309639282896, guid: a429e6d49bf47064a814aca0e53f6540, type: 3}
 --- !u!23 &773797570249003339
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0a509424fbaca1848869bb42f4519c14, type: 2}
+  - {fileID: 2100000, guid: a4d0d1fec9d9d25479c67f2b258280f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
   _splashClip: {fileID: 8300000, guid: 3c214370061503746980f8210c755199, type: 3}
   _splashVolume: 1
   _splashMaxDistance: 10
---- !u!135 &-4081529143947515121
+--- !u!135 &4298715306397751499
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 0.012644286
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5324418540865723921
 Rigidbody:
