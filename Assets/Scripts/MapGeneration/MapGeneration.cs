@@ -154,7 +154,7 @@ namespace Root {
         private int _rebaseCounter;
         private void HandleRebase() {
             if (_rebaseCounter == 0) {
-                Debug.Log("Rebasing");
+                Logger.Log("Rebasing", LogType.WorldGen);
                 transform.position += train.trainPosition.position * -1;
                 
                 _rebaseCounter = countUntilRebase;

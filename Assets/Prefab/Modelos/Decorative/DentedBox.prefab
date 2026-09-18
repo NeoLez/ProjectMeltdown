@@ -63,6 +63,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89c72c25055359946b38881b9e38cff4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8906926126680654107}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89c72c25055359946b38881b9e38cff4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2446106960539789924}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89c72c25055359946b38881b9e38cff4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8924359060236543540}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89c72c25055359946b38881b9e38cff4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8166212666233110669}
   m_SourcePrefab: {fileID: 100100000, guid: 89c72c25055359946b38881b9e38cff4, type: 3}
 --- !u!1 &3935126875342676274 stripped
 GameObject:
@@ -90,3 +99,48 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.020267028, y: 0.020957816, z: 0.020138908}
   m_Center: {x: -0.00013351203, y: -0.00047890435, z: -0.00006368243}
+--- !u!114 &2446106960539789924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3935126875342676274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c283bb888f84394be4616198713d28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Inventory
+  <Size>k__BackingField: {x: 2, y: 2}
+  itemSoToAdd: {fileID: 0}
+  rotation: 0
+  find: 0
+  amount: 0
+  pos: {x: 0, y: 0}
+--- !u!114 &8924359060236543540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3935126875342676274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f106d170224ddd9abe83f66f61a91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.LootCrate
+  pool: {fileID: 11400000, guid: 01a65a7fede38ee6799aebc42506daaa, type: 2}
+  minAmountOfItemsToGenerate: 0
+  maxAmountOfItemsToGenerate: 2
+--- !u!114 &8166212666233110669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3935126875342676274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5da31bcfd2f945f7b39d21fc76a4b622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.InteractableInventory

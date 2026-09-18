@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8355492908940612148}
   - component: {fileID: 6057442387102508798}
   - component: {fileID: 150594223142004482}
+  - component: {fileID: 840667199209108927}
+  - component: {fileID: 8833458436517792061}
   m_Layer: 0
   m_Name: DentedBox 1
   m_TagString: Untagged
@@ -112,3 +114,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.020267028, y: 0.020957816, z: 0.020138908}
   m_Center: {x: -0.00013351203, y: -0.00047890435, z: -0.00006368243}
+--- !u!114 &840667199209108927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697237910832285483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c283bb888f84394be4616198713d28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Inventory
+  <Size>k__BackingField: {x: 3, y: 3}
+  itemSoToAdd: {fileID: 0}
+  rotation: 0
+  find: 0
+  amount: 0
+  pos: {x: 0, y: 0}
+--- !u!114 &8833458436517792061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697237910832285483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f106d170224ddd9abe83f66f61a91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.LootCrate
+  pool: {fileID: 11400000, guid: 01a65a7fede38ee6799aebc42506daaa, type: 2}
+  minAmountOfItemsToGenerate: 0
+  maxAmountOfItemsToGenerate: 3
