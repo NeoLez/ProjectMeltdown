@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class MapSlot : InteractableNormalCamera
+    public class MapSlot : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private Train train;
@@ -84,6 +84,16 @@ namespace Root
             return true;
         }
 
+
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return _map == null && item.itemState.ItemSo == _mapItemSO;
+        }
+
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            if (!CanTakeItem(position, InventoryItem.GetRotationCorrectedSize(item.Size, rotation), item)) return false;
+            TryInsertMap(item.itemState);
+            return true;
+        }
 
         public void ClearFeedback()
         {
