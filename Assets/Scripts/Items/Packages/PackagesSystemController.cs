@@ -24,6 +24,7 @@ namespace Root
         public Action OnDeliveryStationReached;
 
         private PlayerInputActions _input;
+        private Coroutine _packageGenerationRoutine;
         private void Awake()
         {
             if (Instance == null)
@@ -39,7 +40,13 @@ namespace Root
 
         public void EnablePackageGeneration(NPCInteraction perpetrator, Transform instancePivot, int amount)
         {
-            StartCoroutine(GeneratePackages(perpetrator, instancePivot, amount));
+            if(_packageGenerationRoutine!=null)
+            {
+                StopCoroutine(_packageGenerationRoutine);
+                _packageGenerationRoutine = null;
+            }
+
+            _packageGenerationRoutine = StartCoroutine(GeneratePackages(perpetrator, instancePivot, amount));
 
             packageStampGenerator.EnableCanvas(true);
         }
@@ -116,6 +123,12 @@ namespace Root
             if (_currentSpawnedPackages.Count > 0)
             {
                 _currentSpawnedPackages.Clear();
+            }
+
+            if (_packageGenerationRoutine != null)
+            {
+                StopCoroutine(_packageGenerationRoutine);
+                _packageGenerationRoutine = null;
             }
         }
     }

@@ -15,6 +15,8 @@ namespace Root
         private DialogueManager dialogueManager;
         private DialogueSO dialogue;
 
+        public TextMeshProUGUI SubtitleText => subtitleText;
+
         private void Awake()
         {
             if (Instance == null)
@@ -55,8 +57,6 @@ namespace Root
             if (GameManager.Wallet.IsOpened) {
                 GameManager.Wallet.ToggleWallet();
             }
-            dialogueManager.Initialize(dialogue, subtitleText, dialogue.HasChoices);
-
             HideOrViewCanvas(true);
         }
 

@@ -1,4 +1,6 @@
+using Root;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dialogues", menuName = "SO/Dialogues")]
@@ -23,7 +25,7 @@ public class DialogueSO : ScriptableObject
     public Action OnDialogueStarted;
     public Action OnDialogueEnded;
 
-    public Action<int> OnSelectedChoice;
+    //public Action<int> OnSelectedChoice;  
 }
 
 [System.Serializable]
@@ -41,4 +43,5 @@ public struct DialogueData
 public struct DialogueChoices
 {
     public string Text;
+    public List<DialogueEffectSO> effects;
 }
