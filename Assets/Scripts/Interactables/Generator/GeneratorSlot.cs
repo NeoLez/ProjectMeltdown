@@ -50,16 +50,9 @@ namespace Root
             }
 
             if (!holder.HasItem) return;
-
-            Assert.AreEqual(_batteryItemSO, holder.HeldItem.ItemSo);
-            TrainBatteryItem batteryToInsert = holder.HeldItem.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
-            if (batteryToInsert == null) return;
-            batteryToInsert.itemState = holder.HeldItem;
-
-            VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
-            if (visual == null) return;
-
-            if (TryInsertBattery(batteryToInsert.State))
+            if (_batteryItemSO != holder.HeldItem.ItemSo) return;
+            
+            if (TryInsertBattery(holder.HeldItem))
             {
                 holder.ForceClearHeldItem();
             }
