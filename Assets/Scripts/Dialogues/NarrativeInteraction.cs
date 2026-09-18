@@ -55,11 +55,14 @@ namespace Root
 
                 if (currentInteractable.CheckPivot() && currentInteractable.CheckPosPivot())
                 {
-                    _npcLookingPivot = currentInteractable.Pivot;
-                    _npcPositionPivot = currentInteractable.PlayerPivot;
+                    SetLookAndPositionPivots(currentInteractable);
 
                     GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _npcPositionPivot.position);
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
+                }
+                else
+                {
+                    GameManager.Player.GetComponent<CameraController>().FocusCamera(null);
                 }
 
                 currentInteractable.OnInteractionStarted += StartInteraction;
@@ -76,6 +79,11 @@ namespace Root
                 raycastHit.collider.gameObject.TryGetComponent(out interactable);
         }
 
+        private void SetLookAndPositionPivots(InteractBehaviour currentInteractable)
+        {
+            _npcLookingPivot = currentInteractable ? currentInteractable.Pivot : null;
+            _npcPositionPivot = currentInteractable ? currentInteractable.PlayerPivot : null;
+        }
 
         private void StartInteraction()
         {
