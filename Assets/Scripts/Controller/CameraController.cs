@@ -199,8 +199,12 @@ public class CameraController : MonoBehaviour
         cameraBobbingOffset.x = Mathf.Lerp(cameraBobbingOffset.x, Mathf.Cos((Time.time - startedWalk) * frequency / 2 + (float)Math.PI / 2) * horizontalAmount, smooth * Time.deltaTime);
     }
 
+    private Transform _focusPivot;
     public void FocusCamera(Transform newPivot)
     {
+        _focusPivot = newPivot;
+
+        if (newPivot == null) return;
         DialogueManager.Instance.OnDialogueEnded += EnableNormalMovement;
 
         _limitRotation = true;
@@ -230,6 +234,8 @@ public class CameraController : MonoBehaviour
 
     private void EnableNormalMovement()
     {
+        if (_focusPivot == null) return;
+
         _limitRotation = false;
         pitch = -NormalizeAngle(_currentEuler.x);
         yaw = NormalizeAngle(_currentEuler.y);
