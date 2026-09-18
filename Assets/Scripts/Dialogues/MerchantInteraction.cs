@@ -32,7 +32,6 @@ namespace Root
 
             if (hasBeenTriggeredOnce) return;
 
-            SubtitleManager.Instance.SetTextValues(Dialogue);
 
             TriggerDialogue();
         }
@@ -41,7 +40,7 @@ namespace Root
         {
             if (Dialogue == null) return;
 
-            DialogueManager.Instance.TriggerDialogue();
+            DialogueManager.Instance.StartConversation(Dialogue);
         }
 
         public override void FinishedExecutingDialogue()

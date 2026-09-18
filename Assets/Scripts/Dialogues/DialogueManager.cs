@@ -1,11 +1,11 @@
+using Root;
 using Root.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float textTypingSpeed;
     [SerializeField] private bool isAudioPredictable;
     [SerializeField] private TextMeshProUGUI skipText;
+    [SerializeField] private SubtitleManager subtitleManager;
 
     [Header("Dialogue Options")]
     [SerializeField] private Button[] choiceOptions;
@@ -43,6 +44,8 @@ public class DialogueManager : MonoBehaviour
     private DialogueSO _oldspeaker;
     private Dictionary<string, DialogueAudioInfoSO> _audioInfoDictorary;
 
+    private DialogueExecutionContext currentContext;
+
     private void Awake()
     {
         if (Instance == null)
@@ -66,6 +69,7 @@ public class DialogueManager : MonoBehaviour
         EnableDisableChoices(false);
     }
 
+    #region Initializations
     public void Initialize(DialogueSO dialogue, TextMeshProUGUI text, bool hasChoisingSystem)
     {
         if (hasChoisingSystem) InitialiceChoices();
@@ -86,7 +90,7 @@ public class DialogueManager : MonoBehaviour
             int currentIndex = index;
 
             _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            choiceOptions[index].onClick.AddListener(()=>StopDialogue(currentIndex));
+            choiceOptions[index].onClick.AddListener(() => StopDialogue(currentIndex));
             index++;
         }
     }
@@ -128,10 +132,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void TriggerDialogue()
+    #endregion
+
+    public void StartConversation(DialogueSO dialogue, InteractBehaviour npcGameObject = null)
     {
+        currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
+        if (_currentSpeaker == null)
+        {
+            Initialize(dialogue, subtitleManager.SubtitleText, dialogue.HasChoices);
+        }
+
         CheckState();
     }
+
 
     public void CheckState()
     {
@@ -156,7 +169,7 @@ public class DialogueManager : MonoBehaviour
 
         if (CheckDialogueState() == DialogueState.FinishedTalking)
         {
-            if (_currentSpeaker.CanRepeatDialogue)
+            if (_oldspeaker.CanRepeatDialogue)
             {
                 ChangeDialogueState(DialogueState.CanRepeatDialogue);
             }
@@ -270,7 +283,7 @@ public class DialogueManager : MonoBehaviour
         if (_currentSpeaker.DialogueData[_arrayIndex].HasChoices) DisplayChoices();
 
         yield return new WaitForSeconds(_currentTextDuration);
-        
+
         _arrayIndex++;
         IsTyping = false;
 
@@ -279,7 +292,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     private void PlayDialogueSound(int currentDisplayedCharacterCount, char currentCharacter)
-    { 
+    {
 
         AudioClip[] dialogueTypingSoundClips = _currentSpeakerDialogueAudio.dialogueTypingSounds;
         int frequencyLevel = _currentSpeakerDialogueAudio.frecuencyLevel;
@@ -344,6 +357,8 @@ public class DialogueManager : MonoBehaviour
         {
             _currentData.Add(data.Text);
         }
+
+        subtitleManager.SetTextValues(_currentSpeaker);
     }
 
     private string IsSpeakerNameShowable()
@@ -382,6 +397,7 @@ public class DialogueManager : MonoBehaviour
         ChangeDialogueState(DialogueState.FinishedTalking);
 
         _oldspeaker = _currentSpeaker;
+        _currentSpeaker = null;
     }
 
 
@@ -395,12 +411,13 @@ public class DialogueManager : MonoBehaviour
         _canInterruptTyping = false;
     }
 
+    #region Choices
     private void DisplayChoices()
     {
         hasChosenOption = true;
         MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
-        List<DialogueChoices> currentChoices=new();
+        List<DialogueChoices> currentChoices = new();
 
         for (int i = 0; i < _currentSpeaker.DialogueChoices.Length; i++)
         {
@@ -424,11 +441,12 @@ public class DialogueManager : MonoBehaviour
     private void StopDialogue(int seletecButtonIndex)
     {
         hasChosenOption = false;
-        _currentSpeaker.OnSelectedChoice?.Invoke(seletecButtonIndex);
+
+        SelectOption(seletecButtonIndex);
 
         EnableDisableChoices(false);
-        
-        if(_sentences.Count>0)
+
+        if (_sentences.Count > 0) //TODO-mejorar esto
         {
             DisplayNextSentence();
         }
@@ -438,6 +456,32 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
+    public void SelectOption(int index)
+    {
+        DialogueChoices selectedChoice = _currentSpeaker.DialogueChoices[index];
+
+        for (int i = 0; i < selectedChoice.effects.Count; i++)
+        {
+            int effectIndex = i;
+            DialogueEffectSO effect = selectedChoice.effects[i];
+
+            effect.Execute(currentContext);
+
+        }
+    }
+    #endregion
+
+    private void OnDestroy()
+    {
+        int index = 0;
+        foreach (var choice in choiceOptions)
+        {
+            int currentIndex = index;
+            choiceOptions[index].onClick.RemoveListener(() => StopDialogue(currentIndex));
+            index++;
+        }
+    }
 }
 
 public enum DialogueState
