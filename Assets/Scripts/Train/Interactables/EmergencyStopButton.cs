@@ -13,14 +13,12 @@ namespace Root {
         public Transform buttonObject;
         public float buttonTravelDistance;
         public float buttonPressTime;
+        [SerializeField] private EmergencyStopButtonCover cover;
         
-        public Transform coverObject;
-        public float coverRotationAngle;
-        public float coverRotationTime;
+        
         private Easing coverEasing;
         
         private bool isAnimating = false;
-        private bool isCoverDown = true;
         [SerializeField] DiscSlot _discSlot;
         [SerializeField] private AudioClip stopSound;
         [SerializeField] private AudioClip interactSound;
@@ -32,10 +30,6 @@ namespace Root {
         public override void StartInteraction() {
             if (isAnimating) return;
             if (interactSound != null) GameManager.AudioSystem.PlaySoundPositional(interactSound, transform.position, GameManager.AudioSystem.VFX);
-            if (isCoverDown) {
-                OpenCover();
-                return;
-            }
 
             if (_brakeDoorAnim.IsObjectOpen || IsSpent() || isBraking || GameManager.Train.IsStopped() || _discSlot.GetBrakeDisc() == null)
             {
@@ -55,18 +49,7 @@ namespace Root {
         {
             
         }
-
-        public void OpenCover() {
-            isAnimating = true;
-            isCoverDown = false;
-            Tween.LocalEulerAngles(coverObject, coverObject.localEulerAngles, coverObject.localEulerAngles + new Vector3(coverRotationAngle, 0, 0), coverRotationTime, coverEasing).OnComplete(() => isAnimating = false);
-        }
         
-        public void CloseCover() {
-            isAnimating = true;
-            isCoverDown = true;
-            Tween.LocalEulerAngles(coverObject, coverObject.localEulerAngles, coverObject.localEulerAngles - new Vector3(coverRotationAngle, 0, 0), coverRotationTime, coverEasing).OnComplete(() => isAnimating = false);
-        }
 
         public void LowerButton() {
             isAnimating = true;
@@ -80,7 +63,7 @@ namespace Root {
 
         public void LowerButtonAndCloseCover() {
             isAnimating = true;
-            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => CloseCover());
+            Tween.LocalPosition(buttonObject, buttonObject.localPosition, buttonObject.localPosition + Vector3.up * buttonTravelDistance, buttonPressTime, coverEasing).OnComplete(() => cover.CloseCover());
         }
         
         public void LowerAndRaiseButton() {
