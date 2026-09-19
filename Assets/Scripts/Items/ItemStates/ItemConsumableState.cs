@@ -3,7 +3,7 @@ namespace Root {
     public class ItemConsumableState : ItemState {
         public int usesLeft;
 
-        public ItemConsumableState(ItemSo itemSo) : base(itemSo) {
+        public ItemConsumableState(ItemConsumableSo itemSo) : base(itemSo) {
         }
 
         public override string ToString() {
@@ -11,8 +11,9 @@ namespace Root {
         }
 
         public override ItemState Clone() {
-            var clone = new ItemConsumableState(ItemSo);
-            clone.usesLeft = usesLeft;
+            var clone = new ItemConsumableState(ItemSo as ItemConsumableSo) {
+                usesLeft = usesLeft
+            };
             return clone;
         }
     }

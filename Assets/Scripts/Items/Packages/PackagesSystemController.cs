@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Root
 {
@@ -87,7 +86,7 @@ namespace Root
         {
             if (_currentSpawnedPackages.Count > 0)
             {
-                package.InitializePackageData(package.PackageData.GenerateUniqueID(), package.PackageData.GeneratePackgePrice(), package.PackageData.GenerateDurability());
+                package.InitializePackageData();
 
                 var currentpackage = package.GetComponentInChildren<DeliveryPackageItem>();
                 packageStampGenerator.CreateStamp(currentpackage.gameObject);        

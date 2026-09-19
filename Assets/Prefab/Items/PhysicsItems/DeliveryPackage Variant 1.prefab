@@ -98,20 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0c6c3c1ea3aeb4da21346e0363b4f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryPackageItem
-  defaultItemSo: {fileID: 11400000, guid: c0ca7b22a20a3e84e9c2eba866d67faa, type: 2}
+  defaultItemSo: {fileID: 11400000, guid: f9947c8c30ad17376abd5c94cbaacc1c, type: 2}
   itemState:
-    rid: 5718201872734748677
-  PackageData:
-    Id: 
-    Price: 0
-    Durability: 0
-  packageData: {fileID: 11400000, guid: 9844bc2be8fdc0346a40796041096534, type: 2}
+    rid: 5244131056737321030
+  packageDataGenerator: {fileID: 11400000, guid: 9844bc2be8fdc0346a40796041096534, type: 2}
   packageConditions: {fileID: 0}
   damageMultiplier: 0
   references:
     version: 2
     RefIds:
-    - rid: 5718201872734748677
-      type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
+    - rid: 5244131056737321030
+      type: {class: PackageItemState, ns: Root, asm: Assembly-CSharp}
       data:
-        <ItemSo>k__BackingField: {fileID: 11400000, guid: c0ca7b22a20a3e84e9c2eba866d67faa, type: 2}
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: f9947c8c30ad17376abd5c94cbaacc1c, type: 2}
+        price: 0
+        durability: 0

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +5,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class PackageDeliverPost : InteractableNormalCamera
+    public class PackageDeliverPost : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private int amountOfPackagesToDeliver;
         [SerializeField] private Transform dropPivot;
@@ -44,11 +43,25 @@ namespace Root
             StartCoroutine(TriggerDepositAnims());
 
             _depositedPackages.Add(1);
-            RefreshSumAmount(packageController.GetCurrentPrice());
+            RefreshSumAmount(packageController.GetPrice());
             Destroy(packageController.gameObject, 0.5f);
 
             CheckGoal();
         }
+        
+        public void DepositPackage(PackageItemState itemState)
+        {
+            if (_hasCompletedGoal) return;
+            if (_isAnimating) return;
+            
+            StartCoroutine(TriggerDepositAnims());
+
+            _depositedPackages.Add(1);
+            RefreshSumAmount(itemState.price);
+
+            CheckGoal();
+        }
+        
         private void CheckGoal()
         {
             if (amountOfPackagesToDeliver == _depositedPackages.Count)
@@ -93,11 +106,25 @@ namespace Root
             if (holder == null) return;
 
             if (!holder.HasItem) return;
+            var itemState = holder.HeldItem as PackageItemState;
+            if (itemState == null) return;
+            
+            DepositPackage(itemState);
+            holder.ForceClearHeldItem();
+        }
 
-            holder.CanLauchItem(false);
-            holder.Drop();
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            return item.itemState is PackageItemState && !_isAnimating && !_hasCompletedGoal;
+        }
 
-            DepositPackage(holder.DeliveryPackage);
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            if(!CanTakeItem(position, InventoryItem.GetRotationCorrectedSize(item.Size, rotation), item)) return false;
+            
+            DepositPackage(item.itemState as PackageItemState);
+            return true;
+        }
+
+        public void ClearFeedback() {
         }
     }
 }

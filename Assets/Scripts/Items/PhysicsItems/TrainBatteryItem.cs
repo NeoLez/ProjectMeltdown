@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Root {
     public class TrainBatteryItem : PhysicalItem {
         private static readonly int Insert = Animator.StringToHash("Insert");
-        public ItemChargeState State => itemState as ItemChargeState;
+        public ItemChargeSo So => itemState as ItemChargeSo;
         [SerializeField] private float visualsScale;
         [SerializeField] private Animator animator;
 
@@ -14,7 +14,7 @@ namespace Root {
         }
 
         protected override bool IsStateTypeValid(ItemState state) {
-            return state is ItemChargeState;
+            return state is ItemChargeSo;
         }
     }
 }

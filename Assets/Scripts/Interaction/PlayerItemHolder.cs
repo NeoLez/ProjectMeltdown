@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,9 +21,6 @@ namespace Root
         public bool HasItem => HeldItem != null;
 
         private GameObject currentHeldVisual;
-
-        private Dictionary<string, PackageData> _currentPackageData = new();
-        public DeliveryPackageItem DeliveryPackage { get; private set;}
 
         private bool _canLauchItem = true;
         private void Awake()
@@ -60,11 +56,6 @@ namespace Root
             
             HeldItem = item.itemState;
             if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
-
-            if (item.TryGetComponent(out DeliveryPackageItem deliveryPackage))
-            {
-                _currentPackageData.Add(deliveryPackage.PackageData.Id, deliveryPackage.PackageData);
-            }
             
             if (item.itemState.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.itemState.ItemSo.HeldItemGameObject, holdPoint);
@@ -103,13 +94,6 @@ namespace Root
             physicalItem.transform.parent = null;
             
             var rbItem = physicalItem.GetComponent<Rigidbody>();
-            DeliveryPackage = physicalItem.GetComponent<DeliveryPackageItem>();
-
-            if (DeliveryPackage && _currentPackageData.TryGetValue(DeliveryPackage.PackageData.Id, out PackageData data))
-            {
-                DeliveryPackage.SetPackageData(data);
-                _currentPackageData.Remove(DeliveryPackage.PackageData.Id);
-            }
 
             if(_canLauchItem)
             {
@@ -127,7 +111,7 @@ namespace Root
                 Destroy(currentHeldVisual);
             
             OnItemChanged?.Invoke();
-            CanLauchItem(true);
+            CanLaunchItem(true);
         }
 
         private void Drop(InputAction.CallbackContext _) {
@@ -144,7 +128,7 @@ namespace Root
             ForceClearHeldItem();
         }
 
-        public void CanLauchItem(bool state)
+        public void CanLaunchItem(bool state)
         {
             _canLauchItem = state;
         }
@@ -158,7 +142,6 @@ namespace Root
         
         private void OnDestroy() {
             GameManager.Input.Inventory.PutHeldInInventory.performed -= SaveHeldItem;
-            _currentPackageData.Clear();
         }
     }
 }

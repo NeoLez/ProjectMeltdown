@@ -60,7 +60,7 @@ namespace Root
 
         private void Update()
         {
-            if (_battery == null || _battery.State.currentCharge <= 0f)
+            if (_battery == null || _battery.So.currentCharge <= 0f)
             {
                 if (_powered)
                 {
@@ -73,7 +73,7 @@ namespace Root
                 return;
             }
 
-            _battery.State.currentCharge -= batteryDrain * Time.deltaTime;
+            _battery.So.currentCharge -= batteryDrain * Time.deltaTime;
         }
 
         private void LateUpdate()

@@ -1,14 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Root
 {
     [RequireComponent (typeof (PackageVisual))]
     public class DeliveryPackageItem : PhysicalItem
     {
-        public PackageData PackageData;
-
-        [SerializeField] private PackageItemSo packageData;
-        [SerializeField] private PackageClimateConditionsSO packageConditions;
+        [FormerlySerializedAs("packageData")] [SerializeField] private PackageItemGenerationDataSo packageDataGenerator;
+        [SerializeField] private PackageClimateConditionsSo packageConditions;
         //[SerializeField] private GameObject[] packageStates;
         //[SerializeField] PackageVisual _visuals;
 
@@ -16,14 +16,11 @@ namespace Root
         [SerializeField] private float damageMultiplier;
 
         private float _currentDurability;
-        private int _currentValue;
 
         private bool _isInAffectionZone;
         private bool _timerHasEnded;
         private float _timer;
         private float _timerDuration;
-
-        public PackageItemSo GetSO() => packageData;
 
         private void Start()
         {
@@ -32,35 +29,24 @@ namespace Root
             //    _visuals = GetComponent<PackageVisual>();
             //}
             //SetTimerDuration();
-
-            PackageData.SetPackageOwner(this);
         }
 
 
-        public void InitializePackageData(string id, int currentPrice, float currentDurability)
+        //TODO: Deterministic number generation and maybe a way to set the packageDataGenerator from the outside so it can be changed at runtime?
+        public void InitializePackageData()
         {
-            _currentDurability = currentDurability;
+            var item = State;
+            
+            _currentDurability = Random.Range(packageDataGenerator.MinDurability, packageDataGenerator.MaxDurability);
+            item.durability = _currentDurability;
 
-            _currentValue = currentPrice;
-
-            PackageData = new PackageData(id, currentPrice, currentDurability);
-        }
-
-        public void SetPackageData(PackageData newData)
-        {
-            PackageData = newData;
+            item.price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
         }
 
         private void Update()
         {
             if (!_isInAffectionZone) return;
             DrainLife();
-        }
-
-        public override void ShowFeedback(bool canShow)
-        {
-            base.ShowFeedback(canShow);
-
         }
 
         #region Not Finished
@@ -97,7 +83,7 @@ namespace Root
 
             //hacer el total dividido la vida del paquete
         }
-        //ponerle valor a cada paquete en base a su condiconde vida útil
+        //ponerle valor a cada paquete en base a su condiconde vida ï¿½til
         private void AffectValue()
         {
             //sacar un porcentaje total de la vida, si se va disminuyendo, restarle un valor minimo en lo posible (balancear)
@@ -137,9 +123,9 @@ namespace Root
         }
         #endregion
 
-        public int GetCurrentPrice()
+        public int GetPrice()
         {
-            return _currentValue;
+            return State.price;
         }
 
         public float GetDurabilityState()
@@ -147,65 +133,9 @@ namespace Root
             return _currentDurability;
         }
 
+        public PackageItemState State => itemState as PackageItemState;
+        protected override bool IsStateTypeValid(ItemState state) {
+            return state is PackageItemState;
+        } 
     }
-
-    [System.Serializable]
-    public class PackageData
-    {
-        private const string glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-        public string Id;
-        public int Price;
-        public float Durability;
-        private DeliveryPackageItem _package;
-
-        private string _packageID;
-        private int _generatedPrice;
-        private int _generatedDurability;
-
-        public bool PackageID => string.IsNullOrEmpty(Id);
-        public PackageData(string id, int price, float durability)
-        {
-            Id = id;
-            Price = price;
-            Durability = durability;
-        }
-
-        public void SetPackageOwner(DeliveryPackageItem package)
-        {
-            _package = package;
-        }
-
-        public int GeneratePackgePrice()
-        {
-            return _generatedPrice = Random.Range(_package.GetSO().MinPriceValue, _package.GetSO().MaxPriceValue);
-        }
-
-
-        public string GenerateUniqueID()
-        {
-            int charAmount = 8;
-            for (int i = 0; i < charAmount; i++)
-            {
-                _packageID += glyphs[Random.Range(0, glyphs.Length)];
-            }
-            return _packageID;
-        }
-
-        public int GenerateDurability()
-        {
-            return _generatedDurability = Random.Range(_package.GetSO().MinDurability, _package.GetSO().MaxDurability);
-        }
-
-        public int GetPrice()
-        {
-            return _generatedPrice;
-        }
-
-        public int GetDurability()
-        {
-            return _generatedDurability;
-        }
-    }
-
 }

@@ -46,7 +46,7 @@ namespace Root
             visual.goal = GameManager.Train.GetTrainPosition();
 
             fluid.Consume(brakeController.GetDamageAmount());
-            brakeController.Repair(-fluid.State.currentCharge);
+            brakeController.Repair(-fluid.So.currentCharge);
             
             fluid.transform.SetParent(transform);
             fluid.transform.position = pivot.position;

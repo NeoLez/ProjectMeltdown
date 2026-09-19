@@ -1,30 +1,10 @@
 using UnityEngine;
 
-namespace Root
-{
-    [CreateAssetMenu(menuName = "Items/Package Item", fileName = "Package")]
-    public class PackageItemSo : ScriptableObject
-    {
-        [field: SerializeField] public string ItemName { get; private set; }
-        [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField] public TypeOfPackage TypeOfPackage { get; private set; }
-
-        [Header("Price Settings")]
-        [field: SerializeField] public int MaxPriceValue { get; private set; }
-        [Min(0)]
-        [field: SerializeField] public int MinPriceValue { get; private set; }
-
-        [Header("Duraility Settings")]
-        [field: SerializeField] public int MaxDurability { get; private set; }
-
-        [Min(0)]
-        [field: SerializeField] public int MinDurability { get; private set; }
-
+namespace Root {
+    [CreateAssetMenu(menuName = "Items/Package")]
+    public class PackageItemSo : ItemSo {
+        public override ItemState CreateState() {
+            return new PackageItemState(this);
+        }
     }
-    public enum TypeOfPackage
-    {
-        Food,
-        Supply
-    }
-
 }

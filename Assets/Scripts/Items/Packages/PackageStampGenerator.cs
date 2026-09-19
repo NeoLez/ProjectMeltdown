@@ -38,7 +38,7 @@ namespace Root
             RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
 
             var package = obj.GetComponent<DeliveryPackageItem>();
-            SetDisplayValue(package.PackageData.Price);
+            SetDisplayValue(package.GetPrice());
 
             var r = obj.GetComponentInChildren<DecalProjector>();
             var mate = new Material(r.material);

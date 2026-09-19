@@ -17,7 +17,7 @@ namespace Root
                 label.text = string.Format(format, 0);
                 return;
             }
-            int percentage = Mathf.RoundToInt(battery.State.currentCharge / battery.State.maxCharge * 100);
+            int percentage = Mathf.RoundToInt(battery.So.currentCharge / battery.So.maxCharge * 100);
             label.text = string.Format(format, percentage);
         }
     }
