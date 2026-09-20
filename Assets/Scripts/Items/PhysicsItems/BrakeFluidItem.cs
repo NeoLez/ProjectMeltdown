@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Root {
     public class BrakeFluidItem : PhysicalItem {
         private static readonly int Insert = Animator.StringToHash("Insert");
-        public ItemChargeSo So => itemState as ItemChargeSo;
+        public ItemChargeSo So => ItemState as ItemChargeSo;
         
         [SerializeField] private Animator animator;
         public void AnimatorOn()

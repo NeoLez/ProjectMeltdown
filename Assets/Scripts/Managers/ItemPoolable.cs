@@ -6,7 +6,7 @@ namespace Root.Managers {
             base.TurnOff();
             var item = GetComponent<PhysicalItem>();
             item.VisualOnly(false);
-            item.itemState = null;
+            item.ItemState = null;
             var visualContainer = GetComponent<VisualContainer>();
             visualContainer.goal = null;
             var rigidbody =  GetComponent<Rigidbody>();

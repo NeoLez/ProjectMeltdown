@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Root {
     public class PhysicalItem : InteractableNormalCamera {
@@ -17,13 +18,21 @@ namespace Root {
                 Debug.LogError("Unexpected State Type'" + state.GetType() + "'. Are you assigning the right ItemSO?");
                 return;
             }
-            itemState = defaultItemSo.CreateState();
+            ItemState = defaultItemSo.CreateState();
             
             UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif
-        [SerializeField] [SerializeReference] public ItemState itemState;
+        [SerializeField] [SerializeReference] private ItemState itemState;
         
+        public ItemState ItemState {
+            get => itemState;
+            set {
+                itemState = value;
+                Initialize();
+            }
+        }
+
         public override void Interact() {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
 
@@ -56,7 +65,7 @@ namespace Root {
             return true;
         }
 
-        public virtual void Initialize() {
+        protected virtual void Initialize() {
             
         }
     }

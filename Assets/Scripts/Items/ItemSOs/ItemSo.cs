@@ -21,14 +21,13 @@ namespace Root {
         public PhysicalItem CreatePhysicalItem() {
             var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
             var physicalItem = obj.GetComponent<PhysicalItem>();
-            physicalItem.itemState = PhysicalItemPrefab.itemState.Clone();
+            physicalItem.ItemState = PhysicalItemPrefab.ItemState.Clone();
             return physicalItem;
         }
         
         public PhysicalItem CreatePhysicalItem(ItemState state) {
             var obj = CreatePhysicalItem();
-            obj.itemState = state;
-            obj.Initialize();
+            obj.ItemState = state;
             return obj;
         }
 

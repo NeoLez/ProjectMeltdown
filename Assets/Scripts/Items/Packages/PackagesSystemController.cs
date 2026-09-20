@@ -57,7 +57,7 @@ namespace Root
             {
                 int randomIndex = UnityEngine.Random.Range(0, availablePackages.Length);
                 PhysicalItem item = availablePackages[randomIndex].GetComponent<PhysicalItem>();
-                GameObject prefab = item.itemState.ItemSo.CreatePhysicalItem().gameObject;
+                GameObject prefab = item.ItemState.ItemSo.CreatePhysicalItem().gameObject;
 
                 prefab.transform.parent = instancePivot.parent;
                 prefab.transform.position = instancePivot.transform.position;

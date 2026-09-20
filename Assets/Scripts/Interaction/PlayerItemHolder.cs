@@ -54,11 +54,11 @@ namespace Root
             if(!GameManager.Train.IsStopped())
                 GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
             
-            HeldItem = item.itemState;
+            HeldItem = item.ItemState;
             if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
             
-            if (item.itemState.ItemSo.HeldItemGameObject == null) return;
-            currentHeldVisual = Instantiate(item.itemState.ItemSo.HeldItemGameObject, holdPoint);
+            if (item.ItemState.ItemSo.HeldItemGameObject == null) return;
+            currentHeldVisual = Instantiate(item.ItemState.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
             

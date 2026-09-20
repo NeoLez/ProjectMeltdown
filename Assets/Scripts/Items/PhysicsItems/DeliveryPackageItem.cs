@@ -38,7 +38,7 @@ namespace Root
             _decalProjector.material = _stampMaterial;
         }
 
-        public override void Initialize() {
+        protected override void Initialize() {
             UpdateStampDecal();
         }
 
@@ -151,7 +151,7 @@ namespace Root
             return _currentDurability;
         }
 
-        public PackageItemState State => itemState as PackageItemState;
+        public PackageItemState State => ItemState as PackageItemState;
         protected override bool IsStateTypeValid(ItemState state) {
             return state is PackageItemState;
         } 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Root {
     public class BrakeDiscItem : PhysicalItem {
-        public ItemConsumableState State => itemState as ItemConsumableState;
+        public ItemConsumableState State => ItemState as ItemConsumableState;
         [SerializeField] private List<GameObject> visualStages;
 
         public override void StateUpdate() {
