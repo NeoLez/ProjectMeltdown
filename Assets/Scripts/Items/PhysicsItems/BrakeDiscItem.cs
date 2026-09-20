@@ -6,10 +6,6 @@ namespace Root {
         public ItemConsumableState State => ItemState as ItemConsumableState;
         [SerializeField] private List<GameObject> visualStages;
 
-        public override void StateUpdate() {
-            ChangeModel(State.usesLeft);
-        }
-
         public int GetDiscUsage()
         {
             return State.usesLeft;  

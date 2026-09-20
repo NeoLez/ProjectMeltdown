@@ -186,6 +186,7 @@ namespace Root {
             return false;
         }
         
+#if UNITY_EDITOR
         [Header("OptionsForTesting")]
         [SerializeField] private ItemSo itemSoToAdd;
         [SerializeField] private InventoryItem.InventoryItemRotation rotation;
@@ -213,5 +214,6 @@ namespace Root {
                 Debug.Log(item._position + " " + item.itemState.ItemSo.ItemName);
             }
         }
+#endif
     }
 }

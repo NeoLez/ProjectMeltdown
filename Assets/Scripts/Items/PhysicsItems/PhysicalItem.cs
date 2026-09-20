@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Root {
     public class PhysicalItem : InteractableNormalCamera {
-        
-#if UNITY_EDITOR     
+        [Header("Editor Only Data")]
+#if UNITY_EDITOR
         [SerializeField] private ItemSo defaultItemSo;
         [ContextMenu("Generate Starting State")]
         private void GenerateStateInEditor() {
@@ -23,6 +22,8 @@ namespace Root {
             UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif
+        
+        [Header("Physical Item Data")]
         [SerializeField] [SerializeReference] private ItemState itemState;
         
         public ItemState ItemState {
@@ -43,7 +44,11 @@ namespace Root {
         }
 
 
-        public void VisualOnly(bool state) {
+        /// <summary>
+        /// If <paramref name="state"/> is true, will disable all the object's behaviours, physics and colliders except for visual ones to allow for use in, for instance, animations. Setting it to false will undo this change.
+        /// </summary>
+        /// <param name="state"></param>
+        public virtual void VisualOnly(bool state) {
             Rigidbody rb = GetComponent<Rigidbody>();
 
             if (rb != null)
@@ -59,12 +64,17 @@ namespace Root {
                 col.enabled = !state;
         }
         
-        public virtual void StateUpdate() {}
-
+        /// <summary>
+        /// Returns whether the input <paramref name="state"/> is valid. This function should be overriden by child classes to ensure that the results are valid
+        /// </summary>
+        /// <param name="state"></param>
         protected virtual bool IsStateTypeValid(ItemState state) {
             return true;
         }
 
+        /// <summary>
+        /// Runs every time the ItemState is set, most of the time is only at the beginning of the PhysicalItem's lifespan.
+        /// </summary>
         protected virtual void Initialize() {
             
         }

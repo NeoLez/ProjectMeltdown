@@ -14,10 +14,17 @@ namespace Root {
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
         [field: SerializeField, SerializeReference] public ItemState DefaultItemState { get; private set; }
 
+        /// <summary>
+        /// Returns a zero initialized ItemState of the correct type. Should be overriden by child classes to define the ItemState type they expect. 
+        /// </summary>
         public virtual ItemState CreateState() {
             return new ItemState(this);
         }
 
+        /// <summary>
+        /// Creates a new instance of the physical item handling pool allocations, etc. All physical items should be created this way.
+        /// If an initial state is not specified, it is the default one set in the Physical Item prefab
+        /// </summary>
         public PhysicalItem CreatePhysicalItem() {
             var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
             var physicalItem = obj.GetComponent<PhysicalItem>();
@@ -25,6 +32,8 @@ namespace Root {
             return physicalItem;
         }
         
+        /// <inheritdoc cref="CreatePhysicalItem()"/>
+        /// <param name="state">The initial item's state.</param>
         public PhysicalItem CreatePhysicalItem(ItemState state) {
             var obj = CreatePhysicalItem();
             obj.ItemState = state;
@@ -41,7 +50,7 @@ namespace Root {
         
         
 #if UNITY_EDITOR     
-        [ContextMenu("Generate Starting State")]
+        [ContextMenu("Generate Default Item State")]
         private void GenerateStateInEditor() {
             DefaultItemState = CreateState();
             UnityEditor.EditorUtility.SetDirty(this);

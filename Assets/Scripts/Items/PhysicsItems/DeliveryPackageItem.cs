@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Root
@@ -8,7 +7,7 @@ namespace Root
     [RequireComponent (typeof (PackageVisual))]
     public class DeliveryPackageItem : PhysicalItem
     {
-        [FormerlySerializedAs("packageData")] [SerializeField] private PackageItemGenerationDataSo packageDataGenerator;
+        [SerializeField] private PackageItemGenerationDataSo packageDataGenerator;
         [SerializeField] private PackageClimateConditionsSo packageConditions;
         //[SerializeField] private GameObject[] packageStates;
         //[SerializeField] PackageVisual _visuals;
