@@ -58,21 +58,20 @@ namespace Root
             return disc;
         }
         public void TryInsertDisc(ItemState state) {
-            var Disc = state.ItemSo.CreatePhysicalItem() as BrakeDiscItem;
-            Disc.itemState = state;
+            var disc = state.ItemSo.CreatePhysicalItem(state) as BrakeDiscItem;
                     
-            VisualContainer visual = Disc.GetComponentInChildren<VisualContainer>();
+            VisualContainer visual = disc.GetComponentInChildren<VisualContainer>();
             visual.goal = GameManager.Train.GetTrainPosition();
                     
-            _emergencyStopButton.Repair(Disc.GetDiscUsage());
+            _emergencyStopButton.Repair(disc.GetDiscUsage());
             
-            _disc = Disc;
+            _disc = disc;
 
             _disc.VisualOnly(true);
 
-            Disc.transform.SetParent(transform);
-            Disc.transform.position = pivot.position;
-            Disc.transform.rotation = pivot.rotation;
+            disc.transform.SetParent(transform);
+            disc.transform.position = pivot.position;
+            disc.transform.rotation = pivot.rotation;
         }
 
         public BrakeDiscItem GetBrakeDisc()

@@ -111,8 +111,7 @@ namespace Root
         public bool TryInsertBattery(ItemState item) {
             if (_batteryItemSO != item.ItemSo || _battery != null) return false; 
             
-            TrainBatteryItem batteryToInsert = item.ItemSo.CreatePhysicalItem() as TrainBatteryItem;
-            batteryToInsert.itemState = item;
+            TrainBatteryItem batteryToInsert = (TrainBatteryItem)item.ItemSo.CreatePhysicalItem(item);
             
 
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();

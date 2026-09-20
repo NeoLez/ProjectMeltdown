@@ -56,6 +56,7 @@ namespace Root
         }
 
         private void UpdateStampDecal() {
+            if (State == null || State.stampTexture == null) return;
             _stampMaterial.SetTexture("_Texture", State.stampTexture);
             _decalProjector.fadeFactor = 1.0f; //asi no vemos el cambio de textura 
         }

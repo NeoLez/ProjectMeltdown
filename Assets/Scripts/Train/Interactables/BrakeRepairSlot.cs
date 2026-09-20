@@ -39,7 +39,7 @@ namespace Root
 
         public bool TryInsertBrakeFluid(ItemState state)
         {
-            BrakeFluidItem fluid = state.ItemSo.CreatePhysicalItem() as BrakeFluidItem;
+            BrakeFluidItem fluid = (BrakeFluidItem)state.ItemSo.CreatePhysicalItem();
             fluid.VisualOnly(true);
             
             VisualContainer visual = fluid.GetComponentInChildren<VisualContainer>();

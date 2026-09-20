@@ -66,8 +66,7 @@ namespace Root
         {
             if (_mapItemSO != item.ItemSo || _map != null) return false;
 
-            PhysicalItem mapToInsert = item.ItemSo.CreatePhysicalItem();
-            mapToInsert.itemState = item;
+            PhysicalItem mapToInsert = item.ItemSo.CreatePhysicalItem(item);
 
 
             VisualContainer visual = mapToInsert.GetComponentInChildren<VisualContainer>();
