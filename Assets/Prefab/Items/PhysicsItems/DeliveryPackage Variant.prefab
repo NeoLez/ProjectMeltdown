@@ -48,10 +48,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1285358921924878234, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5985484139083966924, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
       propertyPath: m_Name
       value: DeliveryPackage Variant
@@ -63,57 +59,5 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5985484139083966924, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 9085209508877514605}
-    - targetCorrespondingSourceObject: {fileID: 5985484139083966924, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8139882986099125214}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
---- !u!1 &1471715365702208780 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5985484139083966924, guid: f5771f4fc4894aa4792243a35a977d78, type: 3}
-  m_PrefabInstance: {fileID: 5151030897926972608}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &9085209508877514605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471715365702208780}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6df728cf6a5326488e72a765bf7228b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.PackageVisual
-  displayCanvas: {fileID: 0}
-  canvasHeight: 0
---- !u!114 &8139882986099125214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471715365702208780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0c6c3c1ea3aeb4da21346e0363b4f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryPackageItem
-  defaultItemSo: {fileID: 11400000, guid: 2566300f3d72639f592495bbf17078f3, type: 2}
-  itemState:
-    rid: 5244131056737321029
-  packageDataGenerator: {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
-  packageConditions: {fileID: 0}
-  damageMultiplier: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 5244131056737321029
-      type: {class: PackageItemState, ns: Root, asm: Assembly-CSharp}
-      data:
-        <ItemSo>k__BackingField: {fileID: 11400000, guid: 2566300f3d72639f592495bbf17078f3, type: 2}
-        price: 0
-        durability: 0

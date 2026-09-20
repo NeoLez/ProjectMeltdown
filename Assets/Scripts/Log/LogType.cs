@@ -2,6 +2,7 @@
 {
     public enum LogType
     {
+        Default,
         Store,
         WorldGen,
         Pool,

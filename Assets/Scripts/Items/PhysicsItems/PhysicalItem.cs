@@ -1,6 +1,9 @@
+using Root.Managers;
+using Timers;
 using UnityEngine;
 
 namespace Root {
+    [RequireComponent(typeof(BoundingBoxTracker))]
     public class PhysicalItem : InteractableNormalCamera {
         [Header("Editor Only Data")]
 #if UNITY_EDITOR
@@ -25,7 +28,15 @@ namespace Root {
         
         [Header("Physical Item Data")]
         [SerializeField] [SerializeReference] private ItemState itemState;
-        
+        private BoundingBoxTracker _boundingBoxTracker;
+
+        protected virtual void Awake() {
+            _boundingBoxTracker = GetComponent<BoundingBoxTracker>();
+            _boundingBoxTracker.OnMapSectionRemoved += () => {
+                PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
+            };
+        }
+
         public ItemState ItemState {
             get => itemState;
             set {
@@ -62,6 +73,8 @@ namespace Root {
 
             foreach (var col in colliders)
                 col.enabled = !state;
+            
+            _boundingBoxTracker.enabled = !state;
         }
         
         /// <summary>
@@ -73,7 +86,7 @@ namespace Root {
         }
 
         /// <summary>
-        /// Runs every time the ItemState is set, most of the time is only at the beginning of the PhysicalItem's lifespan.
+        /// Runs every time the ItemState is set, most of the time it's only at the beginning of the PhysicalItem's lifespan.
         /// </summary>
         protected virtual void Initialize() {
             

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Root.Managers;
 using TMPro;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace Root
 
             _depositedPackages.Add(1);
             RefreshSumAmount(packageController.GetPrice());
-            Destroy(packageController.gameObject, 0.5f);
+            PoolManager.ReturnObjectToPool(packageController.gameObject.GetComponent<Poolable>());
 
             CheckGoal();
         }

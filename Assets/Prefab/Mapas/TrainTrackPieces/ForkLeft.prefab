@@ -1392,6 +1392,7 @@ MonoBehaviour:
   - {fileID: 8810107754247987248}
   - {fileID: 2782921948893361344}
   - {fileID: 3262800707697440259}
+  boundingBox: {fileID: 0}
   alert: {fileID: 0}
   end: {fileID: 0}
   shouldConsumeAlert: 0
@@ -1629,6 +1630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3329287177679930443}
   - component: {fileID: 4760787759419806914}
+  - component: {fileID: 4548209563122017396}
   m_Layer: 0
   m_Name: ForkLeft
   m_TagString: Untagged
@@ -1649,6 +1651,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2736176249040162597}
   - {fileID: 1384650865466204750}
   - {fileID: 6342224966547483263}
   - {fileID: 4415506332185923562}
@@ -1692,9 +1695,25 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 1692045369271449756}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 6b007eb7876cc5408a4abea4cc5b9345, type: 2}
   end: {fileID: 5110273709443333908}
   shouldConsumeAlert: 0
+--- !u!114 &4548209563122017396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528930076777323899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0fac68d06547a7944776ad66988808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
+  boundingBoxes:
+  - {fileID: 6552358307328750525}
+  mapSection: {fileID: 4760787759419806914}
 --- !u!1 &617562886670037076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,6 +2265,73 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1013974250668733880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 960743452957398780}
+  - component: {fileID: 1522709276708538989}
+  - component: {fileID: 6552358307328750525}
+  m_Layer: 11
+  m_Name: BoundingBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &960743452957398780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013974250668733880}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17, y: 2.72, z: 56.3}
+  m_LocalScale: {x: 84.4, y: 14.46, z: 114.36}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2736176249040162597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1522709276708538989
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013974250668733880}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6552358307328750525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013974250668733880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2e69fb83e4de4a0dbe5fdbcac666b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBox
+  composite: {fileID: 4548209563122017396}
 --- !u!1 &1066372870026102348
 GameObject:
   m_ObjectHideFlags: 0
@@ -4921,6 +5007,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 4722478750594471114}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 5401182218286100592}
   shouldConsumeAlert: 0
@@ -8798,6 +8885,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 8810107754247987248}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 8160115328882787466}
   shouldConsumeAlert: 0
@@ -12322,6 +12410,7 @@ MonoBehaviour:
   - {fileID: 3737937308940133598}
   - {fileID: 4722478750594471114}
   - {fileID: 3652807275527480680}
+  boundingBox: {fileID: 0}
   alert: {fileID: 0}
   end: {fileID: 0}
   shouldConsumeAlert: 0
@@ -12461,6 +12550,38 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4593937245482033861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2736176249040162597}
+  m_Layer: 0
+  m_Name: BoundingBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2736176249040162597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4593937245482033861}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 960743452957398780}
+  m_Father: {fileID: 3329287177679930443}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4613702138360961168
 GameObject:
   m_ObjectHideFlags: 0
@@ -16929,6 +17050,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 237282991780539490}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 592144619698440408}
   shouldConsumeAlert: 0
@@ -18946,6 +19068,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 4560058783101319122}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 3762144746441380712}
   shouldConsumeAlert: 0
@@ -22619,6 +22742,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 3737937308940133598}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 4080988962206023780}
   shouldConsumeAlert: 0
@@ -22673,6 +22797,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 3652807275527480680}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 4164746801156309458}
   shouldConsumeAlert: 0
@@ -27990,6 +28115,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 3262800707697440259}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 2754668120955687609}
   shouldConsumeAlert: 0
@@ -30036,6 +30162,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 2782921948893361344}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 8b5478cd9d2ce0219a14f82ed52eba6b, type: 2}
   end: {fileID: 3306674842215370874}
   shouldConsumeAlert: 0

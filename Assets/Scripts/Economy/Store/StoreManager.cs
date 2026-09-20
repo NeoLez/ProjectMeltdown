@@ -162,12 +162,6 @@ namespace Root
 
         private void OnDestroy()
         {
-            for (int i = itemsCreated.Count - 1; i >= 0; i--)
-            {
-                if (itemsCreated[i] != null)
-                    Destroy(itemsCreated[i].gameObject);
-            }
-
             OnRegenarateStock -= GenerateStoreItems;
         }
 

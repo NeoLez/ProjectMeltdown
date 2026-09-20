@@ -1679,6 +1679,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundSystem.MaterialTypeComponent
   materialType: 1
+--- !u!1 &3789918656055924228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 164106598968354852}
+  m_Layer: 0
+  m_Name: BoundingBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &164106598968354852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3789918656055924228}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9105898026755587749}
+  m_Father: {fileID: 181863085953778054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4849071540754307707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,6 +1721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181863085953778054}
   - component: {fileID: 5024895116933449650}
+  - component: {fileID: 5270224595302319944}
   m_Layer: 0
   m_Name: Piece7
   m_TagString: Untagged
@@ -1709,6 +1742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 164106598968354852}
   - {fileID: 1406859635870911549}
   - {fileID: 2459825051010282808}
   - {fileID: 7008265107664788410}
@@ -1735,9 +1769,25 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 5538528545129519094}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: ff709923be46688be83c1f113cce4e75, type: 2}
   end: {fileID: 8839246655429309750}
   shouldConsumeAlert: 0
+--- !u!114 &5270224595302319944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4849071540754307707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0fac68d06547a7944776ad66988808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
+  boundingBoxes:
+  - {fileID: 1872731141613835713}
+  mapSection: {fileID: 5024895116933449650}
 --- !u!1 &5190144595486079824
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,6 +2140,73 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7446415231516112683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9105898026755587749}
+  - component: {fileID: 5579257638456696298}
+  - component: {fileID: 1872731141613835713}
+  m_Layer: 11
+  m_Name: BoundingBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9105898026755587749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446415231516112683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.72, z: 5}
+  m_LocalScale: {x: 13.23, y: 14.46, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 164106598968354852}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5579257638456696298
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446415231516112683}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1872731141613835713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446415231516112683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2e69fb83e4de4a0dbe5fdbcac666b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBox
+  composite: {fileID: 5270224595302319944}
 --- !u!1 &8453850535793920502
 GameObject:
   m_ObjectHideFlags: 0

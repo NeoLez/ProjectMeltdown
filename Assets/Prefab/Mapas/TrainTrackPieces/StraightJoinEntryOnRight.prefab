@@ -385,6 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6536856553041951508}
   - component: {fileID: 8706687949319230606}
+  - component: {fileID: 1121097929909530324}
   m_Layer: 0
   m_Name: StraightJoinEntryOnRight
   m_TagString: Untagged
@@ -405,6 +406,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2775803522838026517}
   - {fileID: 971184167248152130}
   - {fileID: 4631455513141971875}
   - {fileID: 3970171488930117010}
@@ -437,9 +439,25 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 2412811185646514748}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: ea7689117be4169cc96bd38fafdb357b, type: 2}
   end: {fileID: 7803606779188757945}
   shouldConsumeAlert: 0
+--- !u!114 &1121097929909530324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3593819155578543167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0fac68d06547a7944776ad66988808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
+  boundingBoxes:
+  - {fileID: 6283915196308038592}
+  mapSection: {fileID: 8706687949319230606}
 --- !u!1 &5137900060134206215
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,6 +755,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7020746448069591117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2775803522838026517}
+  m_Layer: 0
+  m_Name: BoundingBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2775803522838026517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020746448069591117}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2445385987950474688}
+  m_Father: {fileID: 6536856553041951508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7560782784696625320
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,6 +2319,73 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &8497753348176684861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2445385987950474688}
+  - component: {fileID: 812647429324675090}
+  - component: {fileID: 6283915196308038592}
+  m_Layer: 11
+  m_Name: BoundingBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2445385987950474688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497753348176684861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.72, z: 10}
+  m_LocalScale: {x: 13.23, y: 14.46, z: 20}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2775803522838026517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &812647429324675090
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497753348176684861}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6283915196308038592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497753348176684861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2e69fb83e4de4a0dbe5fdbcac666b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBox
+  composite: {fileID: 1121097929909530324}
 --- !u!1001 &411967829114304148
 PrefabInstance:
   m_ObjectHideFlags: 0

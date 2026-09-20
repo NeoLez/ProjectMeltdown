@@ -9,6 +9,8 @@ namespace Root {
         private MapPointsGen.Node _node;
         private int _id;
         [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
+        [SerializeReference] CompositeBoundingBox boundingBox;
+        public event Action OnMapSectionRemoved;
 
         public List<TrainPathWaypoint> GetWaypoints() {
             return _waypoints;
@@ -32,6 +34,7 @@ namespace Root {
         }
 
         public void Remove() {
+            OnMapSectionRemoved?.Invoke();
             foreach (var w in _waypoints) {
                 Destroy(w);
             }

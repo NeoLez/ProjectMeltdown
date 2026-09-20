@@ -378,6 +378,9 @@ GameObject:
   - component: {fileID: 4856435053597045943}
   - component: {fileID: 1285358921924878234}
   - component: {fileID: 3561632790734204523}
+  - component: {fileID: 4136845046498104237}
+  - component: {fileID: 4002168713616854814}
+  - component: {fileID: 2325776676742501266}
   m_Layer: 7
   m_Name: DeliveryPackage
   m_TagString: Untagged
@@ -478,6 +481,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
+--- !u!114 &4136845046498104237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6df728cf6a5326488e72a765bf7228b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.PackageVisual
+  displayCanvas: {fileID: 0}
+  canvasHeight: 0
+--- !u!114 &4002168713616854814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0c6c3c1ea3aeb4da21346e0363b4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryPackageItem
+  defaultItemSo: {fileID: 11400000, guid: 2566300f3d72639f592495bbf17078f3, type: 2}
+  itemState:
+    rid: 5244131056737321029
+  packageDataGenerator: {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
+  packageConditions: {fileID: 0}
+  damageMultiplier: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 5244131056737321029
+      type: {class: PackageItemState, ns: Root, asm: Assembly-CSharp}
+      data:
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: 2566300f3d72639f592495bbf17078f3, type: 2}
+        price: 0
+        durability: 0
+        stampTexture: {fileID: 0}
+--- !u!114 &2325776676742501266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985484139083966924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed82a6c1cd1d443d8e52fdcf4edb5b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBoxTracker
+  _currentBoundingBox: {fileID: 0}
 --- !u!1001 &1740641247972459392
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,8 +25,9 @@ namespace Root
         private Material _stampMaterial;
         private DecalProjector _decalProjector;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             //if(_visuals!=null)
             //{
             //    _visuals = GetComponent<PackageVisual>();

@@ -1,3 +1,4 @@
+using Timers;
 using UnityEngine;
 
 namespace Root.Managers {
@@ -20,6 +21,12 @@ namespace Root.Managers {
                 storeDisplay._storeHand = null;
                 storeDisplay._purchased = true;
             }
+            GetComponent<BoundingBoxTracker>().enabled = false;
+        }
+
+        public override void TurnOn() {
+            base.TurnOn();
+            GetComponent<BoundingBoxTracker>().enabled = true;
         }
     }
 }

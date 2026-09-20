@@ -384,6 +384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3329287177679930443}
   - component: {fileID: 4760787759419806914}
+  - component: {fileID: 8786489881317402618}
   m_Layer: 0
   m_Name: ForkRight
   m_TagString: Untagged
@@ -438,9 +439,25 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 1692045369271449756}
+  boundingBox: {fileID: 0}
   alert: {fileID: 11400000, guid: 02fe50c8a659cb5fc9658a7e63632a54, type: 2}
   end: {fileID: 5110273709443333908}
   shouldConsumeAlert: 0
+--- !u!114 &8786489881317402618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528930076777323899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0fac68d06547a7944776ad66988808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
+  boundingBoxes:
+  - {fileID: 2295545906192956985}
+  mapSection: {fileID: 4760787759419806914}
 --- !u!1 &753262944561933836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1945,6 +1962,7 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 3649553275271812668}
+  boundingBox: {fileID: 0}
   alert: {fileID: 0}
   end: {fileID: 6602126071636088197}
   shouldConsumeAlert: 0
@@ -11362,6 +11380,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -8.27
       objectReference: {fileID: 0}
+    - target: {fileID: 6552358307328750525, guid: ad427852a243b3fd9a5ac38e29677508, type: 3}
+      propertyPath: composite
+      value: 
+      objectReference: {fileID: 8786489881317402618}
     - target: {fileID: 6714264967266151831, guid: ad427852a243b3fd9a5ac38e29677508, type: 3}
       propertyPath: m_LocalScale.z
       value: 12.374161
@@ -11392,6 +11414,17 @@ PrefabInstance:
       addedObject: {fileID: 5036597656806953703}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad427852a243b3fd9a5ac38e29677508, type: 3}
+--- !u!114 &2295545906192956985 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6552358307328750525, guid: ad427852a243b3fd9a5ac38e29677508, type: 3}
+  m_PrefabInstance: {fileID: 4987118647908715908}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2e69fb83e4de4a0dbe5fdbcac666b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBox
 --- !u!4 &7710669371314751951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3329287177679930443, guid: ad427852a243b3fd9a5ac38e29677508, type: 3}
