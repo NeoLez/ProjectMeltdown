@@ -153,6 +153,7 @@ namespace Root
                 if (!isStopped)
                 {
                     TrainStopped();
+                    UpdateSounds(0, 0);
                 }
             }
             else
