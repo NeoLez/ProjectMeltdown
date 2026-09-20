@@ -54,6 +54,10 @@ namespace Root {
 
         protected virtual bool IsStateTypeValid(ItemState state) {
             return true;
-        } 
+        }
+
+        public virtual void Initialize() {
+            
+        }
     }
 }

@@ -89,8 +89,7 @@ namespace Root
             if (!HasItem)
                 return;
 
-            var physicalItem = HeldItem.ItemSo.CreatePhysicalItem();
-            physicalItem.itemState = HeldItem;
+            var physicalItem = HeldItem.ItemSo.CreatePhysicalItem(HeldItem);
             physicalItem.transform.parent = null;
             
             var rbItem = physicalItem.GetComponent<Rigidbody>();

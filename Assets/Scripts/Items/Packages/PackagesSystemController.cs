@@ -87,9 +87,6 @@ namespace Root
             if (_currentSpawnedPackages.Count > 0)
             {
                 package.InitializePackageData();
-
-                var currentpackage = package.GetComponentInChildren<DeliveryPackageItem>();
-                packageStampGenerator.CreateStamp(currentpackage.gameObject);        
             }
         }
 

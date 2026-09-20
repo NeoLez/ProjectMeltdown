@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -21,26 +22,42 @@ namespace Root
         private bool _timerHasEnded;
         private float _timer;
         private float _timerDuration;
+        
+        private Material _stampMaterial;
+        private DecalProjector _decalProjector;
 
-        private void Start()
+        private void Awake()
         {
             //if(_visuals!=null)
             //{
             //    _visuals = GetComponent<PackageVisual>();
             //}
             //SetTimerDuration();
+            _decalProjector = GetComponentInChildren<DecalProjector>();
+            _stampMaterial = new Material(_decalProjector.material);
+            _decalProjector.material = _stampMaterial;
+        }
+
+        public override void Initialize() {
+            UpdateStampDecal();
         }
 
 
         //TODO: Deterministic number generation and maybe a way to set the packageDataGenerator from the outside so it can be changed at runtime?
         public void InitializePackageData()
         {
-            var item = State;
-            
             _currentDurability = Random.Range(packageDataGenerator.MinDurability, packageDataGenerator.MaxDurability);
-            item.durability = _currentDurability;
+            State.durability = _currentDurability;
 
-            item.price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
+            State.price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
+
+            State.stampTexture = PackageStampGenerator.Instance.CreateStampTexture(gameObject);
+            UpdateStampDecal();
+        }
+
+        private void UpdateStampDecal() {
+            _stampMaterial.SetTexture("_Texture", State.stampTexture);
+            _decalProjector.fadeFactor = 1.0f; //asi no vemos el cambio de textura 
         }
 
         private void Update()

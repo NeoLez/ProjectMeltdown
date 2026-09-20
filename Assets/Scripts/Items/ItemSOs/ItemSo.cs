@@ -24,6 +24,13 @@ namespace Root {
             physicalItem.itemState = PhysicalItemPrefab.itemState.Clone();
             return physicalItem;
         }
+        
+        public PhysicalItem CreatePhysicalItem(ItemState state) {
+            var obj = CreatePhysicalItem();
+            obj.itemState = state;
+            obj.Initialize();
+            return obj;
+        }
 
         private void OnValidate() {
             Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 }, "InventorySize must be 1x1 or greater");

@@ -1,12 +1,12 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace Root
 {
     public class PackageStampGenerator : MonoBehaviour
     {
+        public static PackageStampGenerator Instance;
         [Header("Price")]
         [SerializeField] private TMP_Text m_Text;
         [SerializeField] private string format = "{0}$";
@@ -18,6 +18,7 @@ namespace Root
         private void Awake()
         {
             _canvasScaler = GetComponent<CanvasScaler>();
+            Instance = this;
         }
 
         private void Start()
@@ -33,21 +34,15 @@ namespace Root
             height = (int)y;
         }
 
-        public void CreateStamp(GameObject obj)
+        public RenderTexture CreateStampTexture(GameObject obj)
         {
             RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
 
             var package = obj.GetComponent<DeliveryPackageItem>();
             SetDisplayValue(package.GetPrice());
 
-            var r = obj.GetComponentInChildren<DecalProjector>();
-            var mate = new Material(r.material);
-            r.material = mate;
-            r.material.SetTexture("_Texture", render);
-
             OneShotRenderSystem.Instance.Render(render);
-
-            r.fadeFactor = 1.0f; //asi no vemos el cambio de textura 
+            return render;
         }
 
         public void EnableCanvas(bool state)
@@ -59,7 +54,5 @@ namespace Root
         {
             m_Text.text = string.Format(format, value);
         }
-
-
     }
 }
