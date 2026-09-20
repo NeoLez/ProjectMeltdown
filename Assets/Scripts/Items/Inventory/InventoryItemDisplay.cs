@@ -38,6 +38,8 @@ namespace Root {
             originalRotation = rotation;
             
             image.sprite = itemIcon;
+            
+            UpdateVisuals();
         }
 
         private void SetPosition(Vector2 position, InventoryItem.InventoryItemRotation rotation) {
@@ -193,6 +195,10 @@ namespace Root {
             if (destination.InsertItem(_inventoryItem.itemState)) {
                 _inventoryItem.Inventory.RemoveItem(_inventoryItem);
             }
+        }
+        
+        public virtual void UpdateVisuals() {
+            
         }
     }
 }
