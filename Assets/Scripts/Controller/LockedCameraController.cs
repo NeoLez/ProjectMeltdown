@@ -10,7 +10,8 @@ namespace Root.Controller {
         [SerializeField] private CameraPivot cam;
         [SerializeField] private Transform cameraTarget;
         [SerializeField] public float interactDistance = 2;
-
+        [SerializeField] private LayerMask raycastLayerMask;
+        
         private PlayerInputActions _input;
         private Vector2 _prevMousePos = Vector2.zero;
 
@@ -79,7 +80,7 @@ namespace Root.Controller {
         private Interactable _selectedInteractable;
         private void HandleInteractionObjectSelection() {
             Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>()/GameManager.GetResolutionRatio());
-            if (!Physics.Raycast(ray, out var hit, interactDistance) ||
+            if (!Physics.Raycast(ray, out var hit, interactDistance, raycastLayerMask) ||
                 !hit.collider.gameObject.TryGetComponent<Interactable>(out var component)) {
                 _selectedInteractable = null;
                 return;
