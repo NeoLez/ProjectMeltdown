@@ -243,6 +243,7 @@ namespace Root
             {
                 emergencyStopButton.FinishBraking();
             }
+            speedController.LowerToZero();
             UnlockExternalDoorButtons();
             MovePhysicalTrainToMap();
             SetContainerVisualsToTheirOwnPosition();
