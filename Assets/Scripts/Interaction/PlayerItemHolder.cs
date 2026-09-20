@@ -56,14 +56,16 @@ namespace Root
             
             HeldItem = item.ItemState;
             if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
-            
+
             if (item.ItemState.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.ItemState.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
-            
+
+            if (item.TryGetComponent(out DeliveryPackageItem packageItem))  PackageStampGenerator.Instance.CreateStampTexture(currentHeldVisual, packageItem.GetPrice());
+
             PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
-            
+
             OnItemChanged?.Invoke();
         }
 

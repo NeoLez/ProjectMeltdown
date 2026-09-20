@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace Root
@@ -42,6 +43,30 @@ namespace Root
             SetDisplayValue(package.GetPrice());
 
             OneShotRenderSystem.Instance.Render(render);
+            return render;
+        }
+
+        private DecalProjector heldItemProyector;
+        public RenderTexture CreateStampTexture(GameObject obj, float price)
+        {
+            EnableCanvas(true);
+            RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
+
+            SetDisplayValue(price);
+
+            if (heldItemProyector == null)
+            {
+                heldItemProyector = obj.GetComponentInChildren<DecalProjector>();
+                var mate = new Material(heldItemProyector.material);
+                heldItemProyector.material = mate;
+            }
+            heldItemProyector.material.SetTexture("_Texture", render);
+
+            OneShotRenderSystem.Instance.Render(render);
+
+            heldItemProyector.fadeFactor = 1.0f;
+
+            EnableCanvas(false);
             return render;
         }
 
