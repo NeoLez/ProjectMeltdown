@@ -6,6 +6,7 @@ namespace Root
     {
         [SerializeField] private GeneratorSlot generatorSlot;
         [SerializeField] private Renderer boardRenderer;
+        [SerializeField] private int materialIndex = 1; 
         [SerializeField] private Material materialOff;
         [SerializeField] private Material materialOn;
 
@@ -13,7 +14,6 @@ namespace Root
         {
             generatorSlot.OnPowerRestored += TurnOn;
             generatorSlot.OnPowerLost += TurnOff;
-
             TurnOff();
         }
 
@@ -23,19 +23,15 @@ namespace Root
             generatorSlot.OnPowerLost -= TurnOff;
         }
 
-        private void TurnOn()
-        {
-            if (boardRenderer == null || materialOn == null) return;
-            Material[] mats = boardRenderer.sharedMaterials;
-            mats[1] = materialOn;
-            boardRenderer.sharedMaterials = mats;
-        }
+        private void TurnOn() => SetMaterial(materialOn);  
+        private void TurnOff() => SetMaterial(materialOff); 
 
-        private void TurnOff()
+        private void SetMaterial(Material m)
         {
-            if (boardRenderer == null || materialOff == null) return;
+            if (boardRenderer == null || m == null) return;
             Material[] mats = boardRenderer.sharedMaterials;
-            mats[1] = materialOff;
+            if (materialIndex < 0 || materialIndex >= mats.Length) return;
+            mats[materialIndex] = m;
             boardRenderer.sharedMaterials = mats;
         }
     }

@@ -7,6 +7,7 @@ namespace Root
     {
         [SerializeField] private GeneratorSlot generatorSlot;
         [SerializeField] private TextMeshProUGUI batteryPercentText;
+        private int _lastPercent = -1; 
 
         private void Update()
         {
@@ -14,14 +15,12 @@ namespace Root
 
             TrainBatteryItem battery = generatorSlot.GetBattery();
 
-            if (battery == null || battery.So.maxCharge <= 0f)
-            {
-                batteryPercentText.text = "0%";
-                return;
-            }
+            int percent = 0;
+            if (battery != null && battery.So.maxCharge > 0f)
+                percent = Mathf.Clamp(Mathf.RoundToInt(battery.So.currentCharge / battery.So.maxCharge * 100f), 0, 100);
 
-            int percent = Mathf.RoundToInt((battery.So.currentCharge / battery.So.maxCharge) * 100f);
-            percent = Mathf.Clamp(percent, 0, 100);
+            if (percent == _lastPercent) return; 
+            _lastPercent = percent;              
             batteryPercentText.text = $"{percent}%";
         }
     }

@@ -9,24 +9,18 @@ namespace Root
     {
         [SerializeField] private Transform pivot;
         [SerializeField] private VisualEffect visualEffect;
-
         [SerializeField] private float batteryDrain = 0.5f;
-
         [Header("Emergency Lights")]
         [SerializeField] private Flicker emergencyLight; 
-
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
-
         private TrainBatteryItem _battery;
         private bool _animationEnd;
-
         public event Action OnPowerRestored;
         public event Action OnPowerLost;
-
         private bool _powered = false;
-        
+   
         [SerializeField] private ItemSo _batteryItemSO;
 
         private void Start()
@@ -65,11 +59,9 @@ namespace Root
                 if (_powered)
                 {
                     _powered = false;
-
                     SetEmergencyLights(true); 
                     OnPowerLost?.Invoke();
                 }
-
                 return;
             }
 
@@ -87,48 +79,38 @@ namespace Root
 
         public bool TryInsertBattery(ItemState item)
         {
-            if (_batteryItemSO != item.ItemSo || _battery != null) return false; 
-            
-            TrainBatteryItem batteryToInsert = (TrainBatteryItem)item.ItemSo.CreatePhysicalItem(item);
-            
+            if (_batteryItemSO != item.ItemSo || _battery != null) return false;
 
+            TrainBatteryItem batteryToInsert = (TrainBatteryItem)item.ItemSo.CreatePhysicalItem(item);
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
             visual.goal = GameManager.Train.GetTrainPosition();
-
             _battery = batteryToInsert;
-
             _battery.VisualOnly(true);
-
             _battery.transform.SetParent(transform);
             _battery.transform.position = pivot.position;
             _battery.transform.rotation = pivot.rotation;
-
             StartCoroutine(AnimTrigger(_battery));
-
             return true;
         }
 
         public TrainBatteryItem TakeBattery()
         {
-            if (_battery == null)
-                return null;
+            if (_battery == null || !_animationEnd) return null;
 
             TrainBatteryItem battery = _battery;
-
             battery.VisualOnly(false);
-
             _battery = null;
             _animationEnd = false;
+            bool hadPower = _powered; 
 
             if (_powered)
             {
                 _powered = false;
 
-                SetEmergencyLights(true); 
+                SetEmergencyLights(true);
                 OnPowerLost?.Invoke();
             }
-
-            if (_soundRemove != null)
+            if (hadPower && _soundRemove != null)
                 GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);
 
             return battery;
@@ -139,26 +121,27 @@ namespace Root
         System.Collections.IEnumerator AnimTrigger(TrainBatteryItem battery)
         {
             _animationEnd = false;
-
             battery.AnimatorOn();
-
             yield return new WaitForSeconds(0.70f);
 
-            if (visualEffect != null)
-                visualEffect.SendEvent("OnPlay");
+            if (_battery != battery) yield break; 
 
-            if (_soundInsert != null)
-                GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
-
-            if (!_powered)
+            if (!_powered && battery.So.currentCharge > 0f) // no hay efecto, sonido ni energía
             {
-                _powered = true;
+                if (visualEffect != null) 
+                    visualEffect.SendEvent("OnPlay");
 
+                if (_soundInsert != null) 
+                    GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
+
+                _powered = true;
                 SetEmergencyLights(false);
                 OnPowerRestored?.Invoke();
             }
 
             yield return new WaitForSeconds(0.10f);
+
+            if (_battery != battery) yield break; 
 
             _animationEnd = true;
         }
