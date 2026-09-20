@@ -42,7 +42,6 @@ namespace Root
                 OnPowerPercentChanged?.Invoke(CurrentPercent01);
             }
         }
-
         private void HandlePowerRestored()
         {
             _powered = true;

@@ -6,8 +6,6 @@ namespace Root
     public class GeneratorLights : MonoBehaviour
     {
         [SerializeField] private GeneratorSlot generatorSlot;
-
-        [Tooltip("Agregá acá luces, planos con shaders, VFX, o cualquier objeto que deba activarse con energía")]
         [SerializeField] private List<GameObject> poweredObjects; 
 
         private void Start()

@@ -15,6 +15,7 @@ namespace Root
         private bool _animationEnd;
         public event Action OnBatteryInserted;
         public event Action OnBatteryRemoved;
+        public bool PowerReady { get; set; }
 
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundInsert2;
@@ -59,10 +60,12 @@ namespace Root
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
             if (_battery != battery) yield break; 
-            if (visualEffect != null) 
+            bool hasEnergy = battery.So.currentCharge > 0f; 
+            if (visualEffect != null && hasEnergy) 
                 visualEffect.SendEvent("OnPlay");
-            CameraShakeManager.Instance.Shake(0.15f, 0.1f);
-            if (_soundInsert != null)
+            if (hasEnergy) 
+                CameraShakeManager.Instance.Shake(0.15f, 0.1f);
+            if (_soundInsert != null && hasEnergy) 
             {
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
                 if (_soundInsert2 != null) 
@@ -94,15 +97,17 @@ namespace Root
 
         public TrainBatteryItem TakeBattery()
         {
-            if (_battery == null || !_animationEnd) return null;
+            if (_battery == null || !_animationEnd)
+                return null;
 
             TrainBatteryItem battery = _battery;
             battery.VisualOnly(false);
             _battery = null;
             _animationEnd = false; 
+            PowerReady = false; 
             train.SetEnginePower(false);
             OnBatteryRemoved?.Invoke();
-            if (_soundRemove != null)
+            if (_soundRemove != null && battery.So.currentCharge > 0f)
                 GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX, 0.6f);
             return battery;
         }

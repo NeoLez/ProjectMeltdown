@@ -19,6 +19,7 @@ namespace Root
 
         [SerializeField] private float bootDuration = 2f;
         [SerializeField] private float activatedDuration = 1f;
+        private bool _booted;
 
         private void Awake()
         {
@@ -31,15 +32,34 @@ namespace Root
             ShutdownSystems();
         }
 
+        private void Update() 
+        {
+            if (_booted && !HasEnergy())
+                ShutdownSystems();
+        }
+
         private void OnDestroy()
         {
             batterySlot.OnBatteryInserted -= StartBootSequence;
             batterySlot.OnBatteryRemoved -= ShutdownSystems;
         }
 
+        private bool HasEnergy()
+        {
+            TrainBatteryItem battery = batterySlot.GetBattery();
+            return battery != null && battery.So.currentCharge > 0f;
+        }
+
         private void StartBootSequence()
         {
             StopAllCoroutines();
+
+            if (!HasEnergy()) 
+            {
+                ShutdownSystems();
+                return;
+            }
+
             StartCoroutine(BootRoutine());
         }
 
@@ -47,36 +67,36 @@ namespace Root
         {
             systemsCanvas.SetActive(false);
             lightsObject.SetActive(false);
-
             emergencyLight.SetActive(true);
-
             bootCanvas.SetActive(true);
-
             bootText.text = "ACTIVATING SYSTEMS.....";
-
             yield return new WaitForSeconds(bootDuration);
-
             bootText.text = "ACTIVATED";
-
             yield return new WaitForSeconds(activatedDuration);
 
-            bootCanvas.SetActive(false);
+            if (!HasEnergy()) 
+            {
+                ShutdownSystems();
+                yield break;
+            }
 
+            bootCanvas.SetActive(false);
             systemsCanvas.SetActive(true);
             lightsObject.SetActive(true);
-
             emergencyLight.SetActive(false);
+            _booted = true; 
+            batterySlot.PowerReady = true; 
         }
 
         private void ShutdownSystems()
         {
             StopAllCoroutines();
 
+            _booted = false; 
+            batterySlot.PowerReady = false; 
             bootCanvas.SetActive(false);
-
             systemsCanvas.SetActive(false);
             lightsObject.SetActive(false);
-
             emergencyLight.SetActive(true);
         }
     }

@@ -97,6 +97,7 @@ namespace Root
         {
             return isStopped;
         }
+        public bool HasPower => !_powerLost;
 
         private void Start()
         {
@@ -143,7 +144,6 @@ namespace Root
 
             _currentSpeed += speedChange;
             _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
-
             speedometerHorizontal.SetSpeed(_currentSpeed);
 
             MoveTrain();
@@ -157,7 +157,8 @@ namespace Root
             }
             else
             {
-                if (!_powerLost) {
+                if (!_powerLost)
+                {
                     UpdateSounds(targetSpeed, speedDifference);
                     LockExternalDoorButtons();
                     if (isStopped)
@@ -165,10 +166,15 @@ namespace Root
                         TrainStarted();
                     }
                 }
-                else {
+                else
+                {
                     UpdateSounds(0, 0);
                 }
             }
+
+            engineSound.mute = _powerLost; 
+            strainSound.mute = _powerLost; 
+            rattleSound.mute = _powerLost && _currentSpeed == 0; 
         }
         
         public float currentDistanceBetweenPathpoints;
@@ -288,22 +294,14 @@ namespace Root
         public void SetEnginePower(bool on)
         {
             _engineEnabled = on;
-
-            if (!on)
-            {
-                OnPowerLost?.Invoke();
-            }
-            else
-            {
-                OnPowerRestored?.Invoke();
-            }
         }
 
-        // MODIFICADO: consumo variable segun el esfuerzo del motor + corta si el motor est� apagado
+        // consumo variable segun el esfuerzo del motor + corta si el motor est� apagado
         private bool ConsumeBattery(float speedDifference)
         {
             var battery = batterySlot?.GetBattery();
             if (battery == null) return false;
+            if (!batterySlot.PowerReady) return false; // no consume ni enciende hasta que termine la secuencia de activación
             if (battery.So.currentCharge <= 0) return false;
             battery.So.currentCharge -= math.max(0, batteryDrain + speedDifference * strainMultiplier) * Time.deltaTime;
             return true;
