@@ -27,15 +27,17 @@ namespace Root
 
         private void Update()
         {
-            if (!TryFindInteractableNPC(out var currentInteractable))
+            if (TryFindInteractableNPC(out var currentInteractable) && !_isInteracting)
             {
-                _currentInterractable = null;
+                _currentInterractable = currentInteractable;
+            }
+            else
+            {
+                if(!_isInteracting) _currentInterractable = null;
+
                 interactionPanel.enabled = false;
                 return;
             }
-
-            _currentInterractable = currentInteractable;
-
             ShowCanvas();
         }
 
@@ -47,15 +49,15 @@ namespace Root
 
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
-            if (TryFindInteractableNPC(out var currentInteractable))
+            if(_currentInterractable != null)
             {
-                if (!currentInteractable.HasDialogue()) return;
+                if (!_currentInterractable.HasDialogue()) return;
 
-                if (currentInteractable.HasDialoguePermenantlyEnded()) return;
+                if (_currentInterractable.HasDialoguePermenantlyEnded()) return;
 
-                if (currentInteractable.CheckPivot() && currentInteractable.CheckPosPivot())
+                if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot())
                 {
-                    SetLookAndPositionPivots(currentInteractable);
+                    SetLookAndPositionPivots(_currentInterractable);
 
                     GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _npcPositionPivot.position);
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
@@ -65,10 +67,10 @@ namespace Root
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(null);
                 }
 
-                currentInteractable.OnInteractionStarted += StartInteraction;
-                currentInteractable.OnInteractionEnded += EndInteraction;
+                _currentInterractable.OnInteractionStarted += StartInteraction;
+                _currentInterractable.OnInteractionEnded += EndInteraction;
 
-                currentInteractable.ExecuteDialogue();
+                _currentInterractable.ExecuteDialogue();
             }
         }
 
