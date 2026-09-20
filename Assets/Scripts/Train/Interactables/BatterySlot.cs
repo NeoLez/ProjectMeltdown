@@ -53,18 +53,24 @@ namespace Root
 
         System.Collections.IEnumerator AnimTrigger(TrainBatteryItem battery)
         {
+            _animationEnd = false; 
             yield return new WaitForSeconds(0.02f);
+            if (_battery != battery) yield break; 
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
-            visualEffect.SendEvent("OnPlay");
+            if (_battery != battery) yield break; 
+            if (visualEffect != null) 
+                visualEffect.SendEvent("OnPlay");
             CameraShakeManager.Instance.Shake(0.15f, 0.1f);
             if (_soundInsert != null)
             {
                 GameManager.AudioSystem.PlaySoundPositional(_soundInsert, transform.position, GameManager.AudioSystem.VFX);
-                GameManager.AudioSystem.PlaySoundPositional(_soundInsert2, transform.position, GameManager.AudioSystem.VFX);
+                if (_soundInsert2 != null) 
+                    GameManager.AudioSystem.PlaySoundPositional(_soundInsert2, transform.position, GameManager.AudioSystem.VFX);
             }
-               
+
             yield return new WaitForSeconds(0.10f);
+            if (_battery != battery) yield break; 
 
             _animationEnd = true;
         }
@@ -85,17 +91,15 @@ namespace Root
                 _battery.transform.rotation = pivot.rotation;
             }
         }
-        
+
         public TrainBatteryItem TakeBattery()
         {
-            if (_battery == null)
-                return null;
+            if (_battery == null || !_animationEnd) return null;
 
             TrainBatteryItem battery = _battery;
-
             battery.VisualOnly(false);
-
             _battery = null;
+            _animationEnd = false; 
             train.SetEnginePower(false);
             OnBatteryRemoved?.Invoke();
             if (_soundRemove != null)
@@ -112,15 +116,10 @@ namespace Root
             if (_batteryItemSO != item.ItemSo || _battery != null) return false; 
             
             TrainBatteryItem batteryToInsert = (TrainBatteryItem)item.ItemSo.CreatePhysicalItem(item);
-            
-
             VisualContainer visual = batteryToInsert.GetComponentInChildren<VisualContainer>();
-            visual.goal = GameManager.Train.GetTrainPosition();
-            
+            visual.goal = GameManager.Train.GetTrainPosition();           
             _battery = batteryToInsert;
-
             batteryToInsert.VisualOnly(true);
-
             batteryToInsert.transform.SetParent(transform);
             batteryToInsert.transform.position = pivot.position;
             batteryToInsert.transform.rotation = pivot.rotation;
