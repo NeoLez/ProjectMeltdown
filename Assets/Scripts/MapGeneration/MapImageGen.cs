@@ -11,6 +11,7 @@ namespace Root
         [SerializeField] private GameObject line;
         [SerializeField] private float dotRadius;
         [SerializeField] private Vector2 size;
+        [SerializeField] private List<Color> lineColors;
 
         [SerializeField] private List<NodeImage> images;
         [SerializeField] private Texture arrowTexture; 
@@ -55,6 +56,7 @@ namespace Root
                     obj.transform.localScale = Vector3.one * dotRadius;
                     var r = obj.GetComponent<Renderer>();
                     var mat = new Material(r.material);
+                    mat.color = lineColors[y];
                     r.material = mat;
                     mat.mainTexture = GetSprite(map.nodes[y, x].feature);
 
@@ -75,6 +77,7 @@ namespace Root
             arr.transform.localScale = Vector3.one * dotRadius;
             var rend = arr.GetComponent<Renderer>();
             var mate = new Material(rend.material);
+            mate.color = Color.black;
             rend.material = mate;
             mate.mainTexture = arrowTexture;
             
@@ -90,6 +93,10 @@ namespace Root
             Vector2 p1 = GetCoords(y1, x1);
             Vector2 p2 = GetCoords(y2, x2);
             var obj = Instantiate(line, transform);
+            var rend = obj.GetComponent<Renderer>();
+            var mate = new Material(rend.material);
+            mate.color = lineColors[y1];
+            rend.material = mate;
             obj.name = $"({y1}-{x1})({y2}-{x2})";
             obj.transform.position = ((p1 + p2) / 2).Swizzle_xy0() + Vector3.forward  *transform.position.z;
             obj.transform.right = (p2 - p1);
