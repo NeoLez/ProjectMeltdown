@@ -866,6 +866,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6349499, y: 1.9923036, z: 41.146633}
   m_Center: {x: 0.24747503, y: -1.8538481, z: 18.919153}
+--- !u!1 &3724239200331542944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5555485608420124633}
+  m_Layer: 0
+  m_Name: BoundingBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5555485608420124633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724239200331542944}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.85, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3187943498796216329}
+  m_Father: {fileID: 7354231312121814642}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4608342511385123769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,6 +1090,73 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.660368, y: 1.9923036, z: 3.611372}
   m_Center: {x: 0.26018405, y: -1.8538481, z: -0.73568606}
+--- !u!1 &5689736455535230182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3187943498796216329}
+  - component: {fileID: 4558239109137262099}
+  - component: {fileID: 8636102119608695829}
+  m_Layer: 11
+  m_Name: BoundingBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3187943498796216329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689736455535230182}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.4, y: 8.3, z: 57.2}
+  m_LocalScale: {x: 139.8, y: 27.5, z: 115.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5555485608420124633}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4558239109137262099
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689736455535230182}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8636102119608695829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689736455535230182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a2e69fb83e4de4a0dbe5fdbcac666b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBox
+  composite: {fileID: 6272151741561267500}
 --- !u!1 &6182839030731121078
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,6 +1807,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7354231312121814642}
   - component: {fileID: 8274113595705031903}
+  - component: {fileID: 6272151741561267500}
   m_Layer: 0
   m_Name: EstacionSegura
   m_TagString: Untagged
@@ -1728,6 +1828,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5555485608420124633}
   - {fileID: 2418579960908210172}
   - {fileID: 4247942109112849184}
   - {fileID: 4328081310695850671}
@@ -1948,9 +2049,25 @@ MonoBehaviour:
   isStation: 0
   _waypoints:
   - {fileID: 5776428142087173108}
-  alert: {fileID: 11400000, guid: ea7689117be4169cc96bd38fafdb357b, type: 2}
+  boundingBox: {fileID: 6272151741561267500}
+  alert: {fileID: 11400000, guid: 34076ca58b131c054b698426efcd7054, type: 2}
   end: {fileID: 6714134390576952224}
   shouldConsumeAlert: 0
+--- !u!114 &6272151741561267500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8812934866459492989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0fac68d06547a7944776ad66988808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
+  boundingBoxes:
+  - {fileID: 8636102119608695829}
+  mapSection: {fileID: 8274113595705031903}
 --- !u!1 &9046835957881824748
 GameObject:
   m_ObjectHideFlags: 0
