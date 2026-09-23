@@ -124,7 +124,7 @@ namespace Root
             bootCanvas.SetActive(false);
             systemsCanvas.SetActive(false);
             lightsObject.SetActive(false);
-            emergencyLight.SetActive(true);
+            emergencyLight.SetActive(batterySlot.GetBattery() == null);
         }
     }
 }
