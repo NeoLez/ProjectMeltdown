@@ -9,7 +9,7 @@ namespace Root
     {
         public static PackagesSystemController Instance;
 
-        [SerializeField] private GameObject[] availablePackages;
+        //[SerializeField] private GameObject[] availablePackages;
         [SerializeField] private PackageStampGenerator packageStampGenerator;
 
         [SerializeField] private PackageObjectivesUI _visuals;
@@ -20,10 +20,8 @@ namespace Root
         private int _packagePriceSum;
         private List<DeliveryPackageItem> _currentSpawnedPackages = new();
 
-        public Action OnDeliveryStationReached;
-
-        private PlayerInputActions _input;
         private Coroutine _packageGenerationRoutine;
+        private MissionObjectiveSO deliveryMissions; //TODO-Improve this and expand
         private void Awake()
         {
             if (Instance == null)
@@ -32,14 +30,9 @@ namespace Root
             }
         }
 
-        private void Update()
-        {
-            GetNextStationToDeliver();
-        }
-
         public void EnablePackageGeneration(NPCInteraction perpetrator, Transform instancePivot, int amount)
         {
-            if(_packageGenerationRoutine!=null)
+            if (_packageGenerationRoutine != null)
             {
                 StopCoroutine(_packageGenerationRoutine);
                 _packageGenerationRoutine = null;
@@ -53,6 +46,7 @@ namespace Root
         private IEnumerator GeneratePackages(NPCInteraction perpetrator, Transform instancePivot, int amountToSpawn)
         {
             Vector3 newPos = instancePivot.position;
+            GameObject[] availablePackages = perpetrator.Mission.AvailablePackages;
             for (int i = 0; i < amountToSpawn; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, availablePackages.Length);
@@ -70,7 +64,7 @@ namespace Root
                 newPos += Vector3.up * verticalOffset;
 
                 InitializePackges(currentPackage);
-                
+
                 yield return new WaitForSeconds(0.1f);
             }
 
@@ -79,7 +73,8 @@ namespace Root
             _visuals.ActivateNotification();
             _visuals.SetNewObjective(perpetrator.Mission);
 
-            //MissionsManager.Instance.RegisterMission(perpetrator.Mission);
+            MissionsManager.Instance.RegisterMission(perpetrator.Mission, _currentSpawnedPackages); 
+            deliveryMissions = perpetrator.Mission;
         }
 
         private void InitializePackges(DeliveryPackageItem package)
@@ -90,10 +85,24 @@ namespace Root
             }
         }
 
-        public void CheckPackageConditions()
+        public void CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null)
         {
-            EconomyManager.Instance.AddMoney(_packagePriceSum);
+            if(objectiveReached)
+            {
+                EconomyManager.Instance.AddMoney(_packagePriceSum); //TODO-Add more variants to the result
+            }
+            else
+            {
+               int finalAmount = GetAverageSumFromDeposited(depositedPackages);
+               EconomyManager.Instance.AddMoney(finalAmount);
+            }
+            UpdateFeedback();
 
+            MissionsManager.Instance.FinishMission(deliveryMissions);
+        }
+
+        private void UpdateFeedback()
+        {
             _visuals.ClearCurrentObjective();
             NotificationManager.Instance.ShowNotification("+ $" + _packagePriceSum);
 
@@ -105,15 +114,35 @@ namespace Root
             _packagePriceSum = amount;
         }
 
-        //el mismo controller se encarga de chequear en donde instanciar las zonas de delivery de paquetes segun x condiciones de cada paquete
-        public void GetNextStationToDeliver()
+        public int GetAverageSumFromDeposited(List<PackageItemState> depositedPackages)
         {
-            if(mapGeneration.IsTrainInStation())
+            int depositedCount = 0;
+            int totalDepositedAmount = 0;
+
+            for (int i = 0; i < depositedPackages.Count; i++)
             {
-                OnDeliveryStationReached?.Invoke(); //aca cuando llegue a la estacion, si mi info coincide, activo a la zona de delivery de todos lo que hipoteticamente tenga activos jajaj
-                return;
+                int packagePrice = depositedPackages[i].price;
+
+                _packagePriceSum -= packagePrice;
+
+                totalDepositedAmount += packagePrice;
+                depositedCount++;
+
+                if (_packagePriceSum <= 0)
+                {
+                    float averageRewardPerPackage = totalDepositedAmount / depositedCount;
+
+                    _packagePriceSum = (int)averageRewardPerPackage / _currentSpawnedPackages.Count;
+
+                    /*Debug.Log($"Paquetes procesados: {depositedCount}");
+                    Debug.Log($"Monto total depositado: {totalDepositedAmount}");
+                    Debug.Log($"Promedio a entregar: {averageRewardPerPackage}");*/
+                    break;
+                }
             }
+            return _packagePriceSum;
         }
+
         private void OnDestroy()
         {
             if (_currentSpawnedPackages.Count > 0)

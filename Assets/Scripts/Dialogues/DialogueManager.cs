@@ -90,7 +90,7 @@ public class DialogueManager : MonoBehaviour
             int currentIndex = index;
 
             _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            choiceOptions[index].onClick.AddListener(() => StopDialogue(currentIndex));
+            choiceOptions[index].onClick.AddListener(() => StopDialogue(currentIndex)); //cuidado que si le doy a repetir dialogo, se sucribe de nuevo y rompe la seleccion de dialogos
             index++;
         }
     }

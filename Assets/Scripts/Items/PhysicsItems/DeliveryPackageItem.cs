@@ -52,6 +52,7 @@ namespace Root
             State.price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
 
             State.stampTexture = PackageStampGenerator.Instance.CreateStampTexture(gameObject);
+            State.typeOfPackage = packageDataGenerator.TypeOfPackage;
             UpdateStampDecal();
         }
 
@@ -145,7 +146,10 @@ namespace Root
         {
             return State.price;
         }
-
+        public TypeOfPackage GetTypeOfPackage()
+        {
+            return State.typeOfPackage;
+        }
         public float GetDurabilityState()
         {
             return _currentDurability;

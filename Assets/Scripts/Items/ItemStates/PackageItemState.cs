@@ -6,6 +6,7 @@ namespace Root {
         public int price;
         public float durability;
         public RenderTexture stampTexture;
+        public TypeOfPackage typeOfPackage;
         
         public PackageItemState(PackageItemSo itemSo) : base(itemSo) { }
         
@@ -16,7 +17,8 @@ namespace Root {
         public override ItemState Clone() {
             var clone = new PackageItemState(ItemSo as PackageItemSo) {
                 price = price,
-                durability = durability
+                durability = durability,
+                typeOfPackage = typeOfPackage
                 //TODO: Should the texture also be cloned?
             };
             return clone;

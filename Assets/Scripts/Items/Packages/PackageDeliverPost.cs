@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Root.Managers;
 using TMPro;
 using UnityEngine;
 
@@ -8,22 +8,28 @@ namespace Root
 {
     public class PackageDeliverPost : InteractableNormalCamera, IItemDragReceiver
     {
-        [SerializeField] private int amountOfPackagesToDeliver;
+        public bool HasCompletedGoal { get; private set; }
+
+        [SerializeField] MissionObjectiveSO thisIshorrible;
         [SerializeField] private Transform dropPivot;
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
+        [SerializeField] private TMP_Text textNotifier;
         public Transform DropPivot => dropPivot;
 
         private string _format = "{0}$";
 
-        private List<int> _depositedPackages = new();
+        private List<PackageItemState> _depositedPackages = new();
         private int _currentPackageSum;
 
         private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
         private int _animStateClose = Animator.StringToHash("CloseDepositDoor");
 
         private bool _isAnimating;
-        private bool _hasCompletedGoal;
+
+        public Action<bool> OnPackagesDelivered;
+        public List<TypeOfPackage> _packagesType = new();
+        private int _amount;
 
         private void Start()
         {
@@ -36,41 +42,37 @@ namespace Root
             //cuando termino de entregar, reemplazo los valores de esas variables por la "sigueinte mision"
         }
 
-        public void DepositPackage(DeliveryPackageItem packageController)
-        {
-            if (_hasCompletedGoal) return;
-            if (_isAnimating) return;
-            
-            StartCoroutine(TriggerDepositAnims());
-
-            _depositedPackages.Add(1);
-            RefreshSumAmount(packageController.GetPrice());
-            PoolManager.ReturnObjectToPool(packageController.gameObject.GetComponent<Poolable>());
-
-            CheckGoal();
-        }
-        
         public void DepositPackage(PackageItemState itemState)
         {
-            if (_hasCompletedGoal) return;
+            if (HasCompletedGoal) return;
             if (_isAnimating) return;
-            
+
             StartCoroutine(TriggerDepositAnims());
 
-            _depositedPackages.Add(1);
             RefreshSumAmount(itemState.price);
-
-            CheckGoal();
-        }
-        
-        private void CheckGoal()
-        {
-            if (amountOfPackagesToDeliver == _depositedPackages.Count)
+            if (!_depositedPackages.Contains(itemState))
             {
-                PackagesSystemController.Instance.CheckPackageConditions();
-                _hasCompletedGoal = true;
-                return;
+                _depositedPackages.Add(itemState);
             }
+            _packagesType.Add(itemState.typeOfPackage);
+            _amount++;
+        }
+
+        public void CheckGoal()
+        {
+            if(MissionsManager.Instance.VerifyDeliveryConditions(thisIshorrible.Id, _amount, _packagesType))
+            {
+                PackagesSystemController.Instance.CheckPackageConditions(true);
+                HasCompletedGoal = true;
+            }
+            else
+            {
+                PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
+            }
+
+            StartCoroutine(UpdateTextRoutine());
+
+            OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
 
         private IEnumerator TriggerDepositAnims()
@@ -90,9 +92,28 @@ namespace Root
             PackagesSystemController.Instance.SumCurrentDeposited(_currentPackageSum);
         }
 
-        public bool HasReachedDepositGoal()
+
+        private IEnumerator UpdateTextRoutine() 
         {
-            return _hasCompletedGoal;
+            priceCounter.enabled = false;
+            textNotifier.text = "Paquetes depositados"; //TODO-Change to Localization
+            yield return new WaitForSeconds(2f);
+            ResetPostStatus();
+        }
+
+        private void ResetPostStatus()
+        {
+            _depositedPackages.Clear();
+
+            _currentPackageSum = 0;
+            RefreshSumAmount(0);
+            priceCounter.enabled = true;
+            textNotifier.text = "Monto Total: "; //TODO-Change to Localization
+        }
+
+        public int DepositedPackages()
+        {
+            return _depositedPackages.Count;
         }
 
         private void OnDestroy()
@@ -109,23 +130,26 @@ namespace Root
             if (!holder.HasItem) return;
             var itemState = holder.HeldItem as PackageItemState;
             if (itemState == null) return;
-            
+
             DepositPackage(itemState);
             holder.ForceClearHeldItem();
         }
 
-        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
-            return item.itemState is PackageItemState && !_isAnimating && !_hasCompletedGoal;
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item)
+        {
+            return item.itemState is PackageItemState && !_isAnimating && !HasCompletedGoal;
         }
 
-        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
-            if(!CanTakeItem(position, InventoryItem.GetRotationCorrectedSize(item.Size, rotation), item)) return false;
-            
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item)
+        {
+            if (!CanTakeItem(position, InventoryItem.GetRotationCorrectedSize(item.Size, rotation), item)) return false;
+
             DepositPackage(item.itemState as PackageItemState);
             return true;
         }
 
-        public void ClearFeedback() {
+        public void ClearFeedback()
+        {
         }
     }
 }

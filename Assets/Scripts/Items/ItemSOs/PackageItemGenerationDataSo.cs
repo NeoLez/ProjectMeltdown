@@ -23,6 +23,7 @@ namespace Root
     }
     public enum TypeOfPackage
     {
+        None,
         Food,
         Supply
     }
