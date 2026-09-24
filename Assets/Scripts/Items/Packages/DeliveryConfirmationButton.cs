@@ -12,6 +12,7 @@ namespace Root
         [SerializeField] private float returnDuration = 0.5f;
 
         private bool _hasConfirmedInteraction;
+        private bool isAnimating;
         private void Awake()
         {
             packagePost.OnPackagesDelivered += SetConfirmationButtonStatus;
@@ -19,6 +20,9 @@ namespace Root
 
         public override void Interact() 
         {
+            if (isAnimating) return;
+
+            isAnimating = true;
             Tween.LocalRotation(
             target: transform,
             endValue: Quaternion.Euler(maximumRotation),
@@ -26,7 +30,7 @@ namespace Root
             ease: Ease.OutQuad,
             cycles: 2,
             cycleMode: CycleMode.Yoyo
-            );
+            ).OnComplete(() => isAnimating = false);
 
             ConfirmDelivery();
         }
