@@ -14440,6 +14440,7 @@ GameObject:
   - component: {fileID: 122642271388751480}
   - component: {fileID: 205664065748568221}
   - component: {fileID: 3952031846328912561}
+  - component: {fileID: 3829064577884512159}
   m_Layer: 0
   m_Name: Map Slot
   m_TagString: Untagged
@@ -14456,7 +14457,7 @@ Transform:
   m_GameObject: {fileID: 5417302617538132650}
   serializedVersion: 2
   m_LocalRotation: {x: 0.26300853, y: -0.24904029, z: 0.07047306, w: 0.92942935}
-  m_LocalPosition: {x: -1.819, y: 1.359, z: 12.609}
+  m_LocalPosition: {x: -1.809, y: 1.409, z: 12.649}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14478,12 +14479,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.5, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.5, z: 0.09382181}
+  m_Center: {x: 6.340841e-10, y: -6.17165e-10, z: 0.05308915}
 --- !u!114 &3952031846328912561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14499,6 +14500,19 @@ MonoBehaviour:
   pivot: {fileID: 3937552153887707524}
   train: {fileID: 2164972166822166087}
   _mapItemSO: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
+--- !u!114 &3829064577884512159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5417302617538132650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d468253f3bffe4347a489be880db56d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SpawnDefaultMap
+  item: {fileID: 11400000, guid: 13e6d2f78d1ece140aa98d6a5117b1bc, type: 2}
 --- !u!1 &5446757870322266536
 GameObject:
   m_ObjectHideFlags: 0

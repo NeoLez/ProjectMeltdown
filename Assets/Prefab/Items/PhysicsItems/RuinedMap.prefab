@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7643595352215049103
+--- !u!1 &2095634691307193614
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,54 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4783214882511466251}
-  - component: {fileID: 3528731202840898806}
-  - component: {fileID: 7405119523257857988}
-  - component: {fileID: 7489690849380959053}
-  - component: {fileID: 4208036535924075257}
-  - component: {fileID: 2965223517322807398}
-  - component: {fileID: 7371119990872587339}
-  - component: {fileID: 377483228733766161}
-  - component: {fileID: -8641203962770740517}
-  - component: {fileID: 8180681076724054622}
+  - component: {fileID: 8444827284436411723}
+  - component: {fileID: 8311691056960954278}
+  - component: {fileID: 2344146953089020576}
   m_Layer: 7
-  m_Name: Map
+  m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4783214882511466251
+--- !u!4 &8444827284436411723
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643595352215049103}
+  m_GameObject: {fileID: 2095634691307193614}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 9.68, y: 0.555, z: -3.54}
-  m_LocalScale: {x: 0.1, y: 0.05, z: 0.05}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 3127442421054557970}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 90, z: 0}
---- !u!33 &3528731202840898806
+  m_LocalRotation: {x: -0.0042546503, y: -0.9957451, z: -0.06543835, w: 0.06474106}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4783214882511466251}
+  m_LocalEulerAnglesHint: {x: -7.52, y: -172.56, z: 0}
+--- !u!33 &8311691056960954278
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643595352215049103}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7405119523257857988
+  m_GameObject: {fileID: 2095634691307193614}
+  m_Mesh: {fileID: -6556771691409900239, guid: 41793e78265af354fb6a58262ba9e91c, type: 3}
+--- !u!23 &2344146953089020576
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643595352215049103}
+  m_GameObject: {fileID: 2095634691307193614}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -98,6 +90,45 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7643595352215049103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4783214882511466251}
+  - component: {fileID: 7489690849380959053}
+  - component: {fileID: 2965223517322807398}
+  - component: {fileID: 7371119990872587339}
+  - component: {fileID: 377483228733766161}
+  - component: {fileID: -8641203962770740517}
+  - component: {fileID: 8180681076724054622}
+  m_Layer: 7
+  m_Name: RuinedMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4783214882511466251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643595352215049103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.68, y: 0.555, z: -3.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3127442421054557970}
+  - {fileID: 8444827284436411723}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7489690849380959053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,30 +141,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed44fc730731405bbe66f6a531f96148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.PhysicalItem
-  defaultItemSo: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
+  defaultItemSo: {fileID: 11400000, guid: 13e6d2f78d1ece140aa98d6a5117b1bc, type: 2}
   itemState:
-    rid: 5718201758467489792
+    rid: 5718202095645229143
   references:
     version: 2
     RefIds:
-    - rid: 5718201758467489792
+    - rid: 5718202095645229143
       type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
       data:
-        <ItemSo>k__BackingField: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
---- !u!114 &4208036535924075257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643595352215049103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f0f170407b13944ad992e8c8ce9cef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.StoreItemDisplay
-  _storeHand: {fileID: 0}
-  _storeItemPivot: {fileID: 3127442421054557970}
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: 13e6d2f78d1ece140aa98d6a5117b1bc, type: 2}
 --- !u!54 &2965223517322807398
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,8 +173,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
@@ -180,7 +197,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 2, z: 10}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &377483228733766161
 MonoBehaviour:
