@@ -70,7 +70,7 @@ namespace Root
                 PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
 
-            StartCoroutine(UpdateTextRoutine());
+            StartCoroutine(UpdateTextRoutine("Paquetes depositados"));
 
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
@@ -93,20 +93,22 @@ namespace Root
         }
 
 
-        private IEnumerator UpdateTextRoutine() 
+        private IEnumerator UpdateTextRoutine(string txt) 
         {
             priceCounter.enabled = false;
-            textNotifier.text = "Paquetes depositados"; //TODO-Change to Localization
+            textNotifier.text = txt; //TODO-Change to Localization
             yield return new WaitForSeconds(2f);
             ResetPostStatus();
         }
 
         private void ResetPostStatus()
         {
-            _depositedPackages.Clear();
-
-            _currentPackageSum = 0;
-            RefreshSumAmount(0);
+            if (HasCompletedGoal)
+            {
+                _depositedPackages.Clear();
+                _currentPackageSum = 0;
+                RefreshSumAmount(0);
+            }
             priceCounter.enabled = true;
             textNotifier.text = "Monto Total: "; //TODO-Change to Localization
         }
@@ -127,7 +129,11 @@ namespace Root
 
             if (holder == null) return;
 
-            if (!holder.HasItem) return;
+            if (!holder.HasItem)
+            {
+                StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar"));
+                return;
+            }
             var itemState = holder.HeldItem as PackageItemState;
             if (itemState == null) return;
 
