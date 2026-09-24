@@ -1,3 +1,4 @@
+using PrimeTween;
 using UnityEngine;
 
 namespace Root
@@ -6,8 +7,11 @@ namespace Root
     {
         [SerializeField] PackageDeliverPost packagePost;
 
-        private bool _hasConfirmedInteraction;
+        [Header("Animation Settings")]
+        [SerializeField] private Vector3 maximumRotation = new Vector3(45f, 0f, 0f);
+        [SerializeField] private float returnDuration = 0.5f;
 
+        private bool _hasConfirmedInteraction;
         private void Awake()
         {
             packagePost.OnPackagesDelivered += SetConfirmationButtonStatus;
@@ -15,6 +19,15 @@ namespace Root
 
         public override void Interact() 
         {
+            Tween.LocalRotation(
+            target: transform,
+            endValue: Quaternion.Euler(maximumRotation),
+            duration: returnDuration,
+            ease: Ease.OutQuad,
+            cycles: 2,
+            cycleMode: CycleMode.Yoyo
+            );
+
             ConfirmDelivery();
         }
 
