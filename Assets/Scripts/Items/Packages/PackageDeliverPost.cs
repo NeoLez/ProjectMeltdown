@@ -15,7 +15,6 @@ namespace Root
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private TMP_Text textNotifier;
-        public Transform DropPivot => dropPivot;
 
         private string _format = "{0}$";
 
@@ -70,7 +69,7 @@ namespace Root
                 PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
 
-            StartCoroutine(UpdateTextRoutine("Paquetes depositados"));
+            StartCoroutine(UpdateTextRoutine("Paquetes depositados", true));
 
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
@@ -93,25 +92,31 @@ namespace Root
         }
 
 
-        private IEnumerator UpdateTextRoutine(string txt) 
+        private IEnumerator UpdateTextRoutine(string txt, bool canReset) 
         {
             priceCounter.enabled = false;
             textNotifier.text = txt; //TODO-Change to Localization
             yield return new WaitForSeconds(2f);
-            ResetPostStatus();
+            ResetPostStatus(canReset);
         }
 
-        private void ResetPostStatus()
+        private void ResetPostStatus(bool canReset)
         {
-            if (HasCompletedGoal)
+            if(canReset)
             {
                 _depositedPackages.Clear();
                 _currentPackageSum = 0;
                 RefreshSumAmount(0);
             }
+            else
+            {
+                _depositedPackages.Clear();
+            }
+            
             priceCounter.enabled = true;
             textNotifier.text = "Monto Total: "; //TODO-Change to Localization
         }
+
 
         public int DepositedPackages()
         {
@@ -131,7 +136,7 @@ namespace Root
 
             if (!holder.HasItem)
             {
-                StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar"));
+                StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
                 return;
             }
             var itemState = holder.HeldItem as PackageItemState;
