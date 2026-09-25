@@ -19,6 +19,7 @@ namespace Root {
         [SerializeField] private float dragAlpha = 0.9f;
         [SerializeField] private float dragAlphaSmoothing = 25f;
         [SerializeField] private float sizeChangeSmoothing = 25;
+        [SerializeField] private LayerMask collisionLayers;
         public InventoryItem _inventoryItem;
         public Vector2 originalPosition;
         public Vector2 originalSize;
@@ -183,7 +184,7 @@ namespace Root {
             receiver = null;
             var mousePosition = Pointer.current.position.value;
             Ray ray = GameManager.CameraPivot.ScreenPointToRay(mousePosition/GameManager.GetResolutionRatio());
-            if (!Physics.Raycast(ray, out var hit, GameManager.CameraController.interactDistance) ||
+            if (!Physics.Raycast(ray, out var hit, GameManager.CameraController.interactDistance, collisionLayers) ||
                 !hit.collider.gameObject.TryGetComponent(out receiver)) {
                 Log.Logger.Log( $"Could not find receiver. Name: {hit.collider?.name}. Component was not found", LogType.DragAndDrop, LogSeverity.Normal, hit.collider?.gameObject);
                 return false;
