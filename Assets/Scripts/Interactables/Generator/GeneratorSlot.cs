@@ -98,6 +98,7 @@ namespace Root
             if (_battery == null || !_animationEnd) return null;
 
             TrainBatteryItem battery = _battery;
+            battery.GetComponent<BatteryLightsIndicator>()?.SetDisplayActive(false);
             battery.VisualOnly(false);
             _battery = null;
             _animationEnd = false;
@@ -144,6 +145,7 @@ namespace Root
             if (_battery != battery) yield break; 
 
             _animationEnd = true;
+            battery.GetComponent<BatteryLightsIndicator>()?.SetDisplayActive(true);
         }
 
         private void SetEmergencyLights(bool active)
