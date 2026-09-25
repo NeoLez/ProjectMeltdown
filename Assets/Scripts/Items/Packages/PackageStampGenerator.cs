@@ -48,28 +48,13 @@ namespace Root
             return render;
         }
 
-        private DecalProjector heldItemProyector;
-        public RenderTexture CreateStampTexture(GameObject obj, float price)
+        public void SetStampTexture(GameObject obj, PackageItemState state)
         {
-            EnableCanvas(true);
-            RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
-
-            SetDisplayValue(price);
-
-            if (heldItemProyector == null)
-            {
-                heldItemProyector = obj.GetComponentInChildren<DecalProjector>();
-                var mate = new Material(heldItemProyector.material);
-                heldItemProyector.material = mate;
-            }
-            heldItemProyector.material.SetTexture("_Texture", render);
-
-            OneShotRenderSystem.Instance.Render(render);
-
-            heldItemProyector.fadeFactor = 1.0f;
-
-            EnableCanvas(false);
-            return render;
+            DecalProjector heldItemProjector = obj.GetComponentInChildren<DecalProjector>();
+            var mate = new Material(heldItemProjector.material);
+            heldItemProjector.material = mate;
+            heldItemProjector.material.SetTexture("_Texture", state.stampTexture);
+            heldItemProjector.fadeFactor = 1.0f;
         }
 
         public void EnableCanvas(bool state)

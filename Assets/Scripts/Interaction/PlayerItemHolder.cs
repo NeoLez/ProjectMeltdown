@@ -14,6 +14,7 @@ namespace Root
         [SerializeField] private AudioClip cantMoveToInventorySound;
         [SerializeField] private Image crosshair;
         [SerializeField] private float _throwStrenght = 999f;
+        [SerializeField] private ItemGroup packages;
 
         public event Action OnItemChanged;
         public ItemState HeldItem { get; private set; }
@@ -62,7 +63,7 @@ namespace Root
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
 
-            if (item.TryGetComponent(out DeliveryPackageItem packageItem))  PackageStampGenerator.Instance.CreateStampTexture(currentHeldVisual, packageItem.GetPrice());
+            if (item.TryGetComponent(out DeliveryPackageItem packageItem)) PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, packageItem.State);
 
             PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
 
@@ -81,6 +82,10 @@ namespace Root
             currentHeldVisual = Instantiate(item.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
+
+            if (packages.IsItemIncluded(item.ItemSo)) {
+                PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, (PackageItemState)item);
+            }
             
             OnItemChanged?.Invoke();
         }
