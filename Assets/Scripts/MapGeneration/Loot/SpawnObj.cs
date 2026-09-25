@@ -5,12 +5,12 @@ namespace Root
 {
     public class SpawnObj : MonoBehaviour
     {
-        [SerializeField] private ItemGenerationPoolSo pool;
+        [SerializeField] private ItemPool pool;
         void Start() {
             //TODO: Since this uses global positions it could be unstable in the long run due to small changes in the rebase calculation. Maybe switch to local position respective to the MapSection?
             var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
             System.Random random = new (seed);
-            var obj = pool.GetRandom(random).CreatePhysicalItem();
+            var obj = pool.GetEntry(random).CreatePhysicalItem();
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = transform.parent;
