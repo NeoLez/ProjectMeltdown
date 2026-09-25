@@ -57,6 +57,8 @@ namespace Root
             PhysicalItem map = _map;
 
             map.VisualOnly(false);
+            //TODO: Really bad, fix this garbage later maybe by not using the physical item at all and just applying the map texture to another plane
+            map.transform.localScale = Vector3.one;
 
             _map = null;
             return map;
@@ -67,8 +69,7 @@ namespace Root
             if (_mapItemSO != item.ItemSo || _map != null) return false;
 
             PhysicalItem mapToInsert = item.ItemSo.CreatePhysicalItem(item);
-
-
+            
             VisualContainer visual = mapToInsert.GetComponentInChildren<VisualContainer>();
             visual.goal = GameManager.Train.GetTrainPosition();
 
@@ -79,7 +80,8 @@ namespace Root
             mapToInsert.transform.SetParent(transform);
             mapToInsert.transform.position = pivot.position;
             mapToInsert.transform.rotation = pivot.rotation;
-
+            mapToInsert.transform.localScale = transform.localScale;
+            
             return true;
         }
 
