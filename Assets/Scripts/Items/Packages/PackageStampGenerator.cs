@@ -44,7 +44,9 @@ namespace Root
             var package = obj.GetComponent<DeliveryPackageItem>();
             SetDisplayValue(package.GetPrice());
 
+            EnableCanvas(true);
             OneShotRenderSystem.Instance.Render(render);
+            EnableCanvas(false);
             return render;
         }
 
@@ -57,7 +59,7 @@ namespace Root
             heldItemProjector.fadeFactor = 1.0f;
         }
 
-        public void EnableCanvas(bool state)
+        private void EnableCanvas(bool state)
         {
             _canvas.enabled = state;
         }

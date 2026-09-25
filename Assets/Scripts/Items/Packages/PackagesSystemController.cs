@@ -38,8 +38,6 @@ namespace Root
             }
 
             _packageGenerationRoutine = StartCoroutine(GeneratePackages(perpetrator, instancePivot, amount));
-
-            packageStampGenerator.EnableCanvas(true);
         }
 
         private IEnumerator GeneratePackages(NPCInteraction perpetrator, Transform instancePivot, int amountToSpawn)
@@ -63,8 +61,6 @@ namespace Root
 
                 newPos += Vector3.up * verticalOffset;
             }
-
-            packageStampGenerator.EnableCanvas(false);
 
             _visuals.ActivateNotification();
             _visuals.SetNewObjective(perpetrator.Mission);
