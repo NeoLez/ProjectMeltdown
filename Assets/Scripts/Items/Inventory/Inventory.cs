@@ -195,7 +195,7 @@ namespace Root {
         [SerializeField, BoxGroup("Testing")] private bool find = true;
         [SerializeField, HideIf("find"), BoxGroup("Testing")] private Vector2Int pos;
 
-        [Button, ContextMenu("AddItem")]
+        [Button(null, EButtonEnableMode.Playmode), ContextMenu("AddItem")]
         private void AddItem() {
             for (int i=0; i<amount; i++)
                 if (find)
@@ -204,12 +204,12 @@ namespace Root {
                     Debug.Log(InsertItem(itemSoToAdd.CreateState(), pos, rotation));
         }
         
-        [Button, ContextMenu("RemoveItem")]
+        [Button(null, EButtonEnableMode.Playmode), ContextMenu("RemoveItem")]
         private void RemoveItem() {
             RemoveItem(pos, out InventoryItem invItem);
         }
 
-        [Button, ContextMenu("PrintItems")]
+        [Button(null, EButtonEnableMode.Playmode), ContextMenu("PrintItems")]
         private void PrintItems() {
             foreach (var item in _items) {
                 Debug.Log(item._position + " " + item.itemState.ItemSo.ItemName);
