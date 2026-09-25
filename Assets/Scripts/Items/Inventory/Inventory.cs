@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root {
@@ -188,13 +189,13 @@ namespace Root {
         
 #if UNITY_EDITOR
         [Header("OptionsForTesting")]
-        [SerializeField] private ItemSo itemSoToAdd;
-        [SerializeField] private InventoryItem.InventoryItemRotation rotation;
-        [SerializeField] private bool find;
-        [SerializeField] private int amount;
-        [SerializeField] private Vector2Int pos;
+        [SerializeField, BoxGroup("Testing")] private ItemSo itemSoToAdd;
+        [SerializeField, BoxGroup("Testing")] private InventoryItem.InventoryItemRotation rotation;
+        [SerializeField, BoxGroup("Testing")] private int amount = 1;
+        [SerializeField, BoxGroup("Testing")] private bool find = true;
+        [SerializeField, HideIf("find"), BoxGroup("Testing")] private Vector2Int pos;
 
-        [ContextMenu("AddItem")]
+        [Button, ContextMenu("AddItem")]
         private void AddItem() {
             for (int i=0; i<amount; i++)
                 if (find)
@@ -203,12 +204,12 @@ namespace Root {
                     Debug.Log(InsertItem(itemSoToAdd.CreateState(), pos, rotation));
         }
         
-        [ContextMenu("RemoveItem")]
+        [Button, ContextMenu("RemoveItem")]
         private void RemoveItem() {
             RemoveItem(pos, out InventoryItem invItem);
         }
 
-        [ContextMenu("PrintItems")]
+        [Button, ContextMenu("PrintItems")]
         private void PrintItems() {
             foreach (var item in _items) {
                 Debug.Log(item._position + " " + item.itemState.ItemSo.ItemName);
