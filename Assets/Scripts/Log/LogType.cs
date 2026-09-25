@@ -7,5 +7,6 @@
         WorldGen,
         Pool,
         Test,
+        DragAndDrop,
     }
 }

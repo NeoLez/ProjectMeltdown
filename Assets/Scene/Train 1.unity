@@ -806,7 +806,6 @@ MonoBehaviour:
   tunnelForkLeftGeneratorSo: {fileID: 11400000, guid: 95a7af21de327afe39a653dabcf8e2c0, type: 2}
   tunnelForkRightGeneratorSo: {fileID: 11400000, guid: 613fd7b6022dabf40a147d28bd81a677, type: 2}
   tunnelJoinGeneratorSo: {fileID: 11400000, guid: 0bf1c427ba17ed644b22fe32e0970e71, type: 2}
-  _sectionGeneratorSo: {fileID: 0}
   countUntilRebase: 15
 --- !u!4 &100897461
 Transform:
@@ -6738,7 +6737,6 @@ GameObject:
   - component: {fileID: 1248385422}
   - component: {fileID: 1248385421}
   - component: {fileID: 1248385420}
-  - component: {fileID: 1248385419}
   - component: {fileID: 1248385424}
   m_Layer: 31
   m_Name: CanvasPackageInfo
@@ -6746,24 +6744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1248385419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1248385418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  m_IsActive: 1
 --- !u!114 &1248385420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6794,7 +6775,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248385418}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 201410344}

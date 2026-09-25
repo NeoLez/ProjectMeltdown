@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,7 +48,7 @@ namespace Root
             GameObject[] availablePackages = perpetrator.Mission.AvailablePackages;
             for (int i = 0; i < amountToSpawn; i++)
             {
-                int randomIndex = UnityEngine.Random.Range(0, availablePackages.Length);
+                int randomIndex = Random.Range(0, availablePackages.Length);
                 PhysicalItem item = availablePackages[randomIndex].GetComponent<PhysicalItem>();
                 GameObject prefab = item.ItemState.ItemSo.CreatePhysicalItem().gameObject;
 
@@ -58,14 +57,11 @@ namespace Root
 
                 DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
                 _currentSpawnedPackages.Add(currentPackage);
+                InitializePackges(currentPackage);
 
                 yield return new WaitForSeconds(fixedSpawnTime);
 
                 newPos += Vector3.up * verticalOffset;
-
-                InitializePackges(currentPackage);
-
-                yield return new WaitForSeconds(0.1f);
             }
 
             packageStampGenerator.EnableCanvas(false);

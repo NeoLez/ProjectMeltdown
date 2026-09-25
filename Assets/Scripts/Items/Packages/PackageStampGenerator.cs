@@ -15,10 +15,12 @@ namespace Root
         private int width;
         private int height;
         private CanvasScaler _canvasScaler;
+        private Canvas _canvas;
 
         private void Awake()
         {
             _canvasScaler = GetComponent<CanvasScaler>();
+            _canvas = GetComponent<Canvas>();
             Instance = this;
         }
 
@@ -72,7 +74,7 @@ namespace Root
 
         public void EnableCanvas(bool state)
         {
-            gameObject.SetActive(state);
+            _canvas.enabled = state;
         }
 
         private void SetDisplayValue(float value)

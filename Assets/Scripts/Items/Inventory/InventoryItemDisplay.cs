@@ -1,9 +1,11 @@
+using Root.Log;
 using Timers;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using LogType = Root.Log.LogType;
 
 namespace Root {
     public class InventoryItemDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
@@ -177,14 +179,17 @@ namespace Root {
         }
 
         private bool TryGetWorldDragReceiver(out IItemDragReceiver receiver) {
+            Log.Logger.Log("Trying to get world item receiver", LogType.DragAndDrop, LogSeverity.Normal, this);
             receiver = null;
             var mousePosition = Pointer.current.position.value;
             Ray ray = GameManager.CameraPivot.ScreenPointToRay(mousePosition/GameManager.GetResolutionRatio());
             if (!Physics.Raycast(ray, out var hit, GameManager.CameraController.interactDistance) ||
                 !hit.collider.gameObject.TryGetComponent(out receiver)) {
+                Log.Logger.Log( $"Could not find receiver. Name: {hit.collider?.name}. Component was not found", LogType.DragAndDrop, LogSeverity.Normal, hit.collider?.gameObject);
                 return false;
             }
 
+            Log.Logger.Log( $"Receiver found. Name: {hit.collider.name}. Component was found", LogType.DragAndDrop, LogSeverity.Normal, hit.collider.gameObject);
             return true;
         }
 

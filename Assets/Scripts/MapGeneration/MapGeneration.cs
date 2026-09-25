@@ -81,7 +81,7 @@ namespace Root {
         }
         
 
-        public SectionGeneratorSO _sectionGeneratorSo;
+        private SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
         private int mapSectionID;
         
