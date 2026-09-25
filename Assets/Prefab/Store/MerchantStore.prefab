@@ -44,6 +44,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01246a4c811753f4eb60c524ed17b780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.StoreSpawnPoint
+--- !u!1 &1440735929124576551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7751591848234304876}
+  - component: {fileID: 4207787476082788324}
+  m_Layer: 0
+  m_Name: Collider_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7751591848234304876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440735929124576551}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.1461799, z: -2.5330715}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1157514678936924690}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4207787476082788324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440735929124576551}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.4409866, y: 6.3665547, z: 16.94987}
+  m_Center: {x: 3.882557, y: 1.0943391, z: 1.0517359}
 --- !u!1 &3501087677912305617
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +354,7 @@ Transform:
   - {fileID: 5124778354376297419}
   - {fileID: 2645784663263029785}
   - {fileID: 2497440621702037248}
+  - {fileID: 7751591848234304876}
   - {fileID: 1703556479772559506}
   - {fileID: 1800366950872559855}
   m_Father: {fileID: 5876689379157890076}
@@ -816,6 +870,7 @@ MonoBehaviour:
   - {fileID: 5124778354376297419}
   - {fileID: 2645784663263029785}
   priceCanvasPrefab: {fileID: 6176284297913277756, guid: 7fc17d780bd91174591f147d1c622af9, type: 3}
+  mapSection: {fileID: 0}
   merchantHandPrefab: {fileID: 5571004755296500828, guid: c1e3f26555abf021bacacf4405b52b4f, type: 3}
   initialItemSpawn: {fileID: 11400000, guid: 8b3009908473a724b8f171c193bf7fe7, type: 2}
   initialItemSpawnPoint: {fileID: 6492812966440759012}
