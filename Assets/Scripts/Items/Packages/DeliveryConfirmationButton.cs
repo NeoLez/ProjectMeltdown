@@ -20,10 +20,11 @@ namespace Root
 
         public override void Interact() 
         {
+            if (packagePost.DepositedPackages() <= 0) return;
             if (isAnimating) return;
 
             isAnimating = true;
-            Tween.LocalRotation(
+            Tween.Rotation(
             target: transform,
             endValue: Quaternion.Euler(maximumRotation),
             duration: returnDuration,
@@ -43,7 +44,6 @@ namespace Root
         public void ConfirmDelivery()
         {
             if (_hasConfirmedInteraction) return;
-            if (packagePost.DepositedPackages() <= 0) return;
              //aca chequear si la mision fue activada ademas ocualquiera
             packagePost.CheckGoal();
         }

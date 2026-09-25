@@ -8,7 +8,7 @@ namespace Root
 {
     public class PackageDeliverPost : InteractableNormalCamera, IItemDragReceiver
     {
-        public bool HasCompletedGoal { get; private set; }
+        public bool HasConfirmedDelivery { get; private set; }
 
         [SerializeField] MissionObjectiveSO thisIshorrible;
         [SerializeField] private Transform dropPivot;
@@ -43,7 +43,7 @@ namespace Root
 
         public void DepositPackage(PackageItemState itemState)
         {
-            if (HasCompletedGoal) return;
+            if (HasConfirmedDelivery) return;
             if (_isAnimating) return;
 
             StartCoroutine(TriggerDepositAnims());
@@ -62,14 +62,15 @@ namespace Root
             if(MissionsManager.Instance.VerifyDeliveryConditions(thisIshorrible.Id, _amount, _packagesType))
             {
                 PackagesSystemController.Instance.CheckPackageConditions(true);
-                HasCompletedGoal = true;
             }
             else
             {
                 PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
+            
+            HasConfirmedDelivery = true;
 
-            StartCoroutine(UpdateTextRoutine("Paquetes depositados", true));
+            StartCoroutine(UpdateTextRoutine("Entrega confirmada", true));
 
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
@@ -139,6 +140,9 @@ namespace Root
                 StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
                 return;
             }
+
+            if (HasConfirmedDelivery) return; //TODO-Delete this for future missions
+
             var itemState = holder.HeldItem as PackageItemState;
             if (itemState == null) return;
 
@@ -148,7 +152,7 @@ namespace Root
 
         public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item)
         {
-            return item.itemState is PackageItemState && !_isAnimating && !HasCompletedGoal;
+            return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery;
         }
 
         public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item)
