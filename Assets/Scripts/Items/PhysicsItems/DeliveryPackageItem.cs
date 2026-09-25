@@ -54,6 +54,8 @@ namespace Root
             State.stampTexture = PackageStampGenerator.Instance.CreateStampTexture(gameObject);
             State.typeOfPackage = packageDataGenerator.TypeOfPackage;
             UpdateStampDecal();
+
+            State.canBeDelivered = true;
         }
 
         private void UpdateStampDecal() {

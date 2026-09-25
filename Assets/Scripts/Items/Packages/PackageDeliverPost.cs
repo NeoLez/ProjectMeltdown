@@ -27,7 +27,7 @@ namespace Root
         private bool _isAnimating;
 
         public Action<bool> OnPackagesDelivered;
-        public List<TypeOfPackage> _packagesType = new();
+        private List<TypeOfPackage> _packagesType = new();
         private int _amount;
 
         private void Start()
@@ -55,6 +55,8 @@ namespace Root
             }
             _packagesType.Add(itemState.typeOfPackage);
             _amount++;
+
+            MissionsManager.Instance.DeleteDepositedPackage(thisIshorrible.Id, itemState);
         }
 
         public void CheckGoal()

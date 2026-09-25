@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,8 +8,12 @@ namespace Root
     {
         public static MissionsManager Instance;
 
-        private Dictionary<string, MissionObjectiveSO> deliveryMissions = new(); //TODO-Porbably make it more specific
-        private Dictionary<string, MissionData> activeMissionData = new();
+        private Dictionary<string, MissionObjectiveSO> _deliveryMissions = new(); //TODO-Porbably make it more specific
+        private Dictionary<string, MissionData> _activeMissionData = new();
+
+        private Dictionary<string, List<PackageItemState>> _packagesToDeliver = new(); //para tener un registro de los depositados
+
+        private List<PackageItemState> remaingPackages = new();
 
         private void Awake()
         {
@@ -18,15 +21,22 @@ namespace Root
             {
                 Instance = this;
             }
-
         }
+
 
         public void RegisterMission(MissionObjectiveSO activeMission, List<DeliveryPackageItem> packageTypes)
         {
-            if (!deliveryMissions.ContainsKey(activeMission.Id))
+            if (!_deliveryMissions.ContainsKey(activeMission.Id))
             {
-                deliveryMissions.Add(activeMission.Id, activeMission);
+                _deliveryMissions.Add(activeMission.Id, activeMission);
                 RegisterPackage(activeMission, packageTypes);
+
+             /*   foreach (var packageType in packageTypes)
+                {
+                    if(!_packagesToDeliver.ContainsKey(activeMission.Id))
+                        _packagesToDeliver.Add(activeMission.Id, packageType.State); //fix this
+                    
+                }*/
             }
         }
 
@@ -38,27 +48,46 @@ namespace Root
                 spawnedTypes.Add(spawnedPackages[i].GetTypeOfPackage());
             }
 
-            activeMissionData[activeMission.Id] = new MissionData(activeMission.AmountOfPackages, spawnedTypes);
+            _activeMissionData[activeMission.Id] = new MissionData(activeMission.AmountOfPackages, spawnedTypes);
         }
 
         public void FinishMission(MissionObjectiveSO activeMission)
         {
-            if (deliveryMissions.ContainsKey(activeMission.Id))
+            if (_deliveryMissions.ContainsKey(activeMission.Id))
             {
-                deliveryMissions.Remove(activeMission.Id);
+                Algo();
+                _deliveryMissions.Remove(activeMission.Id);
                 UnregisterPackages(activeMission.Id);
             }
         }
+
+        private void Algo()
+        {
+           /* if (_packagesToDeliver.Count > 0)
+            {
+                foreach (var item in _packagesToDeliver)
+                {
+                    item.Value.canBeDelivered = false;
+
+                    remaingPackages.Add(item.Value);
+                    Debug.Log(item.ToString());
+                }
+            }*/
+        }
         private void UnregisterPackages(string currentMissionData)
         {
-            activeMissionData.Remove(currentMissionData);
+            _activeMissionData.Remove(currentMissionData);
             //Debug.Log(deliveryMissions.Count);
             //Debug.Log(activeMissionData.Count);
+        }
+        public void DeleteDepositedPackage(string activeMission, PackageItemState state) //el id aca deja de existir cuidado
+        {
+           // _packagesToDeliver.Remove(activeMission, out state);
         }
 
         public bool VerifyDeliveryConditions(string missionId, int currentDepositedAmount, List<TypeOfPackage> packages)
         {
-            if (!activeMissionData.TryGetValue(missionId, out MissionData data))
+            if (!_activeMissionData.TryGetValue(missionId, out MissionData data))
                 return false;
 
             if (data.packages == null || packages == null)
