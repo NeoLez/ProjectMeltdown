@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using Random = System.Random;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelSectionGenerator")]
     public class TunnelSectionGeneratorSO : SectionGeneratorSO {
-        public TunnelSectionGeneratorSettingsSO settings;
+        [Expandable, SerializeField] private TunnelSectionGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
         private Random random;

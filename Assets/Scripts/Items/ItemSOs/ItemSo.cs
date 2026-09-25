@@ -49,9 +49,11 @@ namespace Root {
         
         
         
-#if UNITY_EDITOR     
+#if UNITY_EDITOR
+        [NaughtyAttributes.Button]
         [ContextMenu("Generate Default Item State")]
         private void GenerateStateInEditor() {
+            UnityEditor.Undo.RecordObject(this, "Generate Item State");
             DefaultItemState = CreateState();
             UnityEditor.EditorUtility.SetDirty(this);
         }

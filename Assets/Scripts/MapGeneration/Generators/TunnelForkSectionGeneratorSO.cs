@@ -1,11 +1,12 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelForkGenerator")]
     public class TunnelForkSectionGeneratorSO : SectionGeneratorSO {
         private MapGeneration.MapGenerationContext _context;
-        [SerializeField] private TunnelForkSectionGeneratorSettingsSO settings;
+        [Expandable, SerializeField] private TunnelForkSectionGeneratorSettingsSO settings;
         private bool hasFinished;
         private bool phase;
         private bool decisionTaken;

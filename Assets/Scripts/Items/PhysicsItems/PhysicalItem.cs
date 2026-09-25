@@ -8,6 +8,7 @@ namespace Root {
         [Header("Editor Only Data")]
 #if UNITY_EDITOR
         [SerializeField] private ItemSo defaultItemSo;
+        [NaughtyAttributes.Button]
         [ContextMenu("Generate Starting State")]
         private void GenerateStateInEditor() {
             if (defaultItemSo == null) {
@@ -20,6 +21,7 @@ namespace Root {
                 Debug.LogError("Unexpected State Type'" + state.GetType() + "'. Are you assigning the right ItemSO?");
                 return;
             }
+            UnityEditor.Undo.RecordObject(this, "Generate item state");
             ItemState = defaultItemSo.CreateState();
             
             UnityEditor.EditorUtility.SetDirty(this);

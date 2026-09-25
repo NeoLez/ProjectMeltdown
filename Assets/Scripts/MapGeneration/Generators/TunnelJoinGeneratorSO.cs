@@ -1,10 +1,11 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/TunnelJoinGenerator")]
     public class TunnelJoinGeneratorSO : SectionGeneratorSO {
-        public TunnelJoinGeneratorSettingsSO settings;
+        [Expandable, SerializeField] private TunnelJoinGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
         

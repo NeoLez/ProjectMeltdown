@@ -1,10 +1,11 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root {
     [CreateAssetMenu(menuName = "SO/SectionGenerator/Generator/FeatureSelectionGenerator")]
     public class FeatureSectionGeneratorSO : SectionGeneratorSO {
-        public FeatureSectionGeneratorSettingsSO settings;
+        [Expandable, SerializeField] private FeatureSectionGeneratorSettingsSO settings;
         private MapGeneration.MapGenerationContext _context;
         [NonSerialized] private bool hasFinished;
         
