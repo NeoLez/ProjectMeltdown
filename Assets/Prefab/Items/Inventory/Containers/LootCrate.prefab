@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 2199548095530854908}
   - component: {fileID: 3266118553024371706}
   - component: {fileID: 6851105516069378364}
+  - component: {fileID: 419045384316572205}
   m_Layer: 3
   m_Name: LootCrate
   m_TagString: Untagged
@@ -176,3 +177,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da31bcfd2f945f7b39d21fc76a4b622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.CrateInventory
+--- !u!114 &419045384316572205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4903695641149207297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f106d170224ddd9abe83f66f61a91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.LootCrate
+  pool: {fileID: 11400000, guid: 8c25b1368675bfc5095f7042f57ca9b0, type: 2}
+  minAmountOfItemsToGenerate: 0
+  maxAmountOfItemsToGenerate: 3

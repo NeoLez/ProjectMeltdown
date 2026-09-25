@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Root {
     [RequireComponent(typeof(Inventory))]
     public class LootCrate : MonoBehaviour {
-        [SerializeField] private ItemGenerationPoolSo pool;
+        [SerializeField] private ItemPool pool;
         [SerializeField] private int minAmountOfItemsToGenerate;
         [SerializeField] private int maxAmountOfItemsToGenerate;
         private void Start() {
@@ -14,7 +14,7 @@ namespace Root {
             var random = new System.Random(seed);
             List<ItemSo> itemsToGenerate = new();
             for (int i = 0; i < random.Next(minAmountOfItemsToGenerate, maxAmountOfItemsToGenerate); i++) {
-                itemsToGenerate.Add(pool.GetRandom(random));
+                itemsToGenerate.Add(pool.GetEntry(random));
             }
             
             var inv = GetComponent<Inventory>();
