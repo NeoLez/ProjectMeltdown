@@ -9,5 +9,7 @@ namespace Root {
         public bool IsItemIncluded(ItemSo so) {
             return items.Contains(so);
         }
+        
+        public IEnumerable<ItemSo> Items => items;
     }
 }

@@ -316,6 +316,37 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &4164234309997309595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6252053337918524764}
+  m_Layer: 10
+  m_Name: BillSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6252053337918524764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4164234309997309595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.53, y: 0.828, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6155962517950839003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4850484350235404606
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,6 +830,7 @@ Transform:
   - {fileID: 5754030161873268938}
   - {fileID: 7802244303540272912}
   - {fileID: 8306017532752186243}
+  - {fileID: 6252053337918524764}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2147470592898357622
@@ -835,11 +867,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.CheckPackages
   thisIshorrible: {fileID: 11400000, guid: 0426a8455175cfe49a312d1f3b4ccc5c, type: 2}
-  dropPivot: {fileID: 0}
+  dropPivot: {fileID: 6252053337918524764}
   animator: {fileID: 4269759560484577885}
   priceCounter: {fileID: 276768241168608594}
   textNotifier: {fileID: 1818488518808201671}
-  _packagesType: 
 --- !u!1001 &2445066622398678015
 PrefabInstance:
   m_ObjectHideFlags: 0

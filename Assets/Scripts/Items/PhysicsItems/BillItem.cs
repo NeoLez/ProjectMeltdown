@@ -11,6 +11,6 @@ namespace Root {
             PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
         }
         
-        private BillItemSo ItemSo  => (BillItemSo)ItemState.ItemSo;
+        public BillItemSo ItemSo => (BillItemSo)ItemState.ItemSo;
     }
 }

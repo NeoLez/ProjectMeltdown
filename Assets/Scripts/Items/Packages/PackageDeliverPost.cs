@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Root.Managers;
 using TMPro;
 using UnityEngine;
 
@@ -59,16 +60,16 @@ namespace Root
             MissionsManager.Instance.DeleteDepositedPackage(thisIshorrible.Id, itemState);
         }
 
-        public void CheckGoal()
-        {
-            if(MissionsManager.Instance.VerifyDeliveryConditions(thisIshorrible.Id, _amount, _packagesType))
-            {
-                PackagesSystemController.Instance.CheckPackageConditions(true);
+        public void CheckGoal() {
+            int money;
+            if(MissionsManager.Instance.VerifyDeliveryConditions(thisIshorrible.Id, _amount, _packagesType)) {
+                money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
             else
             {
-                PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
+                money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
+            SpawnBills(MoneyManager.Instance.NumberToBills(money));
             
             HasConfirmedDelivery = true;
 
@@ -77,6 +78,15 @@ namespace Root
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
 
+        private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills) {
+            foreach (var tuple in bills) {
+                for (int i = 0; i < tuple.Item2; i++) {
+                    var bill = tuple.Item1.CreatePhysicalItem();
+                    bill.transform.position = dropPivot.transform.position;
+                }
+            }
+        }
+        
         private IEnumerator TriggerDepositAnims()
         {
             _isAnimating = true;

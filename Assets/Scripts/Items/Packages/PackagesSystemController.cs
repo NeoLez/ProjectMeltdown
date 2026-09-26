@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Timers;
+using Root.Managers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Root
 {
@@ -16,6 +18,7 @@ namespace Root
         [SerializeField] private MapGeneration mapGeneration;
         [SerializeField] private float fixedSpawnTime;
         [SerializeField] private float verticalOffset;
+        [SerializeField] private Transform billSpawnPosition;
 
         private int _packagePriceSum;
         private List<DeliveryPackageItem> _currentSpawnedPackages = new();
@@ -98,20 +101,13 @@ namespace Root
             return potentialDestinations[Random.Range(0, potentialDestinations.Count)];
         }
 
-        public void CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null)
-        {
-            if(objectiveReached)
-            {
-                EconomyManager.Instance.AddMoney(_packagePriceSum); //TODO-Add more variants to the result
-            }
-            else
-            {
-               int finalAmount = GetAverageSumFromDeposited(depositedPackages);
-               EconomyManager.Instance.AddMoney(finalAmount);
-            }
+        public int CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null) {
+            int finalSum = objectiveReached ? _packagePriceSum : GetAverageSumFromDeposited(depositedPackages); //TODO-Add more variants to the result
+            
             UpdateFeedback();
 
             MissionsManager.Instance.FinishMission(deliveryMissions);
+            return finalSum;
         }
 
         private void UpdateFeedback()
