@@ -18,7 +18,6 @@ namespace Root
         [SerializeField] private MapGeneration mapGeneration;
         [SerializeField] private float fixedSpawnTime;
         [SerializeField] private float verticalOffset;
-        [SerializeField] private Transform billSpawnPosition;
 
         private int _packagePriceSum;
         private List<DeliveryPackageItem> _currentSpawnedPackages = new();

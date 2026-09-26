@@ -23,12 +23,9 @@ namespace Root.Managers {
 
         public List<ValueTuple<BillItemSo, int>> NumberToBills(int moneyAmount) {
             List<ValueTuple<BillItemSo, int>> result = new();
-
-            Debug.Log(moneyAmount);
             
             foreach (BillItemSo bill in bills) {
                 var currentBillAmount = moneyAmount / bill.BillDenomination;
-                Debug.Log(currentBillAmount + " " + bill.BillDenomination);
                 if (currentBillAmount == 0) continue;
                 
                 moneyAmount -= currentBillAmount * bill.BillDenomination;
@@ -45,6 +42,16 @@ namespace Root.Managers {
 
             foreach (BillItem bill in bills) {
                 result += bill.ItemSo.BillDenomination;
+            }
+            
+            return result;
+        }
+        
+        public int BillsToNumber(Dictionary<BillItemSo, int> bills) {
+            int result = 0;
+
+            foreach (var bill in bills) {
+                result += bill.Key.BillDenomination * bill.Value;
             }
             
             return result;

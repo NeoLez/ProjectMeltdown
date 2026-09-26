@@ -8,6 +8,8 @@ namespace Root {
         public override void Interact() {
             EconomyManager.Instance.AddMoney(ItemSo.BillDenomination);
             MoneyFeedback.Instance.GrabbedBill(ItemSo);
+            Wallet.Instance.AddBill(ItemSo);
+            
             PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
         }
         
