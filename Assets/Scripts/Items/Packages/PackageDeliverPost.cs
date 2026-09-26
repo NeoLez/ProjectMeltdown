@@ -16,6 +16,7 @@ namespace Root
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private TMP_Text textNotifier;
+        [SerializeField] private ItemGroup packages;
 
         private string _format = "{0}$";
 
@@ -152,7 +153,13 @@ namespace Root
 
             if (!holder.HasItem)
             {
-                StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
+                if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages)) {
+                    PlayerInventoryUI.Instance.OpenInventory();
+                }
+                else {
+                    StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
+                }
+                
                 return;
             }
 

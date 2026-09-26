@@ -118,6 +118,8 @@ namespace Root
         }
 
         public TrainBatteryItem GetBattery() => _battery;
+        
+        public bool IsPowered() => _powered;
 
         System.Collections.IEnumerator AnimTrigger(TrainBatteryItem battery)
         {

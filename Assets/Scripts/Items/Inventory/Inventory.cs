@@ -57,6 +57,15 @@ namespace Root {
             return false;
         }
         
+        public bool ContainsItemType(ItemGroup itemGroup) {
+            foreach (var item in _items) {
+
+                if (itemGroup.IsItemIncluded(item.itemState.ItemSo)) return true;
+            }
+
+            return false;
+        }
+        
         public bool InsertItem(InventoryItem invItem, Vector2Int position) {
             Vector2Int size = invItem.RotationCorrectedSize;
             if (!IsAreaFree(size, position, invItem)) return false;

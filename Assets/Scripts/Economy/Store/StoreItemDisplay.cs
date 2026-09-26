@@ -22,7 +22,7 @@ namespace Root
 
         private void OnDestroy()
         {
-            OnInteraction += Interaction;
+            OnInteraction -= Interaction;
         }
         public void Initialize(StoreItemData data, int price, PriceCanvas priceCanvas)
         {
