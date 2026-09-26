@@ -33,7 +33,7 @@ namespace Root {
         }
         
         /// <inheritdoc cref="CreatePhysicalItem()"/>
-        /// <param name="state">The initial item's state.</param>
+        /// <param name="state">The initial item's state. The PhysicalItem gets initialized using this.</param>
         public PhysicalItem CreatePhysicalItem(ItemState state) {
             var obj = CreatePhysicalItem();
             obj.ItemState = state;

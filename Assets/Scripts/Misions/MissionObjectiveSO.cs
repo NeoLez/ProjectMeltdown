@@ -16,6 +16,7 @@ namespace Root
 
         [Min(1)]
         [field: SerializeField] public int AmountOfPackages { get; private set; }
+        //TODO: This needs a rework since the destinations are calculated at runtime
         [field: SerializeField] public string Destination { get; private set; }
 
         //TODO-Agregar Localization para el Destination y Conditions

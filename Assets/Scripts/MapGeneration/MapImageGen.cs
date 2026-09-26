@@ -58,9 +58,9 @@ namespace Root
                     var mat = new Material(r.material);
                     mat.color = lineColors[y];
                     r.material = mat;
-                    mat.mainTexture = GetSprite(map.nodes[y, x].feature);
+                    mat.mainTexture = GetSprite(map.GetNode(y, x).feature);
 
-                    foreach (var outNode in map.nodes[y,x].OutConnections) {
+                    foreach (var outNode in map.GetNode(y, x).OutConnections) {
                         if (outNode.feature != MapPointsGen.Feature.TUNNEL) {
                             Debug.LogWarning("Unexpected feature type");
                             continue;
