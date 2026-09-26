@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2376665730996805666}
   - component: {fileID: 786853976728500476}
   - component: {fileID: 2405479906833643141}
+  - component: {fileID: 7658523415698078750}
   m_Layer: 3
   m_Name: WallEdge
   m_TagString: Untagged
@@ -92,6 +93,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7658523415698078750
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282689747135339399}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6026195928341746983, guid: 5f961910592b3244dbc8ea142d2e94db, type: 3}
 --- !u!1 &8998233304219178678
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +164,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
