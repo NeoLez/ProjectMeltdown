@@ -10847,7 +10847,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.GeneratorDoor
+  controlMode: 1
   generatorSlot: {fileID: 3811868933090774239}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
   mode: 1
   axis: 1
   openAngle: 90
@@ -10855,6 +10858,9 @@ MonoBehaviour:
   smooth: 3
   _soundOpen: {fileID: 8300000, guid: ec7a482d545bc2c4592ffd8e9412d86a, type: 3}
   _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 0}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
 --- !u!65 &1127958536053661576
 BoxCollider:
   m_ObjectHideFlags: 0
