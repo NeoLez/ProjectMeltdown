@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Root {
     [RequireComponent(typeof(Poolable))]
     public class BillItem : PhysicalItem {
-        [SerializeField] private Renderer renderer; 
+        [SerializeField] private new Renderer renderer; 
         public override void Interact() {
             EconomyManager.Instance.AddMoney(ItemSo.BillDenomination);
             MoneyFeedback.Instance.GrabbedBill(ItemSo);
