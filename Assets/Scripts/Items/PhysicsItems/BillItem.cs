@@ -7,6 +7,7 @@ namespace Root {
         [SerializeField] private Renderer renderer; 
         public override void Interact() {
             EconomyManager.Instance.AddMoney(ItemSo.BillDenomination);
+            MoneyFeedback.Instance.GrabbedBill(ItemSo);
             PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
         }
         

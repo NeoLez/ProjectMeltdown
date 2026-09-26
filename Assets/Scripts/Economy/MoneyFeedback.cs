@@ -26,6 +26,13 @@ namespace Root
             StartProcess();
             _offset += new Vector3(0, 100, 0);
         }
+        public void GrabbedBill(BillItemSo billItemSo)
+        {
+            _same++;
+            Instantiate(billItemSo.Bill, _offset, Quaternion.identity, _transform);
+            StartProcess();
+            _offset += new Vector3(0, 100, 0);
+        }
         void StartProcess()
         {
             if (activeRoutine != null)
