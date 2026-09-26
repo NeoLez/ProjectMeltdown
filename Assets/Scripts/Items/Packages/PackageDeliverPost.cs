@@ -16,6 +16,7 @@ namespace Root
         [SerializeField] private Animator animator;
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private TMP_Text textNotifier;
+        [SerializeField] private ItemGroup packages;
 
         private string _format = "{0}$";
 
@@ -54,10 +55,9 @@ namespace Root
             {
                 _depositedPackages.Add(itemState);
             }
+
             _packagesType.Add(itemState.typeOfPackage);
             _amount++;
-
-            MissionsManager.Instance.DeleteDepositedPackage(thisIshorrible.Id, itemState);
         }
 
         public void CheckGoal() {
@@ -69,6 +69,10 @@ namespace Root
             {
                 money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
+
+            MissionsManager.Instance.DeleteDepositedPackage(thisIshorrible.Id, _depositedPackages);
+            MissionsManager.Instance.FinishMission(thisIshorrible);
+
             SpawnBills(MoneyManager.Instance.NumberToBills(money));
             
             HasConfirmedDelivery = true;
@@ -149,14 +153,20 @@ namespace Root
 
             if (!holder.HasItem)
             {
-                StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
+                if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages)) {
+                    PlayerInventoryUI.Instance.OpenInventory();
+                }
+                else {
+                    StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
+                }
+                
                 return;
             }
 
-            if (HasConfirmedDelivery) return; //TODO-Delete this for future missions
-
             var itemState = holder.HeldItem as PackageItemState;
             if (itemState == null) return;
+
+            if (!itemState.canBeDelivered) return;
 
             DepositPackage(itemState);
             holder.ForceClearHeldItem();
