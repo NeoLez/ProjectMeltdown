@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Root {
     public class BrakeFluidItem : PhysicalItem {
         private static readonly int Insert = Animator.StringToHash("Insert");
-        public ItemChargeSo So => ItemState as ItemChargeSo;
+        public ItemChargeState State => ItemState as ItemChargeState;
         
         [SerializeField] private Animator animator;
         public void AnimatorOn()
@@ -13,14 +13,14 @@ namespace Root {
         
         public void Consume(float damage)
         {
-            if (So.currentCharge <= 0) return;
-            So.currentCharge -= damage;
+            if (State.currentCharge <= 0) return;
+            State.currentCharge -= damage;
         }
 
-        public float GetRepairAmountLeft() => So.currentCharge;
+        public float GetRepairAmountLeft() => State.currentCharge;
         
         protected override bool IsStateTypeValid(ItemState state) {
-            return state is ItemChargeSo;
+            return state is ItemChargeState;
         }
     }
 }

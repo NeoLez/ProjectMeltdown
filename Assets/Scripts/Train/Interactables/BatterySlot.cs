@@ -60,7 +60,7 @@ namespace Root
             battery.AnimatorOn();
             yield return new WaitForSeconds(0.70f);
             if (_battery != battery) yield break; 
-            bool hasEnergy = battery.So.currentCharge > 0f; 
+            bool hasEnergy = battery.State.currentCharge > 0f; 
             if (visualEffect != null && hasEnergy) 
                 visualEffect.SendEvent("OnPlay");
             if (hasEnergy) 
@@ -109,7 +109,7 @@ namespace Root
             PowerReady = false; 
             train.SetEnginePower(false);
             OnBatteryRemoved?.Invoke();
-            if (_soundRemove != null && battery.So.currentCharge > 0f)
+            if (_soundRemove != null && battery.State.currentCharge > 0f)
                 GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX, 0.6f);
             return battery;
         }

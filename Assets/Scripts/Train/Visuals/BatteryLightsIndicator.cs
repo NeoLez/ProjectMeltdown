@@ -35,8 +35,8 @@ namespace Root
 
             float percent = 0f;
 
-            if (_battery.So != null && _battery.So.maxCharge > 0f)
-                percent = Mathf.Clamp01(_battery.So.currentCharge / _battery.So.maxCharge);
+            if (_battery.State != null && _battery.State.maxCharge > 0f)
+                percent = Mathf.Clamp01(_battery.State.currentCharge / _battery.State.maxCharge);
 
             for (int i = 0; i < _lights.Length; i++)
             {
@@ -69,8 +69,8 @@ namespace Root
         {
             float percent = 0f;
 
-            if (_battery.So != null && _battery.So.maxCharge > 0f)
-                percent = Mathf.Clamp01(_battery.So.currentCharge / _battery.So.maxCharge);
+            if (_battery.State != null && _battery.State.maxCharge > 0f)
+                percent = Mathf.Clamp01(_battery.State.currentCharge / _battery.State.maxCharge);
 
             for (int i = 0; i < _lights.Length; i++)
             {

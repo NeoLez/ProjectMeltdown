@@ -54,7 +54,7 @@ namespace Root
 
         private void Update()
         {
-            if (_battery == null || _battery.So.currentCharge <= 0f)
+            if (_battery == null || _battery.State.currentCharge <= 0f)
             {
                 if (_powered)
                 {
@@ -65,7 +65,7 @@ namespace Root
                 return;
             }
 
-            _battery.So.currentCharge -= batteryDrain * Time.deltaTime;
+            _battery.State.currentCharge -= batteryDrain * Time.deltaTime;
         }
 
         private void LateUpdate()
@@ -127,7 +127,7 @@ namespace Root
 
             if (_battery != battery) yield break; 
 
-            if (!_powered && battery.So.currentCharge > 0f) // no hay efecto, sonido ni energía
+            if (!_powered && battery.State.currentCharge > 0f) // no hay efecto, sonido ni energía
             {
                 if (visualEffect != null) 
                     visualEffect.SendEvent("OnPlay");

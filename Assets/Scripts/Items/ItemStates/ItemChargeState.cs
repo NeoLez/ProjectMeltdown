@@ -1,16 +1,16 @@
 namespace Root {
     [System.Serializable]
-    public class ItemChargeSo : ItemState {
+    public class ItemChargeState : ItemState {
         public float maxCharge;
         public float currentCharge;
 
-        public ItemChargeSo(ItemChargeStateSo itemSo) : base(itemSo) { }
+        public ItemChargeState(ItemChargeStateSo itemSo) : base(itemSo) { }
         public override string ToString() {
             return $"MaxCharge: {maxCharge}, CurrentCharge: {currentCharge}";
         }
 
         public override ItemState Clone() {
-            var clone = new ItemChargeSo(ItemSo as ItemChargeStateSo) {
+            var clone = new ItemChargeState(ItemSo as ItemChargeStateSo) {
                 maxCharge = maxCharge,
                 currentCharge = currentCharge
             };

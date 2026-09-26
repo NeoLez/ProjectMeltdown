@@ -70,7 +70,7 @@ namespace Root
         private bool HasEnergy()
         {
             TrainBatteryItem battery = batterySlot.GetBattery();
-            return battery != null && battery.So.currentCharge > 0f;
+            return battery != null && battery.State.currentCharge > 0f;
         }
 
         private void StartBootSequence()

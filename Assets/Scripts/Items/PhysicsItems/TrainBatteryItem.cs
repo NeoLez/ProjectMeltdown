@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 
 namespace Root {
     public class TrainBatteryItem : PhysicalItem {
         private static readonly int Insert = Animator.StringToHash("Insert");
-        public ItemChargeSo So => ItemState as ItemChargeSo;
-        [SerializeField] private float visualsScale;
+        public ItemChargeState State => ItemState as ItemChargeState;
         [SerializeField] private Animator animator;
 
         public void AnimatorOn()
@@ -14,7 +12,7 @@ namespace Root {
         }
 
         protected override bool IsStateTypeValid(ItemState state) {
-            return state is ItemChargeSo;
+            return state is ItemChargeState;
         }
     }
 }

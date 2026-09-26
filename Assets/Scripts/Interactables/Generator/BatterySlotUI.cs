@@ -16,8 +16,8 @@ namespace Root
             TrainBatteryItem battery = generatorSlot.GetBattery();
 
             int percent = 0;
-            if (battery != null && battery.So.maxCharge > 0f)
-                percent = Mathf.Clamp(Mathf.RoundToInt(battery.So.currentCharge / battery.So.maxCharge * 100f), 0, 100);
+            if (battery != null && battery.State.maxCharge > 0f)
+                percent = Mathf.Clamp(Mathf.RoundToInt(battery.State.currentCharge / battery.State.maxCharge * 100f), 0, 100);
 
             if (percent == _lastPercent) return; 
             _lastPercent = percent;              
