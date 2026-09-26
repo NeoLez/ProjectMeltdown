@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Root {
+    /// <summary>
+    /// Represents an item type. Stores all IMMUTABLE DATA that's common to all instances and handles creation of specific item instances. Must have on child class that overrides CreateState() for every ItemState type.
+    /// </summary>
     [CreateAssetMenu(menuName = "Items/Base Item", fileName =  "Item")]
     public class ItemSo : ScriptableObject {
         [field: SerializeField] public PhysicalItem PhysicalItemPrefab { get; private set; }
@@ -15,7 +18,7 @@ namespace Root {
         [field: SerializeField, SerializeReference] public ItemState DefaultItemState { get; private set; }
 
         /// <summary>
-        /// Returns a zero initialized ItemState of the correct type. Should be overriden by child classes to define the ItemState type they expect. 
+        /// Returns a zero initialized ItemState of the correct type. Should always be overriden by child classes to define the ItemState type they expect. 
         /// </summary>
         public virtual ItemState CreateState() {
             return new ItemState(this);

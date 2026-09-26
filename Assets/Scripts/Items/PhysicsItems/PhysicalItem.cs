@@ -3,6 +3,9 @@ using Timers;
 using UnityEngine;
 
 namespace Root {
+    /// <summary>
+    /// Represents a physical instance of the item. It is responsible for updating the visual elements of the item and for specific physical item behaviour. It holds a reference to the persistent mutable data in ItemState.
+    /// </summary>
     [RequireComponent(typeof(BoundingBoxTracker))]
     public class PhysicalItem : InteractableNormalCamera {
         [Header("Editor Only Data")]

@@ -8,6 +8,9 @@ using UnityEngine.UI;
 using LogType = Root.Log.LogType;
 
 namespace Root {
+    /// <summary>
+    /// Handles all inventory item dragging and transfer. Inherit from this class to add visuals that are specific to certain item types (Like durability bars and extra text labels)
+    /// </summary>
     public class InventoryItemDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private Image image;
@@ -203,6 +206,9 @@ namespace Root {
             }
         }
         
+        /// <summary>
+        /// Runs every time the item changes position. Can be overriden if you need to update visuals that are specific to other item types.
+        /// </summary>
         public virtual void UpdateVisuals() {
             
         }
