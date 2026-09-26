@@ -42,11 +42,13 @@ namespace Root {
         }
 
         public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+            if (!WalletController.CanInteract) return false;
             return item == _inventoryItemDisplay?._inventoryItem || !_playerItemHolder.HasItem ||
                    item.Inventory.TryFindFreeArea(_playerItemHolder.HeldItem.ItemSo.InventorySize, out _, out _, item);
         }
 
         public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+            if (!WalletController.CanInteract) return false;
             if (!_playerItemHolder.HasItem || item.Inventory.InsertItem(_playerItemHolder.HeldItem)) {
                 _playerItemHolder.ForceClearHeldItem();
                 _playerItemHolder.Pickup(item.itemState);

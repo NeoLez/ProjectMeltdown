@@ -46,7 +46,7 @@ namespace Root {
             get => itemState;
             set {
                 itemState = value;
-                Initialize();
+                if (itemState != null) Initialize();
             }
         }
 
