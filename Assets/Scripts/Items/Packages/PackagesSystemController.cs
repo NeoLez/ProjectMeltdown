@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Timers;
 using UnityEngine;
 
 namespace Root
@@ -40,22 +41,27 @@ namespace Root
             _packageGenerationRoutine = StartCoroutine(GeneratePackages(perpetrator, instancePivot, amount));
         }
 
-        private IEnumerator GeneratePackages(NPCInteraction perpetrator, Transform instancePivot, int amountToSpawn)
-        {
+        private IEnumerator GeneratePackages(NPCInteraction perpetrator, Transform instancePivot, int amountToSpawn) {
+            var startingNode = perpetrator.Section.Node;
+            var destinationNode = FindDestinationNode(startingNode);
+            
             Vector3 newPos = instancePivot.position;
+            //TODO: Why make this an array of gameobjects? Maybe use ItemSo instead since all it's being used for is getting a default item state.
             GameObject[] availablePackages = perpetrator.Mission.AvailablePackages;
             for (int i = 0; i < amountToSpawn; i++)
             {
                 int randomIndex = Random.Range(0, availablePackages.Length);
-                PhysicalItem item = availablePackages[randomIndex].GetComponent<PhysicalItem>();
-                GameObject prefab = item.ItemState.ItemSo.CreatePhysicalItem().gameObject;
+                var item = availablePackages[randomIndex].GetComponent<DeliveryPackageItem>();
+                var state = (PackageItemState)item.State.Clone();
+                state.Initialize(destinationNode);
+                //Doing this so that the package gets initialized AFTER it's assigned it's valid state.
+                GameObject prefab = item.ItemState.ItemSo.CreatePhysicalItem(state).gameObject;
 
                 prefab.transform.parent = instancePivot.parent;
                 prefab.transform.position = instancePivot.transform.position;
 
                 DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
                 _currentSpawnedPackages.Add(currentPackage);
-                InitializePackges(currentPackage);
 
                 yield return new WaitForSeconds(fixedSpawnTime);
 
@@ -68,13 +74,28 @@ namespace Root
             MissionsManager.Instance.RegisterMission(perpetrator.Mission, _currentSpawnedPackages); 
             deliveryMissions = perpetrator.Mission;
         }
-
-        private void InitializePackges(DeliveryPackageItem package)
-        {
-            if (_currentSpawnedPackages.Count > 0)
-            {
-                package.InitializePackageData();
+        
+        /// <summary>
+        /// Finds the closest node to the starting one. If there are multiple at the same distance, it chooses one of those at random.
+        /// </summary>
+        /// <param name="startingNode"></param>
+        private MapPointsGen.Node FindDestinationNode(MapPointsGen.Node startingNode) {
+            var destinationNodes = startingNode.GetNodesThatMatch((node, _) => node.feature == MapPointsGen.Feature.STATION, 10);
+            if (destinationNodes.Count == 0) {
+                //TODO: What happens if no matching node is found? This should be done before even letting you accept a mission.
+                return startingNode;
             }
+
+            var potentialDestinations = new List<MapPointsGen.Node>();
+            var minDepth = destinationNodes[0].Item1.dist;
+            for (int i = 0; i < destinationNodes.Count; i++) {
+                if (destinationNodes[i].Item1.dist <= minDepth)
+                    potentialDestinations.Add(destinationNodes[i].Item1);
+                else break;
+            }
+
+            if (potentialDestinations.Count == 1) return potentialDestinations[0];
+            return potentialDestinations[Random.Range(0, potentialDestinations.Count)];
         }
 
         public void CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null)

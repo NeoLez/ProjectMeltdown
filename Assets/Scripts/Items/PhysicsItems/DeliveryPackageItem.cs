@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Random = UnityEngine.Random;
 
 namespace Root
 {
     [RequireComponent (typeof (PackageVisual))]
     public class DeliveryPackageItem : PhysicalItem
     {
-        [SerializeField] private PackageItemGenerationDataSo packageDataGenerator;
         [SerializeField] private PackageClimateConditionsSo packageConditions;
         //[SerializeField] private GameObject[] packageStates;
         //[SerializeField] PackageVisual _visuals;
@@ -40,22 +38,6 @@ namespace Root
 
         protected override void Initialize() {
             UpdateStampDecal();
-        }
-
-
-        //TODO: Deterministic number generation and maybe a way to set the packageDataGenerator from the outside so it can be changed at runtime?
-        public void InitializePackageData()
-        {
-            _currentDurability = Random.Range(packageDataGenerator.MinDurability, packageDataGenerator.MaxDurability);
-            State.durability = _currentDurability;
-
-            State.price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
-
-            State.stampTexture = PackageStampGenerator.Instance.CreateStampTexture(gameObject);
-            State.typeOfPackage = packageDataGenerator.TypeOfPackage;
-            UpdateStampDecal();
-
-            State.canBeDelivered = true;
         }
 
         private void UpdateStampDecal() {

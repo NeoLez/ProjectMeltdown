@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root
@@ -5,6 +6,7 @@ namespace Root
     public class NPCInteraction : InteractBehaviour
     {
         public Transform instancePivot;
+        [field: Required, SerializeField] public MapSection Section { get; private set; }
         [SerializeField] private MissionObjectiveSO currentMission;
 
         public MissionObjectiveSO Mission => currentMission;

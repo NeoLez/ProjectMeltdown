@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Root {
     public class MapSection : MonoBehaviour {
         public bool isStation;
-        private MapPointsGen.Node _node;
+        public MapPointsGen.Node Node { get; private set; }
         private int _id;
         [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
         [SerializeReference] CompositeBoundingBox boundingBox;
@@ -22,7 +22,7 @@ namespace Root {
         public bool shouldConsumeAlert;
 
         public void Initialize(MapPointsGen.Node node, int id) {
-            _node = node;
+            Node = node;
             _id = id;
             _waypoints[^1].OnTrainReached += () => {
                 OnTrainCompleted?.Invoke(shouldConsumeAlert);
@@ -30,7 +30,7 @@ namespace Root {
         }
 
         public int GetMapSectionSeed() {
-            return SeedUtils.Combine(new[] { GameManager.seed, _node.height, _node.dist, _id });
+            return SeedUtils.Combine(new[] { GameManager.seed, Node.height, Node.dist, _id });
         }
 
         public void Remove() {

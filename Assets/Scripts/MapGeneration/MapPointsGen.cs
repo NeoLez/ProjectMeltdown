@@ -5,55 +5,39 @@ using UnityEngine;
 
 namespace Root {
     public class MapPointsGen {
-        public class Node
+        [Serializable] public class Node
         {
             public int height;
             public int dist;
             public char line;
-            public List<Node> InConnections = new();
-            public List<Node> OutConnections = new();
+            [NonSerialized] public List<Node> InConnections = new();
+            [NonSerialized] public List<Node> OutConnections = new();
             public Feature feature;
+            public Map Map;
             
 
-            public Node(int height, int dist)
+            public Node(int height, int dist, Map map)
             {
                 this.height = height;
                 this.dist = dist;
+                Map = map;
             }
             
             public bool CanConnectTo() {
                 return feature == Feature.TUNNEL;
             }
-        }
-
-        public enum Feature {
-            TUNNEL,
-            TUNNEL_FORK_RIGHT,
-            TUNNEL_FORK_LEFT,
-            TUNNEL_JOIN,
-            START,
-            STATION,
-            ABANDONED_STATION,
-        }
-        
-        public class Map {
-            private System.Random _random;
-            public int height, width;
-            public Node[,] nodes;
-
+            
             /// <summary>
-            /// Analyzes all nodes starting from the one at coordinates [<paramref name="startHeight"/>, <paramref name="startLength"/>] until a given <paramref name="maxDepth"/>>
+            /// Analyzes all accessible nodes until a given <paramref name="maxDepth"/>>
             /// </summary>
-            /// <returns>Nodes that satisfy the <paramref name="predicate"/> (Node nodeToAnalyze, int currentDepth) => valid/invalid as a list of tuples where the int value is the depth</returns>
-            public List<ValueTuple<Node, int>> GetNodesThatMatch(int startHeight, int startLength, Func<Node, int, bool> predicate, int maxDepth) {
-                if (startHeight < 0 || startLength < 0 || startHeight >= height || startLength >= width) return null;
+            /// <returns>Nodes that satisfy the <paramref name="predicate"/> (Node nodeToAnalyze, int currentDepth) => valid/invalid as a list of tuples where the int value is the depth. SORTED BY DEPTH</returns>
+            public List<ValueTuple<Node, int>> GetNodesThatMatch(Func<Node, int, bool> predicate, int maxDepth) {
                 List<ValueTuple<Node, int>> results = new();
                 Queue<Node> nodesToAnalyzeCurrentLevel = new();
                 Queue<Node> nodesToAnalyzeNextLevel = new();
                 HashSet<Node> visited = new();
-                var startingNode = nodes[startHeight, startLength];
-                nodesToAnalyzeCurrentLevel.Enqueue(startingNode);
-                visited.Add(startingNode);
+                nodesToAnalyzeCurrentLevel.Enqueue(this);
+                visited.Add(this);
                 
                 int depth = 0;
                 while (depth <= maxDepth) {
@@ -76,6 +60,36 @@ namespace Root {
                 }
 
                 return results;
+            }
+        }
+
+        public enum Feature {
+            TUNNEL,
+            TUNNEL_FORK_RIGHT,
+            TUNNEL_FORK_LEFT,
+            TUNNEL_JOIN,
+            START,
+            STATION,
+            ABANDONED_STATION,
+        }
+        
+        public class Map {
+            private System.Random _random;
+            public int height { get; private set; } 
+            public int width { get; private set; }
+            [SerializeReference] private Node[,] nodes;
+
+            public Node GetNode(int y, int x) {
+                return nodes[y, x];
+            }
+            
+            /// <summary>
+            /// Analyzes all nodes starting from the one at coordinates [<paramref name="startHeight"/>, <paramref name="startLength"/>] until a given <paramref name="maxDepth"/>>
+            /// </summary>
+            /// <returns>Nodes that satisfy the <paramref name="predicate"/> (Node nodeToAnalyze, int currentDepth) => valid/invalid as a list of tuples where the int value is the depth. SORTED BY DEPTH</returns>
+            public List<ValueTuple<Node, int>> GetNodesThatMatch(int startHeight, int startLength, Func<Node, int, bool> predicate, int maxDepth) {
+                if (startHeight < 0 || startLength < 0 || startHeight >= height || startLength >= width) return null;
+                return nodes[startHeight, startLength].GetNodesThatMatch(predicate, maxDepth);
             }
 
             public Feature GetFeature() {
@@ -101,7 +115,7 @@ namespace Root {
                 for (int x = 0; x < height; x++) {
                     Node prevNode = null;
                     for (int y = 0; y < width; y++) {
-                        nodes[x, y] = new Node(x, y);
+                        nodes[x, y] = new Node(x, y, this);
                         if (y == 0) {
                             nodes[x, y].feature = Feature.START;
                         }
@@ -111,7 +125,7 @@ namespace Root {
                         
                         if (prevNode != null)
                         {
-                            var tunnelNode = new Node(prevNode.height, y);
+                            var tunnelNode = new Node(prevNode.height, y, this);
                             tunnelNode.feature = Feature.TUNNEL;
                             
                             prevNode.OutConnections.Add(tunnelNode);
@@ -153,7 +167,7 @@ namespace Root {
                                 continue;
                             }
                             
-                            var tunnelNode = new Node(x, y);
+                            var tunnelNode = new Node(x, y, this);
                             tunnelNode.feature = Feature.TUNNEL;
                             
                             tunnelNode.InConnections.Add(nodes[x, y]);

@@ -37,12 +37,11 @@ namespace Root
             height = (int)y;
         }
 
-        public RenderTexture CreateStampTexture(GameObject obj)
+        public RenderTexture CreateStampTexture(PackageItemState state)
         {
             RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
 
-            var package = obj.GetComponent<DeliveryPackageItem>();
-            SetDisplayValue(package.GetPrice());
+            SetDisplayValue(state.price);
 
             EnableCanvas(true);
             OneShotRenderSystem.Instance.Render(render);

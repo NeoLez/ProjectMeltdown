@@ -69,7 +69,7 @@ namespace Root {
             GameManager.MapGeneration = this;
             map = new(mapHeight, mapWidth, GameManager.seed);
             _context = new();
-            _context.currentNode = map.nodes[new System.Random(GameManager.seed).Next(0, mapHeight), 0];
+            _context.currentNode = map.GetNode(new System.Random(GameManager.seed).Next(0, mapHeight), 0);
             Logger.Log(map.ToString(), LogType.WorldGen);
         }
 
