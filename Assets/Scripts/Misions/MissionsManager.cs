@@ -31,12 +31,15 @@ namespace Root
                 _deliveryMissions.Add(activeMission.Id, activeMission);
                 RegisterPackage(activeMission, packageTypes);
 
-             /*   foreach (var packageType in packageTypes)
+                if (!_packagesToDeliver.ContainsKey(activeMission.Id))
                 {
-                    if(!_packagesToDeliver.ContainsKey(activeMission.Id))
-                        _packagesToDeliver.Add(activeMission.Id, packageType.State); //fix this
-                    
-                }*/
+                    _packagesToDeliver.Add(activeMission.Id, new List<PackageItemState>());
+
+                    foreach (var packageType in packageTypes)
+                    {
+                        _packagesToDeliver[activeMission.Id].Add(packageType.State);
+                    }
+                }
             }
         }
 
@@ -55,34 +58,39 @@ namespace Root
         {
             if (_deliveryMissions.ContainsKey(activeMission.Id))
             {
-                Algo();
+                RegisterUndepositedPackages();
+
                 _deliveryMissions.Remove(activeMission.Id);
-                UnregisterPackages(activeMission.Id);
+                _activeMissionData.Remove(activeMission.Id);
             }
         }
 
-        private void Algo()
+        private void RegisterUndepositedPackages()
         {
-           /* if (_packagesToDeliver.Count > 0)
+            if (_packagesToDeliver.Count > 0)
             {
-                foreach (var item in _packagesToDeliver)
+                foreach (var package in _packagesToDeliver)
                 {
-                    item.Value.canBeDelivered = false;
+                    foreach (var item in package.Value)
+                    {
+                        item.canBeDelivered = false;
 
-                    remaingPackages.Add(item.Value);
-                    Debug.Log(item.ToString());
+                        remaingPackages.Add(item);
+                        //Debug.Log(item.ToString());
+                    }
                 }
-            }*/
+            }
         }
-        private void UnregisterPackages(string currentMissionData)
+
+        public void DeleteDepositedPackage(string activeMission, List<PackageItemState> stateToRemove)
         {
-            _activeMissionData.Remove(currentMissionData);
-            //Debug.Log(deliveryMissions.Count);
-            //Debug.Log(activeMissionData.Count);
-        }
-        public void DeleteDepositedPackage(string activeMission, PackageItemState state) //el id aca deja de existir cuidado
-        {
-           // _packagesToDeliver.Remove(activeMission, out state);
+            if (_packagesToDeliver.TryGetValue(activeMission, out var packageList))
+            {
+                foreach (var item in stateToRemove)
+                {
+                    packageList.Remove(item); 
+                }
+            }
         }
 
         public bool VerifyDeliveryConditions(string missionId, int currentDepositedAmount, List<TypeOfPackage> packages)

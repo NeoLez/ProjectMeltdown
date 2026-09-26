@@ -105,7 +105,6 @@ namespace Root
             
             UpdateFeedback();
 
-            MissionsManager.Instance.FinishMission(deliveryMissions);
             return finalSum;
         }
 
