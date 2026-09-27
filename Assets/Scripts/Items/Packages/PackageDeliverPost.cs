@@ -2,7 +2,6 @@ using Root.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -47,9 +46,8 @@ namespace Root
             RefreshSumAmount(0);
         }
 
-        private MissionObjectiveSO MissionsCheck() //suscribirlo a una funcion en donde si la lista del manager se actualiza, tambien actualzia esta lista
+        private MissionObjectiveSO MissionsCheck() //TODO-Expand this into a list of MissionObjectiveSO
         {
-            //aca pedirle al 
             MissionObjectiveSO activeMissions = MissionsManager.Instance.SingleMission();
 
             return activeMissions;
@@ -85,7 +83,7 @@ namespace Root
                 money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
 
-            if(_textRoutine == null)
+            if (_textRoutine == null)
                 _textRoutine = StartCoroutine(UpdateTextRoutine(_finalMessage, true));
 
             MissionsManager.Instance.DeleteDepositedPackage(MissionsCheck().Id, _depositedPackages);
@@ -138,7 +136,7 @@ namespace Root
         }
 
 
-        private IEnumerator UpdateTextRoutine(string txt, bool canReset) 
+        private IEnumerator UpdateTextRoutine(string txt, bool canReset)
         {
             priceCounter.enabled = false;
             textNotifier.text = txt; //TODO-Change to Localization
@@ -177,7 +175,7 @@ namespace Root
                 RefreshSumAmount(0);
             }
 
-            if(HasConfirmedDelivery) OnDeliveryFinished?.Invoke();
+            if (HasConfirmedDelivery) OnDeliveryFinished?.Invoke();
 
             priceCounter.enabled = true;
             textNotifier.text = "Monto Total: "; //TODO-Change to Localization
@@ -195,6 +193,7 @@ namespace Root
             _depositedPackages.Clear();
         }
 
+
         public override void Interact()
         {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
@@ -205,11 +204,11 @@ namespace Root
             {
                 if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages))
                 {
-                    PlayerInventoryUI.Instance.OpenInventory(); //aca me sigue dejando depositarlos
+                    PlayerInventoryUI.Instance.OpenInventory();
                 }
                 else
                 {
-                    if(_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", true));
+                    if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", true));
                 }
 
                 return;
@@ -231,7 +230,13 @@ namespace Root
 
         public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item)
         {
-            return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery;
+            var itemState = item.itemState as PackageItemState;
+            if (!itemState.canBeDelivered)
+            {
+                if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
+            }
+
+            return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery && itemState.canBeDelivered;
         }
 
         public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item)
