@@ -78,7 +78,7 @@ namespace Root
         {
             int money;
 
-            if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType, _depositedPackages))
+            if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType))
             {
                 money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
