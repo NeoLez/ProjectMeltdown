@@ -33,8 +33,9 @@ namespace Root
         private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
         {
             _isAnimating = true;
-            Tween.Rotation(
+            Tween.LocalRotation(
             target: transform,
+            startValue: transform.localRotation,
             endValue: Quaternion.Euler(rotationAngle),
             duration: returnDuration,
             ease: Ease.OutQuad,

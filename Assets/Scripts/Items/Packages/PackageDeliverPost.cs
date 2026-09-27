@@ -78,7 +78,7 @@ namespace Root
         {
             int money;
 
-            if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType))
+            if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType, _depositedPackages))
             {
                 money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
@@ -123,8 +123,9 @@ namespace Root
         private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
         {
             _isAnimating = true;
-            Tween.Rotation(
+            Tween.LocalRotation(
             target: pivot,
+            startValue: pivot.localRotation,
             endValue: pivot.localRotation *  Quaternion.Euler(rotationAngle),
             duration: returnDuration,
             ease: Ease.OutQuad,
