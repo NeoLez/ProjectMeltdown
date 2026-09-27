@@ -12,7 +12,8 @@ namespace Root
         [SerializeField] private float returnMaximumDuration = 0.5f;
 
         private bool _hasConfirmedInteraction;
-        private bool isAnimating;
+        private bool _isAnimating;
+
         private void Awake()
         {
             packagePost.OnPackagesDelivered += SetConfirmationButtonStatus;
@@ -20,7 +21,7 @@ namespace Root
 
         public override void Interact() 
         {
-            if (isAnimating) return;
+            if (_isAnimating) return;
 
             if (_hasConfirmedInteraction) return;
 
@@ -31,7 +32,7 @@ namespace Root
 
         private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
         {
-            isAnimating = true;
+            _isAnimating = true;
             Tween.Rotation(
             target: transform,
             endValue: Quaternion.Euler(rotationAngle),
@@ -39,7 +40,7 @@ namespace Root
             ease: Ease.OutQuad,
             cycles: 2,
             cycleMode: CycleMode.Yoyo
-            ).OnComplete(() => isAnimating = false);
+            ).OnComplete(() => _isAnimating = false);
         }
 
         private void SetConfirmationButtonStatus(bool algo)
