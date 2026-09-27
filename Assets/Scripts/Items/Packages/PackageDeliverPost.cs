@@ -1,3 +1,4 @@
+using PrimeTween;
 using Root.Managers;
 using System;
 using System.Collections;
@@ -22,10 +23,13 @@ namespace Root
         private List<PackageItemState> _depositedPackages = new();
         private int _currentPackageSum;
 
-        [SerializeField] private Animator animator;
+        [Header("Deposit Door")]
+        [SerializeField] private Transform pivot;
+        [SerializeField] private Vector3 maximumRotation = new Vector3(45f, 0f, 0f);
         [SerializeField] private float deliveryDoorDuration = 1f;
+        /* [SerializeField] private Animator animator;
         private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
-        private int _animStateClose = Animator.StringToHash("CloseDepositDoor");
+        private int _animStateClose = Animator.StringToHash("CloseDepositDoor");*/
         private bool _isAnimating;
 
         public Action<bool> OnPackagesDelivered;
@@ -58,7 +62,7 @@ namespace Root
             if (HasConfirmedDelivery) return;
             if (_isAnimating) return;
 
-            StartCoroutine(TriggerDepositAnims());
+            StartLeverAnimation(maximumRotation, deliveryDoorDuration);
 
             RefreshSumAmount(itemState.price);
             if (!_depositedPackages.Contains(itemState))
@@ -83,9 +87,6 @@ namespace Root
                 money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
 
-            if (_textRoutine == null)
-                _textRoutine = StartCoroutine(UpdateTextRoutine(_finalMessage, true));
-
             MissionsManager.Instance.DeleteDepositedPackage(MissionsCheck().Id, _depositedPackages);
             MissionsManager.Instance.FinishMission(MissionsCheck());
 
@@ -94,16 +95,8 @@ namespace Root
             HasConfirmedDelivery = true;
 
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
-        }
-
-        private void DisablePost()
-        {
-            if (!MissionsManager.Instance.AreMissionsActive())
-            {
-                DisableText();
-                gameObject.SetActive(false);
-                return;
-            }
+            if (_textRoutine == null)
+                _textRoutine = StartCoroutine(UpdateTextRoutine(_finalMessage, true));
         }
 
         private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills)
@@ -118,13 +111,26 @@ namespace Root
             }
         }
 
-        private IEnumerator TriggerDepositAnims()
+       /* private IEnumerator TriggerDepositAnims()
         {
             _isAnimating = true;
             animator.SetTrigger(_animStateOpen);
             yield return new WaitForSeconds(deliveryDoorDuration);
             animator.SetTrigger(_animStateClose);
             _isAnimating = false;
+        }*/
+
+        private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
+        {
+            _isAnimating = true;
+            Tween.Rotation(
+            target: pivot,
+            endValue: pivot.localRotation *  Quaternion.Euler(rotationAngle),
+            duration: returnDuration,
+            ease: Ease.OutQuad,
+            cycles: 2,
+            cycleMode: CycleMode.Yoyo
+            ).OnComplete(() => _isAnimating = false);
         }
 
         private void RefreshSumAmount(int amount)
@@ -179,6 +185,16 @@ namespace Root
 
             priceCounter.enabled = true;
             textNotifier.text = "Monto Total: "; //TODO-Change to Localization
+        }
+
+        private void DisablePost()
+        {
+            if (!MissionsManager.Instance.AreMissionsActive())
+            {
+                DisableText();
+                gameObject.SetActive(false);
+                return;
+            }
         }
 
         public bool DepositedPackages()
