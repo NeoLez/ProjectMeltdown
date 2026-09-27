@@ -15,6 +15,7 @@ namespace Root
         private PlayerInputActions _input;
         private Transform _npcLookingPivot;
         private Transform _npcPositionPivot;
+        private Vector3 _newPlayerPosition;
         private bool _isInteracting;
         private InteractBehaviour _currentInterractable;
 
@@ -47,6 +48,7 @@ namespace Root
             interactionPanel.enabled = canInteract;
         }
 
+        bool _hasEnteredOnce;
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
             if(_currentInterractable != null)
@@ -55,12 +57,14 @@ namespace Root
 
                 if (_currentInterractable.HasDialoguePermenantlyEnded()) return;
 
-                if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot())
+                if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot() && !_hasEnteredOnce)
                 {
                     SetLookAndPositionPivots(_currentInterractable);
 
-                    GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _npcPositionPivot.position);
+                    GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
+
+                    _hasEnteredOnce = true;
                 }
                 else
                 {
@@ -85,6 +89,8 @@ namespace Root
         {
             _npcLookingPivot = currentInteractable ? currentInteractable.Pivot : null;
             _npcPositionPivot = currentInteractable ? currentInteractable.PlayerPivot : null;
+
+            _newPlayerPosition = new Vector3(_npcPositionPivot.position.x, transform.position.y, _npcPositionPivot.position.z);
         }
 
         private void StartInteraction()
@@ -99,7 +105,7 @@ namespace Root
         private void EndInteraction()
         {
             _isInteracting = false;
-
+            if(_currentInterractable.CheckPivot()) GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
             if (_currentInterractable != null)
             {
                 _currentInterractable.OnInteractionEnded -= EndInteraction;
