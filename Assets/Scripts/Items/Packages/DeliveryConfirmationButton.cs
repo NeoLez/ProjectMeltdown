@@ -9,7 +9,7 @@ namespace Root
 
         [Header("Animation Settings")]
         [SerializeField] private Vector3 maximumRotation = new Vector3(45f, 0f, 0f);
-        [SerializeField] private float returnDuration = 0.5f;
+        [SerializeField] private float returnMaximumDuration = 0.5f;
 
         private bool _hasConfirmedInteraction;
         private bool isAnimating;
@@ -20,20 +20,26 @@ namespace Root
 
         public override void Interact() 
         {
-            if (packagePost.DepositedPackages() <= 0) return;
             if (isAnimating) return;
 
+            if (_hasConfirmedInteraction) return;
+
+            StartLeverAnimation(maximumRotation, returnMaximumDuration);
+
+            ConfirmDelivery();
+        }
+
+        private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
+        {
             isAnimating = true;
             Tween.Rotation(
             target: transform,
-            endValue: Quaternion.Euler(maximumRotation),
+            endValue: Quaternion.Euler(rotationAngle),
             duration: returnDuration,
             ease: Ease.OutQuad,
             cycles: 2,
             cycleMode: CycleMode.Yoyo
             ).OnComplete(() => isAnimating = false);
-
-            ConfirmDelivery();
         }
 
         private void SetConfirmationButtonStatus(bool algo)
@@ -43,8 +49,8 @@ namespace Root
 
         public void ConfirmDelivery()
         {
-            if (_hasConfirmedInteraction) return;
-             //aca chequear si la mision fue activada ademas ocualquiera
+            if (!packagePost.DepositedPackages()) return;
+            
             packagePost.CheckGoal();
         }
         private void OnDestroy()

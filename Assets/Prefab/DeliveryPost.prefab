@@ -356,8 +356,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5754030161873268938}
-  - component: {fileID: 75162121686603637}
   - component: {fileID: 8939968203811628418}
+  - component: {fileID: 75162121686603637}
   m_Layer: 10
   m_Name: Lever
   m_TagString: Untagged
@@ -381,21 +381,6 @@ Transform:
   - {fileID: 6672367056587072854}
   m_Father: {fileID: 6155962517950839003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &75162121686603637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4850484350235404606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de146c6af9b7ff46996e5df29922854, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryObjectiveChecker
-  packagePost: {fileID: 750651292392875468}
-  maximumRotation: {x: 0, y: 0, z: 150}
-  returnDuration: 0.9
 --- !u!65 &8939968203811628418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -417,6 +402,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3025343, y: 1.3971171, z: 2.2117712}
   m_Center: {x: 0.04088282, y: 0.5200812, z: -0.21772708}
+--- !u!114 &75162121686603637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4850484350235404606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de146c6af9b7ff46996e5df29922854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.DeliveryObjectiveChecker
+  packagePost: {fileID: 750651292392875468}
+  maximumRotation: {x: 0, y: 0, z: 150}
+  returnMaximumDuration: 0.5
 --- !u!1 &7121638816323742754
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,10 +868,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.CheckPackages
   thisIshorrible: {fileID: 11400000, guid: 0426a8455175cfe49a312d1f3b4ccc5c, type: 2}
   dropPivot: {fileID: 6252053337918524764}
-  animator: {fileID: 4269759560484577885}
+  displayCanvas: {fileID: 5703041348429771360}
   priceCounter: {fileID: 276768241168608594}
   textNotifier: {fileID: 1818488518808201671}
   packages: {fileID: 11400000, guid: 59129265061640c78983a3de27ff4a37, type: 2}
+  animator: {fileID: 4269759560484577885}
+  deliveryDoorDuration: 0.5
 --- !u!1001 &2445066622398678015
 PrefabInstance:
   m_ObjectHideFlags: 0

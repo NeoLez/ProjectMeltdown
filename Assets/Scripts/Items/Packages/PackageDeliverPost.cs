@@ -1,7 +1,8 @@
+using Root.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Root.Managers;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -11,9 +12,8 @@ namespace Root
     {
         public bool HasConfirmedDelivery { get; private set; }
 
-        [SerializeField] MissionObjectiveSO thisIshorrible;
         [SerializeField] private Transform dropPivot;
-        [SerializeField] private Animator animator;
+        [SerializeField] private Canvas displayCanvas;
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private TMP_Text textNotifier;
         [SerializeField] private ItemGroup packages;
@@ -23,24 +23,36 @@ namespace Root
         private List<PackageItemState> _depositedPackages = new();
         private int _currentPackageSum;
 
+        [SerializeField] private Animator animator;
+        [SerializeField] private float deliveryDoorDuration = 1f;
         private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
         private int _animStateClose = Animator.StringToHash("CloseDepositDoor");
-
         private bool _isAnimating;
 
         public Action<bool> OnPackagesDelivered;
         private List<TypeOfPackage> _packagesType = new();
         private int _amount;
+        private Action OnDeliveryFinished;
+
+        private Coroutine _textRoutine;
+        private string[] _finalMessage = { "Entrega confirmada", "Hasta Luego" };
+
+        private void Awake()
+        {
+            OnDeliveryFinished += DisablePost;
+        }
 
         private void Start()
         {
             RefreshSumAmount(0);
         }
 
-        public void MissionsCheck(List<MissionObjectiveSO> activeMissions)
+        private MissionObjectiveSO MissionsCheck() //suscribirlo a una funcion en donde si la lista del manager se actualiza, tambien actualzia esta lista
         {
-            //aca registro en mis variable locales todo su info
-            //cuando termino de entregar, reemplazo los valores de esas variables por la "sigueinte mision"
+            //aca pedirle al 
+            MissionObjectiveSO activeMissions = MissionsManager.Instance.SingleMission();
+
+            return activeMissions;
         }
 
         public void DepositPackage(PackageItemState itemState)
@@ -60,9 +72,12 @@ namespace Root
             _amount++;
         }
 
-        public void CheckGoal() {
+        public void CheckGoal()
+        {
             int money;
-            if(MissionsManager.Instance.VerifyDeliveryConditions(thisIshorrible.Id, _amount, _packagesType)) {
+
+            if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType))
+            {
                 money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
             else
@@ -70,32 +85,46 @@ namespace Root
                 money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
             }
 
-            MissionsManager.Instance.DeleteDepositedPackage(thisIshorrible.Id, _depositedPackages);
-            MissionsManager.Instance.FinishMission(thisIshorrible);
+            if(_textRoutine == null)
+                _textRoutine = StartCoroutine(UpdateTextRoutine(_finalMessage, true));
+
+            MissionsManager.Instance.DeleteDepositedPackage(MissionsCheck().Id, _depositedPackages);
+            MissionsManager.Instance.FinishMission(MissionsCheck());
 
             SpawnBills(MoneyManager.Instance.NumberToBills(money));
-            
-            HasConfirmedDelivery = true;
 
-            StartCoroutine(UpdateTextRoutine("Entrega confirmada", true));
+            HasConfirmedDelivery = true;
 
             OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
         }
 
-        private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills) {
-            foreach (var tuple in bills) {
-                for (int i = 0; i < tuple.Item2; i++) {
+        private void DisablePost()
+        {
+            if (!MissionsManager.Instance.AreMissionsActive())
+            {
+                DisableText();
+                gameObject.SetActive(false);
+                return;
+            }
+        }
+
+        private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills)
+        {
+            foreach (var tuple in bills)
+            {
+                for (int i = 0; i < tuple.Item2; i++)
+                {
                     var bill = tuple.Item1.CreatePhysicalItem();
                     bill.transform.position = dropPivot.transform.position;
                 }
             }
         }
-        
+
         private IEnumerator TriggerDepositAnims()
         {
             _isAnimating = true;
             animator.SetTrigger(_animStateOpen);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(deliveryDoorDuration);
             animator.SetTrigger(_animStateClose);
             _isAnimating = false;
         }
@@ -115,33 +144,54 @@ namespace Root
             textNotifier.text = txt; //TODO-Change to Localization
             yield return new WaitForSeconds(2f);
             ResetPostStatus(canReset);
+
+            _textRoutine = null;
+        }
+        private IEnumerator UpdateTextRoutine(string[] message, bool canReset)
+        {
+            if (message.Length > 0)
+            {
+                foreach (var text in message)
+                {
+                    priceCounter.enabled = false;
+                    textNotifier.text = text;
+                    yield return new WaitForSeconds(2f);
+                }
+                ResetPostStatus(canReset);
+            }
+
+            _textRoutine = null;
+        }
+
+        private void DisableText()
+        {
+            displayCanvas.enabled = false;
         }
 
         private void ResetPostStatus(bool canReset)
         {
-            if(canReset)
+            if (canReset)
             {
                 _depositedPackages.Clear();
                 _currentPackageSum = 0;
                 RefreshSumAmount(0);
             }
-            else
-            {
-                _depositedPackages.Clear();
-            }
-            
+
+            if(HasConfirmedDelivery) OnDeliveryFinished?.Invoke();
+
             priceCounter.enabled = true;
             textNotifier.text = "Monto Total: "; //TODO-Change to Localization
         }
 
-
-        public int DepositedPackages()
+        public bool DepositedPackages()
         {
-            return _depositedPackages.Count;
+            return _depositedPackages.Count > 0;
         }
 
         private void OnDestroy()
         {
+            OnDeliveryFinished -= DisablePost;
+
             _depositedPackages.Clear();
         }
 
@@ -153,20 +203,27 @@ namespace Root
 
             if (!holder.HasItem)
             {
-                if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages)) {
-                    PlayerInventoryUI.Instance.OpenInventory();
+                if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages))
+                {
+                    PlayerInventoryUI.Instance.OpenInventory(); //aca me sigue dejando depositarlos
                 }
-                else {
-                    StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", false));
+                else
+                {
+                    if(_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("No tiene ningun paquete para depositar", true));
                 }
-                
+
                 return;
             }
 
             var itemState = holder.HeldItem as PackageItemState;
             if (itemState == null) return;
 
-            if (!itemState.canBeDelivered) return;
+            if (!itemState.canBeDelivered)
+            {
+                if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
+                return;
+            }
+            //if (!MissionsManager.Instance.AreMissionsActive()) return;
 
             DepositPackage(itemState);
             holder.ForceClearHeldItem();

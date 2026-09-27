@@ -15,6 +15,9 @@ namespace Root
 
         private List<PackageItemState> remaingPackages = new();
 
+        //private List<MissionObjectiveSO> missionsToDeliver = new();
+        private MissionObjectiveSO missionsToDeliver;
+
         private void Awake()
         {
             if (Instance == null)
@@ -30,7 +33,7 @@ namespace Root
             {
                 _deliveryMissions.Add(activeMission.Id, activeMission);
                 RegisterPackage(activeMission, packageTypes);
-
+                missionsToDeliver = activeMission;
                 if (!_packagesToDeliver.ContainsKey(activeMission.Id))
                 {
                     _packagesToDeliver.Add(activeMission.Id, new List<PackageItemState>());
@@ -62,6 +65,8 @@ namespace Root
 
                 _deliveryMissions.Remove(activeMission.Id);
                 _activeMissionData.Remove(activeMission.Id);
+
+                missionsToDeliver = null;
             }
         }
 
@@ -88,7 +93,7 @@ namespace Root
             {
                 foreach (var item in stateToRemove)
                 {
-                    packageList.Remove(item); 
+                    packageList.Remove(item);
                 }
             }
         }
@@ -104,6 +109,34 @@ namespace Root
             bool arePackagesEqual = data.packages.Count == packages.Count && !data.packages.Except(packages).Any();
 
             return data.amount == currentDepositedAmount && arePackagesEqual;
+        }
+
+
+        /* public List<MissionObjectiveSO> EnlistedMissions()
+         {
+             if (missionsToDeliver.Count == 0) return null;
+
+             foreach (var item in missionsToDeliver)
+             {
+                 if (_deliveryMissions.ContainsKey(item.Id))
+                 {
+                     missionsToDeliver.Remove(item); //evitar duplicados
+                 }
+             }
+
+             return missionsToDeliver;
+         }*/
+
+        public MissionObjectiveSO SingleMission()
+        {
+            if (missionsToDeliver == null) return null;
+            
+            return missionsToDeliver;
+        }
+
+        public bool AreMissionsActive()
+        {
+            return _deliveryMissions.Count > 0;
         }
 
         private class MissionData
