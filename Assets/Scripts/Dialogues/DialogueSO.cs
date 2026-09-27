@@ -1,6 +1,7 @@
 using Root;
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Dialogues", menuName = "SO/Dialogues")]
@@ -43,5 +44,5 @@ public struct DialogueData
 public struct DialogueChoices
 {
     public string Text;
-    public List<DialogueEffectSO> effects;
+    [Expandable] public List<DialogueEffectSO> effects;
 }
