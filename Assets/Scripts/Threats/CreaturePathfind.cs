@@ -1,4 +1,3 @@
-using System;
 using Timers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,6 +10,8 @@ namespace Root
         [SerializeField] private float navmeshUpdateFrequency;
         [SerializeField] private float attackCooldown;
         [SerializeField] private float attackDamage;
+        [SerializeField] private float viewDistance;
+        [SerializeField] private LayerMask raycastLayerMask;
         private Transform _target;
         private readonly Timer _navmeshUpdateTimer = new();
         private readonly Timer _attackTimer = new();
@@ -28,7 +29,7 @@ namespace Root
         }
 
         private void Update() {
-            if (_navmeshUpdateTimer.IsCompleted()) {
+            if (_navmeshUpdateTimer.IsCompleted() && IsPlayerInView()) {
                 if (_target == null) _target = GameManager.Player.transform;
                 _navmeshUpdateTimer.Reset(navmeshUpdateFrequency);
                 _agent.SetDestination(_target.position);
@@ -40,6 +41,13 @@ namespace Root
                 collision.gameObject.GetComponent<HealthControl>().TakeDamage(attackDamage);
                 _attackTimer.Reset(attackCooldown);
             }
+        }
+
+        private bool IsPlayerInView() {
+            if (!Physics.Raycast(transform.position, GameManager.Player.transform.position - transform.position,
+                    out var hit, viewDistance, raycastLayerMask))
+                return false;
+            return hit.collider.gameObject == GameManager.Player.gameObject;
         }
     }
 }
