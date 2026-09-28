@@ -62,6 +62,10 @@ namespace Root {
 
                 return results;
             }
+
+            public override string ToString() {
+                return $"{line}{dist}:{feature.ToString()}";
+            }
         }
 
         public enum Feature {

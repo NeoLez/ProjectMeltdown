@@ -260,6 +260,10 @@ namespace Root
             {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
             }
+            if (itemState.DestinationNode != mapSection.Node) {
+                if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Destino incorrecto", false));
+                return false;
+            }
 
             return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery && itemState.canBeDelivered;
         }
