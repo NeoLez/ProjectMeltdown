@@ -14,6 +14,9 @@ namespace Root
         [Header("Tipo de puerta")]
         [SerializeField] private ControlMode controlMode = ControlMode.Automatic;
 
+        [Header("Bloqueo")]
+        [SerializeField] private bool isLocked = false;
+
         [Header("Electricidad")]
         [SerializeField] private GeneratorSlot generatorSlot;
         [SerializeField] private bool requiresPowerToInteract = false;
@@ -48,6 +51,7 @@ namespace Root
         private Coroutine _currentRoutine;
 
         public bool IsOpen => _state == DoorState.Open;
+        public bool IsLocked => isLocked; 
 
         private void Start()
         {
@@ -96,6 +100,13 @@ namespace Root
         {
             if (controlMode != ControlMode.Manual) return;
 
+            if (isLocked) // MODIFICADO
+            {
+                if (_state == DoorState.Closed || _state == DoorState.Open)
+                    RequestDeniedFeedback();
+                return;
+            }
+
             if (requiresPowerToInteract && !_stationPowered)
             {
                 if (_state == DoorState.Closed || _state == DoorState.Open)
@@ -105,6 +116,17 @@ namespace Root
 
             if (_state == DoorState.Closed) RequestOpen();
             else if (_state == DoorState.Open) RequestClose();
+        }
+
+        public void Lock()
+        {
+            isLocked = true;
+        }
+
+        public void Unlock()
+        {
+            isLocked = false;
+            ReconcilePowerState();
         }
 
         private void HandlePowerRestored()
@@ -125,9 +147,9 @@ namespace Root
 
             if (controlMode == ControlMode.Automatic)
             {
-                if (_stationPowered)
+                if (_stationPowered && !isLocked) 
                     RequestOpen();
-                else if (onPowerLost == PowerLossBehavior.Deactivate)
+                else if (!_stationPowered && onPowerLost == PowerLossBehavior.Deactivate) 
                     RequestClose();
             }
             else
