@@ -15,9 +15,11 @@ namespace Root
         private Transform _target;
         private readonly Timer _navmeshUpdateTimer = new();
         private readonly Timer _attackTimer = new();
+        Animator _animator;
         
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
+            _animator = GetComponentInChildren<Animator>();
             if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
             {
                 _agent.Warp(hit.position);
@@ -38,6 +40,7 @@ namespace Root
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.gameObject == GameManager.Player.gameObject && _attackTimer.IsCompleted()) {
+                _animator.Play("Attack");
                 collision.gameObject.GetComponent<HealthControl>().TakeDamage(attackDamage);
                 _attackTimer.Reset(attackCooldown);
             }
