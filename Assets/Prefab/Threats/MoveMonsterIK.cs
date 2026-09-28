@@ -1,8 +1,5 @@
-using System.Data;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 namespace Root
 {
     public class MoveMonsterIK : MonoBehaviour
@@ -60,7 +57,7 @@ namespace Root
                 _current = IKposition.position;
                 _TimePerStep = _pace;
             }
-            else StepAttempt();
+            //else StepAttempt();
         }
         void OnDrawGizmosSelected()
         {

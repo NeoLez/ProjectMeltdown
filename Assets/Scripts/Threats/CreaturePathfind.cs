@@ -1,3 +1,4 @@
+using System;
 using Timers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,12 +9,14 @@ namespace Root
     public class CreaturePathfind : MonoBehaviour {
         private NavMeshAgent _agent;
         [SerializeField] private float navmeshUpdateFrequency;
+        [SerializeField] private float attackCooldown;
+        [SerializeField] private float attackDamage;
         private Transform _target;
-        private Timer _navmeshUpdateTimer;
+        private readonly Timer _navmeshUpdateTimer = new();
+        private readonly Timer _attackTimer = new();
         
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
-            _navmeshUpdateTimer = new Timer();
             if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
             {
                 _agent.Warp(hit.position);
@@ -29,6 +32,13 @@ namespace Root
                 if (_target == null) _target = GameManager.Player.transform;
                 _navmeshUpdateTimer.Reset(navmeshUpdateFrequency);
                 _agent.SetDestination(_target.position);
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision) {
+            if (collision.gameObject == GameManager.Player.gameObject && _attackTimer.IsCompleted()) {
+                collision.gameObject.GetComponent<HealthControl>().TakeDamage(attackDamage);
+                _attackTimer.Reset(attackCooldown);
             }
         }
     }
