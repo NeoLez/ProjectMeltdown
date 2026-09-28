@@ -18,6 +18,8 @@ namespace Root
         [SerializeField] private TMP_Text textNotifier;
         [SerializeField] private ItemGroup packages;
 
+        [SerializeField] private MapSection mapSection;
+
         private string _format = "{0}$";
 
         private List<PackageItemState> _depositedPackages = new();
@@ -237,6 +239,12 @@ namespace Root
             if (!itemState.canBeDelivered)
             {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
+                return;
+            }
+
+
+            if (itemState.DestinationNode != mapSection.Node) {
+                if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Destino incorrecto", false));
                 return;
             }
             //if (!MissionsManager.Instance.AreMissionsActive()) return;
