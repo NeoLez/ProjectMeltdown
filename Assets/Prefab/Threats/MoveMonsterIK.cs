@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Animations.Rigging;
 namespace Root
 {
@@ -25,9 +26,18 @@ namespace Root
             animator = GetComponent<Animator>();
             //OnDrawGizmosSelected();
         }
+        private Vector3 previousPosition;
+
+        public float curSpeed;
+
         private void Update()
         {
-                if (_TimePerStep <= 0) StepAttempt();
+            Vector3 curMove = transform.parent.position - previousPosition;
+            curSpeed = curMove.magnitude / Time.deltaTime;
+            previousPosition = transform.parent.position;
+
+            
+                if (_TimePerStep <= 0 && curSpeed >= 0.5f) StepAttempt();
                 else _TimePerStep = _TimePerStep - 1 * Time.deltaTime;
 
             if (_current != _target)
