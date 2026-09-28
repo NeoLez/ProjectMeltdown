@@ -21,6 +21,7 @@ namespace Root {
                 this.height = height;
                 this.dist = dist;
                 Map = map;
+                line = (char)(height+65);//shouldn't have more than 27 lines :v
             }
             
             public bool CanConnectTo() {
