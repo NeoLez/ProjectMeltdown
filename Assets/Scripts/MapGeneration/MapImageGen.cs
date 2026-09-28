@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,9 @@ namespace Root
         [SerializeField] private RenderTexture renderTexture;
         [SerializeField] private GameObject dot;
         [SerializeField] private GameObject line;
+        [SerializeField] private Canvas text;
+        [SerializeField] private float distanceTextVerticalOffset;
+        [SerializeField] private float lineTextHorizontalOffset;
         [SerializeField] private float dotRadius;
         [SerializeField] private Vector2 size;
         [SerializeField] private List<Color> lineColors;
@@ -80,6 +84,8 @@ namespace Root
             mate.color = Color.black;
             rend.material = mate;
             mate.mainTexture = arrowTexture;
+
+            DrawText(map);
             
             OneShotRenderSystem.Instance.Render(renderTexture);
             gameObject.SetActive(false);
@@ -101,6 +107,20 @@ namespace Root
             obj.transform.position = ((p1 + p2) / 2).Swizzle_xy0() + Vector3.forward  *transform.position.z;
             obj.transform.right = (p2 - p1);
             obj.transform.localScale = new Vector3((p2 - p1).magnitude - dotRadius, obj.transform.localScale.y, obj.transform.localScale.z);
+        }
+
+        private void DrawText(MapPointsGen.Map map) {
+            for (int x = 0; x < map.width; x++) {
+                var obj = Instantiate(text, transform);
+                obj.GetComponentInChildren<TMP_Text>().text = $"{x}";
+                obj.transform.position = GetCoords(0, x).Swizzle_xy0() + Vector3.forward * transform.position.z + Vector3.up * distanceTextVerticalOffset;
+            }
+            
+            for (int y = 0; y < map.height; y++) {
+                var obj = Instantiate(text, transform);
+                obj.GetComponentInChildren<TMP_Text>().text = $"{map.GetNode(y, 0).line}";
+                obj.transform.position = GetCoords(y, map.width - 1).Swizzle_xy0() + Vector3.forward * transform.position.z + Vector3.right * lineTextHorizontalOffset;
+            }
         }
     }
 }
