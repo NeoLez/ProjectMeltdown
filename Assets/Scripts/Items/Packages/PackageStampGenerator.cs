@@ -10,6 +10,7 @@ namespace Root
         public static PackageStampGenerator Instance;
         [Header("Price")]
         [SerializeField] private TMP_Text m_Text;
+        [SerializeField] private TMP_Text destinationText;
         [SerializeField] private string format = "{0}$";
 
         private int width;
@@ -42,6 +43,7 @@ namespace Root
             RenderTexture render = new RenderTexture(new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGB32, 16));
 
             SetDisplayValue(state.price);
+            SetDestinationValue(state);
 
             EnableCanvas(true);
             OneShotRenderSystem.Instance.Render(render);
@@ -66,6 +68,11 @@ namespace Root
         private void SetDisplayValue(float value)
         {
             m_Text.text = string.Format(format, value);
+        }
+        
+        private void SetDestinationValue(PackageItemState state)
+        {
+            destinationText.text = $"{state.DestinationNode.line}{state.DestinationNode.dist}";
         }
     }
 }

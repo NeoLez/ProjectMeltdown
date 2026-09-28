@@ -19,7 +19,7 @@ namespace Root {
         [ShowNativeProperty] public Vector2 DestinationNodePosition => new (DestinationNode.dist, DestinationNode.height);
         
         public override string ToString() {
-            return $"MaxCharge: {price}, CurrentCharge: {maxDurability}";
+            return $"Price: {price}, MaxDurability: {maxDurability}, Durability: {currentDurability}";
         }
 
         //TODO: Deterministic number generation
@@ -28,9 +28,9 @@ namespace Root {
             currentDurability = maxDurability;
 
             price = Random.Range(packageDataGenerator.MinPriceValue, packageDataGenerator.MaxPriceValue);
+            DestinationNode = destinationNode;
             stampTexture = PackageStampGenerator.Instance.CreateStampTexture(this);
             typeOfPackage = packageDataGenerator.TypeOfPackage;
-            DestinationNode = destinationNode;
 
             canBeDelivered = true;
         }
