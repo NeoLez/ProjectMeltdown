@@ -16,7 +16,7 @@ namespace Root
             storeButtons[0].onClick.AddListener(() =>
             {
                 _storeManager.GenerateStoreItems();
-                _trigger.HandleStore(true);
+                _trigger.CanShowItems(true);
                 MouseHandler.RelinquishControl(this);
                 GameManager.Input.Movement.Enable();
                 GameManager.Input.CameraMovement.Enable();

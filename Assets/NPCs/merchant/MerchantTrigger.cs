@@ -14,13 +14,17 @@ namespace Root
 
         private Animator _anim;
         public Action<bool> _OnStoreShow;
-        bool algo;
+        bool _canTriggerOnStart;
+        private void Awake()
+        {
+            _OnStoreShow += HandleInteraction;
+        }
 
         void Start()
         {
             if (_storeManager.CanSpawnMultipleItems)
             {
-                algo = true;
+                _canTriggerOnStart = true;
             }
             _anim = _face.GetComponent<Animator>();
         }
@@ -28,17 +32,19 @@ namespace Root
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject != GameManager.Player.gameObject) return;
-            if(algo) UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
+
+            if(_canTriggerOnStart) UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (other.gameObject != GameManager.Player.gameObject) return;
-            HandleStore(false);
-            algo = true;
+
+            CanShowItems(false);
+            _canTriggerOnStart = true;
         }
 
-        public void HandleStore(bool show)
+        public void CanShowItems(bool show)
         {
             if (show)
             {
@@ -65,7 +71,7 @@ namespace Root
 
             if (enable)
             {
-                HandleStore(true);
+                CanShowItems(true);
             }
             
         }
