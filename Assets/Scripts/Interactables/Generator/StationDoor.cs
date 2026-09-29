@@ -100,7 +100,7 @@ namespace Root
         {
             if (controlMode != ControlMode.Manual) return;
 
-            if (isLocked) // MODIFICADO
+            if (isLocked) 
             {
                 if (_state == DoorState.Closed || _state == DoorState.Open)
                     RequestDeniedFeedback();
