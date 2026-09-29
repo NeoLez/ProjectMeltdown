@@ -9,11 +9,13 @@ namespace Root.Managers {
             Inventory,
             Dialogue,
             GameOver,
+            Store
         }
         [SerializeField] private Menu.Menu pauseMenu;
         [SerializeField] private Menu.Menu dialogueMenu;
         [SerializeField] private Menu.Menu inventoryMenu;
         [SerializeField] private Menu.Menu gameOverMenu;
+        public Menu.Menu storeMenu;
         
         private readonly Dictionary<UITypes, int> _lockedUI = new();
 
@@ -23,6 +25,7 @@ namespace Root.Managers {
             _lockedUI.Add(UITypes.Dialogue, 0);
             _lockedUI.Add(UITypes.Inventory, 0);
             _lockedUI.Add(UITypes.GameOver, 0);
+            _lockedUI.Add(UITypes.Store, 0);
         }
         private void OnDestroy() {
             if (Instance == this) Instance = null;
@@ -75,7 +78,8 @@ namespace Root.Managers {
                     return inventoryMenu;
                 case UITypes.GameOver:
                     return gameOverMenu;
-                
+                case UITypes.Store:
+                    return storeMenu;
                 default:
                     Debug.LogError($"{type} not supported");
                     return null;
