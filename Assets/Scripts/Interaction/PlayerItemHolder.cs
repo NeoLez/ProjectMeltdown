@@ -56,7 +56,6 @@ namespace Root
                 GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
             
             HeldItem = item.ItemState;
-            if (item.TryGetComponent(out StoreItemDisplay itemDisplay)) itemDisplay.OnInteraction?.Invoke();
 
             if (item.ItemState.ItemSo.HeldItemGameObject == null) return;
             currentHeldVisual = Instantiate(item.ItemState.ItemSo.HeldItemGameObject, holdPoint);

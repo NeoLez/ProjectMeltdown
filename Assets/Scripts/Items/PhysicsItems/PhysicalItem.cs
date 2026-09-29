@@ -56,6 +56,16 @@ namespace Root {
             if (holder == null)
                 return;
 
+            if (!holder.HasItem)
+            {
+                if (gameObject.TryGetComponent(out StoreItemDisplay itemDisplay))
+                {
+                    if (!itemDisplay.CanPurchase()) return;
+
+                    itemDisplay.OnInteraction?.Invoke();
+                }
+            }
+
             holder.Pickup(this);
         }
 
