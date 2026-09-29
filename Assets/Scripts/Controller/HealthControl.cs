@@ -78,19 +78,22 @@ namespace Root
 
         private void DamageFeedback()
         {
-            if (_currentHealth < 100 && _currentHealth > 60)
+            if (_currentHealth < 100 && _currentHealth >= 60)
             {
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0f);
                 UIFeedback(_dmg2, 0f);
             }
-            else if (_currentHealth < 60 && _currentHealth > 30)
+            else if (_currentHealth < 60 && _currentHealth >= 30)
             {
+                UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0f);
             }
             else
             {
+                UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
+                UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0.3f - _currentHealth * 0.01f);
 
             }
