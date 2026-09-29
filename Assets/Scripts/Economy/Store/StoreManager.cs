@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using Timers;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Root
 {
     public class StoreManager : MonoBehaviour
     {
-        [SerializeField] private bool isTutorialSpawn;
+        [SerializeField] private bool isSingleItemSpawn;
         [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private StoreItemPoolSO storeItemPool;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
@@ -25,20 +24,27 @@ namespace Root
         [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
         [SerializeField] private Transform singlePriceSpawnPoint;
         private List<MerchantHand> initialMerchantHands = new();
-        public bool HasBoughtSingleItem => !isTutorialSpawn;
+        public bool CanSpawnMultipleItems => !isSingleItemSpawn;
 
         public Action OnRegenarateStock;
         private System.Random _random;
         
         private void Start()
         {
-            GenerateStoreItems();
+            if(isSingleItemSpawn)
+            {
+                var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
+                initialMerchantHands.Add(hand);
+
+                GenerateCourtesyItem();
+            }
+
             _random  = new System.Random(mapSection.GetMapSectionSeed() + SeedUtils.TextToSeed("Shop"));
         }
 
         public void GenerateStoreItems()
         {
-            if (isTutorialSpawn)
+            if (isSingleItemSpawn)
             {
                 var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
                 initialMerchantHands.Add(hand);
@@ -47,6 +53,8 @@ namespace Root
             }
             else
             {
+                if (AreAllItemsGenerated()) return;
+
                 if (OnRegenarateStock != null)
                 {
                     OnRegenarateStock -= GenerateStoreItems;
@@ -103,7 +111,7 @@ namespace Root
                 PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
 
                 if (priceCanvas != null)
-                    priceCanvas.Initialize(price);
+                    priceCanvas.Initialize(price, obj.GetComponent<StoreItemDisplay>());
 
                 StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
@@ -138,7 +146,8 @@ namespace Root
             obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
             {
                 OnRegenarateStock += GenerateStoreItems;
-                isTutorialSpawn = false;
+                isSingleItemSpawn = false;
+                //HideItems();
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
             obj.GetComponent<Rigidbody>().isKinematic = true;
@@ -151,12 +160,22 @@ namespace Root
             PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
 
             if (priceCanvas != null)
-                priceCanvas.Initialize(0);
+                priceCanvas.Initialize(0, obj.GetComponent<StoreItemDisplay>());
 
             StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
             if (display != null)
                 display.Initialize(item, 0, priceCanvas);
+
+        }
+
+        public bool AreAllItemsGenerated()
+        {
+            return itemsCreated.Count > 0;
+        }
+
+        public void SellItems()
+        {
 
         }
 
@@ -167,12 +186,15 @@ namespace Root
 
         public void ShowItems()
         {
-
-            if (isTutorialSpawn)
+            if (isSingleItemSpawn)
             {
                 foreach (var hand in initialMerchantHands)
                 {
                     hand.ShowHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnShowPrice?.Invoke();
                 }
             }
             else
@@ -180,18 +202,25 @@ namespace Root
                 foreach (var hand in merchantHands)
                 {
                     hand.ShowHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnShowPrice?.Invoke();
                 }
             }
         }
 
         public void HideItems()
         {
-
-            if (isTutorialSpawn)
+            if (isSingleItemSpawn)
             {
                 foreach (var hand in initialMerchantHands)
                 {
                     hand.HideHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnHidePrice?.Invoke();
                 }
             }
             else
@@ -199,6 +228,11 @@ namespace Root
                 foreach (var hand in merchantHands)
                 {
                     hand.HideHand();
+                }
+
+                foreach (var item in itemsCreated)
+                {
+                    item.OnHidePrice?.Invoke();
                 }
             }
         }

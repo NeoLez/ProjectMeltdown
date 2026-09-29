@@ -9,7 +9,7 @@ namespace Root
         [SerializeField] StoreManager storeManager;
         private void Start()
         {
-            if (!HasDialogue())
+            if (!HasDialogue() || storeManager.CanSpawnMultipleItems)
             {
                 HandleInteraction(false);
                 merchantTrigger._OnStoreShow?.Invoke(true);

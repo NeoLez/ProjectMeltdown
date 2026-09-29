@@ -8,8 +8,9 @@ namespace Root
         [SerializeField] private TMP_Text priceText;
         [SerializeField] private float showDistance = 3f;
 
+        private StoreItemDisplay itemToDisplay;
         private Canvas _canvas;
-        private bool _hidden;
+        //private bool _hidden;
 
         private void Awake()
         {
@@ -17,28 +18,47 @@ namespace Root
             _canvas.enabled = false;
         }
 
-        public void Initialize(int price)
+        public void Initialize(int price, StoreItemDisplay item)
         {
             if (priceText != null)
                 priceText.text = "$" + price;
+
+            if (item != null)
+            {
+                itemToDisplay = item;
+                itemToDisplay.OnShowPrice += Show;
+                itemToDisplay.OnHidePrice += Hide;
+            }
+        }
+
+        public void Show()
+        {
+            //_hidden = false;
+            _canvas.enabled = true;
         }
 
         public void Hide()
         {
-            _hidden = true;
+            //_hidden = true;
             _canvas.enabled = false;
         }
 
-        private void Update()
+        private void OnDestroy()
         {
-            if (_hidden) return;
-            if (GameManager.Player == null) return;
-
-            float distance = Vector3.Distance(
-                transform.position,
-                GameManager.Player.transform.position);
-
-            _canvas.enabled = distance <= showDistance;
+            itemToDisplay.OnShowPrice -= Show;
+            itemToDisplay.OnHidePrice -= Hide;
         }
+
+        /* private void Update()
+         {
+             if (_hidden) return;
+             if (GameManager.Player == null) return;
+
+             float distance = Vector3.Distance(
+                 transform.position,
+                 GameManager.Player.transform.position);
+
+             _canvas.enabled = distance <= showDistance;
+         }*/
     }
 }
