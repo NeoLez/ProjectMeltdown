@@ -21844,6 +21844,7 @@ Transform:
   - {fileID: 2078833685843956368}
   - {fileID: 2050129731257793882}
   - {fileID: 5185290872291441405}
+  - {fileID: 7902205251344363168}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &930173673868568972
@@ -33678,13 +33679,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7965981467556763493}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9182991520806693267}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
 --- !u!4 &296458840513619125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
   m_PrefabInstance: {fileID: 258819281283433310}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1105329222146522639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 258819281283433310}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7965981467556763493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105329222146522639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &9182991520806693267
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105329222146522639}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02073259, y: 0.023915783, z: 0.020732585}
+  m_Center: {x: 2.7141246e-16, y: -0.0015915794, z: 2.4763401e-11}
 --- !u!1001 &266341258890961547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44465,8 +44525,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2976548303015940954}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7462275641731645115}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &213352191233742636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 1023605064008526461}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2976548303015940954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213352191233742636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &7462275641731645115
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213352191233742636}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732583, y: 0.02391574, z: 0.020732585}
+  m_Center: {x: 0, y: -0.0015915794, z: 0}
 --- !u!4 &702044894217735574 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
@@ -45391,8 +45510,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1298908395781147184}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2674325596806464314}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &276686328675012009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 1087502135163924728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1298908395781147184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276686328675012009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &2674325596806464314
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276686328675012009}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02073259, y: 0.023915816, z: 0.02073259}
+  m_Center: {x: 0.000000029802322, y: -0.0015915798, z: 4.1273672e-11}
 --- !u!4 &620700785446082323 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
@@ -47213,7 +47391,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1393313422596380111, guid: 908230cbbc1ff974e917474699eb45bb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.375
+      value: 0.287025
       objectReference: {fileID: 0}
     - target: {fileID: 1393313422596380111, guid: 908230cbbc1ff974e917474699eb45bb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58971,8 +59149,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8590696230173391133}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1170844370996563080}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &1198559656368135442 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 2045560542996914243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8590696230173391133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198559656368135442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &1170844370996563080
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198559656368135442}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732585, y: 0.023915768, z: 0.020732585}
+  m_Center: {x: -0.000000007462439, y: -0.0015915798, z: 9.574617e-12}
 --- !u!4 &2011405909877557160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
@@ -73097,7 +73334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 80793ca20b566d747b511b4ab00afa5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -83.49
+      value: -83.58
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 80793ca20b566d747b511b4ab00afa5a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -73200,13 +73437,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3753709569379182464, guid: 546b6c4c05367c54a8f10de009a68a4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 774814305286442056}
+    - targetCorrespondingSourceObject: {fileID: 3753709569379182464, guid: 546b6c4c05367c54a8f10de009a68a4e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6519628067962297810}
   m_SourcePrefab: {fileID: 100100000, guid: 546b6c4c05367c54a8f10de009a68a4e, type: 3}
 --- !u!4 &1499538425110097026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4565535511332322618, guid: 546b6c4c05367c54a8f10de009a68a4e, type: 3}
   m_PrefabInstance: {fileID: 3139963432499450296}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2271150033611798072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3753709569379182464, guid: 546b6c4c05367c54a8f10de009a68a4e, type: 3}
+  m_PrefabInstance: {fileID: 3139963432499450296}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &774814305286442056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2271150033611798072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &6519628067962297810
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2271150033611798072}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732583, y: 0.023915747, z: 0.020732583}
+  m_Center: {x: -0.00000002980919, y: -0.0015914601, z: 4.8173904e-12}
 --- !u!1001 &3147465449690520244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80353,6 +80649,72 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
   m_PrefabInstance: {fileID: 3713555626962479583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3724401343827795400
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5205768700190203375}
+    m_Modifications:
+    - target: {fileID: 2229411779310875825, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_Name
+      value: Trash1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0074592773
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 46.967
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 42.818
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+--- !u!4 &7902205251344363168 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6775101061352698728, guid: d95d0220ec1ebe94fa436fa7a60d21fc, type: 3}
+  m_PrefabInstance: {fileID: 3724401343827795400}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3726259491488492304
 PrefabInstance:
@@ -88409,8 +88771,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8256435899992060145}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3715076640661512405}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &3891717719972801831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 4234300042424307830}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8256435899992060145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891717719972801831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &3715076640661512405
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891717719972801831}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732585, y: 0.023915743, z: 0.020732585}
+  m_Center: {x: 6.8509933e-12, y: -0.0015915794, z: 6.984008e-16}
 --- !u!4 &4416333628018145181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
@@ -91994,8 +92415,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 215272323771402831}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7042375685134234357}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &3578272535256665525 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 4425343229064360164}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &215272323771402831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578272535256665525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &7042375685134234357
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578272535256665525}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732583, y: 0.023915755, z: 0.020732585}
+  m_Center: {x: 0, y: -0.0015915794, z: 8.254473e-12}
 --- !u!4 &4243309237934151439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
@@ -146704,13 +147184,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5914112222333404613}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5696541319355739890}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
 --- !u!4 &8390624477688396055 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
   m_PrefabInstance: {fileID: 8357491222640402172}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9167829302197101485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 8357491222640402172}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5914112222333404613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9167829302197101485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &5696541319355739890
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9167829302197101485}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732583, y: 0.023915755, z: 0.020732585}
+  m_Center: {x: 0, y: -0.0015915794, z: 8.254473e-12}
 --- !u!1001 &8363163628774995041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149160,13 +149699,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4131255594349087856}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3604725814607084570}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
 --- !u!4 &8203548254677592270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
   m_PrefabInstance: {fileID: 8525985694880370469}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8832415393049293428 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 8525985694880370469}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4131255594349087856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832415393049293428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &3604725814607084570
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832415393049293428}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732583, y: 0.023915745, z: 0.02073259}
+  m_Center: {x: 0.00000000745058, y: -0.0015915798, z: 1.074341e-16}
 --- !u!1001 &8529264148094592271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154144,8 +154742,67 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9199692417416472863}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2415996750981602754}
   m_SourcePrefab: {fileID: 100100000, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+--- !u!1 &8133515144186105758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
+  m_PrefabInstance: {fileID: 8944541659756245711}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9199692417416472863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133515144186105758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  controlMode: 0
+  isLocked: 1
+  generatorSlot: {fileID: 0}
+  requiresPowerToInteract: 0
+  onPowerLost: 0
+  mode: 0
+  axis: 1
+  openAngle: 90
+  moveDistance: 3
+  smooth: 3
+  _soundOpen: {fileID: 0}
+  _soundClose: {fileID: 0}
+  _soundDenied: {fileID: 8300000, guid: 59f7f73e6f80160489dd0fc400c8313e, type: 3}
+  shakeDuration: 0.4
+  shakeMagnitude: 0.06
+--- !u!65 &2415996750981602754
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133515144186105758}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.020732585, y: 0.023915764, z: 0.020732585}
+  m_Center: {x: -1.3703704e-11, y: -0.0015916986, z: 8.254538e-12}
 --- !u!4 &8911458466573931812 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c7bd2e9b79e776449fa87b38f1b455c, type: 3}
