@@ -98,9 +98,13 @@ namespace Root
 
         public override void Interact()
         {
-            if (controlMode != ControlMode.Manual) return;
+            if (controlMode != ControlMode.Manual)
+            {
+                RequestDeniedFeedback();
+                return;
+            }
 
-            if (isLocked) 
+            if (isLocked)
             {
                 if (_state == DoorState.Closed || _state == DoorState.Open)
                     RequestDeniedFeedback();

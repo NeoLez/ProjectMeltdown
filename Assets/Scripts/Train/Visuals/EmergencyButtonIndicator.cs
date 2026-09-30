@@ -1,33 +1,60 @@
-using TMPro;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Root
 {
     public class EmergencyButtonIndicator : MonoBehaviour
     {
-        [SerializeField] private TMP_Text discText;
-        [SerializeField] private TMP_Text usageText;
+        [SerializeField] private RawImage discIcon;
         [SerializeField] DiscSlot discSlot;
-        private BrakeDiscItem _breakDisc;
+        [SerializeField] private Color emptyColor = Color.white;
+        [SerializeField] private float blinkInterval = 0.5f;
+        [SerializeField] private Color[] usageColors = { Color.red, Color.yellow, Color.green };
 
-        public void Update()
+        private Coroutine _blinkRoutine;
+
+        private void Update()
         {
-            if (discSlot.GetBrakeDisc() == null)
+            BrakeDiscItem disc = discSlot.GetBrakeDisc();
+
+            if (disc == null)
             {
-                discText.text = "There is no emergency disc inserted";
-                usageText.enabled = false;
+                if (_blinkRoutine == null)
+                    _blinkRoutine = StartCoroutine(BlinkRoutine());
                 return;
             }
 
-            discText.text = "Emergency disc inserted";
-
-            _breakDisc = discSlot.GetBrakeDisc();
-
-            if(_breakDisc != null)
+            if (_blinkRoutine != null)
             {
-                usageText.enabled = true;
-                usageText.text = "Usage Left: "+ _breakDisc.GetDiscUsage().ToString();
-            }            
+                StopCoroutine(_blinkRoutine);
+                _blinkRoutine = null;
+            }
+
+            UpdateDiscColor(disc);
+        }
+
+        private void UpdateDiscColor(BrakeDiscItem disc)
+        {
+            if (usageColors.Length == 0) return;
+
+            int index = Mathf.Clamp(disc.GetDiscUsage(), 0, usageColors.Length - 1);
+            Color color = usageColors[index];
+            color.a = 1f;
+            discIcon.color = color;
+        }
+
+        private IEnumerator BlinkRoutine()
+        {
+            bool visible = true;
+            while (true)
+            {
+                Color color = emptyColor;
+                color.a = visible ? 1f : 0f;
+                discIcon.color = color;
+                visible = !visible;
+                yield return new WaitForSeconds(blinkInterval);
+            }
         }
     }
 }
