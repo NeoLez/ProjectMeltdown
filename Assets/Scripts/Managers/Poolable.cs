@@ -1,13 +1,13 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Root.Managers {
     public abstract class Poolable : MonoBehaviour {
-        private Poolable _prefab;
+        [SerializeField, ReadOnly] private Poolable _prefab;
         private bool _wasInitialized;
         
         public void SetPrefab(Poolable prefab) {
-            Assert.IsNull(_prefab, "Cannot set prefab of poolable object twice");
             _prefab = prefab;
         }
 
@@ -27,5 +27,14 @@ namespace Root.Managers {
         public virtual void TurnOff() {
             gameObject.SetActive(false);
         }
+        
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (!UnityEditor.PrefabUtility.IsPartOfPrefabAsset(this))
+                return;
+            _prefab = this;
+        }
+#endif
     }
 }
