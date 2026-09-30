@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Root
 {
-    public class MerchantTrigger : MonoBehaviour
+    public class MerchantTrigger : InteractableNormalCamera
     {
         [SerializeField] GameObject _face;
         [SerializeField] StoreManager _storeManager;
@@ -15,6 +15,7 @@ namespace Root
         private Animator _anim;
         public Action<bool> _OnStoreShow;
         bool _canTriggerOnStart;
+        bool _isStoreOpened;
         private void Awake()
         {
             _OnStoreShow += HandleInteraction;
@@ -29,12 +30,23 @@ namespace Root
             _anim = _face.GetComponent<Animator>();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public override void Interact()
+        {
+            if (_isStoreOpened) return;
+
+            if (_canTriggerOnStart)
+            {
+                //_isStoreOpened = true;
+                UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
+            }
+            _isStoreOpened = true;
+        }
+     /*   private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject != GameManager.Player.gameObject) return;
 
             if(_canTriggerOnStart) UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
-        }
+        }*/
 
         private void OnTriggerExit(Collider other)
         {
@@ -42,6 +54,7 @@ namespace Root
 
             CanShowItems(false);
             _canTriggerOnStart = true;
+            _isStoreOpened = false;
         }
 
         public void CanShowItems(bool show)
@@ -80,6 +93,7 @@ namespace Root
         {
             _OnStoreShow -= HandleInteraction;
         }
+
     }
 
 }
