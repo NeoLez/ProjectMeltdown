@@ -45,6 +45,7 @@ namespace Root
                 deposit.LoadDisplay();
                 EnableSellInventoryCanvas(true);
                 GameManager.Input.Inventory.InventoryToggle.Disable();
+
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
                 GameManager.PlayerInventoryUI.OpenInventory(GetComponent<Inventory>());
             });

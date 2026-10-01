@@ -15,7 +15,7 @@ namespace Root {
         private void Awake() {
             GameManager.PlayerInventoryUI = this;
             GameManager.Input.Inventory.InventoryToggle.performed += InventoryToggle;
-            GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose;
+            //GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose; //Sorry Leo
             Instance = this;
         }
 
