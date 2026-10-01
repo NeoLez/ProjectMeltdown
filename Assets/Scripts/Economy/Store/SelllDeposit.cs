@@ -67,15 +67,20 @@ namespace Root
         private void ItemAdded(InventoryItem state)
         {  
             int sellablePrice = 0;
-            var package = state.itemState as PackageItemState;
-
-            if (state.itemState != package) return;
 
             if(!_sellableItems.Contains(state))
             {
-                _sellableItems.Add(state);
+                if(state.itemState is PackageItemState)
+                    sellablePrice = ((PackageItemState)state.itemState).price;
+                else {
+                    var storeItemData = state.itemState.ItemSo.StoreItemData;
+                    if (storeItemData == null) {
+                        sellablePrice = 0;
+                    } else
+                        sellablePrice = storeItemData.minPrice;
+                }
 
-                sellablePrice = package.price;
+                _sellableItems.Add(state);
                 RefreshSumAmount(sellablePrice, false);
                 OnItemUpdated?.Invoke();
             }
@@ -83,12 +88,20 @@ namespace Root
 
         public void ItemDiscarted(InventoryItem state)
         {
-            var package = state.itemState as PackageItemState;
-            if (_sellableItems.Contains(state))
-            {
+            if (_sellableItems.Contains(state)) {
+                int sellablePrice = 0;
+                if(state.itemState is PackageItemState)
+                    sellablePrice = ((PackageItemState)state.itemState).price;
+                else {
+                    var storeItemData = state.itemState.ItemSo.StoreItemData;
+                    if (storeItemData == null) {
+                        sellablePrice = 0;
+                    } else
+                        sellablePrice = storeItemData.minPrice;
+                }
                 _sellableItems.Remove(state);
 
-                RefreshSumAmount(package.price, true);
+                RefreshSumAmount(sellablePrice, true);
                 OnItemUpdated?.Invoke();
             }
         }

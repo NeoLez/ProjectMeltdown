@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -16,6 +17,7 @@ namespace Root {
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
         [field: SerializeField, SerializeReference] public ItemState DefaultItemState { get; private set; }
+        [field: SerializeField, Expandable] public StoreItemData StoreItemData { get; private set; }
 
         /// <summary>
         /// Returns a zero initialized ItemState of the correct type. Should always be overriden by child classes to define the ItemState type they expect. 
