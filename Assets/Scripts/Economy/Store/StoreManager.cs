@@ -1,13 +1,17 @@
+using Root.Managers;
 using System;
 using System.Collections.Generic;
 using Timers;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.SmartFormat.Core.Parsing;
 
 namespace Root
 {
     public class StoreManager : MonoBehaviour
     {
         [SerializeField] private bool isSingleItemSpawn;
+        [Header("Buy")]
         [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private StoreItemPoolSO storeItemPool;
         [SerializeField] private List<StoreSpawnPoint> spawnPoints;
@@ -25,6 +29,11 @@ namespace Root
         [SerializeField] private Transform singlePriceSpawnPoint;
         private List<MerchantHand> initialMerchantHands = new();
         public bool CanSpawnMultipleItems => !isSingleItemSpawn;
+
+        [Header("Sell")]
+        [SerializeField] SelllDeposit deposit;
+        [SerializeField] private Transform dropPivot;
+
 
         public Action OnRegenarateStock;
         private System.Random _random;
@@ -174,9 +183,22 @@ namespace Root
             return itemsCreated.Count > 0;
         }
 
-        public void SellItems()
+        public void GiveMoney()
         {
+            int money = deposit.GetCurrentAmount();
+            SpawnBills(MoneyManager.Instance.NumberToBills(money));
+        }
 
+        private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills)
+        {
+            foreach (var tuple in bills)
+            {
+                for (int i = 0; i < tuple.Item2; i++)
+                {
+                    var bill = tuple.Item1.CreatePhysicalItem();
+                    bill.transform.position = dropPivot.transform.position;
+                }
+            }
         }
 
         private void OnDestroy()

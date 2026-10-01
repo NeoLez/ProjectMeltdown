@@ -1,38 +1,62 @@
 using Root.Controller;
 using Root.Managers;
+using System;
+using TMPro;
 using UnityEngine;
 
 namespace Root
 {
     public class StoreMenu : Menu.Menu 
     {
-        [SerializeField] StoreManager _storeManager;
-        [SerializeField] MerchantTrigger _trigger;
-        [SerializeField] Canvas choiseCanvas;
-        [SerializeField] UnityEngine.UI.Button[] storeButtons;
+        [SerializeField] private StoreManager storeManager;
+        [SerializeField] private SelllDeposit deposit;
+        [SerializeField] private MerchantTrigger _trigger;
+
+        [Header("Buy UI")]
+        [SerializeField] private Canvas choiseCanvas;
+        [SerializeField] private UnityEngine.UI.Button[] storeButtons;
+
+        [Header("Sell UI")]
+        [SerializeField] private Canvas priceDisplay;
+        [SerializeField] private TMP_Text priceCounter;
+        [SerializeField] private UnityEngine.UI.Button confirmButton;
+        [SerializeField] private UnityEngine.UI.Button returnButton;
 
         private void Awake()
         {
             storeButtons[0].onClick.AddListener(() =>
             {
-                _storeManager.GenerateStoreItems();
+                EnableChoiceCanvas(false);
+
+                storeManager.GenerateStoreItems();
                 _trigger.CanShowItems(true);
+
                 MouseHandler.RelinquishControl(this);
                 GameManager.Input.Movement.Enable();
                 GameManager.Input.CameraMovement.Enable();
-                EnableCanvas(false);
+
 
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
             });
 
             storeButtons[1].onClick.AddListener(() => 
             {
-                _storeManager.SellItems();
-                MouseHandler.RelinquishControl(this);
-                EnableCanvas(false);
+                EnableChoiceCanvas(false);
 
+                deposit.LoadDisplay();
+                EnableSellInventoryCanvas(true);
+                GameManager.Input.Inventory.InventoryToggle.Disable();
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
+                GameManager.PlayerInventoryUI.OpenInventory(GetComponent<Inventory>());
             });
+
+            confirmButton.onClick.AddListener(deposit.ConfirmSell);
+            returnButton.onClick.AddListener(CloseAllUI);
+
+            deposit.OnPriceUpdated += RefreshSumAmount;
+            deposit.OnItemUpdated += ToggleConfirmButton;
+            deposit.OnItemUpdated += ToggleReturnButton;
+
         }
 
 
@@ -42,30 +66,77 @@ namespace Root
             {
                 UIManager.Instance.storeMenu = this;
             }
+
+            EnableChoiceCanvas(false);
+            EnableSellInventoryCanvas(false);
         }
 
         public override void Open()
         {
-            EnableCanvas(true);
+            EnableChoiceCanvas(true);
 
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
-            GameManager.Input.Movement.Disable();
-            GameManager.Input.CameraMovement.Disable();
+            /*GameManager.Input.Movement.Disable();
+            GameManager.Input.CameraMovement.Disable();*/
 
             base.Open();
         }
 
         public override void Close()
         {
-            EnableCanvas(false);
+            EnableChoiceCanvas(false);
+
             base.Close();        
         }
 
-        private void EnableCanvas(bool state)
+        private void CloseAllUI()
+        {
+            if (deposit.AreUnconfirmedItems()) return;
+
+            EnableSellInventoryCanvas(false);
+
+            MouseHandler.RelinquishControl(this);
+
+            GameManager.PlayerInventoryUI.CloseInventory();
+            GameManager.Input.Movement.Enable();
+            GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Inventory.InventoryToggle.Enable();
+        }
+
+        private void ToggleConfirmButton()
+        {
+            confirmButton.interactable = deposit.AreUnconfirmedItems();
+        }
+        private void ToggleReturnButton()
+        {
+            returnButton.interactable = !deposit.AreUnconfirmedItems();
+        }
+
+        private void EnableChoiceCanvas(bool state)
         {
             choiseCanvas.enabled = state;
         }
 
+        public void EnableSellInventoryCanvas(bool enable)
+        {
+            priceDisplay.enabled = enable;
+        }
+
+        private void RefreshSumAmount()
+        {
+            var algo = deposit.GetCurrentAmount();
+            priceCounter.text = string.Format("{0}$", algo);
+        }
+
+        private void OnDestroy()
+        {
+            confirmButton.onClick.RemoveAllListeners();
+            returnButton.onClick.RemoveAllListeners();
+
+            deposit.OnPriceUpdated -= RefreshSumAmount;
+            deposit.OnItemUpdated -= ToggleConfirmButton;
+            deposit.OnItemUpdated -= ToggleReturnButton;
+        }
     }
 }

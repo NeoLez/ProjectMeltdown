@@ -100,7 +100,8 @@ namespace Root
             return potentialDestinations[Random.Range(0, potentialDestinations.Count)];
         }
 
-        public int CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null) {
+        public int CheckPackageConditions(bool objectiveReached, List<PackageItemState> depositedPackages = null) 
+        {
             int finalSum = objectiveReached ? _packagePriceSum : GetAverageSumFromDeposited(depositedPackages); //TODO-Add more variants to the result
             
             UpdateFeedback();

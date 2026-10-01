@@ -30,7 +30,7 @@ namespace Root
             _anim = _face.GetComponent<Animator>();
         }
 
-        public override void Interact()
+        public override void Interact() //Cambiar por el sistema de interaccion con el dialogo
         {
             if (_isStoreOpened) return;
 

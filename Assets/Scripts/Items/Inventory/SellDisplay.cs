@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace Root {
-    public class InventoryDisplay : MonoBehaviour, IItemDragReceiver {
+namespace Root
+{
+    public class SellDisplay : MonoBehaviour, IItemDragReceiver
+    {
         public Inventory inventory;
         public RectTransform slotPanelPrefab;
         public RectTransform inventoryBackground;
-        private readonly Dictionary<Vector2Int,RectTransform> _slots = new();
+        private readonly Dictionary<Vector2Int, RectTransform> _slots = new();
         private Vector2Int _maxDimensions;
         private readonly Dictionary<InventoryItem, InventoryItemDisplay> _itemToItemDisplay = new();
         [SerializeField] private float dragSmoothing;
@@ -19,23 +21,28 @@ namespace Root {
         [SerializeField] private Color slotFreeColor = Color.green;
         [SerializeField] private Color slotObstructedColor = Color.red;
 
-        private void Awake() {
+        private void Awake()
+        {
             GameManager.Input.Inventory.PutHeldInInventory.performed += HandleMoveToHand;
         }
 
-        private void HandleMoveToHand(InputAction.CallbackContext _) {
+        private void HandleMoveToHand(InputAction.CallbackContext _)
+        {
             if (!gameObject.activeInHierarchy || inventory == null) return;
             var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
             if (playerItemHolder.HasItem ||
-                !inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item)) {
+                !inventory.RemoveItem(MousePositionToSlotCoords(Pointer.current.position.value), out var item))
+            {
                 return;
             }
 
             playerItemHolder.Pickup(item.itemState);
         }
-        
-        public void LoadInventory(Inventory inv) {
-            if (inventory != null) {
+
+        public void LoadInventory(Inventory inv, bool shouldRefresh)
+        {
+            if (inventory != null)
+            {
                 inventory.OnItemAdded -= HandleOnItemAdded;
                 inventory.OnItemRemoved -= HandleOnItemRemoved;
             }
@@ -44,43 +51,81 @@ namespace Root {
             inventory.OnItemAdded += HandleOnItemAdded;
             inventory.OnItemRemoved += HandleOnItemRemoved;
 
-            Refresh();
+            if(shouldRefresh)
+            {
+                Refresh();
+            }
+            else
+            {
+                HardRefresh();
+            }
         }
 
-        private void HandleOnItemAdded(InventoryItem item, Vector2Int position) {
+        private void HandleOnItemAdded(InventoryItem item, Vector2Int position)
+        {
             var obj = Instantiate(item.itemState.ItemSo.InventoryItemPrefab, transform);
             _itemToItemDisplay.Add(item, obj);
             obj.Initialize(item, item.itemState.ItemSo.InventoryItemIcon, item.Size, (Vector2)position * slotPanelPrefab.sizeDelta.x, item.rotation);
         }
-        
-        private void HandleOnItemRemoved(InventoryItem item) {
+
+        private void HandleOnItemRemoved(InventoryItem item)
+        {
             _itemToItemDisplay.Remove(item, out var obj);
             Destroy(obj.gameObject);
         }
 
-        public void Refresh() {
+        public void Refresh()
+        {
             _maxDimensions = Vector2Int.zero;
             if (inventory == null) return;
-            
-            foreach (var slot in _slots) {
+
+            foreach (var slot in _slots)
+            {
                 Destroy(slot.Value.gameObject);
             }
             _slots.Clear();
-            foreach (var displayItem in _itemToItemDisplay.Values) {
+            foreach (var displayItem in _itemToItemDisplay.Values)
+            {
                 Destroy(displayItem.gameObject);
             }
             _itemToItemDisplay.Clear();
 
             Generate();
-            
-            foreach (var item in inventory.GetItems()) {
+
+            foreach (var item in inventory.GetItems())
+            {
                 HandleOnItemAdded(item, item._position);
             }
         }
 
-        private void Generate() {
+        public void HardRefresh()
+        {
+            _maxDimensions = Vector2Int.zero;
+            if (inventory == null) return;
+
+            foreach (var slot in _slots)
+            {
+                Destroy(slot.Value.gameObject);
+            }
+            _slots.Clear();
+            foreach (var displayItem in _itemToItemDisplay.Values)
+            {
+                Destroy(displayItem.gameObject);
+            }
+           
+            foreach (var item in inventory.GetItems())
+            {
+                inventory.RemoveItem(item);
+            }
+
+            _itemToItemDisplay.Clear();
+            Generate();
+        }
+
+        private void Generate()
+        {
             var slotPositions = inventory.GetInventorySlotPositions();
-            
+
             foreach (var position in slotPositions)
             {
                 var slot = Instantiate(slotPanelPrefab, transform);
@@ -98,7 +143,8 @@ namespace Root {
             inventoryBackground.sizeDelta = new Vector2((_maxDimensions.x + 1) * _cellSize, (_maxDimensions.y + 1) * _cellSize);
         }
 
-        private Vector2Int MousePositionToSlotCoords(Vector2 mousePosition) {
+        private Vector2Int MousePositionToSlotCoords(Vector2 mousePosition)
+        {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(inventoryBackground, mousePosition, null, out var relativePos);
             relativePos /= slotPanelPrefab.sizeDelta.x;
             return new Vector2Int((int)math.floor(relativePos.x), (int)math.floor(relativePos.y));
@@ -106,11 +152,14 @@ namespace Root {
 
         private readonly HashSet<Vector2Int> _positionsChanged = new();
 
-        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item) {
+        public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item)
+        {
             ClearFeedback();
             var positionSlotCoords = MousePositionToSlotCoords(position);
-            for (int x = 0; x < size.x; x++) {
-                for (int y = 0; y < size.y; y++) {
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
                     var pos = new Vector2Int(x + positionSlotCoords.x, y + positionSlotCoords.y);
                     if (pos.x < 0 || pos.x >= inventory.Size.x || pos.y < 0 || pos.y >= inventory.Size.y) continue;
                     _slots[pos].GetComponent<Image>().color = slotFreeColor;
@@ -118,31 +167,37 @@ namespace Root {
                 }
             }
 
-            if (inventory.IsAreaFree(size, MousePositionToSlotCoords(position), out var overlaps, item)) {
+            if (inventory.IsAreaFree(size, MousePositionToSlotCoords(position), out var overlaps, item))
+            {
                 return true;
             }
 
-            foreach (var overlap in overlaps) {
+            foreach (var overlap in overlaps)
+            {
                 _slots[overlap].GetComponent<Image>().color = slotObstructedColor;
                 _positionsChanged.Add(overlap);
             }
             return false;
         }
 
-        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item) {
+        public bool TakeItem(Vector2 position, InventoryItem.InventoryItemRotation rotation, InventoryItem item)
+        {
             return inventory.InsertItem(item.itemState, MousePositionToSlotCoords(position), rotation);
         }
 
-        public void ClearFeedback() {
+        public void ClearFeedback()
+        {
             var color = Color.white;
             color.a = _initialSlotOpacity;
-            foreach (var pos in _positionsChanged) {
+            foreach (var pos in _positionsChanged)
+            {
                 _slots[pos].GetComponent<Image>().color = color;
             }
             _positionsChanged.Clear();
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             GameManager.Input.Inventory.PutHeldInInventory.performed -= HandleMoveToHand;
         }
     }

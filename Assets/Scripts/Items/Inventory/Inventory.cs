@@ -14,7 +14,10 @@ namespace Root {
         
         public event Action<InventoryItem, Vector2Int> OnItemAdded;
         public event Action<InventoryItem> OnItemRemoved;
-        
+
+        public Action<InventoryItem> OnItemInserted;
+        public Action<InventoryItem> OnItemDiscarted;
+
         [field: SerializeField] public Vector2Int Size { get; private set; }
         private HashSet<InventoryItem> _items = new();
         private Dictionary<Vector2Int, InventorySlot> _slots = new();
@@ -38,6 +41,7 @@ namespace Root {
             
             _items.Add(invItem);
             OnItemAdded?.Invoke(invItem, position);
+            OnItemInserted?.Invoke(invItem);
             return true;
         }
         
@@ -91,6 +95,7 @@ namespace Root {
             if (!SetSlotsToItem(slot.InventoryItem!.RotationCorrectedSize, slot.InventoryItem._position, null))
                 return false;
             OnItemRemoved?.Invoke(inventoryItem);
+            OnItemDiscarted?.Invoke(inventoryItem);
             _items.Remove(inventoryItem);
 
             return true;
@@ -103,6 +108,7 @@ namespace Root {
             
             _items.Remove(inventoryItem);
             OnItemRemoved?.Invoke(inventoryItem);
+            OnItemDiscarted?.Invoke(inventoryItem);
             return true;
         }
         
