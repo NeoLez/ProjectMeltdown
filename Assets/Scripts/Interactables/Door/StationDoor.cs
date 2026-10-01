@@ -9,6 +9,7 @@ namespace Root
         public enum DoorMode { Rotate, MoveUp, MoveDown }
         public enum RotationAxis { X, Y, Z }
         public enum PowerLossBehavior { Deactivate, MaintainState }
+        public enum PowerRestoreBehavior { OpenAutomatically, WaitForButton }
         private enum DoorState { Closed, Opening, Open, Closing }
 
         [Header("Tipo de puerta")]
@@ -21,6 +22,9 @@ namespace Root
         [SerializeField] private GeneratorSlot generatorSlot;
         [SerializeField] private bool requiresPowerToInteract = false;
         [SerializeField] private PowerLossBehavior onPowerLost = PowerLossBehavior.Deactivate;
+
+        [Header("Al volver la energia (solo puertas automaticas)")]
+        [SerializeField] private PowerRestoreBehavior onPowerRestored = PowerRestoreBehavior.OpenAutomatically;
 
         [Header("Movimiento")]
         [SerializeField] private DoorMode mode = DoorMode.Rotate;
@@ -43,6 +47,7 @@ namespace Root
         private DoorState _state = DoorState.Closed;
         private bool _stationPowered;
         private bool _isShaking;
+        private bool _buttonAuthorized;
 
         private Quaternion _closedRotation;
         private Quaternion _openRotation;
@@ -51,7 +56,10 @@ namespace Root
         private Coroutine _currentRoutine;
 
         public bool IsOpen => _state == DoorState.Open;
-        public bool IsLocked => isLocked; 
+        public bool IsLocked => isLocked;
+        public bool IsOpenOrOpening => _state == DoorState.Open || _state == DoorState.Opening;
+        public bool CanRespondToButton => NeedsButton && _stationPowered && (_state == DoorState.Open || (_state == DoorState.Closed && !isLocked));
+        private bool NeedsButton => controlMode == ControlMode.Automatic && onPowerRestored == PowerRestoreBehavior.WaitForButton;
 
         private void Start()
         {
@@ -133,9 +141,28 @@ namespace Root
             ReconcilePowerState();
         }
 
+        public bool TryToggleFromButton()
+        {
+            if (!CanRespondToButton) return false;
+
+            if (_state == DoorState.Open)
+            {
+                _buttonAuthorized = false;
+                RequestClose();
+            }
+            else
+            {
+                _buttonAuthorized = true;
+                RequestOpen();
+            }
+
+            return true;
+        }
+
         private void HandlePowerRestored()
         {
             _stationPowered = true;
+            _buttonAuthorized = false;
             ReconcilePowerState();
         }
 
@@ -151,9 +178,11 @@ namespace Root
 
             if (controlMode == ControlMode.Automatic)
             {
-                if (_stationPowered && !isLocked) 
+                bool allowedToOpen = !NeedsButton || _buttonAuthorized;
+
+                if (_stationPowered && !isLocked && allowedToOpen)
                     RequestOpen();
-                else if (!_stationPowered && onPowerLost == PowerLossBehavior.Deactivate) 
+                else if (!_stationPowered && onPowerLost == PowerLossBehavior.Deactivate)
                     RequestClose();
             }
             else
