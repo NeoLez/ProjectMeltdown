@@ -6,55 +6,42 @@ using UnityEngine;
 
 namespace Root
 {
-    public class MerchantTrigger : InteractableNormalCamera
+    public class MerchantTrigger : MonoBehaviour //TODO-Erease this script and migrate everything to MerchantInteraction o StoreManager
     {
-        [SerializeField] GameObject _face;
-        [SerializeField] StoreManager _storeManager;
-        [SerializeField] Collider triggerCollider;
+        public bool IsStoreOpened { get; set; }
+
+        [SerializeField] private GameObject _face;
+        [SerializeField] private StoreManager _storeManager;
+        [SerializeField] private Collider triggerCollider;
+        [SerializeField] private MerchantInteraction interaction;
 
         private Animator _anim;
         public Action<bool> _OnStoreShow;
-        bool _canTriggerOnStart;
-        bool _isStoreOpened;
+
         private void Awake()
         {
             _OnStoreShow += HandleInteraction;
+            interaction.OnInteractionContinue += Interact;
         }
 
         void Start()
         {
-            if (_storeManager.CanSpawnMultipleItems)
-            {
-                _canTriggerOnStart = true;
-            }
             _anim = _face.GetComponent<Animator>();
         }
 
-        public override void Interact() //Cambiar por el sistema de interaccion con el dialogo
+        public void Interact()
         {
-            if (_isStoreOpened) return;
+            if (IsStoreOpened) return;
 
-            if (_canTriggerOnStart)
-            {
-                //_isStoreOpened = true;
-                UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
-            }
-            _isStoreOpened = true;
+            IsStoreOpened = true;
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
-     /*   private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject != GameManager.Player.gameObject) return;
-
-            if(_canTriggerOnStart) UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
-        }*/
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject != GameManager.Player.gameObject) return;
-
+            if (!IsStoreOpened) return;
             CanShowItems(false);
-            _canTriggerOnStart = true;
-            _isStoreOpened = false;
+            IsStoreOpened = false;
         }
 
         public void CanShowItems(bool show)
@@ -80,8 +67,6 @@ namespace Root
 
         private void HandleInteraction(bool enable)
         {
-            triggerCollider.enabled = enable ? true : false;
-
             if (enable)
             {
                 CanShowItems(true);
@@ -92,6 +77,7 @@ namespace Root
         private void OnDestroy()
         {
             _OnStoreShow -= HandleInteraction;
+            interaction.OnInteractionContinue -= Interact;
         }
 
     }

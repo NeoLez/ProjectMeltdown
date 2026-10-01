@@ -35,7 +35,6 @@ namespace Root
                 GameManager.Input.Movement.Enable();
                 GameManager.Input.CameraMovement.Enable();
 
-
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
             });
 
@@ -56,7 +55,6 @@ namespace Root
             deposit.OnPriceUpdated += RefreshSumAmount;
             deposit.OnItemUpdated += ToggleConfirmButton;
             deposit.OnItemUpdated += ToggleReturnButton;
-
         }
 
 
@@ -73,12 +71,13 @@ namespace Root
 
         public override void Open()
         {
+            _trigger.CanShowItems(false);
             EnableChoiceCanvas(true);
 
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
-            /*GameManager.Input.Movement.Disable();
-            GameManager.Input.CameraMovement.Disable();*/
+            GameManager.Input.Movement.Disable();
+            GameManager.Input.CameraMovement.Disable();
 
             base.Open();
         }
@@ -94,8 +93,8 @@ namespace Root
         {
             if (deposit.AreUnconfirmedItems()) return;
 
+            _trigger.IsStoreOpened = false;
             EnableSellInventoryCanvas(false);
-
             MouseHandler.RelinquishControl(this);
 
             GameManager.PlayerInventoryUI.CloseInventory();
@@ -125,12 +124,15 @@ namespace Root
 
         private void RefreshSumAmount()
         {
-            var algo = deposit.GetCurrentAmount();
-            priceCounter.text = string.Format("{0}$", algo);
+            var amount = deposit.GetCurrentAmount();
+            priceCounter.text = string.Format("{0}$", amount);
         }
 
         private void OnDestroy()
         {
+            storeButtons[0].onClick.RemoveAllListeners();
+            storeButtons[1].onClick.RemoveAllListeners();
+
             confirmButton.onClick.RemoveAllListeners();
             returnButton.onClick.RemoveAllListeners();
 

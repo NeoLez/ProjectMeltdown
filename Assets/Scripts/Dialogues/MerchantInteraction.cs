@@ -9,15 +9,15 @@ namespace Root
         [SerializeField] StoreManager storeManager;
         private void Start()
         {
-            if (!HasDialogue() || storeManager.CanSpawnMultipleItems)
+            if (HasDialogue() || !storeManager.CanSpawnMultipleItems)
             {
-                HandleInteraction(false);
-                merchantTrigger._OnStoreShow?.Invoke(true);
+                //HandleInteraction(false);
+                merchantTrigger._OnStoreShow?.Invoke(false);
             }
-            else
+            /*else
             {
                 merchantTrigger._OnStoreShow?.Invoke(false);
-            }             
+            } */            
         }
 
         public override void StartedExecutingDialogue()
@@ -58,6 +58,11 @@ namespace Root
         private void ShowStoreItems()
         {
             merchantTrigger._OnStoreShow?.Invoke(true);
+        }
+
+        public void ForceEnableInteraction()
+        {
+            dialogueTrigger.enabled = true;
         }
 
         private void HandleInteraction(bool enable)

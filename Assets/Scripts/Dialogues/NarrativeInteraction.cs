@@ -44,8 +44,15 @@ namespace Root
 
         private void ShowCanvas()
         {
-            bool canInteract = !_isInteracting && !_currentInterractable.HasDialoguePermenantlyEnded();
-            interactionPanel.enabled = canInteract;
+            if(_currentInterractable.hasMoreInteraction)
+            {
+                interactionPanel.enabled = true;
+            }
+            else
+            {
+                bool canInteract = !_isInteracting && !_currentInterractable.HasDialoguePermenantlyEnded();
+                interactionPanel.enabled = canInteract;
+            }
         }
 
         bool _hasEnteredOnce;
@@ -53,9 +60,17 @@ namespace Root
         {
             if(_currentInterractable != null)
             {
-                if (!_currentInterractable.HasDialogue()) return;
+                if (!_currentInterractable.HasDialogue())
+                {
+                    ContinueInteraction();
+                    return;
+                }
 
-                if (_currentInterractable.HasDialoguePermenantlyEnded()) return;
+                if (_currentInterractable.HasDialoguePermenantlyEnded())
+                {
+                    ContinueInteraction();
+                    return;
+                }
 
                 if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot() && !_hasEnteredOnce)
                 {
@@ -76,6 +91,21 @@ namespace Root
 
                 _currentInterractable.ExecuteDialogue();
             }
+        }
+
+        private void ContinueInteraction()
+        {
+            /*if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot() && !_hasEnteredOnce)
+            {
+                SetLookAndPositionPivots(_currentInterractable);
+
+                GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
+                GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
+
+                _hasEnteredOnce = true;
+            }*/
+
+            _currentInterractable.OnInteractionContinue?.Invoke();
         }
 
         private bool TryFindInteractableNPC(out InteractBehaviour interactable)
@@ -105,12 +135,14 @@ namespace Root
         private void EndInteraction()
         {
             _isInteracting = false;
-            if(_currentInterractable.CheckPivot()) GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
+            if (_currentInterractable.CheckPivot()) GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
             if (_currentInterractable != null)
             {
                 _currentInterractable.OnInteractionEnded -= EndInteraction;
             }
+            _hasEnteredOnce = false;
         }
+
 
         private void OnDestroy()
         {

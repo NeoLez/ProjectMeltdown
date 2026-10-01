@@ -232,7 +232,7 @@ public class CameraController : MonoBehaviour
         _currentEuler = cam.localEulerAngles;
     }
 
-    private void EnableNormalMovement()
+    public void EnableNormalMovement()
     {
         if (_focusPivot == null) return;
 

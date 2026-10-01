@@ -30,6 +30,7 @@ namespace Root
             inventorySellDisplay.gameObject.SetActive(true);
 
             OnItemUpdated?.Invoke();
+            OnPriceUpdated?.Invoke();
         }
 
         public int GetCurrentAmount()
@@ -95,6 +96,12 @@ namespace Root
         public bool AreUnconfirmedItems()
         {
             return _sellableItems.Count > 0;
+        }
+
+        private void OnDestroy()
+        {
+            inventory.OnItemInserted -= ItemAdded;
+            inventory.OnItemDiscarted -= ItemDiscarted;
         }
 
     }

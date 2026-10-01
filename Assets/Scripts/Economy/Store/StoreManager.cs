@@ -31,11 +31,10 @@ namespace Root
         public bool CanSpawnMultipleItems => !isSingleItemSpawn;
 
         [Header("Sell")]
-        [SerializeField] SelllDeposit deposit;
+        [SerializeField] private SelllDeposit deposit;
         [SerializeField] private Transform dropPivot;
+        [SerializeField] private MerchantInteraction merchantDialogue;
 
-
-        public Action OnRegenarateStock;
         private System.Random _random;
         
         private void Start()
@@ -63,11 +62,6 @@ namespace Root
             else
             {
                 if (AreAllItemsGenerated()) return;
-
-                if (OnRegenarateStock != null)
-                {
-                    OnRegenarateStock -= GenerateStoreItems;
-                }
 
                 foreach (var spawnPoint in spawnPoints)
                 {
@@ -154,9 +148,8 @@ namespace Root
             };
             obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
             {
-                OnRegenarateStock += GenerateStoreItems;
+                merchantDialogue.ForceEnableInteraction();
                 isSingleItemSpawn = false;
-                //HideItems();
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
             obj.GetComponent<Rigidbody>().isKinematic = true;
@@ -199,11 +192,6 @@ namespace Root
                     bill.transform.position = dropPivot.transform.position;
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            OnRegenarateStock -= GenerateStoreItems;
         }
 
         public void ShowItems()

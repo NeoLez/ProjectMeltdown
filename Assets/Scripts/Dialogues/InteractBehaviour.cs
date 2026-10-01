@@ -9,9 +9,12 @@ namespace Root
         public Transform PlayerPivot;
         public DialogueSO Dialogue;
         public bool hasBeenTriggeredOnce;
+        public bool hasMoreInteraction;
 
         public Action OnInteractionEnded;
         public Action OnInteractionStarted;
+
+        public Action OnInteractionContinue;
 
         protected virtual void Awake()
         {
