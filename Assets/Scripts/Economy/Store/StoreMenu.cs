@@ -44,10 +44,12 @@ namespace Root
 
                 deposit.LoadDisplay();
                 EnableSellInventoryCanvas(true);
-                GameManager.Input.Inventory.InventoryToggle.Disable();
 
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
+
                 GameManager.PlayerInventoryUI.OpenInventory(GetComponent<Inventory>());
+                GameManager.Input.Inventory.InventoryToggle.Disable();
+                GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             });
 
             confirmButton.onClick.AddListener(deposit.ConfirmSell);
@@ -102,6 +104,7 @@ namespace Root
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Inventory.InventoryToggle.Enable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Enable();
         }
 
         private void ToggleConfirmButton()

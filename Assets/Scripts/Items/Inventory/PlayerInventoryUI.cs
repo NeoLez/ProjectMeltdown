@@ -15,7 +15,7 @@ namespace Root {
         private void Awake() {
             GameManager.PlayerInventoryUI = this;
             GameManager.Input.Inventory.InventoryToggle.performed += InventoryToggle;
-            //GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose; //Sorry Leo
+            GameManager.Input.Inventory.AlternativeCloseInventory.performed += InventoryClose;
             Instance = this;
         }
 
@@ -29,6 +29,7 @@ namespace Root {
         }
 
         private void InventoryClose(InputAction.CallbackContext val) {
+            
             if(inventoryOpen)
                 InventoryToggle(val);
         }
