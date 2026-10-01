@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Root
 {
@@ -19,6 +20,11 @@ namespace Root
         [SerializeField] private ItemGroup packages;
 
         [SerializeField] private MapSection mapSection;
+
+        [Header("Effects")]
+        [SerializeField] private GameObject[] visualComponentes;
+        [SerializeField] private VisualEffect visualEffect;
+        [SerializeField] private float explotionDuration;
 
         private string _format = "{0}$";
 
@@ -50,6 +56,8 @@ namespace Root
         private void Start()
         {
             RefreshSumAmount(0);
+
+            visualEffect.Stop();
         }
 
         private MissionObjectiveSO MissionsCheck() //TODO-Expand this into a list of MissionObjectiveSO
@@ -79,14 +87,14 @@ namespace Root
         public void CheckGoal()
         {
             int money;
-
+  
             if (MissionsManager.Instance.VerifyDeliveryConditions(MissionsCheck().Id, _amount, _packagesType))
             {
                 money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
             else
             {
-                money = PackagesSystemController.Instance.CheckPackageConditions(false, _depositedPackages);
+                money = PackagesSystemController.Instance.CheckPackageConditions(true);
             }
 
             MissionsManager.Instance.DeleteDepositedPackage(MissionsCheck().Id, _depositedPackages);
@@ -96,7 +104,8 @@ namespace Root
 
             HasConfirmedDelivery = true;
 
-            OnPackagesDelivered?.Invoke(true); //si yo tengo otros paquetes que entregar, lo pongo en false asi puedo volver a presionar el boton
+            OnPackagesDelivered?.Invoke(true);
+
             if (_textRoutine == null)
                 _textRoutine = StartCoroutine(UpdateTextRoutine(_finalMessage, true));
         }
@@ -195,9 +204,24 @@ namespace Root
             if (!MissionsManager.Instance.AreMissionsActive())
             {
                 DisableText();
-                gameObject.SetActive(false);
+
+                if (visualEffect != null)
+                {
+                    visualEffect.SendEvent("OnPlay");
+                    for (int i = 0; i < visualComponentes.Length; i++)
+                    {
+                        visualComponentes[i].SetActive(false);
+                    }
+                    StartCoroutine(StartExplosion());
+                }
                 return;
             }
+        }
+
+        private IEnumerator StartExplosion()
+        {
+            yield return new WaitForSeconds(explotionDuration);
+            gameObject.SetActive(false);
         }
 
         public bool DepositedPackages()
@@ -241,7 +265,6 @@ namespace Root
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
                 return;
             }
-
 
             if (itemState.DestinationNode != mapSection.Node) {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Destino incorrecto", false));
