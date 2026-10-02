@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Timers;
 using UnityEngine;
 using Logger = Root.Log.Logger;
@@ -176,6 +177,11 @@ namespace Root {
         public bool IsTrainInStation() // True si el tren est� actualmente en una estaci�n
         {
             return IncomingSections.Count > 0 && IncomingSections[0].isStation;
+        }
+
+        [Button]
+        private void PrintSeed() {
+            Debug.Log(GameManager.seed);
         }
     }
 }

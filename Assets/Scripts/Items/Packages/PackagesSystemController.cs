@@ -82,7 +82,7 @@ namespace Root
         /// </summary>
         /// <param name="startingNode"></param>
         private MapPointsGen.Node FindDestinationNode(MapPointsGen.Node startingNode) {
-            var destinationNodes = startingNode.GetNodesThatMatch((node, _) => node.feature == MapPointsGen.Feature.STATION, 10);
+            var destinationNodes = startingNode.GetNodesThatMatch((node, _) => node.feature == MapPointsGen.Feature.STATION, 30);
             if (destinationNodes.Count == 0) {
                 //TODO: What happens if no matching node is found? This should be done before even letting you accept a mission.
                 return startingNode;
