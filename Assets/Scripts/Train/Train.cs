@@ -19,7 +19,7 @@ namespace Root
         [SerializeField] public EmergencyStopButton emergencyStopButton;
         [SerializeField] private SpeedometerHorizontal speedometerHorizontal;
         [SerializeField] public ForkDecisionSwitch forkDecisionSwitch;
-        [SerializeField] private List<Button> externalDoorButtons;
+        [SerializeField] private List<SceneButton> externalDoorButtons;
         [SerializeField] private List<Animator> externalDoors;
 
         [SerializeField] private float _maxEngineStrain;

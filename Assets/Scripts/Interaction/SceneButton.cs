@@ -3,7 +3,7 @@ using Root.Managers;
 using UnityEngine;
 
 namespace Root {
-    public class Button : InteractableNormalCamera {
+    public class SceneButton : InteractableNormalCamera {
         public GameObject onObject;
         public GameObject offObject;
         public event Action OnClicked;

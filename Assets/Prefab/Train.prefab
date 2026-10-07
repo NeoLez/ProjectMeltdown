@@ -10991,8 +10991,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2003126648213050779}
   - component: {fileID: 6836370329686667801}
-  - component: {fileID: 7063311820194110011}
   - component: {fileID: 4909782565811198372}
+  - component: {fileID: 4192143502229096427}
   m_Layer: 7
   m_Name: ExternalDoorButton_3
   m_TagString: Untagged
@@ -11037,22 +11037,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7063311820194110011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3794007761649265131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  onObject: {fileID: 42769855748096571}
-  offObject: {fileID: 8592730705639023775}
-  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!114 &4909782565811198372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11066,6 +11050,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
   visuals: {fileID: 1239906044506568836}
+--- !u!114 &4192143502229096427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3794007761649265131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84c8fcdbce7f9a4886071024b64b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SceneButton
+  onObject: {fileID: 42769855748096571}
+  offObject: {fileID: 8592730705639023775}
+  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
+  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!1 &3811221886454919974
 GameObject:
   m_ObjectHideFlags: 0
@@ -16296,8 +16296,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7852337236243560890}
   - component: {fileID: 600743608586132391}
-  - component: {fileID: 3051470891349798659}
   - component: {fileID: 8271013545895753149}
+  - component: {fileID: 5640949553511750240}
   m_Layer: 7
   m_Name: ExternalDoorButton_4
   m_TagString: Untagged
@@ -16342,22 +16342,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3051470891349798659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5716253501883218703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  onObject: {fileID: 3902201155656114935}
-  offObject: {fileID: 4660807490181720738}
-  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!114 &8271013545895753149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16371,6 +16355,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
   visuals: {fileID: 750020594280853322}
+--- !u!114 &5640949553511750240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716253501883218703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84c8fcdbce7f9a4886071024b64b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SceneButton
+  onObject: {fileID: 3902201155656114935}
+  offObject: {fileID: 4660807490181720738}
+  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
+  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!1 &5732963781281324159
 GameObject:
   m_ObjectHideFlags: 0
@@ -17981,8 +17981,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1848317294457052382}
   - component: {fileID: 7690950431373270087}
-  - component: {fileID: 1367169767114519301}
   - component: {fileID: 1590826937063731994}
+  - component: {fileID: 8058262601353834042}
   m_Layer: 7
   m_Name: ExternalDoorButton
   m_TagString: Untagged
@@ -18027,22 +18027,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1367169767114519301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6633198402092176862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  onObject: {fileID: 7688713704896931990}
-  offObject: {fileID: 7239748424084598877}
-  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!114 &1590826937063731994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18056,6 +18040,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
   visuals: {fileID: 8682185056927637447}
+--- !u!114 &8058262601353834042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633198402092176862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84c8fcdbce7f9a4886071024b64b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SceneButton
+  onObject: {fileID: 7688713704896931990}
+  offObject: {fileID: 7239748424084598877}
+  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
+  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!1 &6665758656087912272
 GameObject:
   m_ObjectHideFlags: 0
@@ -20285,8 +20285,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3444194341627013606}
   - component: {fileID: 6183750412527964189}
-  - component: {fileID: 8106931660911760651}
   - component: {fileID: 2868060294592520596}
+  - component: {fileID: 7114028011491819890}
   m_Layer: 7
   m_Name: ExternalDoorButton_1
   m_TagString: Untagged
@@ -20331,22 +20331,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8106931660911760651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7744503438886825940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  onObject: {fileID: 5663846547380603880}
-  offObject: {fileID: 3021072273546494797}
-  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!114 &2868060294592520596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20360,6 +20344,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
   visuals: {fileID: 6627286074545755977}
+--- !u!114 &7114028011491819890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7744503438886825940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84c8fcdbce7f9a4886071024b64b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SceneButton
+  onObject: {fileID: 5663846547380603880}
+  offObject: {fileID: 3021072273546494797}
+  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
+  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!1 &7879829551498966198
 GameObject:
   m_ObjectHideFlags: 0
@@ -22270,8 +22270,8 @@ GameObject:
   m_Component:
   - component: {fileID: 580338015660368222}
   - component: {fileID: 4224285204292958306}
-  - component: {fileID: 8181012814976469297}
   - component: {fileID: 6809118962858937309}
+  - component: {fileID: 2999893923204385745}
   m_Layer: 7
   m_Name: ExternalDoorButton_2
   m_TagString: Untagged
@@ -22316,22 +22316,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8181012814976469297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524936616180656387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e459a2899e9443caa8954604725718fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.Button
-  onObject: {fileID: 8709567548982464492}
-  offObject: {fileID: 2234826981241813996}
-  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
-  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!114 &6809118962858937309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22345,6 +22329,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
   visuals: {fileID: 4010766174757548396}
+--- !u!114 &2999893923204385745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524936616180656387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84c8fcdbce7f9a4886071024b64b3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SceneButton
+  onObject: {fileID: 8709567548982464492}
+  offObject: {fileID: 2234826981241813996}
+  _press: {fileID: 8300000, guid: c56f82b7653f7e742be4b450f2a71ddb, type: 3}
+  _door: {fileID: 8300000, guid: 53c90215e1a2a8f478b306fa55e466c1, type: 3}
 --- !u!1 &8529076625325762022
 GameObject:
   m_ObjectHideFlags: 0
@@ -23282,11 +23282,11 @@ MonoBehaviour:
   speedometerHorizontal: {fileID: 5193814090863058817}
   forkDecisionSwitch: {fileID: 312519469354648747}
   externalDoorButtons:
-  - {fileID: 1367169767114519301}
-  - {fileID: 8106931660911760651}
-  - {fileID: 8181012814976469297}
-  - {fileID: 7063311820194110011}
-  - {fileID: 3051470891349798659}
+  - {fileID: 8058262601353834042}
+  - {fileID: 7114028011491819890}
+  - {fileID: 2999893923204385745}
+  - {fileID: 4192143502229096427}
+  - {fileID: 5640949553511750240}
   externalDoors:
   - {fileID: 1956810145531128553}
   - {fileID: 5053353990737403387}
@@ -29574,12 +29574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f8aa6785fc4a3f8778d59c9180c080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.VisualContainerStatic
-  visuals: {fileID: 5173074652071974106}
---- !u!1 &5173074652071974106 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4451406413475501445, guid: b8b3856cdb32ee65193e7f728732c909, type: 3}
-  m_PrefabInstance: {fileID: 8794652045702955359}
-  m_PrefabAsset: {fileID: 0}
+  visuals: {fileID: 0}
 --- !u!4 &6685326829278229449 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2795587633912083094, guid: b8b3856cdb32ee65193e7f728732c909, type: 3}
