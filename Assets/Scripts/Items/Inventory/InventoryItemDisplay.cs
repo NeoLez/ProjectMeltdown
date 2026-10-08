@@ -68,7 +68,7 @@ namespace Root {
         private float _targetSize;
 
         public void OnBeginDrag(PointerEventData eventData) {
-            if(_isBeingDragged) return;
+            if(_isBeingDragged || eventData.button != PointerEventData.InputButton.Left) return;
             
             SetSortingOrder(true);
             _isBeingDragged = true;
@@ -113,7 +113,7 @@ namespace Root {
         }
 
         public void OnEndDrag(PointerEventData eventData) {
-            if (!_isBeingDragged) return;
+            if (!_isBeingDragged || eventData.button != PointerEventData.InputButton.Left) return;
             _isBeingDragged = false;
     
             Vector2 correctedScreenPos = GetBottomLeftScreenPosition(eventData);
@@ -198,11 +198,14 @@ namespace Root {
         }
 
         public void OnPointerClick(PointerEventData eventData) {
-            if (_isBeingDragged || !GameManager.Input.Inventory.QuickMoveModifier.IsPressed()) return;
-            if (!PlayerInventoryUI.Instance.IsQuickTransferPossible(_inventoryItem.Inventory, out Inventory destination)) return;
-
-            if (destination.InsertItem(_inventoryItem.itemState)) {
-                _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+            if (_isBeingDragged) return;
+            if (eventData.button == PointerEventData.InputButton.Left) {
+                if (!GameManager.Input.Inventory.QuickMoveModifier.IsPressed()) return;
+                if (!PlayerInventoryUI.Instance.IsQuickTransferPossible(_inventoryItem.Inventory, out Inventory destination)) return;
+                
+                if (destination.InsertItem(_inventoryItem.itemState)) {
+                    _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+                }
             }
         }
         
