@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 2993329532470495018}
   - component: {fileID: 5357738236902679902}
   - component: {fileID: 4676456039972272796}
-  - component: {fileID: 5806968461464638997}
+  - component: {fileID: 8914308650958930880}
   - component: {fileID: 9202769338696551044}
   - component: {fileID: 8568266898635202146}
   - component: {fileID: 8228738234443356950}
+  - component: {fileID: 7820645051024842413}
   m_Layer: 7
   m_Name: CarBattery
   m_TagString: Untagged
@@ -87,7 +88,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.076502, y: 2.4172008, z: 1.7855035}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5806968461464638997
+--- !u!114 &8914308650958930880
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,19 +97,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 4982989793235443847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed44fc730731405bbe66f6a531f96148, type: 3}
+  m_Script: {fileID: 11500000, guid: aae4fbac869d4246b72c1c909e806232, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.PhysicalItem
-  defaultItemSo: {fileID: 11400000, guid: 6482dbc1049ab20949efd794d5943314, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::Root.TrainBatteryItem
+  defaultItemSo: {fileID: 11400000, guid: 01bff1e0139f38243bd05788640c54ca, type: 2}
   itemState:
-    rid: 3120210049669005371
+    rid: 7313995509761048679
+  animator: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 3120210049669005371
-      type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
+    - rid: 7313995509761048679
+      type: {class: ItemChargeState, ns: Root, asm: Assembly-CSharp}
       data:
-        <ItemSo>k__BackingField: {fileID: 11400000, guid: 6482dbc1049ab20949efd794d5943314, type: 2}
+        <ItemSo>k__BackingField: {fileID: 11400000, guid: 01bff1e0139f38243bd05788640c54ca, type: 2}
+        maxCharge: 100
+        currentCharge: 100
 --- !u!114 &9202769338696551044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,8 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f0f170407b13944ad992e8c8ce9cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.StoreItemDisplay
-  _storeHand: {fileID: 0}
   _storeItemPivot: {fileID: 6627293733762963480}
+  _storeHand: {fileID: 0}
 --- !u!114 &8228738234443356950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +154,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
+  _prefab: {fileID: 8228738234443356950}
+--- !u!114 &7820645051024842413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4982989793235443847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed82a6c1cd1d443d8e52fdcf4edb5b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timers.BoundingBoxTracker
+  _currentBoundingBox: {fileID: 0}
 --- !u!1 &6049266668305719793
 GameObject:
   m_ObjectHideFlags: 0
