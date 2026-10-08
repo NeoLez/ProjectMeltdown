@@ -75,7 +75,7 @@ namespace Root
             for (int i = 0; i < _lights.Length; i++)
             {
                 float threshold = 1f - (float)i / _lights.Length;
-                bool shouldBeCharged = percent >= threshold;
+                _isCharged[i] = percent >= threshold;
                 ApplyColor(_lights[i], _isCharged[i]);
             }
         }
