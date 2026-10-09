@@ -6,7 +6,7 @@ namespace Root
     public class StationDoor : InteractableNormalCamera
     {
         public enum ControlMode { Manual, Automatic }
-        public enum DoorMode { Rotate, MoveUp, MoveDown }
+        public enum DoorMode { Rotate, MoveUp, MoveDown, Slide }
         public enum RotationAxis { X, Y, Z }
         public enum PowerLossBehavior { Deactivate, MaintainState }
         public enum PowerRestoreBehavior { OpenAutomatically, WaitForButton }
@@ -31,6 +31,7 @@ namespace Root
         [SerializeField] private RotationAxis axis = RotationAxis.Y;
         [SerializeField] private float openAngle = 90f;
         [SerializeField] private float moveDistance = 3f;
+        [SerializeField] private Vector3 slideDirection = Vector3.right;
 
         [Header("Velocidad de animacion")]
         [SerializeField] private float smooth = 3f;
@@ -81,6 +82,11 @@ namespace Root
                 };
 
                 _openRotation = _closedRotation * Quaternion.Euler(eulerAxis);
+            }
+            else if (mode == DoorMode.Slide)
+            {
+                _closedPosition = transform.localPosition;
+                _openPosition = _closedPosition + slideDirection.normalized * moveDistance;
             }
             else
             {
