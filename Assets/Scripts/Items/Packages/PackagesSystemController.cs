@@ -20,7 +20,7 @@ namespace Root
         [SerializeField] private float verticalOffset;
 
         private int _packagePriceSum;
-        private List<DeliveryPackageItem> _currentSpawnedPackages = new();
+        private List<PackageItemState> _currentSpawnedPackages = new();
 
         private Coroutine _packageGenerationRoutine;
         private MissionObjectiveSO deliveryMissions; //TODO-Improve this and expand
@@ -57,13 +57,13 @@ namespace Root
                 var state = (PackageItemState)item.State.Clone();
                 state.Initialize(destinationNode);
                 //Doing this so that the package gets initialized AFTER it's assigned it's valid state.
-                GameObject prefab = item.ItemState.ItemSo.CreatePhysicalItem(state).gameObject;
+                GameObject package = item.ItemState.ItemSo.CreatePhysicalItem(state).gameObject;
 
-                prefab.transform.parent = instancePivot.parent;
-                prefab.transform.position = instancePivot.transform.position;
+                package.transform.parent = instancePivot.parent;
+                package.transform.position = instancePivot.transform.position;
 
-                DeliveryPackageItem currentPackage = prefab.GetComponent<DeliveryPackageItem>();
-                _currentSpawnedPackages.Add(currentPackage);
+                DeliveryPackageItem currentPackage = package.GetComponent<DeliveryPackageItem>();
+                _currentSpawnedPackages.Add(currentPackage.State);
 
                 yield return new WaitForSeconds(fixedSpawnTime);
 

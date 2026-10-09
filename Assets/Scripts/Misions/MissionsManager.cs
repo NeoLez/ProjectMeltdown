@@ -27,7 +27,7 @@ namespace Root
         }
 
 
-        public void RegisterMission(MissionObjectiveSO activeMission, List<DeliveryPackageItem> packageTypes)
+        public void RegisterMission(MissionObjectiveSO activeMission, List<PackageItemState> packageTypes)
         {
             if (!_deliveryMissions.ContainsKey(activeMission.Id))
             {
@@ -40,18 +40,17 @@ namespace Root
 
                     foreach (var packageType in packageTypes)
                     {
-                        _packagesToDeliver[activeMission.Id].Add(packageType.State);
+                        _packagesToDeliver[activeMission.Id].Add(packageType);
                     }
                 }
             }
         }
 
-        private void RegisterPackage(MissionObjectiveSO activeMission, List<DeliveryPackageItem> spawnedPackages)
+        private void RegisterPackage(MissionObjectiveSO activeMission, List<PackageItemState> spawnedPackages)
         {
             List<TypeOfPackage> spawnedTypes = new();
-            for (int i = 0; i < spawnedPackages.Count; i++)
-            {
-                spawnedTypes.Add(spawnedPackages[i].GetTypeOfPackage());
+            for (int i = 0; i < spawnedPackages.Count; i++) {
+                spawnedTypes.Add(spawnedPackages[i].typeOfPackage);
             }
 
             _activeMissionData[activeMission.Id] = new MissionData(activeMission.AmountOfPackages, spawnedTypes);
