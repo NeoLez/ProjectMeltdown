@@ -1,6 +1,5 @@
 using Root.Controller;
 using Root.Managers;
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ namespace Root
     {
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private SelllDeposit deposit;
+        [SerializeField] private Inventory sellInventory;
         [SerializeField] private MerchantTrigger _trigger;
 
         [Header("Buy UI")]
@@ -47,7 +47,7 @@ namespace Root
 
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
 
-                GameManager.PlayerInventoryUI.OpenInventory(GetComponent<Inventory>());
+                GameManager.PlayerInventoryUI.OpenInventory();
                 GameManager.Input.Inventory.InventoryToggle.Disable();
                 GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             });
