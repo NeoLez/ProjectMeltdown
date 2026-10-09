@@ -279,6 +279,7 @@ namespace Root
         public bool CanTakeItem(Vector2 position, Vector2Int size, InventoryItem item)
         {
             var itemState = item.itemState as PackageItemState;
+            if (itemState == null) return false;
             if (!itemState.canBeDelivered)
             {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
