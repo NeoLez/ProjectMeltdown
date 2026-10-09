@@ -38975,7 +38975,6 @@ MonoBehaviour:
   _soundRemove: {fileID: 0}
   _batteryItemSO: {fileID: 11400000, guid: 2b8615748d0c3107fae9fe653e8faa6c, type: 2}
   batteryElement: {fileID: 6344260349682304807}
-  indicator: {fileID: 852091549312080470}
 --- !u!1 &5561152831329061452
 GameObject:
   m_ObjectHideFlags: 0
@@ -65002,6 +65001,7 @@ MonoBehaviour:
   axis: 2
   openAngle: 90
   moveDistance: 3
+  slideDirection: {x: 1, y: 0, z: 0}
   smooth: 3
   _soundOpen: {fileID: 0}
   _soundClose: {fileID: 0}
@@ -70723,9 +70723,25 @@ PrefabInstance:
       value: Gift
       objectReference: {fileID: 0}
     - target: {fileID: 1171549304580213878, guid: ab3067dd23aef824d9ab49cef3cfac0c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171549304580213878, guid: ab3067dd23aef824d9ab49cef3cfac0c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9277fb5529b226a4299edf22e2fe7fec, type: 2}
+    - target: {fileID: 1171549304580213878, guid: ab3067dd23aef824d9ab49cef3cfac0c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd6c33fd2f8b1b0458bc699bcdb65ace, type: 2}
+    - target: {fileID: 6589126927893049898, guid: ab3067dd23aef824d9ab49cef3cfac0c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6589126927893049898, guid: ab3067dd23aef824d9ab49cef3cfac0c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd6c33fd2f8b1b0458bc699bcdb65ace, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -97275,6 +97291,7 @@ MonoBehaviour:
   axis: 1
   openAngle: 90
   moveDistance: 3
+  slideDirection: {x: 1, y: 0, z: 0}
   smooth: 3
   _soundOpen: {fileID: 0}
   _soundClose: {fileID: 0}
@@ -105749,6 +105766,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7354231312121814642}
     m_Modifications:
+    - target: {fileID: 3295682302626235012, guid: 93b8a1595e4884a429edb71281954e2e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295682302626235012, guid: 93b8a1595e4884a429edb71281954e2e, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd6c33fd2f8b1b0458bc699bcdb65ace, type: 2}
+    - target: {fileID: 3295682302626235012, guid: 93b8a1595e4884a429edb71281954e2e, type: 3}
+      propertyPath: 'm_Materials.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cd6c33fd2f8b1b0458bc699bcdb65ace, type: 2}
     - target: {fileID: 3861332226549304371, guid: 93b8a1595e4884a429edb71281954e2e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.42
