@@ -9,7 +9,7 @@ using LogType = Root.Log.LogType;
 
 namespace Root {
     /// <summary>
-    /// Handles all inventory item dragging and transfer. Inherit from this class to add visuals that are specific to certain item types (Like durability bars and extra text labels)
+    /// Handles all inventory item dragging and transfer. Inherit from this class to add visuals or actions that are specific to certain item types (Like durability bars and extra text labels)
     /// </summary>
     public class InventoryItemDisplay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
         [SerializeField] private RectTransform rectTransform;
@@ -205,6 +205,8 @@ namespace Root {
                 
                 if (destination.InsertItem(_inventoryItem.itemState)) {
                     _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+                }else if (eventData.button == PointerEventData.InputButton.Right) {
+                    Debug.Log("Open options dialog");   
                 }
             }
         }
