@@ -214,7 +214,6 @@ namespace Root {
                     _inventoryItem.Inventory.RemoveItem(_inventoryItem);
                 }
             }else if (eventData.button == PointerEventData.InputButton.Right) {
-                Debug.Log("Open item actions: " + GetItemActions().Count);
                 PlayerInventoryUI.Instance.DisplayOptionsDialogue(GetItemActions(), _inventoryItem.itemState.ItemSo, eventData, this);
             }
         }
