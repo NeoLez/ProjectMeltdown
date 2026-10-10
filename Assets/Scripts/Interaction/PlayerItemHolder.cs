@@ -118,6 +118,21 @@ namespace Root
             OnItemChanged?.Invoke();
             CanLaunchItem(true);
         }
+        
+        public void Drop(ItemState item)
+        {
+
+            var physicalItem = item.ItemSo.CreatePhysicalItem(item);
+            physicalItem.transform.parent = null;
+            
+            var rbItem = physicalItem.GetComponent<Rigidbody>();
+            
+            rbItem.AddForce(cameraPivot.forward * _throwStrenght, ForceMode.Force);
+            physicalItem.transform.position = cameraPivot.position + cameraPivot.forward * dropDistance;
+
+            if (!GameManager.Train.IsStopped())
+                GameManager.Train.AddObjectToContainers(physicalItem.GetComponent<VisualContainer>());
+        }
 
         private void Drop(InputAction.CallbackContext _) {
             Drop();

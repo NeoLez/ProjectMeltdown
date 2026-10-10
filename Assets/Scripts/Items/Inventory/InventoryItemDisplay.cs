@@ -228,7 +228,8 @@ namespace Root {
 
         private void Drop() {
             if (IsDestroyed()) return;
-            Debug.Log("Drop");
+            GameManager.Player.GetComponent<PlayerItemHolder>().Drop(_inventoryItem.itemState);
+            _inventoryItem.Inventory.RemoveItem(_inventoryItem);
         }
         
         private void MoveToHand() {
