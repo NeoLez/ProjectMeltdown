@@ -34,6 +34,7 @@ namespace Root {
         }
 
         public override MapPointsGen.Node GetNextNode() {
+            if (_context.currentNode.OutConnections.Count == 0) return null;
             return _context.currentNode.OutConnections[0];
         }
 

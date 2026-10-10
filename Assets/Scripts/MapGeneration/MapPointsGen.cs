@@ -76,6 +76,7 @@ namespace Root {
             START,
             STATION,
             ABANDONED_STATION,
+            END,
         }
         
         public class Map {
@@ -123,6 +124,8 @@ namespace Root {
                         nodes[x, y] = new Node(x, y, this);
                         if (y == 0) {
                             nodes[x, y].feature = Feature.START;
+                        } else if (y == width - 1) {
+                            nodes[x, y].feature = Feature.END;
                         }
                         else {
                             nodes[x, y].feature = GetFeature();
