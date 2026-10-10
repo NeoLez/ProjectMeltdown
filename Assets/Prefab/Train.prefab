@@ -4467,6 +4467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8221232792633791412}
+  - component: {fileID: 8718447622749125755}
   m_Layer: 0
   m_Name: EmergencyLights
   m_TagString: Untagged
@@ -4491,6 +4492,23 @@ Transform:
   - {fileID: 8827025621982507648}
   m_Father: {fileID: 7296419848601569414}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8718447622749125755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568215638300999184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd2bd9438f6e6240a1ad0e4830d2d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Flicker
+  flickerObjects:
+  - {fileID: 3650644790773309027}
+  - {fileID: 1701134249710611596}
+  minTime: 0.7
+  maxTime: 1.3
 --- !u!1 &1577969983458565382
 GameObject:
   m_ObjectHideFlags: 0
