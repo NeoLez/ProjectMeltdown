@@ -11,6 +11,7 @@ namespace Root
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private Inventory inventory;
         [SerializeField] private SellDisplay inventorySellDisplay;
+        [SerializeField] private float packagePriceMultiplier;
 
         private int _currentPackageSum;
         private List<InventoryItem> _sellableItems = new();
@@ -71,7 +72,7 @@ namespace Root
             if(!_sellableItems.Contains(state))
             {
                 if(state.itemState is PackageItemState)
-                    sellablePrice = ((PackageItemState)state.itemState).price;
+                    sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
                 else {
                     var storeItemData = state.itemState.ItemSo.StoreItemData;
                     if (storeItemData == null) {

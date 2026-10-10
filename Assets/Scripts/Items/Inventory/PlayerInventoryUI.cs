@@ -121,6 +121,7 @@ namespace Root {
             if (!UIUtility.ScreenToCanvasPosition(GetComponent<Canvas>(), GetComponent<RectTransform>(),
                     eventData.position, out Vector2 offset)) return;
             offset = GetOptionsDialogueAnchorPoint(actions.Count, offset);
+            actions.Reverse();
             foreach (var action in actions) {
                 var button = Instantiate(itemActionButtonPrefab, transform);
                 button.SetAction(action);
