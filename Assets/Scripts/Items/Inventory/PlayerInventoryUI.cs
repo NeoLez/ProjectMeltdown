@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Root.Controller;
 using Root.Managers;
 using Timers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ namespace Root {
         [SerializeField] InventoryDisplay otherInventoryDisplay;
         [SerializeField] HandHeldInventorySlot handHeldInventorySlot;
         [SerializeField] private ItemActionButton itemActionButtonPrefab;
+        [SerializeField] private RectTransform itemActionsTitlePrefab;
         private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
@@ -113,8 +115,9 @@ namespace Root {
         }
 
         private readonly List<ItemActionButton> _actionButtons = new();
+        private RectTransform _titleGameObject;
         private Component _component;
-        public void DisplayOptionsDialogue(List<ItemAction> actions, PointerEventData eventData, Component component) {
+        public void DisplayOptionsDialogue(List<ItemAction> actions, ItemSo itemSo, PointerEventData eventData, Component component) {
             ClearOptionsDialogue();
 
             _component = component;
@@ -132,17 +135,23 @@ namespace Root {
                 offset.y += rectTransform.sizeDelta.y;
                 _actionButtons.Add(button);
             }
+            
+            _titleGameObject = Instantiate(itemActionsTitlePrefab, transform);
+            _titleGameObject.GetComponent<RectTransform>().anchoredPosition = offset;
+            _titleGameObject.GetComponentInChildren<TMP_Text>().text = itemSo.ItemName;
         }
 
         private Vector2 GetOptionsDialogueAnchorPoint(int amount, Vector2 clickPosition) {
             var rect = itemActionButtonPrefab.GetComponent<RectTransform>();
+            var titleRect = itemActionsTitlePrefab.GetComponent<RectTransform>();
             Vector2 buttonSize = rect.sizeDelta;
             Vector2 totalSize = GetComponent<RectTransform>().sizeDelta;
+            Vector2 bounds = new Vector2(rect.sizeDelta.x, rect.sizeDelta.y * amount + titleRect.sizeDelta.y);
 
-            if (rect.sizeDelta.x + clickPosition.x > totalSize.x / 2)
-                clickPosition.x -= buttonSize.x;
-            if (rect.sizeDelta.y * amount + clickPosition.y > totalSize.y / 2)
-                clickPosition.y -= rect.sizeDelta.y * amount;
+            if (bounds.x + clickPosition.x > totalSize.x / 2)
+                clickPosition.x -= bounds.x;
+            if (bounds.y + clickPosition.y > totalSize.y / 2)
+                clickPosition.y -= bounds.y;
             
             
             return clickPosition;
@@ -155,6 +164,9 @@ namespace Root {
                 Destroy(button.gameObject);
             }
             _actionButtons.Clear();
+            
+            if (_titleGameObject != null)
+                Destroy(_titleGameObject.gameObject);
         }
 
         private void OnDestroy() {

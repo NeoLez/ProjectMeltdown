@@ -215,7 +215,7 @@ namespace Root {
                 }
             }else if (eventData.button == PointerEventData.InputButton.Right) {
                 Debug.Log("Open item actions: " + GetItemActions().Count);
-                PlayerInventoryUI.Instance.DisplayOptionsDialogue(GetItemActions(), eventData, this);
+                PlayerInventoryUI.Instance.DisplayOptionsDialogue(GetItemActions(), _inventoryItem.itemState.ItemSo, eventData, this);
             }
         }
         
