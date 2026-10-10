@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Root.Log;
 using Timers;
 using Unity.Mathematics;
@@ -46,6 +48,9 @@ namespace Root {
             image.sprite = itemIcon;
             
             UpdateVisuals();
+
+            _drop = new ItemAction("Drop", Drop);
+            _moveToHandheldSlot = new ItemAction("Move to hand", MoveToHand);
         }
 
         private void SetPosition(Vector2 position, InventoryItem.InventoryItemRotation rotation) {
@@ -68,6 +73,7 @@ namespace Root {
         private float _targetSize;
 
         public void OnBeginDrag(PointerEventData eventData) {
+            PlayerInventoryUI.Instance.ClearOptionsDialogue();
             if(_isBeingDragged || eventData.button != PointerEventData.InputButton.Left) return;
             
             SetSortingOrder(true);
@@ -198,6 +204,7 @@ namespace Root {
         }
 
         public void OnPointerClick(PointerEventData eventData) {
+            PlayerInventoryUI.Instance.ClearOptionsDialogue();
             if (_isBeingDragged) return;
             if (eventData.button == PointerEventData.InputButton.Left) {
                 if (!GameManager.Input.Inventory.QuickMoveModifier.IsPressed()) return;
@@ -205,9 +212,10 @@ namespace Root {
                 
                 if (destination.InsertItem(_inventoryItem.itemState)) {
                     _inventoryItem.Inventory.RemoveItem(_inventoryItem);
-                }else if (eventData.button == PointerEventData.InputButton.Right) {
-                    Debug.Log("Open options dialog");   
                 }
+            }else if (eventData.button == PointerEventData.InputButton.Right) {
+                Debug.Log("Open item actions: " + GetItemActions().Count);
+                PlayerInventoryUI.Instance.DisplayOptionsDialogue(GetItemActions(), eventData, this);
             }
         }
         
@@ -216,6 +224,35 @@ namespace Root {
         /// </summary>
         public virtual void UpdateVisuals() {
             
+        }
+
+        private void Drop() {
+            if (IsDestroyed()) return;
+            Debug.Log("Drop");
+        }
+        
+        private void MoveToHand() {
+            if (IsDestroyed()) return;
+            Debug.Log("MoveToHand");
+        }
+
+        protected bool IsDestroyed() {
+            return this == null || gameObject == null;
+        }
+
+        private ItemAction _moveToHandheldSlot;
+        private ItemAction _drop;
+        
+        public virtual List<ItemAction> GetItemActions() {
+            var actions = new List<ItemAction>();
+            if (_inventoryItem.Inventory  != null)
+                actions.Add(_moveToHandheldSlot);
+            actions.Add(_drop);
+            return actions;
+        }
+
+        private void OnDestroy() {
+            PlayerInventoryUI.Instance.ClearOptionsDialogue(this);
         }
     }
 }

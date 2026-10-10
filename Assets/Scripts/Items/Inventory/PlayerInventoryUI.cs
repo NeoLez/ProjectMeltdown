@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using Root.Controller;
 using Root.Managers;
+using Timers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Root {
@@ -9,6 +12,7 @@ namespace Root {
         [SerializeField] InventoryDisplay playerInventoryDisplay;
         [SerializeField] InventoryDisplay otherInventoryDisplay;
         [SerializeField] HandHeldInventorySlot handHeldInventorySlot;
+        [SerializeField] private ItemActionButton itemActionButtonPrefab;
         private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
@@ -82,6 +86,7 @@ namespace Root {
             playerInventoryDisplay.gameObject.SetActive(false);
             handHeldInventorySlot.gameObject.SetActive(false);
             otherInventoryDisplay.gameObject.SetActive(false);
+            ClearOptionsDialogue();
             MouseHandler.RelinquishControl(this);
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
@@ -97,12 +102,58 @@ namespace Root {
             if (inventory == playerInventoryDisplay.inventory) {
                 destination = _otherInventory;
                 return true;
-            }else if (inventory == _otherInventory) {
+            }
+            
+            if (inventory == _otherInventory) {
                 destination = playerInventoryDisplay.inventory;
                 return true;
             }
 
             return false;
+        }
+
+        private readonly List<ItemActionButton> _actionButtons = new();
+        private Component _component;
+        public void DisplayOptionsDialogue(List<ItemAction> actions, PointerEventData eventData, Component component) {
+            ClearOptionsDialogue();
+
+            _component = component;
+            if (!UIUtility.ScreenToCanvasPosition(GetComponent<Canvas>(), GetComponent<RectTransform>(),
+                    eventData.position, out Vector2 offset)) return;
+            offset = GetOptionsDialogueAnchorPoint(actions.Count, offset);
+            foreach (var action in actions) {
+                var button = Instantiate(itemActionButtonPrefab, transform);
+                button.SetAction(action);
+                var rectTransform = button.GetComponent<RectTransform>();
+                var pos = offset;
+                rectTransform.anchoredPosition = pos;
+
+                offset.y += rectTransform.sizeDelta.y;
+                _actionButtons.Add(button);
+            }
+        }
+
+        private Vector2 GetOptionsDialogueAnchorPoint(int amount, Vector2 clickPosition) {
+            var rect = itemActionButtonPrefab.GetComponent<RectTransform>();
+            Vector2 buttonSize = rect.sizeDelta;
+            Vector2 totalSize = GetComponent<RectTransform>().sizeDelta;
+
+            if (rect.sizeDelta.x + clickPosition.x > totalSize.x / 2)
+                clickPosition.x -= buttonSize.x;
+            if (rect.sizeDelta.y * amount + clickPosition.y > totalSize.y / 2)
+                clickPosition.y -= rect.sizeDelta.y * amount;
+            
+            
+            return clickPosition;
+        }
+
+        public void ClearOptionsDialogue(Component component = null) {
+            if (component != null && component != _component) return;
+            
+            foreach (var button in _actionButtons) {
+                Destroy(button.gameObject);
+            }
+            _actionButtons.Clear();
         }
 
         private void OnDestroy() {
