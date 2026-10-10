@@ -146,6 +146,13 @@ namespace Root
             _currentSpeed = math.clamp(_currentSpeed, 0, speedController.maxTrainSpeed);
             speedometerHorizontal.SetSpeed(_currentSpeed);
 
+            if (_reachedEndOfTrack) {
+                if (!isStopped) {
+                    Debug.Log("Crashed at the end with a speed of " + _currentSpeed);
+                }
+                _currentSpeed = 0;
+            }
+
             MoveTrain();
 
             if (_currentSpeed == 0)
@@ -184,9 +191,13 @@ namespace Root
         public TrainPathWaypoint currentWaypoint;
         public TrainPathWaypoint nextWaypoint;
         public Vector3 previousDirection;
+        private bool _reachedEndOfTrack;
 
         private void MoveTrain()
         {
+            if (_reachedEndOfTrack) {
+                return;
+            }
             if (currentWaypoint == null)
             {
                 waypointIndex = 1;
@@ -207,6 +218,11 @@ namespace Root
                 currentWaypoint = nextWaypoint;
                 waypointIndex++;
                 nextWaypoint = mapGenerator.GetWaypoint(waypointIndex);
+                if (nextWaypoint == null) {
+                    _reachedEndOfTrack = true;
+                    trainPosition.position = currentWaypoint.transform.position;
+                    return;
+                }
 
                 if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBraking())
                 {

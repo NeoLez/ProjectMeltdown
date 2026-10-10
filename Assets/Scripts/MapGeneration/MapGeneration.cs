@@ -88,14 +88,20 @@ namespace Root {
         private SectionGeneratorSO _sectionGeneratorSo;
         private MapSection section;
         private int mapSectionID;
+        private bool _hasReachedMapEnd;
         
         private bool CreateRandom() {
-            if(!_sectionGeneratorSo.CanGenerate() && !_sectionGeneratorSo.HasFinished()) return false;
+            if(!(_hasReachedMapEnd || _sectionGeneratorSo.CanGenerate() || _sectionGeneratorSo.HasFinished())) return false;
             
-            if (_sectionGeneratorSo.HasFinished())
-            {
+            if (_sectionGeneratorSo.HasFinished()) {
+                var nextNode = _sectionGeneratorSo.GetNextNode();
+                if (nextNode == null) {
+                    _hasReachedMapEnd = true;
+                    return false;
+                }
+
                 _context.lastNode = _context.currentNode;
-                _context.currentNode =  _sectionGeneratorSo.GetNextNode();
+                _context.currentNode = nextNode ;
                 _context.currentSeed = GameManager.seed + SeedUtils.Combine(new [] {_context.currentNode.height, _context.currentNode.dist});
                 mapSectionID = 0;
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
@@ -151,6 +157,8 @@ namespace Root {
         }
 
         public TrainPathWaypoint GetWaypoint(int index) {
+            if (_waypoints.Count <= index - waypointLowestIndex)
+                return null;
             return _waypoints[index - waypointLowestIndex];
         }
         
@@ -159,6 +167,9 @@ namespace Root {
         private void HandleRebase() {
             if (_rebaseCounter == 0) {
                 Logger.Log("Rebasing", LogType.WorldGen);
+                if (train.IsStopped()) {
+                    train.trainPosition.transform.position = Vector3.zero;
+                }
                 transform.position += train.trainPosition.position * -1;
                 
                 _rebaseCounter = countUntilRebase;
