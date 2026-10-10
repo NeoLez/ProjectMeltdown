@@ -60,7 +60,7 @@ namespace Root
             if (Physics.Raycast(origin, randomDirection, out var hit, _maxRadius) && hit.distance >= _minRadius)
             {
                 //hit.collider.transform.rotation = Quaternion.identity;
-                Quaternion rotation = Quaternion.LookRotation(-hit.normal);
+                Quaternion rotation = Quaternion.LookRotation(hit.normal);
                 rotation *= Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
                 Debug.DrawLine(origin, hit.point, Color.green, 1f);
                 //animator.SetIKRotation(AvatarIKGoal.RightHand, Quaternion.FromToRotation(transform.forward,hit.normal));
