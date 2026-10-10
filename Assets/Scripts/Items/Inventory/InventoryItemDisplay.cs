@@ -228,13 +228,34 @@ namespace Root {
 
         private void Drop() {
             if (IsDestroyed()) return;
-            GameManager.Player.GetComponent<PlayerItemHolder>().Drop(_inventoryItem.itemState);
+            var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
+            if (_inventoryItem.Inventory == null) {
+                playerItemHolder.Drop();
+                return;
+            }
+            playerItemHolder.Drop(_inventoryItem.itemState);
             _inventoryItem.Inventory.RemoveItem(_inventoryItem);
         }
         
         private void MoveToHand() {
             if (IsDestroyed()) return;
-            Debug.Log("MoveToHand");
+            var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
+            
+            if (!playerItemHolder.HasItem) {
+                playerItemHolder.Pickup(_inventoryItem.itemState);
+                _inventoryItem.Inventory.RemoveItem(_inventoryItem);
+                return;
+            }
+            
+            var heldItem = playerItemHolder.HeldItem;
+            var originalInventory = _inventoryItem.Inventory;
+            if (_inventoryItem.Inventory.TryFindFreeArea(playerItemHolder.HeldItem.ItemSo.InventorySize,
+                    out var pos, out var rotation, _inventoryItem)) {
+                playerItemHolder.ForceClearHeldItem();
+                playerItemHolder.Pickup(_inventoryItem.itemState);
+                originalInventory.RemoveItem(_inventoryItem);
+                originalInventory.InsertItem(heldItem, pos, rotation);
+            }
         }
 
         protected bool IsDestroyed() {
