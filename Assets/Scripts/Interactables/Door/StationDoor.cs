@@ -176,11 +176,11 @@ namespace Root
             switch (cardAccess)
             {
                 case DoorAccessLevel.Red:
-                    return card.color == KeycardState.CardColor.Red;
+                    return card.Color == KeycardSo.CardColor.Red;
                 case DoorAccessLevel.Blue:
-                    return card.color == KeycardState.CardColor.Blue;
+                    return card.Color == KeycardSo.CardColor.Blue;
                 case DoorAccessLevel.White:
-                    if (card.color != KeycardState.CardColor.White) return false;
+                    if (card.Color != KeycardSo.CardColor.White) return false;
                     if (card.boundCode == -1)
                     {
                         card.boundCode = _stationCode;

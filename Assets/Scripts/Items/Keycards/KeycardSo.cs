@@ -5,11 +5,13 @@ namespace Root
     [CreateAssetMenu(menuName = "Items/Keycard")]
     public class KeycardSo : ItemSo
     {
-        [field: SerializeField] public KeycardState.CardColor Color { get; private set; }
+        [field: SerializeField] public CardColor Color { get; private set; }
 
         public override ItemState CreateState()
         {
             return new KeycardState(this);
         }
+        
+        public enum CardColor { Red, White, Blue }
     }
 }
