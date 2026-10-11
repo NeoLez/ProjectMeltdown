@@ -1780,6 +1780,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 1
   axis: 1
   openAngle: 90
@@ -20508,6 +20509,7 @@ GameObject:
   - component: {fileID: 2813621672867690524}
   - component: {fileID: 5547910380284126000}
   - component: {fileID: 522129272804676350}
+  - component: {fileID: 6578687213502369601}
   m_Layer: 0
   m_Name: EstacionB3
   m_TagString: Untagged
@@ -20988,6 +20990,7 @@ Transform:
   - {fileID: 2098371993992738847}
   - {fileID: 6569579928634843014}
   - {fileID: 1381024254858314374}
+  - {fileID: 1061924740406780985}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5547910380284126000
@@ -21023,6 +21026,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Timers.CompositeBoundingBox
   boundingBoxes:
   - {fileID: 6098027065874575875}
+  mapSection: {fileID: 5547910380284126000}
+--- !u!114 &6578687213502369601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4011810290178177712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202e748fa528b6d4c9eda80402bb4855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.StationAccessController
+  doors:
+  - {fileID: 7964046692428713782}
+  autoCollect: 1
   mapSection: {fileID: 5547910380284126000}
 --- !u!1 &4016501245253458183
 GameObject:
@@ -38321,6 +38340,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 3
   axis: 2
   openAngle: 90
@@ -39649,6 +39669,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 3
   axis: 2
   openAngle: 90
@@ -46452,6 +46473,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 3
   axis: 2
   openAngle: 90
@@ -48609,6 +48631,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 1
   axis: 1
   openAngle: 90
@@ -52452,6 +52475,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 1
+  cardAccess: 0
   mode: 3
   axis: 2
   openAngle: 90
@@ -99233,6 +99257,7 @@ MonoBehaviour:
   requiresPowerToInteract: 0
   onPowerLost: 0
   onPowerRestored: 0
+  cardAccess: 0
   mode: 0
   axis: 1
   openAngle: 90
@@ -139678,6 +139703,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 1
   onPowerRestored: 0
+  cardAccess: 2
   mode: 0
   axis: 1
   openAngle: 90
@@ -162065,6 +162091,7 @@ MonoBehaviour:
   requiresPowerToInteract: 0
   onPowerLost: 0
   onPowerRestored: 0
+  cardAccess: 0
   mode: 0
   axis: 1
   openAngle: 90
@@ -163626,6 +163653,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7625352128979792824, guid: 0d2345676ed4ef9468a3f9df2408c062, type: 3}
   m_PrefabInstance: {fileID: 8772682877080509056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8781926281825451599
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2813621672867690524}
+    m_Modifications:
+    - target: {fileID: 7520827089218856257, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_Name
+      value: KeycardWhite
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 114.78451
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 131.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+--- !u!4 &1061924740406780985 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8602752150511704694, guid: 43c1f6e083222e24e8c0aa2441af1ff4, type: 3}
+  m_PrefabInstance: {fileID: 8781926281825451599}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8787982838277548069
 PrefabInstance:

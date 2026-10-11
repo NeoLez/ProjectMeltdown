@@ -6,6 +6,7 @@ namespace Root
     public class StationDoor : InteractableNormalCamera
     {
         public enum ControlMode { Manual, Automatic }
+        public enum DoorAccessLevel { None, Red, White, Blue }
         public enum DoorMode { Rotate, MoveUp, MoveDown, Slide }
         public enum RotationAxis { X, Y, Z }
         public enum PowerLossBehavior { Deactivate, MaintainState }
@@ -25,6 +26,9 @@ namespace Root
 
         [Header("Al volver la energia (solo puertas automaticas)")]
         [SerializeField] private PowerRestoreBehavior onPowerRestored = PowerRestoreBehavior.OpenAutomatically;
+
+        [Header("Acceso con tarjeta")]
+        [SerializeField] private DoorAccessLevel cardAccess = DoorAccessLevel.None;
 
         [Header("Movimiento")]
         [SerializeField] private DoorMode mode = DoorMode.Rotate;
@@ -49,6 +53,7 @@ namespace Root
         private bool _stationPowered;
         private bool _isShaking;
         private bool _buttonAuthorized;
+        private int _stationCode = -1;
 
         private Quaternion _closedRotation;
         private Quaternion _openRotation;
@@ -132,6 +137,15 @@ namespace Root
                 return;
             }
 
+            if (_state == DoorState.Closed && cardAccess != DoorAccessLevel.None)
+            {
+                if (!TryGetHeldKeycard(out KeycardState card) || !CanOpenWithCard(card))
+                {
+                    RequestDeniedFeedback();
+                    return;
+                }
+            }
+
             if (_state == DoorState.Closed) RequestOpen();
             else if (_state == DoorState.Open) RequestClose();
         }
@@ -141,6 +155,42 @@ namespace Root
             isLocked = true;
         }
 
+        public void SetStationCode(int code)
+        {
+            _stationCode = code;
+        }
+
+        private bool TryGetHeldKeycard(out KeycardState card)
+        {
+            card = null;
+
+            if (!GameManager.Player.TryGetComponent(out PlayerItemHolder holder)) return false;
+            if (!holder.HasItem) return false;
+
+            card = holder.HeldItem as KeycardState;
+            return card != null;
+        }
+
+        private bool CanOpenWithCard(KeycardState card)
+        {
+            switch (cardAccess)
+            {
+                case DoorAccessLevel.Red:
+                    return card.color == KeycardState.CardColor.Red;
+                case DoorAccessLevel.Blue:
+                    return card.color == KeycardState.CardColor.Blue;
+                case DoorAccessLevel.White:
+                    if (card.color != KeycardState.CardColor.White) return false;
+                    if (card.boundCode == -1)
+                    {
+                        card.boundCode = _stationCode;
+                        return true;
+                    }
+                    return card.boundCode == _stationCode;
+                default:
+                    return true;
+            }
+        }
         public void Unlock()
         {
             isLocked = false;
