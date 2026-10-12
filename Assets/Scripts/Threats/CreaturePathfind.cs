@@ -20,6 +20,8 @@ namespace Root
         private bool _doDamage = false;
         private HealthControl _pj;
         [SerializeField] private float _delay;
+        private bool DmgInter = false;
+        float cool;
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
@@ -35,28 +37,32 @@ namespace Root
 
         private void Update()
         {
-            if (_navmeshUpdateTimer.IsCompleted() && IsPlayerInView())
+            if (DmgInter) { InterruptionCooldown();}
+            else
             {
-                if (_target == null) _target = GameManager.Player.transform;
-                _navmeshUpdateTimer.Reset(navmeshUpdateFrequency);
-                _agent.SetDestination(_target.position);
-                _animator.SetBool("walking", true);
+                if (_navmeshUpdateTimer.IsCompleted() && IsPlayerInView())
+                {
+                    if (_target == null) _target = GameManager.Player.transform;
+                    _navmeshUpdateTimer.Reset(navmeshUpdateFrequency);
+                    _agent.SetDestination(_target.position);
+                    _animator.SetBool("walking", true);
+                }
+                else if (!IsPlayerInView())
+                {
+                    _animator.SetBool("walking", false);
+                    return;
+                }
+
+                if (_pj != null && _attackTimer.IsCompleted())
+                {
+                    _animator.Play("Attack");
+                    _attackTimer.Reset(attackCooldown);
+                }
+                _delay -= 1f * Time.deltaTime;
+                if (_doDamage && _delay <= 0) { _pj.TakeDamage(attackDamage); }
+                if (_delay <= 0) { _delay = DelayBeforeDmg; }
             }
-            else if (!IsPlayerInView())
-            {
-                _animator.SetBool("walking", false);
-                return;
-            }
-            
-            if (_pj != null && _attackTimer.IsCompleted()) 
-            {
-                
-                _animator.Play("Attack");
-                _attackTimer.Reset(attackCooldown);
-            }
-            _delay -= 1f * Time.deltaTime;
-            if (_doDamage && _delay <= 0) { _pj.TakeDamage(attackDamage); }
-            if (_delay <= 0) { _delay = DelayBeforeDmg;  }
+           
         } 
 
         private void OnTriggerEnter(Collider collision)
@@ -81,5 +87,17 @@ namespace Root
                 return false;
             return hit.collider.gameObject == GameManager.Player.gameObject;
         }
+
+        public void InterruptByDmg()
+        {
+            cool = DelayBeforeDmg;
+            DmgInter = true;
+        }
+        private void InterruptionCooldown()
+        {                        
+            cool -= 1 * Time.deltaTime;
+            if (cool <= 0) { DmgInter = false;}        
+        }
+       
     }
 }
