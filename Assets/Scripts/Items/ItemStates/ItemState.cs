@@ -13,7 +13,7 @@ namespace Root {
         }
 
         public virtual ItemState Clone() {
-            return new ItemState(ItemSo);
+            return (ItemState)MemberwiseClone();
         }
     }
 }

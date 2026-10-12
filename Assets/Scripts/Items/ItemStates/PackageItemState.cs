@@ -1,12 +1,11 @@
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Root {
     [System.Serializable]
     public class PackageItemState : ItemState {
         public int price;
-        [FormerlySerializedAs("durability")] public float maxDurability;
+        public float maxDurability;
         public float currentDurability;
         public RenderTexture stampTexture;
         public TypeOfPackage typeOfPackage;
@@ -33,19 +32,6 @@ namespace Root {
             typeOfPackage = packageDataGenerator.TypeOfPackage;
 
             canBeDelivered = true;
-        }
-
-        public override ItemState Clone() {
-            var clone = new PackageItemState(ItemSo as PackageItemSo) {
-                price = price,
-                maxDurability = maxDurability,
-                typeOfPackage = typeOfPackage,
-                canBeDelivered = canBeDelivered,
-                DestinationNode = DestinationNode,
-                packageDataGenerator = packageDataGenerator,
-                //TODO: Should the texture also be cloned?
-            };
-            return clone;
         }
     }
 }

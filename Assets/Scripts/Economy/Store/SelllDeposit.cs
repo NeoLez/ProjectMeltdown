@@ -92,7 +92,7 @@ namespace Root
             if (_sellableItems.Contains(state)) {
                 int sellablePrice = 0;
                 if(state.itemState is PackageItemState)
-                    sellablePrice = ((PackageItemState)state.itemState).price;
+                    sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
                 else {
                     var storeItemData = state.itemState.ItemSo.StoreItemData;
                     if (storeItemData == null) {

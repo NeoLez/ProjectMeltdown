@@ -14,14 +14,5 @@ namespace Root
         public override string ToString() {
             return $"{((KeycardSo)ItemSo).Color} Keycard (bound: {boundCode})";
         }
-
-        public override ItemState Clone()
-        {
-            var clone = new KeycardState(ItemSo as KeycardSo)
-            {
-                boundCode = boundCode
-            };
-            return clone;
-        }
     }
 }
