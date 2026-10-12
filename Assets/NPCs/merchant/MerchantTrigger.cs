@@ -14,6 +14,7 @@ namespace Root
         [SerializeField] private StoreManager _storeManager;
         [SerializeField] private Collider triggerCollider;
         [SerializeField] private MerchantInteraction interaction;
+        [SerializeField] private StoreMenu menu;
 
         private Animator _anim;
         public Action<bool> _OnStoreShow;
@@ -57,6 +58,7 @@ namespace Root
                 _anim.SetBool("Appear", false);
                 CancelInvoke(nameof(DelayedShow));
                 _storeManager.HideItems();
+                menu.EnableWalletCanvas(false);
             }
 
         }
