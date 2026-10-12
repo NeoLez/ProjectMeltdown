@@ -108,7 +108,7 @@ namespace Root
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Inventory.InventoryToggle.Enable();
-            GameManager.Input.Inventory.AlternativeCloseInventory.Enable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
         }
 
         private void ToggleConfirmButton()

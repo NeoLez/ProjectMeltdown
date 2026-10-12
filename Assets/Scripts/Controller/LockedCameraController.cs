@@ -74,6 +74,7 @@ namespace Root.Controller {
             GameManager.Player.GetComponent<CameraController>().enabled = true;
             _input.Movement.Enable();
             _input.Inventory.Enable();
+            _input.Inventory.AlternativeCloseInventory.Disable();
             enabled = false;
         }
         

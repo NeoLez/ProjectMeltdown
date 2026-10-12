@@ -81,6 +81,7 @@ namespace Root
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Enable();
             GameManager.Input.Inventory.Enable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             GameManager.Input.Menu.Enable();
             GameManager.AudioSystem?.ResumeAll();
         }

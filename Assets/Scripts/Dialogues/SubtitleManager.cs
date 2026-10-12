@@ -63,6 +63,7 @@ namespace Root
         public void HideSubtitle()
         {
             GameManager.Input.Inventory.Enable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Wallet.Enable();

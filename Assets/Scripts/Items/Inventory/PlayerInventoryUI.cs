@@ -30,12 +30,12 @@ namespace Root {
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
             }
             else {
-                OpenInventory();
+                UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
             }
         }
 
         private void InventoryClose(InputAction.CallbackContext val) {
-            
+
             if(inventoryOpen)
                 InventoryToggle(val);
         }
