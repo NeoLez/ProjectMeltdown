@@ -9,7 +9,7 @@ namespace Root
         [SerializeField] private bool autoCollect = true;
         [SerializeField] private MapSection mapSection;
 
-        private void Awake()
+        private void Start()
         {
             if (autoCollect)
                 doors.AddRange(GetComponentsInChildren<StationDoor>(true));
