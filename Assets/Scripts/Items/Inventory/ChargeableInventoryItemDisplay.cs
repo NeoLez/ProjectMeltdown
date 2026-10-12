@@ -9,5 +9,9 @@ namespace Root {
             var state = ((ItemChargeState)_inventoryItem.itemState);
             _slider.value = state.currentCharge / state.maxCharge;
         }
+
+        public override bool IsStateTypeValid(ItemState state) {
+            return state is ItemChargeState;
+        }
     }
 }

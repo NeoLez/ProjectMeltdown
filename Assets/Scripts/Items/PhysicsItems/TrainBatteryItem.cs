@@ -11,7 +11,7 @@ namespace Root {
             animator.SetBool(Insert, true);
         }
 
-        protected override bool IsStateTypeValid(ItemState state) {
+        public override bool IsStateTypeValid(ItemState state) {
             return state is ItemChargeState;
         }
     }
