@@ -1,3 +1,4 @@
+using Root.Factories;
 using Timers;
 using UnityEngine;
 
@@ -6,11 +7,13 @@ namespace Root
     public class SpawnObj : MonoBehaviour
     {
         [SerializeField] private ItemPool pool;
+        [SerializeField] private MapSection section;
         void Start() {
             //TODO: Since this uses global positions it could be unstable in the long run due to small changes in the rebase calculation. Maybe switch to local position respective to the MapSection?
             var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
             System.Random random = new (seed);
-            var obj = pool.GetEntry(random).CreatePhysicalItem();
+            var entry = pool.GetEntry(random);
+            var obj = entry.So.CreatePhysicalItem(new ItemSpawnContext(section, random), entry.Initializer);
             obj.transform.position = transform.position;
             obj.transform.rotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
             obj.transform.parent = transform.parent;

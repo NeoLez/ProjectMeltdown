@@ -7,7 +7,7 @@ namespace Root
     {
         [field: SerializeField] public CardColor Color { get; private set; }
 
-        public override ItemState CreateState()
+        public override ItemState CreateUninitializedState()
         {
             return new KeycardState(this);
         }

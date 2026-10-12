@@ -14,7 +14,7 @@ namespace Root {
         private void SpawnItems(ItemGenerationPoolSo pool) {
             var inv = GetComponent<Inventory>();
             foreach (var item in pool.items) {
-                inv.InsertItem(item.GetDefaultItemState());
+                inv.InsertItem(item.CreateUninitializedState());
             }
         }
     }

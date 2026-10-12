@@ -214,9 +214,9 @@ namespace Root {
         private void AddItem() {
             for (int i=0; i<amount; i++)
                 if (find)
-                    Debug.Log(InsertItem(itemSoToAdd.CreateState()));
+                    Debug.Log(InsertItem(itemSoToAdd.CreateUninitializedState()));
                 else
-                    Debug.Log(InsertItem(itemSoToAdd.CreateState(), pos, rotation));
+                    Debug.Log(InsertItem(itemSoToAdd.CreateUninitializedState(), pos, rotation));
         }
         
         [Button(null, EButtonEnableMode.Playmode), ContextMenu("RemoveItem")]

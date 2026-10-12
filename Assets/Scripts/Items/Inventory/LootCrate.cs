@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Root.Factories;
 using Timers;
 using UnityEngine;
 
@@ -8,19 +9,20 @@ namespace Root {
         [SerializeField] private ItemPool pool;
         [SerializeField] private int minAmountOfItemsToGenerate;
         [SerializeField] private int maxAmountOfItemsToGenerate;
+        [SerializeField] private MapSection mapSection;
         private void Start() {
             //TODO: Since this uses global positions it could be unstable in the long run due to small changes in the rebase calculation. Maybe switch to local position respective to the MapSection?
             var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
             var random = new System.Random(seed);
-            List<ItemSo> itemsToGenerate = new();
+            List<ItemPool.ItemPoolEntry> itemsToGenerate = new();
             for (int i = 0; i < random.Next(minAmountOfItemsToGenerate, maxAmountOfItemsToGenerate); i++) {
                 itemsToGenerate.Add(pool.GetEntry(random));
             }
             
             var inv = GetComponent<Inventory>();
             itemsToGenerate.Sort((item1, item2) => {
-                var size1 = GetItemSize(item1.InventorySize);
-                var size2 = GetItemSize(item2.InventorySize);
+                var size1 = GetItemSize(item1.So.InventorySize);
+                var size2 = GetItemSize(item2.So.InventorySize);
                 if (size1 > size2)
                     return -1;
                 if (size1 < size2)
@@ -29,7 +31,7 @@ namespace Root {
             });
 
             foreach (var item in itemsToGenerate) {
-                inv.InsertItem(item.GetDefaultItemState());
+                inv.InsertItem(item.So.CreateState(new ItemSpawnContext(mapSection, random), item.Initializer));
             }
         }
 

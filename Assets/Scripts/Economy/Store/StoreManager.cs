@@ -1,6 +1,7 @@
 using Root.Managers;
 using System;
 using System.Collections.Generic;
+using Root.Factories;
 using Timers;
 using TMPro;
 using UnityEngine;
@@ -92,7 +93,7 @@ namespace Root
 
                 int price = _random.Next(item.minPrice, item.maxPrice + 1);
 
-                GameObject obj = item.item.CreatePhysicalItem().gameObject;
+                GameObject obj = item.item.CreatePhysicalItem(CreateItemSpawnContext()).gameObject;
                 obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
                 obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
                 obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
@@ -137,7 +138,7 @@ namespace Root
             else
                 item = initialItemSpawn;
 
-            GameObject obj = item.item.CreatePhysicalItem().gameObject;
+            GameObject obj = item.item.CreatePhysicalItem(CreateItemSpawnContext()).gameObject;
             obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
             obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
@@ -171,6 +172,10 @@ namespace Root
 
         }
 
+        private ItemSpawnContext CreateItemSpawnContext() {
+            return new ItemSpawnContext(mapSection, _random);
+        }
+
         public bool AreAllItemsGenerated()
         {
             return itemsCreated.Count > 0;
@@ -188,7 +193,7 @@ namespace Root
             {
                 for (int i = 0; i < tuple.Item2; i++)
                 {
-                    var bill = tuple.Item1.CreatePhysicalItem();
+                    var bill = tuple.Item1.CreatePhysicalItem(CreateItemSpawnContext());
                     bill.transform.position = dropPivot.transform.position;
                 }
             }

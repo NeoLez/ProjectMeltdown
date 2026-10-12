@@ -3,9 +3,11 @@ using Root.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Root.Factories;
 using TMPro;
 using UnityEngine;
 using UnityEngine.VFX;
+using Random = System.Random;
 
 namespace Root
 {
@@ -116,7 +118,7 @@ namespace Root
             {
                 for (int i = 0; i < tuple.Item2; i++)
                 {
-                    var bill = tuple.Item1.CreatePhysicalItem();
+                    var bill = tuple.Item1.CreatePhysicalItem(tuple.Item1.CreateState(new ItemSpawnContext(mapSection, new Random())));
                     bill.transform.position = dropPivot.transform.position;
                 }
             }

@@ -1,3 +1,4 @@
+using Root.Factories;
 using Root.Managers;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ namespace Root
 
         public bool TryInsertBrakeFluid(ItemState state)
         {
-            BrakeFluidItem fluid = (BrakeFluidItem)state.ItemSo.CreatePhysicalItem();
+            BrakeFluidItem fluid = (BrakeFluidItem)state.ItemSo.CreatePhysicalItem(new ItemSpawnContext(null, null));
             fluid.VisualOnly(true);
             
             VisualContainer visual = fluid.GetComponentInChildren<VisualContainer>();

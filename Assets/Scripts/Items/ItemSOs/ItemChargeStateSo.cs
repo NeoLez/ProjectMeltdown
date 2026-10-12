@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Root {
     [CreateAssetMenu(menuName = "Items/Chargeable Item")]
     public class ItemChargeStateSo : ItemSo {
-        public override ItemState CreateState() {
+        public override ItemState CreateUninitializedState() {
             return new ItemChargeState(this);
         }
     }

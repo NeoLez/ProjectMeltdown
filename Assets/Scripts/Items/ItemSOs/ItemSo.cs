@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using NaughtyAttributes;
+using Root.Factories;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -18,33 +20,77 @@ namespace Root {
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
 
         [SerializeField, SerializeReference] private ItemState defaultItemState;
-        public ItemState GetDefaultItemState() => defaultItemState.Clone();
+
+        private ItemState GetDefaultItemState() {
+            return defaultItemState.Clone();;
+        }
+
         [field: SerializeField, Expandable] public StoreItemData StoreItemData { get; private set; }
 
+        //For setting information that should always be valid, like any item that depends on the station that it spawned on (e.g. keycards) 
+        [SerializeField] private List<ItemStateInitializer> requiredInitializers = new();
+        public IReadOnlyList<ItemStateInitializer> RequiredInitializers => requiredInitializers;
+
+        
         /// <summary>
-        /// Returns a zero initialized ItemState of the correct type. Should always be overriden by child classes to define the ItemState type they expect. 
+        /// Returns a default ItemState of the correct type. Should always be overriden by child classes to define the ItemState type they expect. 
         /// </summary>
-        public virtual ItemState CreateState() {
-            return new ItemState(this);
+        public virtual ItemState CreateUninitializedState() {
+            return defaultItemState.Clone();
         }
 
         /// <summary>
-        /// Creates a new instance of the physical item handling pool allocations, etc. All physical items should be created this way.
-        /// If an initial state is not specified, it is the default one set in the Physical Item prefab
+        /// Returns an initialized ItemState of the correct type. If no initializers are present this function returns the default state.
         /// </summary>
-        public PhysicalItem CreatePhysicalItem() {
+        public ItemState CreateState(ItemSpawnContext ctx, IEnumerable<ItemStateInitializer> initializers) {
+            var state = GetDefaultItemState();
+            
+            foreach (var i in RequiredInitializers) i.Apply(state, ctx);
+            
+            if (initializers != null)
+                foreach (var i in initializers) i.Apply(state, ctx);
+            
+            return state;
+        }
+        
+        /// <summary>
+        /// Returns an initialized ItemState of the correct type. If no initializers are present this function returns the default state.
+        /// </summary>
+        public ItemState CreateState(ItemSpawnContext ctx, ItemStateInitializer initializer = null) {
+            var state = GetDefaultItemState();
+            
+            foreach (var i in RequiredInitializers) i.Apply(state, ctx);
+            
+            if (initializer != null)
+                initializer.Apply(state, ctx);
+            
+            return state;
+        }
+        
+        /// <summary>
+        /// Creates a new instance of the physical item handling pool allocations, etc. All physical items should be created this way.
+        /// The state must already be initialized CreateState()
+        /// </summary>
+        /// <param name="state">The initial item's state. The PhysicalItem gets initialized using this.</param>
+        public PhysicalItem CreatePhysicalItem(ItemState state) {
             var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
             var physicalItem = obj.GetComponent<PhysicalItem>();
-            physicalItem.ItemState = PhysicalItemPrefab.ItemState.Clone();
+            physicalItem.ItemState = state;
             return physicalItem;
         }
         
-        /// <inheritdoc cref="CreatePhysicalItem()"/>
-        /// <param name="state">The initial item's state. The PhysicalItem gets initialized using this.</param>
-        public PhysicalItem CreatePhysicalItem(ItemState state) {
-            var obj = CreatePhysicalItem();
-            obj.ItemState = state;
-            return obj;
+        public PhysicalItem CreatePhysicalItem(ItemSpawnContext ctx, IEnumerable<ItemStateInitializer> initializers) {
+            var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
+            var physicalItem = obj.GetComponent<PhysicalItem>();
+            physicalItem.ItemState = CreateState(ctx, initializers);
+            return physicalItem;
+        }
+        
+        public PhysicalItem CreatePhysicalItem(ItemSpawnContext ctx, ItemStateInitializer initializer = null) {
+            var obj = PoolManager.GetObject(PhysicalItemPrefab.GetComponent<Poolable>());
+            var physicalItem = obj.GetComponent<PhysicalItem>();
+            physicalItem.ItemState = CreateState(ctx, initializer);
+            return physicalItem;
         }
 
         private void OnValidate() {
@@ -65,7 +111,7 @@ namespace Root {
         [ContextMenu("Generate Default Item State")]
         private void GenerateStateInEditor() {
             UnityEditor.Undo.RecordObject(this, "Generate Item State");
-            defaultItemState = CreateState();
+            defaultItemState = CreateUninitializedState();
             UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif

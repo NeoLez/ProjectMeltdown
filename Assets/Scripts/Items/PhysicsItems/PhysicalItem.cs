@@ -20,18 +20,18 @@ namespace Root {
                 return;
             }
 
-            if (!IsStateTypeValid(defaultItemSo.GetDefaultItemState())) {
+            if (!IsStateTypeValid(defaultItemSo.CreateUninitializedState())) {
                 Debug.LogWarning("Wrong type of itemState set as defaultItemSo (editor only)");
                 return;
             }
 
-            var state = defaultItemSo.CreateState();
+            var state = defaultItemSo.CreateUninitializedState();
             if (!IsStateTypeValid(state)) {
                 Debug.LogError("Unexpected State Type'" + state.GetType() + "'. Are you assigning the right ItemSO?");
                 return;
             }
             UnityEditor.Undo.RecordObject(this, "Generate item state");
-            ItemState = defaultItemSo.CreateState();
+            ItemState = defaultItemSo.CreateUninitializedState();
             
             UnityEditor.EditorUtility.SetDirty(this);
         }

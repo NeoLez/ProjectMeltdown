@@ -1,4 +1,4 @@
-using Timers;
+using Root.Factories;
 using UnityEngine;
 
 namespace Root
@@ -8,7 +8,7 @@ namespace Root
         [SerializeField] private ItemSo item;
         void Start()
         {
-            var obj = item.CreatePhysicalItem();
+            var obj = item.CreatePhysicalItem(new ItemSpawnContext(null, null));
             obj.transform.position = transform.position;
             obj.transform.rotation = transform.rotation;
             obj.transform.parent = transform.parent;

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Root {
     [CreateAssetMenu(menuName = "Items/Package")]
     public class PackageItemSo : ItemSo {
-        public override ItemState CreateState() {
+        public override ItemState CreateUninitializedState() {
             return new PackageItemState(this);
         }
     }
