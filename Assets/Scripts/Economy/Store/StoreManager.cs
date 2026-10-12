@@ -35,7 +35,7 @@ namespace Root
         [SerializeField] private SelllDeposit deposit;
         [SerializeField] private Transform dropPivot;
         [SerializeField] private MerchantInteraction merchantDialogue;
-
+        [SerializeField] private StoreMenu menu;
         private System.Random _random;
         
         private void Start()
@@ -102,6 +102,7 @@ namespace Root
                     boughtHand.HideHand();
                     itemsCreated.Remove(i);
                     merchantHands.Remove(boughtHand);
+                    menu.RefreshWalletAmount();
                 };
                 itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
                 var objBehaviour = obj.transform;

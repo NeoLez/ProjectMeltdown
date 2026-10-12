@@ -11,6 +11,8 @@ namespace Root
         [SerializeField] private SelllDeposit deposit;
         [SerializeField] private Inventory sellInventory;
         [SerializeField] private MerchantTrigger _trigger;
+        [SerializeField] private Canvas walletDisplay;
+
 
         [Header("Buy UI")]
         [SerializeField] private Canvas choiseCanvas;
@@ -27,7 +29,7 @@ namespace Root
             storeButtons[0].onClick.AddListener(() =>
             {
                 EnableChoiceCanvas(false);
-
+                EnableWalletCanvas(true);
                 storeManager.GenerateStoreItems();
                 _trigger.CanShowItems(true);
 
@@ -41,7 +43,7 @@ namespace Root
             storeButtons[1].onClick.AddListener(() => 
             {
                 EnableChoiceCanvas(false);
-
+                EnableWalletCanvas(true);
                 deposit.LoadDisplay();
                 EnableSellInventoryCanvas(true);
 
@@ -70,6 +72,7 @@ namespace Root
 
             EnableChoiceCanvas(false);
             EnableSellInventoryCanvas(false);
+            EnableWalletCanvas(false);
         }
 
         public override void Open()
@@ -98,6 +101,7 @@ namespace Root
 
             _trigger.IsStoreOpened = false;
             EnableSellInventoryCanvas(false);
+            EnableWalletCanvas(false);
             MouseHandler.RelinquishControl(this);
 
             GameManager.PlayerInventoryUI.CloseInventory();
@@ -116,20 +120,34 @@ namespace Root
             returnButton.interactable = !deposit.AreUnconfirmedItems();
         }
 
+        public void EnableWalletCanvas(bool state)
+        {
+            RefreshWalletAmount();
+            walletDisplay.enabled = state;
+        }
+
         private void EnableChoiceCanvas(bool state)
         {
             choiseCanvas.enabled = state;
         }
 
-        public void EnableSellInventoryCanvas(bool enable)
+        public void EnableSellInventoryCanvas(bool state)
         {
-            priceDisplay.enabled = enable;
+            priceDisplay.enabled = state;
         }
+
 
         private void RefreshSumAmount()
         {
-            var amount = deposit.GetCurrentAmount();
+            int amount = deposit.GetCurrentAmount();
             priceCounter.text = string.Format("{0}$", amount);
+        }
+
+        public void RefreshWalletAmount()
+        {
+            int amount = EconomyManager.Instance.GetMoney();
+            TMP_Text moneyText =  walletDisplay.GetComponentInChildren<TextMeshProUGUI>();
+            moneyText.text = string.Format("{0}$", amount);
         }
 
         private void OnDestroy()
