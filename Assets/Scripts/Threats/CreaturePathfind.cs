@@ -31,12 +31,18 @@ namespace Root
         }
 
         private void Update() {
-            if (_navmeshUpdateTimer.IsCompleted() && IsPlayerInView()) {
+            if (_navmeshUpdateTimer.IsCompleted() && IsPlayerInView())
+            {
                 if (_target == null) _target = GameManager.Player.transform;
                 _navmeshUpdateTimer.Reset(navmeshUpdateFrequency);
                 _agent.SetDestination(_target.position);
+                _animator.SetBool("walking", true);
             }
-        }
+            else if (!IsPlayerInView())
+            {
+                _animator.SetBool("walking", false);
+            }
+            } 
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.gameObject == GameManager.Player.gameObject && _attackTimer.IsCompleted()) {
