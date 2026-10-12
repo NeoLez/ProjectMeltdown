@@ -12,7 +12,7 @@ namespace Root {
         [SerializeField] private MapSection mapSection;
         private void Start() {
             //TODO: Since this uses global positions it could be unstable in the long run due to small changes in the rebase calculation. Maybe switch to local position respective to the MapSection?
-            var seed = SeedUtils.Combine(new [] {GameManager.seed, (int)(transform.position.x * 10), (int)(transform.position.y * 10), (int)(transform.position.z * 10)});
+            var seed = SeedUtils.PositionToSeed(transform.position);
             var random = new System.Random(seed);
             List<ItemPool.ItemPoolEntry> itemsToGenerate = new();
             for (int i = 0; i < random.Next(minAmountOfItemsToGenerate, maxAmountOfItemsToGenerate); i++) {

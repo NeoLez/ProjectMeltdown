@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Timers {
     public static class SeedUtils
     {
@@ -19,6 +21,11 @@ namespace Timers {
             }
         
             return hash;
+        }
+
+        public static int PositionToSeed(Vector3 position, float resolution = 10) {
+            position *= resolution;
+            return Combine(new [] {GameManager.seed, (int)(position.x), (int)(position.y), (int)(position.z)});
         }
     }
 }

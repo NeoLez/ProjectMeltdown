@@ -1,15 +1,26 @@
 using Root.Factories;
+using Timers;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root
 {
     public class SpawnSingleItem : MonoBehaviour
     {
         [SerializeField] private ItemSo item;
+        [SerializeField] private MapSection mapSection;
         void Start()
         {
-            var obj = item.CreatePhysicalItem(new ItemSpawnContext(null, null));
+            ItemSpawnContext ctx;
+            if (mapSection != null) {
+                ctx = new(mapSection, new Random(SeedUtils.PositionToSeed(transform.position)));
+            }
+            else {
+                ctx = new();
+            }
+            
+            var obj = item.CreatePhysicalItem(ctx);
             obj.transform.position = transform.position;
             obj.transform.rotation = transform.rotation;
             obj.transform.parent = transform.parent;
