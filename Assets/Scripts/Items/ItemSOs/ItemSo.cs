@@ -16,7 +16,9 @@ namespace Root {
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
-        [field: SerializeField, SerializeReference] public ItemState DefaultItemState { get; private set; }
+
+        [SerializeField, SerializeReference] private ItemState defaultItemState;
+        public ItemState GetDefaultItemState() => defaultItemState.Clone();
         [field: SerializeField, Expandable] public StoreItemData StoreItemData { get; private set; }
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace Root {
         }
 
         private void OnValidate() {
+            Assert.IsTrue(defaultItemState.ItemSo == this, "Wrong ItemSo set inside the default item state");
             Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 }, "InventorySize must be 1x1 or greater");
             Assert.IsNotNull(PhysicalItemPrefab.GetComponent<ItemPoolable>(), "PhysicalItemPrefab doesn't have a Poolable component");
         }
@@ -55,11 +58,11 @@ namespace Root {
         
         
 #if UNITY_EDITOR
-        [NaughtyAttributes.Button]
+        [Button]
         [ContextMenu("Generate Default Item State")]
         private void GenerateStateInEditor() {
             UnityEditor.Undo.RecordObject(this, "Generate Item State");
-            DefaultItemState = CreateState();
+            defaultItemState = CreateState();
             UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif

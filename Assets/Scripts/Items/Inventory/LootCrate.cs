@@ -29,7 +29,7 @@ namespace Root {
             });
 
             foreach (var item in itemsToGenerate) {
-                inv.InsertItem(item.DefaultItemState);
+                inv.InsertItem(item.GetDefaultItemState());
             }
         }
 
