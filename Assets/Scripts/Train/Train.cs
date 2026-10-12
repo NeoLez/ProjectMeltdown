@@ -226,6 +226,9 @@ namespace Root
 
                 if (currentWaypoint.maxSpeed < _currentSpeed && !emergencyStopButton.IsBraking())
                 {
+                    if (godmode) {
+                        _descarriladoTimer = 0;
+                    }
                     if (_descarriladoTimer >= tiempoDescarrilamiento && !godmode)
                     {
                         _descarrilado = true;

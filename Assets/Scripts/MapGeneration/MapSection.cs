@@ -10,7 +10,6 @@ namespace Root {
         private int _id;
         [SerializeField] protected List<TrainPathWaypoint> _waypoints = new();
         [SerializeReference] CompositeBoundingBox boundingBox;
-        public int AccessCode {get; private set;} 
         public event Action OnMapSectionRemoved;
 
         public List<TrainPathWaypoint> GetWaypoints() {

@@ -10,6 +10,7 @@ namespace Root
     {
         [SerializeField] private ItemSo item;
         [SerializeField] private MapSection mapSection;
+        [SerializeField] private bool disablePhysics;
         void Start()
         {
             ItemSpawnContext ctx;
@@ -26,9 +27,11 @@ namespace Root
             obj.transform.parent = transform.parent;
             obj.transform.GetChild(0).transform.position = transform.position;
 
-            Rigidbody rB =  obj.GetComponent<Rigidbody>();
-            rB.isKinematic = true;
-            rB.useGravity = false;
+            if (disablePhysics) {
+                Rigidbody rB =  obj.GetComponent<Rigidbody>();
+                rB.isKinematic = true;
+                rB.useGravity = false;
+            }
         }
 
 #if UNITY_EDITOR
