@@ -62,19 +62,29 @@ namespace Root {
             if (holder == null)
                 return;
 
-            if (!holder.HasItem)
+            if (!holder.HasItem || holder.HasItem)
             {
                 if (gameObject.TryGetComponent(out StoreItemDisplay itemDisplay))
                 {
-                    if (!itemDisplay.CanPurchase()) return;
-
-                    itemDisplay.OnInteraction?.Invoke();
+                    if(!TryPurchaseItem(itemDisplay))
+                    {
+                        return;
+                    }
                 }
             }
 
             holder.Pickup(this);
         }
 
+        private bool TryPurchaseItem(StoreItemDisplay itemDisplay)
+        {
+            if (!itemDisplay.CanPurchase())
+            {
+                return false;
+            }
+            itemDisplay.OnInteraction?.Invoke();
+            return true;
+        }
 
         /// <summary>
         /// If <paramref name="state"/> is true, will disable all the object's behaviours, physics and colliders except for visual ones to allow for use in, for instance, animations. Setting it to false will undo this change.

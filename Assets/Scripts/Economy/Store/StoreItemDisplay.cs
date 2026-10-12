@@ -55,6 +55,8 @@ namespace Root
             
             if (_priceCanvas != null)
                 _priceCanvas.Hide();
+
+            Destroy(GetComponent<StoreItemDisplay>()); //Preventive
         }
 
         public bool CanPurchase()
