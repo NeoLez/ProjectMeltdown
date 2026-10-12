@@ -72,7 +72,18 @@ namespace Root
             if(!_sellableItems.Contains(state))
             {
                 if(state.itemState is PackageItemState)
-                    sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
+                {
+                    PackageItemState package = state.itemState as PackageItemState;
+
+                    if(package.canBeDelivered)
+                    {
+                        sellablePrice = ((PackageItemState)state.itemState).price;
+                    }
+                    else
+                    {
+                        sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
+                    }
+                }
                 else {
                     var storeItemData = state.itemState.ItemSo.StoreItemData;
                     if (storeItemData == null) {
@@ -89,10 +100,23 @@ namespace Root
 
         public void ItemDiscarted(InventoryItem state)
         {
-            if (_sellableItems.Contains(state)) {
+            if (_sellableItems.Contains(state))
+            {
                 int sellablePrice = 0;
+
                 if(state.itemState is PackageItemState)
-                    sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
+                {
+                    PackageItemState package = state.itemState as PackageItemState;
+
+                    if (package.canBeDelivered)
+                    {
+                        sellablePrice = ((PackageItemState)state.itemState).price;
+                    }
+                    else
+                    {
+                        sellablePrice = (int)(((PackageItemState)state.itemState).price * packagePriceMultiplier);
+                    }
+                }
                 else {
                     var storeItemData = state.itemState.ItemSo.StoreItemData;
                     if (storeItemData == null) {
