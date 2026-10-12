@@ -19,7 +19,7 @@ namespace Root
         Animator _animator;
         private bool _doDamage = false;
         private HealthControl _pj;
-        private float _delay;
+        [SerializeField] private float _delay;
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
