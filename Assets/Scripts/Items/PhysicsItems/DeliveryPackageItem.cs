@@ -140,7 +140,7 @@ namespace Root
         }
 
         public PackageItemState State => ItemState as PackageItemState;
-        protected override bool IsStateTypeValid(ItemState state) {
+        public override bool IsStateTypeValid(ItemState state) {
             return state is PackageItemState;
         } 
     }

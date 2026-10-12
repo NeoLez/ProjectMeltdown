@@ -30,7 +30,7 @@ namespace Root {
             visualStages[a > visualStages.Count - 1 ? visualStages.Count - 1 : a].SetActive(true);
         }
         
-        protected override bool IsStateTypeValid(ItemState state) {
+        public override bool IsStateTypeValid(ItemState state) {
             return state is ItemConsumableState;
         } 
     }

@@ -48,6 +48,9 @@ namespace Root {
         }
 
         private void OnValidate() {
+            Assert.IsTrue(PhysicalItemPrefab.IsStateTypeValid(defaultItemState), "ItemState doesn't match the one reported by PhysicalItem");
+            Assert.IsTrue(InventoryItemPrefab.IsStateTypeValid(defaultItemState), "ItemState doesn't match the one reported by InventoryItemDisplay");
+            Assert.IsTrue(StoreItemData == null || StoreItemData.item == this, "StoreItemData itemSo mismatch");
             Assert.IsTrue(defaultItemState.ItemSo == this, "Wrong ItemSo set inside the default item state");
             Assert.IsTrue(InventorySize is { x: >= 1, y: >= 1 }, "InventorySize must be 1x1 or greater");
             Assert.IsNotNull(PhysicalItemPrefab.GetComponent<ItemPoolable>(), "PhysicalItemPrefab doesn't have a Poolable component");

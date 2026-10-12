@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Root.Log;
 using Timers;
@@ -270,6 +269,10 @@ namespace Root {
                 actions.Add(_moveToHandheldSlot);
             actions.Add(_drop);
             return actions;
+        }
+        
+        public virtual bool IsStateTypeValid(ItemState state) {
+            return true;
         }
 
         private void OnDestroy() {

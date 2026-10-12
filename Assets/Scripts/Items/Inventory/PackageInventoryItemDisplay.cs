@@ -11,5 +11,9 @@ namespace Root {
             string destinationText = $"{state.DestinationNode.line}{state.DestinationNode.dist}";
             destinationPriceText.text = destinationText;
         }
+        
+        public override bool IsStateTypeValid(ItemState state) {
+            return state is PackageItemState;
+        }
     }
 }

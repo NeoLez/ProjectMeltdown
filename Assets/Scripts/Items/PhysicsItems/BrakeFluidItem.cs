@@ -19,7 +19,7 @@ namespace Root {
 
         public float GetRepairAmountLeft() => State.currentCharge;
         
-        protected override bool IsStateTypeValid(ItemState state) {
+        public override bool IsStateTypeValid(ItemState state) {
             return state is ItemChargeState;
         }
     }

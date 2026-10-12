@@ -1,6 +1,7 @@
 using Root.Managers;
 using Timers;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Root {
     /// <summary>
@@ -16,6 +17,11 @@ namespace Root {
         private void GenerateStateInEditor() {
             if (defaultItemSo == null) {
                 Debug.LogWarning("You must assign an ItemSO to 'Default ItemSo' first!");
+                return;
+            }
+
+            if (!IsStateTypeValid(defaultItemSo.GetDefaultItemState())) {
+                Debug.LogWarning("Wrong type of itemState set as defaultItemSo (editor only)");
                 return;
             }
 
@@ -96,7 +102,7 @@ namespace Root {
         /// Returns whether the input <paramref name="state"/> is valid. This function should be overriden by child classes to ensure that the results are valid
         /// </summary>
         /// <param name="state"></param>
-        protected virtual bool IsStateTypeValid(ItemState state) {
+        public virtual bool IsStateTypeValid(ItemState state) {
             return true;
         }
 
@@ -105,6 +111,10 @@ namespace Root {
         /// </summary>
         protected virtual void Initialize() {
             
+        }
+
+        private void OnValidate() {
+            Assert.IsTrue(IsStateTypeValid(itemState), "State is not valid");
         }
     }
 }
