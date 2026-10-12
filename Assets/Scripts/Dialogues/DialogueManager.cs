@@ -137,7 +137,8 @@ public class DialogueManager : MonoBehaviour
     public void StartConversation(DialogueSO dialogue, InteractBehaviour npcGameObject = null)
     {
         currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
-        if (_currentSpeaker == null)
+
+        if (_currentSpeaker == null || _currentSpeaker != dialogue)
         {
             Initialize(dialogue, subtitleManager.SubtitleText, dialogue.HasChoices);
         }
@@ -397,7 +398,7 @@ public class DialogueManager : MonoBehaviour
         ChangeDialogueState(DialogueState.FinishedTalking);
 
         _oldspeaker = _currentSpeaker;
-        _currentSpeaker = null;
+        //_currentSpeaker = null;
     }
 
 
@@ -410,6 +411,7 @@ public class DialogueManager : MonoBehaviour
     {
         _canInterruptTyping = false;
     }
+
 
     #region Choices
     private void DisplayChoices()
