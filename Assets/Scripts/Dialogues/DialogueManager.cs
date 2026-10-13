@@ -435,10 +435,10 @@ public class DialogueManager : MonoBehaviour
             _choicesText[index].text = choice.Text;
             index++;
         }
-        /*for (int i = index; i < choiceOptions.Length; i++) //disable tha remaining dialogue options
+        for (int i = index; i < choiceOptions.Length; i++) //disable tha remaining dialogue options
         {
             choiceOptions[i].gameObject.SetActive(false);
-        }*/
+        }
     }
     private void StopDialogue(int seletecButtonIndex)
     {
@@ -447,6 +447,9 @@ public class DialogueManager : MonoBehaviour
         SelectOption(seletecButtonIndex);
 
         EnableDisableChoices(false);
+
+        //agregar la opcion de saltear a diferentes dialogos, si no se eligio ninguno, que agarre el que le sigue al utlimo que se ejecuto
+
 
         if (_sentences.Count > 0) //TODO-mejorar esto
         {
