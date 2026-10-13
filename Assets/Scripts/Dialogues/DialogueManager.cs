@@ -140,6 +140,7 @@ public class DialogueManager : MonoBehaviour
 
         if (_currentSpeaker == null || _currentSpeaker != dialogue)
         {
+            ResetChoiceButtons();
             Initialize(dialogue, subtitleManager.SubtitleText, dialogue.HasChoices);
         }
 
@@ -472,7 +473,18 @@ public class DialogueManager : MonoBehaviour
             DialogueEffectSO effect = selectedChoice.effects[i];
 
             effect.Execute(currentContext);
+        }
+    }
 
+
+    private void ResetChoiceButtons()
+    {
+        int index = 0;
+        foreach (var choice in choiceOptions)
+        {
+            int currentIndex = index;
+            choiceOptions[index].onClick.RemoveAllListeners();
+            index++;
         }
     }
     #endregion
