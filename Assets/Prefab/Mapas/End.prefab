@@ -44417,12 +44417,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.NPCInteraction
   Pivot: {fileID: 0}
   PlayerPivot: {fileID: 0}
-  Dialogue: {fileID: 11400000, guid: 4cbed44a165439e4a9db37d89bbb3f7e, type: 2}
+  Dialogue: {fileID: 11400000, guid: aceb7fa72289fd840b495e01d586c04c, type: 2}
   hasBeenTriggeredOnce: 0
   hasMoreInteraction: 0
-  instancePivot: {fileID: 6474579147791861864}
+  instancePivot: {fileID: 0}
   <Section>k__BackingField: {fileID: 8274113595705031903}
-  currentMission: {fileID: 11400000, guid: 0426a8455175cfe49a312d1f3b4ccc5c, type: 2}
+  currentMission: {fileID: 0}
 --- !u!114 &2954572403796111191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44435,6 +44435,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9acb1b3b37d6fd746ae8986be8b91bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.NpcToll
+  amountToRequest: 20
+  packagesToRequest: 1
   animator: {fileID: 4921864931140362483}
 --- !u!1 &5818624086009452030
 GameObject:
@@ -64988,6 +64990,7 @@ MonoBehaviour:
   requiresPowerToInteract: 1
   onPowerLost: 0
   onPowerRestored: 0
+  cardAccess: 0
   mode: 0
   axis: 2
   openAngle: 90
@@ -97372,6 +97375,7 @@ MonoBehaviour:
   requiresPowerToInteract: 0
   onPowerLost: 0
   onPowerRestored: 0
+  cardAccess: 0
   mode: 0
   axis: 1
   openAngle: 90
