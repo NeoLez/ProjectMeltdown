@@ -93,8 +93,6 @@ namespace Root {
             var s = _slots.Values.First();
             _cellSize = s.sizeDelta.x;
             _initialSlotOpacity = s.GetComponent<Image>().color.a;
-            slotFreeColor.a = _initialSlotOpacity;
-            slotObstructedColor.a = _initialSlotOpacity;
             inventoryBackground.sizeDelta = new Vector2((_maxDimensions.x + 1) * _cellSize, (_maxDimensions.y + 1) * _cellSize);
         }
 
