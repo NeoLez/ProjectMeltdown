@@ -37,6 +37,7 @@ namespace Root
         [SerializeField] private Transform pivot;
         [SerializeField] private Vector3 maximumRotation = new Vector3(45f, 0f, 0f);
         [SerializeField] private float deliveryDoorDuration = 1f;
+        [SerializeField] private float explosionForce;
         /* [SerializeField] private Animator animator;
         private int _animStateOpen = Animator.StringToHash("OpenDepositDoor");
         private int _animStateClose = Animator.StringToHash("CloseDepositDoor");*/
@@ -49,7 +50,7 @@ namespace Root
 
         private Coroutine _textRoutine;
         private string[] _finalMessage = { "Entrega confirmada", "Hasta Luego" };
-
+        Vector3 startpos;
         private void Awake()
         {
             OnDeliveryFinished += DisablePost;
@@ -74,7 +75,7 @@ namespace Root
             if (HasConfirmedDelivery) return;
             if (_isAnimating) return;
 
-            StartLeverAnimation(maximumRotation, deliveryDoorDuration);
+            StartDepositDoorAnimation(maximumRotation, deliveryDoorDuration);
 
             RefreshSumAmount(itemState.price);
             if (!_depositedPackages.Contains(itemState))
@@ -114,26 +115,30 @@ namespace Root
 
         private void SpawnBills(List<ValueTuple<BillItemSo, int>> bills)
         {
+            OpenDepositDoorAnimation(maximumRotation, deliveryDoorDuration);
             foreach (var tuple in bills)
             {
                 for (int i = 0; i < tuple.Item2; i++)
                 {
                     var bill = tuple.Item1.CreatePhysicalItem(tuple.Item1.CreateState(new ItemSpawnContext(mapSection, new Random())));
+                    Rigidbody rb = bill.GetComponent<Rigidbody>();
+                    rb.AddForce(Vector3.forward * explosionForce, ForceMode.Force);
                     bill.transform.position = dropPivot.transform.position;
                 }
             }
+            CloseDepositDoorAnimation(deliveryDoorDuration);
         }
 
-       /* private IEnumerator TriggerDepositAnims()
-        {
-            _isAnimating = true;
-            animator.SetTrigger(_animStateOpen);
-            yield return new WaitForSeconds(deliveryDoorDuration);
-            animator.SetTrigger(_animStateClose);
-            _isAnimating = false;
-        }*/
+        /* private IEnumerator TriggerDepositAnims()
+         {
+             _isAnimating = true;
+             animator.SetTrigger(_animStateOpen);
+             yield return new WaitForSeconds(deliveryDoorDuration);
+             animator.SetTrigger(_animStateClose);
+             _isAnimating = false;
+         }*/
 
-        private void StartLeverAnimation(Vector3 rotationAngle, float returnDuration)
+        private void StartDepositDoorAnimation(Vector3 rotationAngle, float returnDuration)
         {
             _isAnimating = true;
             Tween.LocalRotation(
@@ -145,6 +150,15 @@ namespace Root
             cycles: 2,
             cycleMode: CycleMode.Yoyo
             ).OnComplete(() => _isAnimating = false);
+        }
+
+        private void OpenDepositDoorAnimation(Vector3 rotationAngle, float rotationTime)
+        {
+            Tween.LocalRotation(pivot,pivot.localRotation, pivot.localRotation * Quaternion.Euler(rotationAngle), rotationTime);
+        }
+        private void CloseDepositDoorAnimation(float rotationTime)
+        {
+            Tween.LocalRotation(pivot, pivot.localRotation, pivot.localRotation * Quaternion.Euler(0,0,0), rotationTime);
         }
 
         private void RefreshSumAmount(int amount)
@@ -268,10 +282,10 @@ namespace Root
                 return;
             }
 
-            if (itemState.DestinationNode != mapSection.Node) {
+         /*   if (itemState.DestinationNode != mapSection.Node) {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Destino incorrecto", false));
                 return;
-            }
+            }*/
             //if (!MissionsManager.Instance.AreMissionsActive()) return;
 
             DepositPackage(itemState);
@@ -286,10 +300,10 @@ namespace Root
             {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Paquete fuera de mision", false));
             }
-            if (itemState.DestinationNode != mapSection.Node) {
+           /* if (itemState.DestinationNode != mapSection.Node) {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdateTextRoutine("Destino incorrecto", false));
                 return false;
-            }
+            }*/
 
             return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery && itemState.canBeDelivered;
         }
