@@ -27,10 +27,18 @@ MonoBehaviour:
   - Text: Excelente
     textDuration: 0
     HasChoices: 0
+  - Text: Lastima
+    textDuration: 0
+    HasChoices: 0
   DialogueChoices:
   - Text: 'Si '
+    NextDialogueIndex: 2
     effects:
     - {fileID: 11400000, guid: 76a184167b7dac56088147ebbf14525f, type: 2}
     - {fileID: 11400000, guid: 190e71903c9f1a3db938aeb4e5b24bfa, type: 2}
+    ChoiceDescription: 
   - Text: No
+    NextDialogueIndex: 3
     effects: []
+    ChoiceDescription: 
+  endDialogueLine: 00000101

@@ -32,7 +32,7 @@ namespace Root
                     DeliverPackagesType(_packageItemData, inventory);
                     break;
                 default:
-                    Debug.Log("Elegi un tipo");
+                    Debug.LogWarning($"Please choose a type of PackageRequest for {name}");
                     break;
             }
         }

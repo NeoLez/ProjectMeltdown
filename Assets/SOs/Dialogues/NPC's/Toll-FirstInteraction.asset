@@ -27,12 +27,22 @@ MonoBehaviour:
   - Text: Gracias
     textDuration: 0
     HasChoices: 0
+  - Text: Buu
+    textDuration: 0
+    HasChoices: 0
   DialogueChoices:
   - Text: Give Money
+    NextDialogueIndex: 2
     effects:
     - {fileID: 11400000, guid: c107a76b4e88ba4439c609854f247e2b, type: 2}
+    ChoiceDescription: '- $20'
   - Text: Give Packages
+    NextDialogueIndex: 2
     effects:
     - {fileID: 11400000, guid: b8ee946d9a759a84da4a8f959634b244, type: 2}
+    ChoiceDescription: Menos x cantidad de paquetes
   - Text: Do Nothing
+    NextDialogueIndex: 3
     effects: []
+    ChoiceDescription: 
+  endDialogueLine: 00000101

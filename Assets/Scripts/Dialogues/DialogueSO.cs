@@ -16,6 +16,7 @@ public class DialogueSO : ScriptableObject
     [SerializeField] private DialogueData[] dialogueData;
 
     public DialogueChoices[] DialogueChoices;
+    public bool[] endDialogueLine;
 
     //public string SpeakerName => speakerName;
     //public bool CanRepeatDialogue => canRepeatDialogue;
@@ -44,5 +45,8 @@ public struct DialogueData
 public struct DialogueChoices
 {
     public string Text;
+    [Tooltip("Indicates which dialogue to execute next")]
+    public int NextDialogueIndex;
     [Expandable] public List<DialogueEffectSO> effects;
+    public string ChoiceDescription;
 }

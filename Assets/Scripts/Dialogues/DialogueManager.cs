@@ -37,14 +37,14 @@ public class DialogueManager : MonoBehaviour
     private float _currentTextDuration;
     private int _arrayIndex;
     private bool _canInterruptTyping;
-    private bool hasChosenOption;
+    private bool _hasChosenOption;
 
     private DialogueState _states;
     private AudioSource _audioSource;
     private DialogueSO _oldspeaker;
     private Dictionary<string, DialogueAudioInfoSO> _audioInfoDictorary;
 
-    private DialogueExecutionContext currentContext;
+    private DialogueExecutionContext _currentContext;
 
     private void Awake()
     {
@@ -60,7 +60,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        _sentences = new Queue<string>();
+        //_sentences = new Queue<string>();
 
         GameManager.AudioSystem.AssignOutputMixerGroup(_audioSource, GameManager.AudioSystem.VFX);
 
@@ -72,28 +72,12 @@ public class DialogueManager : MonoBehaviour
     #region Initializations
     public void Initialize(DialogueSO dialogue, TextMeshProUGUI text, bool hasChoisingSystem)
     {
-        if (hasChoisingSystem) InitialiceChoices();
-
         _currentSpeaker = dialogue;
         _currentDisplayText = text;
 
         InitializeAudioInfo();
     }
 
-    private void InitialiceChoices()
-    {
-        _choicesText = new TextMeshProUGUI[choiceOptions.Length];
-
-        int index = 0;
-        foreach (var choice in choiceOptions)
-        {
-            int currentIndex = index;
-
-            _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            choiceOptions[index].onClick.AddListener(() => StopDialogue(currentIndex)); //cuidado que si le doy a repetir dialogo, se sucribe de nuevo y rompe la seleccion de dialogos
-            index++;
-        }
-    }
 
     private void EnableDisableChoices(bool state)
     {
@@ -136,11 +120,11 @@ public class DialogueManager : MonoBehaviour
 
     public void StartConversation(DialogueSO dialogue, InteractBehaviour npcGameObject = null)
     {
-        currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
+        _currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
 
         if (_currentSpeaker == null || _currentSpeaker != dialogue)
         {
-            ResetChoiceButtons();
+            ClearChoices();
             Initialize(dialogue, subtitleManager.SubtitleText, dialogue.HasChoices);
         }
 
@@ -162,7 +146,7 @@ public class DialogueManager : MonoBehaviour
                 StartDialogue();
                 break;
             case DialogueState.FinishedTalking:
-                //nueva funcion que chequea si estoy interactuando con otro npc asi triggerear dialogo de nuevo
+                //Works to trigger the dialogue once more if you're interacting with a different NPC
                 CheckContinueDialoging();
                 break;
             default:
@@ -190,8 +174,8 @@ public class DialogueManager : MonoBehaviour
 
     private void CheckContinueDialoging()
     {
-        OnDialogueStarted?.Invoke();
-        //necesito dispara el evento para obtener los datos
+        OnDialogueStarted?.Invoke(); //mandatory to re-obtaing the dialogue data from the NPC
+
         if (_oldspeaker != _currentSpeaker)
         {
             ChangeDialogueState(DialogueState.StartTalking);
@@ -207,7 +191,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            if (!hasChosenOption) DisplayNextSentence();
+            if (!_hasChosenOption) DisplayNextSentence();
         }
     }
 
@@ -220,13 +204,6 @@ public class DialogueManager : MonoBehaviour
         _currentSpeaker.OnDialogueStarted?.Invoke();
         SetCurrentDialogue();
 
-        _sentences.Clear();
-
-        foreach (string sentence in _currentData)
-        {
-            _sentences.Enqueue(sentence);
-        }
-
         DisplayNextSentence();
 
         ChangeDialogueState(DialogueState.IsTalking);
@@ -234,15 +211,21 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        if (_sentences.Count == 0)
+        if (_arrayIndex >= _currentData.Count)
         {
             EndDialogue(_currentSpeaker);
             return;
         }
-        _currentSentence = _sentences.Dequeue();
+
+        if (_currentSpeaker.endDialogueLine.Length > _arrayIndex && _currentSpeaker.endDialogueLine[_arrayIndex])
+        {
+            EndDialogue(_currentSpeaker);
+            return;
+        }
+
+        _currentSentence = _currentData[_arrayIndex];
 
         if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
-
 
         SetCurrentSpeakerAudio(_currentSpeaker.DialogueAudio[0].id);
         _typingCoroutine = StartCoroutine(TypeSentence(_currentSentence));
@@ -377,7 +360,7 @@ public class DialogueManager : MonoBehaviour
 
     private void EnableTextSkip(bool enable)
     {
-        skipText.enabled = hasChosenOption ? !enable : enable;
+        skipText.enabled = _hasChosenOption ? !enable : enable;
     }
 
     private void AutoHideText()
@@ -391,7 +374,6 @@ public class DialogueManager : MonoBehaviour
 
         _arrayIndex = 0;
         _currentDisplayText.text = "";
-        _sentences.Clear();
         _currentData.Clear();
 
         _currentSpeaker.OnDialogueEnded?.Invoke();
@@ -399,7 +381,6 @@ public class DialogueManager : MonoBehaviour
         ChangeDialogueState(DialogueState.FinishedTalking);
 
         _oldspeaker = _currentSpeaker;
-        //_currentSpeaker = null;
     }
 
 
@@ -415,16 +396,30 @@ public class DialogueManager : MonoBehaviour
 
 
     #region Choices
+
     private void DisplayChoices()
     {
-        hasChosenOption = true;
+        _hasChosenOption = true;
         MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
+
+        _choicesText = new TextMeshProUGUI[choiceOptions.Length];
 
         List<DialogueChoices> currentChoices = new();
 
         for (int i = 0; i < _currentSpeaker.DialogueChoices.Length; i++)
         {
+            int currentIndex = i;
+
             currentChoices.Add(_currentSpeaker.DialogueChoices[i]);
+            int nextIdex = _currentSpeaker.DialogueChoices[i].NextDialogueIndex;
+
+            if (nextIdex > _currentData.Count)
+            {
+                Debug.LogError("Dialogue Index is greater tha current dialogue length");
+            }
+
+            _choicesText[i] = choiceOptions[i].GetComponentInChildren<TextMeshProUGUI>();
+            choiceOptions[i].onClick.AddListener(() => StopDialogue(currentIndex, nextIdex));
         }
 
         if (currentChoices.Count > choiceOptions.Length) return;
@@ -434,34 +429,41 @@ public class DialogueManager : MonoBehaviour
         {
             choiceOptions[index].gameObject.SetActive(true);
             _choicesText[index].text = choice.Text;
+            if (!string.IsNullOrEmpty(choice.ChoiceDescription))
+            {
+                choiceOptions[index].GetComponent<TollInformationMenu>().Initialize(choice.ChoiceDescription);
+            }
             index++;
         }
+
         for (int i = index; i < choiceOptions.Length; i++) //disable tha remaining dialogue options
         {
             choiceOptions[i].gameObject.SetActive(false);
         }
+
     }
-    private void StopDialogue(int seletecButtonIndex)
+    private void StopDialogue(int seletecButtonIndex, int nextLineIndex)
     {
-        hasChosenOption = false;
+        _hasChosenOption = false;
 
         SelectOption(seletecButtonIndex);
 
         EnableDisableChoices(false);
 
-        //agregar la opcion de saltear a diferentes dialogos, si no se eligio ninguno, que agarre el que le sigue al utlimo que se ejecuto
+        _arrayIndex = nextLineIndex;
 
-
-        if (_sentences.Count > 0) //TODO-mejorar esto
-        {
-            DisplayNextSentence();
-        }
-        else
-        {
-            EndDialogue(_currentSpeaker);
-        }
+        DisplayNextLine();
     }
 
+    private void DisplayNextLine()
+    {
+        _currentSentence = _currentData[_arrayIndex];
+
+        if (_typingCoroutine != null) StopCoroutine(_typingCoroutine);
+
+        SetCurrentSpeakerAudio(_currentSpeaker.DialogueAudio[0].id);
+        _typingCoroutine = StartCoroutine(TypeSentence(_currentSentence));
+    }
 
     public void SelectOption(int index)
     {
@@ -472,19 +474,16 @@ public class DialogueManager : MonoBehaviour
             int effectIndex = i;
             DialogueEffectSO effect = selectedChoice.effects[i];
 
-            effect.Execute(currentContext);
+            effect.Execute(_currentContext);
         }
     }
 
 
-    private void ResetChoiceButtons()
+    private void ClearChoices()
     {
-        int index = 0;
-        foreach (var choice in choiceOptions)
+        for (int i = 0; i < choiceOptions.Length; i++)
         {
-            int currentIndex = index;
-            choiceOptions[index].onClick.RemoveAllListeners();
-            index++;
+            choiceOptions[i].onClick.RemoveAllListeners();
         }
     }
     #endregion
@@ -495,7 +494,7 @@ public class DialogueManager : MonoBehaviour
         foreach (var choice in choiceOptions)
         {
             int currentIndex = index;
-            choiceOptions[index].onClick.RemoveListener(() => StopDialogue(currentIndex));
+            choiceOptions[index].onClick.RemoveAllListeners();
             index++;
         }
     }
