@@ -30,7 +30,7 @@ namespace Root {
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
             }
             else {
-                UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
+                OpenInventory();
             }
         }
 
