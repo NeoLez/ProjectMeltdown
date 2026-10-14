@@ -33,9 +33,9 @@ namespace Root {
 
         
         /// <summary>
-        /// Returns a default ItemState of the correct type. Should always be overriden by child classes to define the ItemState type they expect. 
+        /// Returns a default ItemState of the correct type.
         /// </summary>
-        public virtual ItemState CreateUninitializedState() {
+        public ItemState CreateUninitializedState() {
             return defaultItemState.Clone();
         }
 

@@ -1,10 +1,13 @@
+using Root.Factories;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root {
     [RequireComponent(typeof(Inventory))]
     public class KitSpawner : MonoBehaviour {
         public ItemGenerationPoolSo[] pools;
         public int[] startingMoney;
+        [SerializeField] private MapSection mapSection;
         
         private void Start() {
             SpawnItems(pools[GameManager.VeryUglyKitNumber]);
@@ -14,7 +17,7 @@ namespace Root {
         private void SpawnItems(ItemGenerationPoolSo pool) {
             var inv = GetComponent<Inventory>();
             foreach (var item in pool.items) {
-                inv.InsertItem(item.CreateUninitializedState());
+                inv.InsertItem(item.CreateState(new ItemSpawnContext(mapSection, new Random(mapSection.GetMapSectionSeed()))));
             }
         }
     }
