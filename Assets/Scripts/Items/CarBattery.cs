@@ -7,22 +7,23 @@ namespace Root
     public class CarBattery : InteractableNormalCamera, IItemDragReceiver
     {
         [SerializeField] private BatteryCharcher batteryCharcher;
-
         [SerializeField] private Transform chargerPivot;
 
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
-
         [SerializeField] private ItemSo _batteryItemSO;
 
+        [Header("Overcharge")]
+        [SerializeField] private float maxShakeIntensity = 0.02f;
+        [SerializeField] private float shakeFrequency = 40f;
+        [SerializeField] private VisualEffect explosionVFX;
+
         private TrainBatteryItem _battery;
-        private bool _canRestoreCharge;
 
         private void Awake()
         {
             batteryCharcher.OnInterruptCharge += DisableCharge;
-            batteryCharcher.OnContinueCharge += EnableCharge;
         }
 
         public override void Interact()
@@ -62,22 +63,49 @@ namespace Root
             return _battery.State.currentCharge;
         }
 
-        private void EnableCharge()
+        public void ConsumeCharge(float amount)
         {
-            _canRestoreCharge = true;
+            if (_battery == null) return;
+            _battery.State.currentCharge = Mathf.Max(0f, _battery.State.currentCharge - amount);
+        }
+
+        public void Shake(float intensity)
+        {
+            if (_battery == null) return;
+
+            if (intensity <= 0f)
+            {
+                _battery.transform.position = chargerPivot.position;
+                return;
+            }
+
+            float amplitude = intensity * maxShakeIntensity;
+            float time = Time.time * shakeFrequency;
+            Vector3 offset = new Vector3(Mathf.PerlinNoise(time, 0f) - 0.5f, Mathf.PerlinNoise(0f, time) - 0.5f, Mathf.PerlinNoise(time, time) - 0.5f) * 2f * amplitude;
+            _battery.transform.position = chargerPivot.position + offset;
+        }
+
+        public void Explode()
+        {
+            if (_battery == null) return;
+
+            TrainBatteryItem battery = _battery;
+            _battery = null;
+
+            if (explosionVFX != null)
+            {
+                explosionVFX.transform.position = chargerPivot.position;
+                explosionVFX.gameObject.SetActive(true);
+                explosionVFX.SendEvent("OnPlay");
+            }
+
+            Destroy(battery.gameObject);
         }
 
         private void DisableCharge()
         {
-            _canRestoreCharge = false;
-        }
-
-        public void DrainCharge(float drainAmount)
-        {
-            if (!_canRestoreCharge) return;
-            if (_battery.State.currentCharge <= 0f) return;
-
-            _battery.State.currentCharge = MathF.Max(0, _battery.State.currentCharge - ( drainAmount * Time.deltaTime));
+            if (_battery != null)
+                _battery.transform.position = chargerPivot.position;
         }
 
         public bool TryInsertBattery(ItemState item)
