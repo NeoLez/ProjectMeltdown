@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
 public class DialogueManager : MonoBehaviour
@@ -20,7 +21,9 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private SubtitleManager subtitleManager;
 
     [Header("Dialogue Options")]
-    [SerializeField] private Button[] choiceOptions;
+    [SerializeField] private HorizontalLayoutGroup choicesLayout;
+    [SerializeField] private Button choicePrefab;
+    private Button[] choiceOptions;
     private TextMeshProUGUI[] _choicesText;
 
     private Queue<string> _sentences;
@@ -45,7 +48,6 @@ public class DialogueManager : MonoBehaviour
     private Dictionary<string, DialogueAudioInfoSO> _audioInfoDictorary;
 
     private DialogueExecutionContext _currentContext;
-    private InteractBehaviour _targetNPC;
     private void Awake()
     {
         if (Instance == null)
@@ -65,8 +67,13 @@ public class DialogueManager : MonoBehaviour
         GameManager.AudioSystem.AssignOutputMixerGroup(_audioSource, GameManager.AudioSystem.VFX);
 
         EnableTextSkip(false);
-
-        EnableDisableChoices(false);
+    }
+    private void EnableDisableChoices(bool state)
+    {
+        for (int i = 0; i < choiceOptions.Length; i++)
+        {
+            choiceOptions[i].gameObject.SetActive(state);
+        }
     }
 
     #region Initializations
@@ -78,14 +85,6 @@ public class DialogueManager : MonoBehaviour
         InitializeAudioInfo();
     }
 
-
-    private void EnableDisableChoices(bool state)
-    {
-        for (int i = 0; i < choiceOptions.Length; i++)
-        {
-            choiceOptions[i].gameObject.SetActive(state);
-        }
-    }
 
     private void InitializeAudioInfo()
     {
@@ -121,10 +120,9 @@ public class DialogueManager : MonoBehaviour
     public void StartConversation(DialogueSO dialogue, InteractBehaviour npcGameObject = null)
     {
         _currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
-        _targetNPC = npcGameObject;
+
         if (_currentSpeaker == null || _currentSpeaker != dialogue)
         {
-            ClearChoices();
             Initialize(dialogue, subtitleManager.SubtitleText, dialogue.HasChoices);
         }
 
@@ -321,7 +319,7 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-    IEnumerator FinishVisual()
+    private IEnumerator FinishVisual()
     {
         while (_canInterruptTyping)
         {
@@ -379,7 +377,7 @@ public class DialogueManager : MonoBehaviour
         _currentSpeaker.OnDialogueEnded?.Invoke();
         OnDialogueEnded?.Invoke();
         ChangeDialogueState(DialogueState.FinishedTalking);
-
+        ClearChoices();
         _oldspeaker = _currentSpeaker;
     }
 
@@ -402,12 +400,17 @@ public class DialogueManager : MonoBehaviour
         _hasChosenOption = true;
         MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
+
+        choiceOptions = new Button[_currentSpeaker.DialogueChoices.Length];
+
         _choicesText = new TextMeshProUGUI[choiceOptions.Length];
 
         List<DialogueChoices> currentChoices = new();
 
         for (int i = 0; i < _currentSpeaker.DialogueChoices.Length; i++)
         {
+            choiceOptions[i] = Instantiate(choicePrefab, choicesLayout.transform);
+
             int currentIndex = i;
 
             currentChoices.Add(_currentSpeaker.DialogueChoices[i]);
@@ -428,7 +431,7 @@ public class DialogueManager : MonoBehaviour
         int index = 0;
         foreach (var choice in currentChoices)
         {
-            choiceOptions[index].gameObject.SetActive(true);
+            //choiceOptions[index].gameObject.SetActive(true);
             _choicesText[index].text = choice.Text;
 
             EnableChoises(index);
@@ -510,21 +513,11 @@ public class DialogueManager : MonoBehaviour
         {
             choiceOptions[i].onClick.RemoveAllListeners();
             choiceOptions[i].GetComponent<TollInformationMenu>().ClearPanelInformation();
+            Destroy(choiceOptions[i].gameObject);
         }
     }
 
     #endregion
-
-    private void OnDestroy()
-    {
-        int index = 0;
-        foreach (var choice in choiceOptions)
-        {
-            int currentIndex = index;
-            choiceOptions[index].onClick.RemoveAllListeners();
-            index++;
-        }
-    }
 }
 
 public enum DialogueState
