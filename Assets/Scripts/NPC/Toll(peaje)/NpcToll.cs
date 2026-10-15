@@ -14,6 +14,9 @@ namespace Root
         [ShowIf("ShowPackageTypes")]
         public List<PackageItemGenerationDataSo> Packages = new();
 
+        [SerializeField] private NPCInteraction interaction;
+        [SerializeField] private TollDoor barrier;
+
         public int AmountToRequest => moneyToRequest;
         public ItemGroup PackagesToRequest => packagesToRequest;
 
@@ -29,6 +32,34 @@ namespace Root
         public bool ShowPackageTypes()
         {
             return requestType == PackageRequestType.TypeOfPackages;
+        }
+
+        private void Start()
+        {
+            foreach (var item in interaction.Dialogue.DialogueChoices)
+            {
+                List<DialogueEffectSO> effectsToSuscribe = item.effects;
+
+                if (item.effects == null) break;
+                foreach (var item2 in effectsToSuscribe)
+                {
+                    item2.OnEffectExcuted += barrier.OpenTollBarrier;
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var item in interaction.Dialogue.DialogueChoices)
+            {
+                List<DialogueEffectSO> effectsToSuscribe = item.effects;
+
+                if (item.effects == null) break;
+                foreach (var item2 in effectsToSuscribe)
+                {
+                    item2.OnEffectExcuted -= barrier.OpenTollBarrier;
+                }
+            }
         }
     }
 

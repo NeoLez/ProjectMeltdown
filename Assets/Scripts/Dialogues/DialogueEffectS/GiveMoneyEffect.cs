@@ -15,6 +15,9 @@ namespace Root
         {
             int money = context.NPC.gameObject.GetComponent<NpcToll>().AmountToRequest;
             EconomyManager.Instance.SpendMoney(money);
+
+
+            OnEffectExcuted?.Invoke();
         }
     }
 }

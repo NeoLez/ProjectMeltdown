@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root
@@ -7,6 +8,8 @@ namespace Root
         public abstract void Execute(DialogueExecutionContext context);
 
         public abstract bool CanExecute(DialogueExecutionContext context = null);
+
+        public Action OnEffectExcuted;
     }
 
     public class DialogueExecutionContext

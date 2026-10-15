@@ -18,6 +18,8 @@ namespace Root
             Inventory inventory = context.Instigator.gameObject.GetComponent<Inventory>();
 
             CheckRequestType(_types, _requestPackages, inventory);
+
+            OnEffectExcuted?.Invoke();
         }
 
         private void CheckRequestType(PackageRequestType type, ItemGroup requestPackages, Inventory inventory)

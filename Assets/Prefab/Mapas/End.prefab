@@ -12413,14 +12413,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474075691405670912}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.79335284, z: -0, w: 0.6087622}
-  m_LocalPosition: {x: -13.32, y: 0.88, z: 67.07}
+  m_LocalRotation: {x: -0, y: -0.6087622, z: -0, w: 0.79335284}
+  m_LocalPosition: {x: 10.17, y: -1.07, z: -48.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1965934586679547887}
   - {fileID: 5226953026332714948}
-  m_Father: {fileID: 7354231312121814642}
+  m_Father: {fileID: 3515476977177782849}
   m_LocalEulerAnglesHint: {x: 0, y: -75, z: 0}
 --- !u!33 &1059454042567053818
 MeshFilter:
@@ -12540,7 +12540,9 @@ MonoBehaviour:
   Packages:
   - {fileID: 11400000, guid: 03b039aca831ed34796dbbfc309e2496, type: 2}
   - {fileID: 11400000, guid: 9844bc2be8fdc0346a40796041096534, type: 2}
-  animator: {fileID: 9150266865494842374}
+  interaction: {fileID: 8733433779758852579}
+  barrier: {fileID: 4305174049748057727}
+  animator: {fileID: 0}
 --- !u!1 &1486105251107389141
 GameObject:
   m_ObjectHideFlags: 0
@@ -39087,6 +39089,8 @@ MonoBehaviour:
   chargeAmount: 2
   _soundInsert: {fileID: 0}
   _soundRemove: {fileID: 0}
+  percentPerBattery: 25
+  shakeStartPercent: 15
   _batteryItemSO: {fileID: 11400000, guid: 2b8615748d0c3107fae9fe653e8faa6c, type: 2}
   batteryElement: {fileID: 6344260349682304807}
 --- !u!1 &5561152831329061452
@@ -44505,6 +44509,118 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &5830953094188993558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5333019713213541269}
+  - component: {fileID: 9223034504942360529}
+  - component: {fileID: 7284231979958711888}
+  - component: {fileID: 7162342877781503812}
+  m_Layer: 0
+  m_Name: Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5333019713213541269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830953094188993558}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3795968714082650608}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &9223034504942360529
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830953094188993558}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7284231979958711888
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830953094188993558}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7162342877781503812
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830953094188993558}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5855171405753748647
 GameObject:
   m_ObjectHideFlags: 0
@@ -44971,6 +45087,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6571240061062318492}
+  - {fileID: 3795968714082650608}
+  - {fileID: 6014656716840694976}
   - {fileID: 6277091794558280409}
   - {fileID: 7923741236789509739}
   - {fileID: 1959443791635953913}
@@ -51636,6 +51755,53 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &7180065083578008697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3795968714082650608}
+  - component: {fileID: 4305174049748057727}
+  m_Layer: 0
+  m_Name: Toll Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3795968714082650608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180065083578008697}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 9.049999, y: -1.86, z: -58.35}
+  m_LocalScale: {x: 2.2988, y: 4.3343, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5333019713213541269}
+  m_Father: {fileID: 3515476977177782849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4305174049748057727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180065083578008697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bb5452e7a0fa648810c569fdc14a86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.TollDoor
+  smooth: 8
+  openRotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
 --- !u!1 &7206415584450971710
 GameObject:
   m_ObjectHideFlags: 0
@@ -51728,6 +51894,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 421179086218118587}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7310914267243511689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6571240061062318492}
+  - component: {fileID: 6540087260304738366}
+  - component: {fileID: 1128673994861410251}
+  m_Layer: 0
+  m_Name: NewLevelTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6571240061062318492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310914267243511689}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.83, y: 0.52, z: -59.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3515476977177782849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6540087260304738366
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310914267243511689}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1128673994861410251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310914267243511689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e3538c9b56e52468cdc47f6656df5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.GenerateNewLevel
 --- !u!1 &7365910542966938940
 GameObject:
   m_ObjectHideFlags: 0
@@ -52834,6 +53066,9 @@ MonoBehaviour:
   _soundInsert: {fileID: 0}
   _soundRemove: {fileID: 0}
   _batteryItemSO: {fileID: 11400000, guid: 01bff1e0139f38243bd05788640c54ca, type: 2}
+  maxShakeIntensity: 0.02
+  shakeFrequency: 40
+  explosionVFX: {fileID: 0}
 --- !u!1 &7872497791939754811
 GameObject:
   m_ObjectHideFlags: 0
@@ -59026,7 +59261,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6014656716840694976}
   - {fileID: 3515476977177782849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -64988,13 +65222,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  <mapSection>k__BackingField: {fileID: 0}
   controlMode: 0
   isLocked: 0
   generatorSlot: {fileID: 0}
   requiresPowerToInteract: 1
   onPowerLost: 0
   onPowerRestored: 0
-  cardAccess: 0
+  useCard: 0
   mode: 0
   axis: 2
   openAngle: 90
@@ -95495,13 +95730,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500201ac121a82448b5011cd64fd0765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.StationDoor
+  <mapSection>k__BackingField: {fileID: 0}
   controlMode: 0
   isLocked: 1
   generatorSlot: {fileID: 0}
   requiresPowerToInteract: 0
   onPowerLost: 0
   onPowerRestored: 0
-  cardAccess: 0
+  useCard: 0
   mode: 0
   axis: 1
   openAngle: 90
