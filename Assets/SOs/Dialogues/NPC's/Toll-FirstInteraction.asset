@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   <SpeakerName>k__BackingField: Toll
   <IsAbleToShowSpeaker>k__BackingField: 1
-  <CanRepeatDialogue>k__BackingField: 0
+  <CanRepeatDialogue>k__BackingField: 1
   dialogueAudio:
   - {fileID: 11400000, guid: 4e3613e1b45b193418237c45d470d80d, type: 2}
   dialogueData:
@@ -27,21 +27,21 @@ MonoBehaviour:
   - Text: Gracias
     textDuration: 0
     HasChoices: 0
-  - Text: Buu
+  - Text: Lo esperare
     textDuration: 0
     HasChoices: 0
   DialogueChoices:
-  - Text: Give Money
+  - Text: Dar Dinero
     NextDialogueIndex: 2
     effects:
     - {fileID: 11400000, guid: c107a76b4e88ba4439c609854f247e2b, type: 2}
     ChoiceDescription: '- $20'
-  - Text: Give Packages
+  - Text: Dar paquetes
     NextDialogueIndex: 2
     effects:
     - {fileID: 11400000, guid: b8ee946d9a759a84da4a8f959634b244, type: 2}
-    ChoiceDescription: Menos x cantidad de paquetes
-  - Text: Do Nothing
+    ChoiceDescription: Dar 2 paquetes
+  - Text: No hacer nada
     NextDialogueIndex: 3
     effects: []
     ChoiceDescription: 

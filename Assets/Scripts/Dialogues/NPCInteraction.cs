@@ -8,7 +8,6 @@ namespace Root
         public Transform instancePivot;
         [field: Required, SerializeField] public MapSection Section { get; private set; }
         [SerializeField] private MissionObjectiveSO currentMission;
-
         public MissionObjectiveSO Mission => currentMission;
 
         public override void ExecuteDialogue()

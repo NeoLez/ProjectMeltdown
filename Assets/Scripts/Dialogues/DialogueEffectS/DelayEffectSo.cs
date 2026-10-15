@@ -8,6 +8,12 @@ namespace Root {
     public class DelayEffectSo : DialogueEffectSO {
         [SerializeField, Expandable] private List<DialogueEffectSO> effects;
         [SerializeField] private float delay;
+
+        public override bool CanExecute(DialogueExecutionContext context = null)
+        {
+            return true;
+        }
+
         public override void Execute(DialogueExecutionContext context) {
             context.NPC.StartCoroutine(Delay(context));
         }

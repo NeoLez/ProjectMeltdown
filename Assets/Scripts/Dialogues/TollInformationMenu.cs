@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Root
 {
@@ -11,12 +12,19 @@ namespace Root
 
         private Canvas _info;
         private RectTransform _buttonTransform;
+        private Button _choiseButton;
         private Vector2 offset;
         private string _txt;
         private bool _canShow;
+
+        private void Awake()
+        {
+            _choiseButton = GetComponent<Button>();
+        }
         private void Start()
         {
             _buttonTransform = GetComponent<RectTransform>();
+
             offset.y += _buttonTransform.sizeDelta.y * displayOffset;
         }
 
@@ -26,6 +34,11 @@ namespace Root
             _txt = requestText;
 
             _canShow = !string.IsNullOrEmpty(requestText);
+        }
+
+        public void EnableChoise(bool state)
+        {
+            _choiseButton.interactable = state;
         }
 
         public void Show()
@@ -56,7 +69,13 @@ namespace Root
         {
             if (!_canShow) return;
 
-            Hide(); 
+            Hide();
+        }
+
+        public void ClearPanelInformation()
+        {
+            _txt = string.Empty;
+            if (_info != null) Destroy(_info.gameObject);
         }
     }
 }

@@ -8,17 +8,16 @@ namespace Root
     [CreateAssetMenu(menuName = "Dialogue/Advanced/Effects/Give Packages")]
     public class GivePackagesEffect : DialogueEffectSO
     {
-        List<ItemState> _itemsToErease = new();
-        List<PackageItemGenerationDataSo> _packageItemData = new();
+        private List<ItemState> _itemsToErease = new();
+        private List<PackageItemGenerationDataSo> _packageItemData = new();
+        private PackageRequestType _types;
+        private ItemGroup _requestPackages;
+
         public override void Execute(DialogueExecutionContext context)
         {
-            PackageRequestType types = context.NPC.gameObject.GetComponent<NpcToll>().RequestType;
-            ItemGroup requestPackages = context.NPC.gameObject.GetComponent<NpcToll>().PackagesToRequest;
-            _packageItemData = context.NPC.gameObject.GetComponent<NpcToll>().Packages;
-
             Inventory inventory = context.Instigator.gameObject.GetComponent<Inventory>();
 
-            CheckRequestType(types, requestPackages, inventory);
+            CheckRequestType(_types, _requestPackages, inventory);
         }
 
         private void CheckRequestType(PackageRequestType type, ItemGroup requestPackages, Inventory inventory)
@@ -39,28 +38,9 @@ namespace Root
 
         private void DeliverPackagesAmount(ItemGroup requestPackages, Inventory inventory)
         {
-            _itemsToErease.Clear();
-
-            if (inventory.ContainsItemType(requestPackages))
-            {
-                foreach (var item in inventory.GetItems())
-                {
-                    if (!_itemsToErease.Contains(item.itemState) && _itemsToErease.Count < requestPackages.Items.Count)
-                    {
-                        _itemsToErease.Add(item.itemState);
-                        //Debug.Log("entre" + item.itemState.ItemSo.name);
-                    }
-                }
-            }
-
             if (_itemsToErease.Count >= requestPackages.Items.Count)
             {
                 RemovePackagesFromInventory(inventory, _itemsToErease);
-            }
-            else
-            {
-                Debug.Log("No hay paquetes suficientes para remover");
-                return;
             }
 
         }
@@ -68,37 +48,10 @@ namespace Root
         private void DeliverPackagesType(List<PackageItemGenerationDataSo> requestPackages, Inventory inventory)
         {
             List<PackageItemGenerationDataSo> currentRequest = new(requestPackages);
-            _itemsToErease.Clear();
-
-            foreach (var item in inventory.GetItems())
-            {
-                if (item.itemState is PackageItemState itemState)
-                {
-                    for (int i = 0; i < requestPackages.Count; i++)
-                    {
-                        if (itemState.typeOfPackage == requestPackages[i].TypeOfPackage)
-                        {
-                            if (!_itemsToErease.Contains(itemState))
-                            {
-                                _itemsToErease.Add(itemState);
-                                requestPackages.RemoveAt(i);
-
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
 
             if (_itemsToErease.Count >= currentRequest.Count)
             {
                 RemovePackagesFromInventory(inventory, _itemsToErease);
-            }
-            else
-            {
-                Debug.Log("Los paquetes no coinciden");
-                return;
             }
         }
 
@@ -121,6 +74,65 @@ namespace Root
         private void OnDestroy()
         {
             _itemsToErease.Clear();
+            _packageItemData.Clear();
+        }
+
+        public override bool CanExecute(DialogueExecutionContext context = null)
+        {
+            Inventory inventory = context.Instigator.gameObject.GetComponent<Inventory>();
+            _requestPackages = context.NPC.gameObject.GetComponent<NpcToll>().PackagesToRequest;
+            _packageItemData = context.NPC.gameObject.GetComponent<NpcToll>().Packages;
+            _types = context.NPC.gameObject.GetComponent<NpcToll>().RequestType;
+
+            bool canActivateEffect =false;
+            _itemsToErease.Clear();
+
+            switch (_types)
+            {
+                case PackageRequestType.Amount:
+                    if (inventory.ContainsItemType(_requestPackages))
+                    {
+                        foreach (var item in inventory.GetItems())
+                        {
+                            if (!_itemsToErease.Contains(item.itemState) && _itemsToErease.Count < _requestPackages.Items.Count)
+                            {
+                                _itemsToErease.Add(item.itemState);
+                            }
+                        }
+                    }
+                    canActivateEffect = _itemsToErease.Count >= _requestPackages.Items.Count; 
+                    break;
+
+                case PackageRequestType.TypeOfPackages:
+                    List<PackageItemGenerationDataSo> currentRequest = new(_packageItemData);
+
+                    foreach (var item in inventory.GetItems())
+                    {
+                        if (item.itemState is PackageItemState itemState)
+                        {
+                            for (int i = 0; i < _packageItemData.Count; i++)
+                            {
+                                if (itemState.typeOfPackage == _packageItemData[i].TypeOfPackage)
+                                {
+                                    if (!_itemsToErease.Contains(itemState))
+                                    {
+                                        _itemsToErease.Add(itemState);
+                                        _packageItemData.RemoveAt(i);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    canActivateEffect = _itemsToErease.Count >= currentRequest.Count;
+                    break;
+
+                default:
+                    Debug.LogWarning($"Please choose a type of PackageRequest for {name}");
+                    break;
+            }
+
+            return canActivateEffect;
         }
     }
 }

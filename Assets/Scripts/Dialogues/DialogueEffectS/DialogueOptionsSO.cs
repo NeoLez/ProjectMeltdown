@@ -5,6 +5,11 @@ namespace Root
     [CreateAssetMenu(fileName = "GiveMissionEffect", menuName = "Dialogue/Advanced/Effects/Give Mission")]
     public class DialogueOptionsSO : DialogueEffectSO
     {
+        public override bool CanExecute(DialogueExecutionContext context = null)
+        {
+            return true;
+        }
+
         public override void Execute(DialogueExecutionContext context)
         {
             PackagesSystemController.Instance.EnablePackageGeneration(context.NPC, context.NPC.instancePivot, context.NPC.Mission.AmountOfPackages);

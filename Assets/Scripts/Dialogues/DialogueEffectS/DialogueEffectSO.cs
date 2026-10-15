@@ -4,7 +4,9 @@ namespace Root
 {
     public abstract class DialogueEffectSO : ScriptableObject
     {
-        public abstract void Execute(DialogueExecutionContext context);        
+        public abstract void Execute(DialogueExecutionContext context);
+
+        public abstract bool CanExecute(DialogueExecutionContext context = null);
     }
 
     public class DialogueExecutionContext

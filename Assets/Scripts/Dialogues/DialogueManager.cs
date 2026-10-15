@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
     private Dictionary<string, DialogueAudioInfoSO> _audioInfoDictorary;
 
     private DialogueExecutionContext _currentContext;
-
+    private InteractBehaviour _targetNPC;
     private void Awake()
     {
         if (Instance == null)
@@ -121,7 +121,7 @@ public class DialogueManager : MonoBehaviour
     public void StartConversation(DialogueSO dialogue, InteractBehaviour npcGameObject = null)
     {
         _currentContext = new DialogueExecutionContext(GameManager.Player.gameObject, npcGameObject);
-
+        _targetNPC = npcGameObject;
         if (_currentSpeaker == null || _currentSpeaker != dialogue)
         {
             ClearChoices();
@@ -415,10 +415,11 @@ public class DialogueManager : MonoBehaviour
 
             if (nextIdex > _currentData.Count)
             {
-                Debug.LogError("Dialogue Index is greater tha current dialogue length");
+                Debug.LogError("Dialogue index is greater than current dialogue length");
             }
 
             _choicesText[i] = choiceOptions[i].GetComponentInChildren<TextMeshProUGUI>();
+
             choiceOptions[i].onClick.AddListener(() => StopDialogue(currentIndex, nextIdex));
         }
 
@@ -429,10 +430,12 @@ public class DialogueManager : MonoBehaviour
         {
             choiceOptions[index].gameObject.SetActive(true);
             _choicesText[index].text = choice.Text;
-            if (!string.IsNullOrEmpty(choice.ChoiceDescription))
-            {
-                choiceOptions[index].GetComponent<TollInformationMenu>().Initialize(choice.ChoiceDescription);
-            }
+
+            EnableChoises(index);
+
+            TollInformationMenu toll = choiceOptions[index].GetComponent<TollInformationMenu>();
+            toll.Initialize(choice.ChoiceDescription);
+
             index++;
         }
 
@@ -442,6 +445,42 @@ public class DialogueManager : MonoBehaviour
         }
 
     }
+    private void EnableChoises(int index)
+    {
+        if (_currentSpeaker.DialogueChoices.Length == 0) return;
+
+        DialogueChoices selectedChoice = _currentSpeaker.DialogueChoices[index];
+
+        if (selectedChoice.effects.Count == 0) //Force an a button with no effects to always be true
+        {
+            choiceOptions[index].GetComponent<TollInformationMenu>().EnableChoise(true);
+        }
+
+        for (int i = 0; i < selectedChoice.effects.Count; i++)
+        {
+            DialogueEffectSO effect = selectedChoice.effects[i];
+
+            bool context = effect.CanExecute(_currentContext);
+
+            choiceOptions[index].GetComponent<TollInformationMenu>().
+                EnableChoise(context);
+        }
+
+    }
+
+    public void SelectOption(int index)
+    {
+        DialogueChoices selectedChoice = _currentSpeaker.DialogueChoices[index];
+
+        for (int i = 0; i < selectedChoice.effects.Count; i++)
+        {
+            //int effectIndex = i;
+            DialogueEffectSO effect = selectedChoice.effects[i];
+
+            effect.Execute(_currentContext);
+        }
+    }
+
     private void StopDialogue(int seletecButtonIndex, int nextLineIndex)
     {
         _hasChosenOption = false;
@@ -465,27 +504,15 @@ public class DialogueManager : MonoBehaviour
         _typingCoroutine = StartCoroutine(TypeSentence(_currentSentence));
     }
 
-    public void SelectOption(int index)
-    {
-        DialogueChoices selectedChoice = _currentSpeaker.DialogueChoices[index];
-
-        for (int i = 0; i < selectedChoice.effects.Count; i++)
-        {
-            int effectIndex = i;
-            DialogueEffectSO effect = selectedChoice.effects[i];
-
-            effect.Execute(_currentContext);
-        }
-    }
-
-
     private void ClearChoices()
     {
         for (int i = 0; i < choiceOptions.Length; i++)
         {
             choiceOptions[i].onClick.RemoveAllListeners();
+            choiceOptions[i].GetComponent<TollInformationMenu>().ClearPanelInformation();
         }
     }
+
     #endregion
 
     private void OnDestroy()
