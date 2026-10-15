@@ -14,6 +14,10 @@ namespace Root
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
+
+        [Header("Overcharge")]
+        [SerializeField] private float percentPerBattery = 25f;
+        [SerializeField] private float shakeStartPercent = 15f;
         private TrainBatteryItem _battery;
         private bool _animationEnd;
         public event Action OnFullyCharged;
@@ -54,28 +58,53 @@ namespace Root
         {
             if (_battery == null || batteryElement.GetBattery() == null)
             {
+                batteryElement.Shake(0f);
                 if (_powered)
                 {
                     _powered = false;
                 }
                 return;
             }
-            if (batteryElement.GetChargeAmount() < 0) return;
+            if (batteryElement.GetChargeAmount() <= 0f) return;
+            if (!_animationEnd) return;
 
             Charge();
         }
 
         private void Charge()
         {
-            if (_battery.State.currentCharge >= _battery.State.maxCharge)
+            var train = _battery.State;
+            var car = batteryElement.GetBattery().State;
+
+            if (train.currentCharge >= train.maxCharge)
             {
                 OnFullyCharged?.Invoke();
+                batteryElement.Shake(0f);
                 return;
             }
 
-            _battery.State.currentCharge = Mathf.Min(_battery.State.maxCharge, _battery.State.currentCharge + (chargeAmount * Time.deltaTime));
+            float amount = Mathf.Min(chargeAmount * Time.deltaTime, train.maxCharge - train.currentCharge);
+            float percentTransferred = amount / train.maxCharge * 100f;
+            float carDrain = percentTransferred / percentPerBattery * car.maxCharge;
 
-            batteryElement.DrainCharge(chargeAmount);
+            if (carDrain > car.currentCharge)
+            {
+                carDrain = car.currentCharge;
+                percentTransferred = carDrain / car.maxCharge * percentPerBattery;
+                amount = percentTransferred / 100f * train.maxCharge;
+            }
+
+            train.currentCharge += amount;
+            batteryElement.ConsumeCharge(carDrain);
+
+            if (car.currentCharge <= 0f)
+            {
+                batteryElement.Explode();
+                return;
+            }
+
+            float contributed = (1f - car.currentCharge / car.maxCharge) * percentPerBattery;
+            batteryElement.Shake(Mathf.InverseLerp(shakeStartPercent, percentPerBattery, contributed));
         }
 
         public bool TryInsertBattery(ItemState item)
