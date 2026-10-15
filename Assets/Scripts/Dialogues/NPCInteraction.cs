@@ -9,7 +9,7 @@ namespace Root
         [field: Required, SerializeField] public MapSection Section { get; private set; }
         [SerializeField] private MissionObjectiveSO currentMission;
         public MissionObjectiveSO Mission => currentMission;
-
+        public Animator animator;
         public override void ExecuteDialogue()
         {
             if (!gameObject.activeInHierarchy) return;

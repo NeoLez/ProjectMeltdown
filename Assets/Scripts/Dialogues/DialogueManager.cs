@@ -377,7 +377,7 @@ public class DialogueManager : MonoBehaviour
         _currentSpeaker.OnDialogueEnded?.Invoke();
         OnDialogueEnded?.Invoke();
         ChangeDialogueState(DialogueState.FinishedTalking);
-        ClearChoices();
+        if (_currentSpeaker.DialogueData[_arrayIndex].HasChoices) ClearChoices();
         _oldspeaker = _currentSpeaker;
     }
 

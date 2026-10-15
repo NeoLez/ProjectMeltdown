@@ -12,7 +12,7 @@ namespace Root {
         }
 
         public override void Execute(DialogueExecutionContext context) {
-            context.NPC.gameObject.GetComponent<NpcToll>().animator.Play(animationName);
+            context.NPC.gameObject.GetComponent<NPCInteraction>().animator.Play(animationName);
         }
     }
 }
