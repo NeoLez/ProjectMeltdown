@@ -509,6 +509,8 @@ public class DialogueManager : MonoBehaviour
 
     private void ClearChoices()
     {
+        if (choiceOptions.Length == 0) return;
+
         for (int i = 0; i < choiceOptions.Length; i++)
         {
             choiceOptions[i].onClick.RemoveAllListeners();
