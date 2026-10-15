@@ -16,8 +16,12 @@ namespace Root
         {
             if (autoCollect)
                 doors.AddRange(GetComponentsInChildren<StationDoor>(true));
-
-            int seed = mapSection != null ? mapSection.GetMapSectionSeed() : Random.Range(int.MinValue, int.MaxValue);
+            if (mapSection == null) {
+                Debug.LogError("Map Section not set", this);
+                return;
+            }
+            
+            int seed = mapSection.GetMapSectionSeed();
             _accessCode = new System.Random(seed).Next(100000, 999999);
 
             foreach (StationDoor door in doors)
@@ -32,8 +36,10 @@ namespace Root
 
         public void SubscribeKeycard(KeycardState state) {
             keycards.Add(state);
-            if (_initialized)
+            if (_initialized) {
                 state.boundCode = _accessCode;
+                state.targetNode = mapSection.Node;
+            }
         }
     }
 }

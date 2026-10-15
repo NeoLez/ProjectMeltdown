@@ -9,7 +9,7 @@ namespace Root.Factories {
                 return; }
 
             if (!ctx.Section.TryGetComponent<StationAccessController>(out var controller)) {
-                Debug.LogError("Keycard spawned outside a station", state.ItemSo);
+                Debug.LogError("Red keycard spawned inside a station without an access controller", state.ItemSo);
                 return;
             }
             controller.SubscribeKeycard(state);

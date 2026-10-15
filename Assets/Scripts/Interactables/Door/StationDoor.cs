@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Root
 {
@@ -12,6 +15,8 @@ namespace Root
         public enum PowerLossBehavior { Deactivate, MaintainState }
         public enum PowerRestoreBehavior { OpenAutomatically, WaitForButton }
         private enum DoorState { Closed, Opening, Open, Closing }
+        
+        [field: SerializeField, Required] public MapSection mapSection { get; private set; }
 
         [Header("Tipo de puerta")]
         [SerializeField] private ControlMode controlMode = ControlMode.Automatic;
@@ -28,7 +33,7 @@ namespace Root
         [SerializeField] private PowerRestoreBehavior onPowerRestored = PowerRestoreBehavior.OpenAutomatically;
 
         [Header("Acceso con tarjeta")]
-        [SerializeField] private DoorAccessLevel cardAccess = DoorAccessLevel.None;
+        [SerializeField] private bool useCard;
 
         [Header("Movimiento")]
         [SerializeField] private DoorMode mode = DoorMode.Rotate;
@@ -137,7 +142,7 @@ namespace Root
                 return;
             }
 
-            if (_state == DoorState.Closed && cardAccess != DoorAccessLevel.None)
+            if (_state == DoorState.Closed && useCard)
             {
                 if (!TryGetHeldKeycard(out KeycardState card) || !CanOpenWithCard(card))
                 {
@@ -173,22 +178,20 @@ namespace Root
 
         private bool CanOpenWithCard(KeycardState card)
         {
-            switch (cardAccess)
+            switch (((KeycardSo)card.ItemSo).Color)
             {
-                case DoorAccessLevel.Red:
-                    return card.Color == KeycardSo.CardColor.Red;
-                case DoorAccessLevel.Blue:
-                    return card.Color == KeycardSo.CardColor.Blue;
-                case DoorAccessLevel.White:
-                    if (card.Color != KeycardSo.CardColor.White) return false;
-                    if (card.boundCode == -1)
-                    {
+                case KeycardSo.CardColor.White:
+                    if (card.boundCode == -1 || card.boundCode == _stationCode) {
                         card.boundCode = _stationCode;
                         return true;
                     }
+                    return false;
+                case KeycardSo.CardColor.Red:
                     return card.boundCode == _stationCode;
+                case KeycardSo.CardColor.Blue:
+                    return card.targetNode == mapSection.Node;
                 default:
-                    return true;
+                    return false;
             }
         }
         public void Unlock()

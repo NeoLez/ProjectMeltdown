@@ -4,6 +4,7 @@ namespace Root
     public class KeycardState : ItemState
     {
         public int boundCode = -1;
+        public MapPointsGen.Node targetNode;
         public KeycardSo.CardColor Color => ((KeycardSo)ItemSo).Color;
 
         public KeycardState(KeycardSo itemSo) : base(itemSo) { }
