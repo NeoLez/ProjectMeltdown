@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace Root
 {
@@ -7,44 +8,60 @@ namespace Root
     {
         [SerializeField] private BatteryCharcher batteryCharcher;
         [SerializeField] private TMP_Text label;
-        [SerializeField] private string format = "{0}%";
+        [SerializeField] private LocalizedString placeBatteriesText;
+        [SerializeField] private LocalizedString rechargingText;
+        [SerializeField] private LocalizedString completedText;
+        [SerializeField] private LocalizedString fullText;
+        [SerializeField] private float completedDuration = 2f;
+        [SerializeField] private float dotsInterval = 0.4f;
+        [SerializeField] private float blinkInterval = 0.6f;
 
-        private bool _canRestoreCharge;
+        private float _completedUntil;
 
         private void Awake()
         {
-            batteryCharcher.OnInterruptCharge += DisableCharge;
-            batteryCharcher.OnContinueCharge += EnableCharge;
+            batteryCharcher.OnCarBatteryFinished += ShowCompleted;
         }
 
-        private void Start()
+        private void OnDestroy()
         {
-            label.text = string.Format(format, 0);
+            if (batteryCharcher != null)
+                batteryCharcher.OnCarBatteryFinished -= ShowCompleted;
         }
 
-        private void EnableCharge()
+        private void ShowCompleted()
         {
-            _canRestoreCharge = true;
+            _completedUntil = Time.time + completedDuration;
+            label.text = completedText.GetLocalizedString();
         }
-
-        private void DisableCharge()
-        {
-            _canRestoreCharge = false;
-        }
-
 
         private void Update()
         {
-            if (!_canRestoreCharge) return;
-
-            var battery = batteryCharcher.GetBattery();
-            if (battery == null)
+            if (Time.time < _completedUntil)
             {
-                label.text = string.Format(format, 0);
+                label.enabled = true;
                 return;
             }
-            int percentage = Mathf.RoundToInt(battery.State.currentCharge / battery.State.maxCharge * 100);
-            label.text = string.Format(format, percentage);
+
+            var battery = batteryCharcher.IsReady ? batteryCharcher.GetBattery() : null;
+
+            if (battery != null && battery.State.currentCharge >= battery.State.maxCharge)
+            {
+                label.enabled = true;
+                label.text = fullText.GetLocalizedString();
+                return;
+            }
+
+            if (batteryCharcher.IsReady && batteryCharcher.IsCharging)
+            {
+                label.enabled = true;
+                int dots = (int)(Time.time / dotsInterval) % 4;
+                label.text = rechargingText.GetLocalizedString() + new string('.', dots);
+                return;
+            }
+
+            label.text = placeBatteriesText.GetLocalizedString();
+            label.enabled = (int)(Time.time / blinkInterval) % 2 == 0;
         }
     }
 }

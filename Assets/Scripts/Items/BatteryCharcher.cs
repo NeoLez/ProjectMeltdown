@@ -23,6 +23,9 @@ namespace Root
         public event Action OnFullyCharged;
         public event Action OnInterruptCharge;
         public event Action OnContinueCharge;
+        public bool IsCharging { get; private set; }
+        public bool IsReady => _animationEnd;
+        public event Action OnCarBatteryFinished;
 
         [SerializeField] private ItemSo _batteryItemSO;
         [SerializeField] private CarBattery batteryElement;
@@ -56,6 +59,8 @@ namespace Root
 
         private void Update()
         {
+            IsCharging = false;
+
             if (_battery == null || batteryElement.GetBattery() == null)
             {
                 batteryElement.Shake(0f);
@@ -83,6 +88,8 @@ namespace Root
                 return;
             }
 
+            IsCharging = true;
+
             float amount = Mathf.Min(chargeAmount * Time.deltaTime, train.maxCharge - train.currentCharge);
             float percentTransferred = amount / train.maxCharge * 100f;
             float carDrain = percentTransferred / percentPerBattery * car.maxCharge;
@@ -99,6 +106,8 @@ namespace Root
 
             if (car.currentCharge <= 0f)
             {
+                IsCharging = false;
+                OnCarBatteryFinished?.Invoke();
                 batteryElement.Explode();
                 return;
             }
