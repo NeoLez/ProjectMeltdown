@@ -32,6 +32,7 @@ public class DialogueManager : MonoBehaviour
     private DialogueSO _currentSpeaker;
     private DialogueAudioInfoSO _currentSpeakerDialogueAudio;
     private TextMeshProUGUI _currentDisplayText;
+    private bool[] _canChangeDialogueLines;
 
     public event Action OnDialogueStarted;
     public event Action OnDialogueEnded;
@@ -81,6 +82,8 @@ public class DialogueManager : MonoBehaviour
     {
         _currentSpeaker = dialogue;
         _currentDisplayText = text;
+
+        _canChangeDialogueLines = new bool[_currentSpeaker.endDialogueLine.Length];
 
         InitializeAudioInfo();
     }
@@ -215,8 +218,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        bool[] choiceOptions = new bool[_currentSpeaker.endDialogueLine.Length];
-        if (choiceOptions.Length > 0)
+        if (_canChangeDialogueLines.Length > 0)
         {
             if (_currentSpeaker.endDialogueLine.Length > _arrayIndex && _currentSpeaker.endDialogueLine[_arrayIndex])
             {
@@ -521,6 +523,8 @@ public class DialogueManager : MonoBehaviour
             choiceOptions[i].GetComponent<TollInformationMenu>().ClearPanelInformation();
             Destroy(choiceOptions[i].gameObject);
         }
+
+        _canChangeDialogueLines = null;
     }
 
     #endregion
