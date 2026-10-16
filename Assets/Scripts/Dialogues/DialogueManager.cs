@@ -215,7 +215,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (_currentSpeaker.endDialogueLine.Length > 0)
+        if (_currentSpeaker.endDialogueLine.Length != 0)
         {
             if (_currentSpeaker.endDialogueLine.Length > _arrayIndex && _currentSpeaker.endDialogueLine[_arrayIndex])
             {
