@@ -1,3 +1,4 @@
+using System;
 using Timers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -25,6 +26,21 @@ namespace Root
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
+
+            _agent.enabled = false;
+
+            GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
+        }
+
+        private void DisableForOneSecond() {
+            enabled = false;
+            _agent.enabled = false;
+            Invoke("EnableAgain", 2);
+        }
+
+        private void EnableAgain() {
+            Debug.Log("CRASTIN");
+            _agent.enabled = true;
             if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
             {
                 _agent.Warp(hit.position);
@@ -33,6 +49,11 @@ namespace Root
             {
                 Debug.LogError($"{gameObject.name} spawned too far away from a valid NavMesh!", this);
             }
+            enabled = true;
+        }
+
+        private void OnDestroy() {
+            GameManager.MapGeneration.OnBeforeRebase  -= DisableForOneSecond;
         }
 
         private void Update()

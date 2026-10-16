@@ -16,6 +16,8 @@ namespace Root {
         [SerializeField] private Transform root;
         [SerializeField] private Train train;
 
+        public event Action OnBeforeRebase;
+        
         [SerializeField] private int mapHeight;
         [SerializeField] private int mapWidth;
 
@@ -170,6 +172,7 @@ namespace Root {
                 if (train.IsStopped()) {
                     train.trainPosition.transform.position = Vector3.zero;
                 }
+                OnBeforeRebase?.Invoke();
                 transform.position += train.trainPosition.position * -1;
                 
                 _rebaseCounter = countUntilRebase;
