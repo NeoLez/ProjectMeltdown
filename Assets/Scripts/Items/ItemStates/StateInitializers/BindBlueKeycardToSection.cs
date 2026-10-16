@@ -10,7 +10,7 @@ namespace Root.Factories {
 
             var nodes = ctx.Section.Node.GetNodesThatMatch((node, _) => {
                 return node.feature == MapPointsGen.Feature.TUNNEL_JOIN;
-            }, 10);
+            }, 30);
 
             if (nodes.Count == 0) {
                 Debug.LogWarning("No matching features found", this);
