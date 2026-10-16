@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 using Root.Factories;
+using Root.Handheld;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,7 +15,7 @@ namespace Root {
         [field: SerializeField] public PhysicalItem PhysicalItemPrefab { get; private set; }
         [field: SerializeField] public InventoryItemDisplay InventoryItemPrefab { get; private set; }
         [field: SerializeField] public Sprite InventoryItemIcon { get; private set; }
-        [field: SerializeField] public GameObject HeldItemGameObject { get; private set; }
+        [field: SerializeField] public HandheldItem HeldItemGameObject { get; private set; }
         [field: SerializeField] public string ItemName { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public Vector2Int InventorySize { get; private set; }
