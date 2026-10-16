@@ -20,11 +20,11 @@ namespace Root {
             
             hasFinished = true;
             
-            if(settings.addAlert)
-                GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert);
-            
             MapSection obj = Instantiate(settings.FeatureSectionPrefab);
             obj.shouldConsumeAlert = true;
+            
+            if(settings.addAlert)
+                GameManager.Train.AlertSystem.AddAlert(settings.FeatureSectionPrefab.alert, obj.GetWaypoints()[0]);
             
             return obj;
         }

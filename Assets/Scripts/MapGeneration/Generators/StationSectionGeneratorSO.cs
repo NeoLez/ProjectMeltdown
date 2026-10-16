@@ -26,10 +26,10 @@ namespace Root {
 
             switch (stage) {
                 case 0:
-                    if(count == 0)
-                        GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert);
-                    
                     var obj1 = Instantiate(settings.StraightRoad);
+                    if(count == 0)
+                        GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert, obj1.GetWaypoints()[0]);
+                    
                     count++;
 
                     if (count == settings.safetyStraightRoadLength) {
@@ -43,14 +43,16 @@ namespace Root {
                     MapSection obj2 = Instantiate(settings.FeatureSectionPrefab.GetEntry(random));
                     obj2.isStation = true;
                     obj2.shouldConsumeAlert = true;
-                    GameManager.Train.AlertSystem.AddAlert(obj2.alert);
+                    GameManager.Train.AlertSystem.AddAlert(obj2.alert, obj2.GetWaypoints()[0]);
                     stage++;
                     return obj2;
                 case 2:
-                    if(count == 0)
-                        GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert);
                     
                     var obj3 = Instantiate(settings.StraightRoad);
+                    
+                    if(count == 0)
+                        GameManager.Train.AlertSystem.AddAlert(settings.StraightRoad.alert, obj3.GetWaypoints()[0]);
+                    
                     count++;
 
                     if (count == settings.safetyStraightRoadLength) {

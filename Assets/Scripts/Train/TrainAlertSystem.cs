@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Root {
     public class TrainAlertSystem : MonoBehaviour {
-        [SerializeField] private List<TrainAlertSO> alerts;
-        public TrainAlertSO currentAlert;
+        private List<Tuple<TrainAlertSO, TrainPathWaypoint>> alerts = new();
+        public Tuple<TrainAlertSO, TrainPathWaypoint> currentAlert;
         public event Action OnEventChanged;
 
-        public void AddAlert(TrainAlertSO alert) {
-            alerts.Add(alert);
+        public void AddAlert(TrainAlertSO alert, TrainPathWaypoint waypoint) {
+            alerts.Add(new (alert, waypoint));
             if(alerts.Count == 1) SetAlert();
         }
 
