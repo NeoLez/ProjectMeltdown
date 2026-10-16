@@ -35,7 +35,6 @@ namespace Root
         private Timer flickerTimer = new();
         private void Update() {
             var dist = Vector3.Distance(train.AlertSystem.currentAlert.Item2.transform.position, train.trainPosition.position);
-            Debug.Log(dist, train.AlertSystem.currentAlert.Item2.gameObject);
             if (dist < flickerDistance) {
                 if (flickerTimer.IsCompleted()) {
                     if (_isVisible) {
