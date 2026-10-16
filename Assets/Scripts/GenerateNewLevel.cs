@@ -8,13 +8,16 @@ namespace Root
 
         private void Start()
         {
-            loadingScreen = GameObject.FindAnyObjectByType<LoadingScreen>();
+            loadingScreen = LoadingScreen.Instance;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            loadingScreen.LoadScene("Train 1");
-            GameManager.seed = new System.Random(GameManager.seed).Next();
+            if(loadingScreen != null)
+            {
+                loadingScreen.LoadScene("Train 1");
+                GameManager.seed = new System.Random(GameManager.seed).Next();
+            }
         }
     }
 }

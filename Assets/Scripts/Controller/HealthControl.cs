@@ -123,6 +123,12 @@ namespace Root
             temp.a = alpha;
             Image.color = temp;
         }
+
+        public void InstantDeath()
+        {
+            Die();
+        }
+
         private void Die()
         {
             _muerto = true;
