@@ -1,3 +1,4 @@
+using Root.Handheld;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -51,7 +52,7 @@ namespace Root
             return render;
         }
 
-        public void SetStampTexture(GameObject obj, PackageItemState state)
+        public void SetStampTexture(HandheldItem obj, PackageItemState state)
         {
             DecalProjector heldItemProjector = obj.GetComponentInChildren<DecalProjector>();
             var mate = new Material(heldItemProjector.material);

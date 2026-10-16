@@ -624,6 +624,54 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Handheld"",
+            ""id"": ""2e2828ef-0318-4884-8e9b-701c0c0796e8"",
+            ""actions"": [
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd579416-34cb-4d23-8a93-1e5a3707dcd0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0a7cf03-af46-4050-822b-6d20f8ea0ba9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4759ed2c-caf5-4ff2-bd5e-c0851452409f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5769d3b4-65e7-428f-9d75-379d928479ee"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -720,6 +768,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
+        // Handheld
+        m_Handheld = asset.FindActionMap("Handheld", throwIfNotFound: true);
+        m_Handheld_RightClick = m_Handheld.FindAction("RightClick", throwIfNotFound: true);
+        m_Handheld_LeftClick = m_Handheld.FindAction("LeftClick", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -729,6 +781,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Interaction.enabled, "This will cause a leak and performance issues, PlayerInputActions.Interaction.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Inventory.enabled, "This will cause a leak and performance issues, PlayerInputActions.Inventory.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Menu.enabled, "This will cause a leak and performance issues, PlayerInputActions.Menu.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Handheld.enabled, "This will cause a leak and performance issues, PlayerInputActions.Handheld.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1456,6 +1509,113 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="MenuActions" /> instance referencing this action map.
     /// </summary>
     public MenuActions @Menu => new MenuActions(this);
+
+    // Handheld
+    private readonly InputActionMap m_Handheld;
+    private List<IHandheldActions> m_HandheldActionsCallbackInterfaces = new List<IHandheldActions>();
+    private readonly InputAction m_Handheld_RightClick;
+    private readonly InputAction m_Handheld_LeftClick;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Handheld".
+    /// </summary>
+    public struct HandheldActions
+    {
+        private @PlayerInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public HandheldActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Handheld/RightClick".
+        /// </summary>
+        public InputAction @RightClick => m_Wrapper.m_Handheld_RightClick;
+        /// <summary>
+        /// Provides access to the underlying input action "Handheld/LeftClick".
+        /// </summary>
+        public InputAction @LeftClick => m_Wrapper.m_Handheld_LeftClick;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Handheld; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="HandheldActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(HandheldActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="HandheldActions" />
+        public void AddCallbacks(IHandheldActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HandheldActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HandheldActionsCallbackInterfaces.Add(instance);
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="HandheldActions" />
+        private void UnregisterCallbacks(IHandheldActions instance)
+        {
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="HandheldActions.UnregisterCallbacks(IHandheldActions)" />.
+        /// </summary>
+        /// <seealso cref="HandheldActions.UnregisterCallbacks(IHandheldActions)" />
+        public void RemoveCallbacks(IHandheldActions instance)
+        {
+            if (m_Wrapper.m_HandheldActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="HandheldActions.AddCallbacks(IHandheldActions)" />
+        /// <seealso cref="HandheldActions.RemoveCallbacks(IHandheldActions)" />
+        /// <seealso cref="HandheldActions.UnregisterCallbacks(IHandheldActions)" />
+        public void SetCallbacks(IHandheldActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HandheldActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HandheldActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="HandheldActions" /> instance referencing this action map.
+    /// </summary>
+    public HandheldActions @Handheld => new HandheldActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -1707,5 +1867,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Handheld" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="HandheldActions.AddCallbacks(IHandheldActions)" />
+    /// <seealso cref="HandheldActions.RemoveCallbacks(IHandheldActions)" />
+    public interface IHandheldActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "RightClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftClick(InputAction.CallbackContext context);
     }
 }

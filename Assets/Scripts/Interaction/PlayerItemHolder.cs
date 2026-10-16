@@ -1,4 +1,5 @@
 using System;
+using Root.Handheld;
 using Root.Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,7 +22,7 @@ namespace Root
 
         public bool HasItem => HeldItem != null;
 
-        private GameObject currentHeldVisual;
+        private HandheldItem currentHeldVisual;
 
         private bool _canLauchItem = true;
         private void Awake()
@@ -30,6 +31,7 @@ namespace Root
             HeldItem = null;
             GameManager.Input.Inventory.PutHeldInInventory.performed += SaveHeldItem;
             GameManager.Input.Inventory.DropItem.performed += Drop;
+            GameManager.Input.Handheld.LeftClick.performed += UseItem;
         }
 
         private void Update()
@@ -61,6 +63,7 @@ namespace Root
             currentHeldVisual = Instantiate(item.ItemState.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
+            currentHeldVisual.state = HeldItem;
 
             if (item.TryGetComponent(out DeliveryPackageItem packageItem)) PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, packageItem.State);
 
@@ -81,6 +84,7 @@ namespace Root
             currentHeldVisual = Instantiate(item.ItemSo.HeldItemGameObject, holdPoint);
             currentHeldVisual.transform.localPosition = Vector3.zero;
             currentHeldVisual.transform.localRotation = Quaternion.identity;
+            currentHeldVisual.state = HeldItem;
 
             if (packages.IsItemIncluded(item.ItemSo)) {
                 PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, (PackageItemState)item);
@@ -113,7 +117,7 @@ namespace Root
             
             HeldItem = null;
             if (currentHeldVisual != null)
-                Destroy(currentHeldVisual);
+                Destroy(currentHeldVisual.gameObject);
             
             OnItemChanged?.Invoke();
             CanLaunchItem(true);
@@ -148,6 +152,11 @@ namespace Root
             ForceClearHeldItem();
         }
 
+        private void UseItem(InputAction.CallbackContext ctx) {
+            if(currentHeldVisual != null)
+                currentHeldVisual.Use(ctx);
+        }
+
         public void CanLaunchItem(bool state)
         {
             _canLauchItem = state;
@@ -156,7 +165,8 @@ namespace Root
         public void ForceClearHeldItem() {
             if (HeldItem == null) return;
             HeldItem = null;
-            Destroy(currentHeldVisual);
+            if(currentHeldVisual != null)
+                Destroy(currentHeldVisual.gameObject);
             OnItemChanged?.Invoke();
         }
         

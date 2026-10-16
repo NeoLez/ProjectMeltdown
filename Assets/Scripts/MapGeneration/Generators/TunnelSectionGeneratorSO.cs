@@ -28,7 +28,8 @@ namespace Root {
         private int trackSectionsCreated;
         public override MapSection Create() {
             if (hasFinished) throw new Exception();
-
+            
+            bool shouldAddAlert = false;
             if (currentRepetition == 0) {
                 var rand = random.Next(0, settings.mapSections.Count);
                 var key = settings.mapSections.Keys.ElementAt(rand);
@@ -36,12 +37,16 @@ namespace Root {
                 TunnelSectionGeneratorSettingsSO.MapSectionListing nextSectionListing = speed[random.Next(0, speed.Count)];
                 currentRepetition = random.Next(nextSectionListing.minRepetition, nextSectionListing.maxRepetition + 1);
                 currentSection = nextSectionListing.mapSection;
-                GameManager.Train.AlertSystem.AddAlert(currentSection.alert);
+                shouldAddAlert = true;
                 trackSectionsCreated++;
             }
             currentRepetition--;
 
             MapSection obj = Instantiate(currentSection);
+            if (shouldAddAlert) {
+                GameManager.Train.AlertSystem.AddAlert(currentSection.alert, obj.GetWaypoints()[0]);
+            }
+            
             
             if (currentRepetition == 0) {
                 obj.shouldConsumeAlert = true;
