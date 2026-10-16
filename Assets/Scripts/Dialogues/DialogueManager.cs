@@ -215,10 +215,13 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (_currentSpeaker.endDialogueLine.Length > _arrayIndex && _currentSpeaker.endDialogueLine[_arrayIndex])
+        if (_currentSpeaker.endDialogueLine.Length > 0)
         {
-            EndDialogue(_currentSpeaker);
-            return;
+            if (_currentSpeaker.endDialogueLine.Length > _arrayIndex && _currentSpeaker.endDialogueLine[_arrayIndex])
+            {
+                EndDialogue(_currentSpeaker);
+                return;
+            }
         }
 
         _currentSentence = _currentData[_arrayIndex];
