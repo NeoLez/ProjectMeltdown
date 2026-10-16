@@ -165,7 +165,8 @@ namespace Root
         public void ForceClearHeldItem() {
             if (HeldItem == null) return;
             HeldItem = null;
-            Destroy(currentHeldVisual.gameObject);
+            if(currentHeldVisual != null)
+                Destroy(currentHeldVisual.gameObject);
             OnItemChanged?.Invoke();
         }
         
