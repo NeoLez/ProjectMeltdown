@@ -16,7 +16,11 @@ namespace Root.Managers {
             rigidbody.rotation = Quaternion.identity;
             rigidbody.transform.rotation = Quaternion.identity;
             rigidbody.transform.parent = null;
-           
+            if(item.TryGetComponent(out StoreItemDisplay storeDisplay))
+            {
+                storeDisplay._storeHand = null;
+                storeDisplay._purchased = true;
+            }
             GetComponent<BoundingBoxTracker>().enabled = false;
         }
 

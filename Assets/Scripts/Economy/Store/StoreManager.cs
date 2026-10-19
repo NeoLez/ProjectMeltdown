@@ -1,71 +1,80 @@
-using NUnit.Framework.Interfaces;
-using Root.Factories;
 using Root.Managers;
 using System;
 using System.Collections.Generic;
+using Root.Factories;
 using Timers;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Localization.SmartFormat.Core.Parsing;
-using UnityEngine.UIElements;
 
 namespace Root
 {
     public class StoreManager : MonoBehaviour
     {
         [SerializeField] private bool isSingleItemSpawn;
-        [SerializeField] private MapSection mapSection;
-
         [Header("Buy")]
         [SerializeField] private StoreItemData forcedSpawnItem;
         [SerializeField] private StoreItemPoolSO storeItemPool;
-        [SerializeField] private int minAmountOfItemsToGenerate;
-        [SerializeField] private int maxAmountOfItemsToGenerate;
+        [SerializeField] private List<StoreSpawnPoint> spawnPoints;
+        [SerializeField] private List<Transform> priceCanvasSpawnPoint;
+        [SerializeField] private GameObject priceCanvasPrefab;
+        [SerializeField] private MapSection mapSection;
+        private List<MerchantHand> merchantHands = new();
+        private List<StoreItemDisplay> itemsCreated = new();
 
-        [Header("UI")]
-        [SerializeField] private RectTransform scrollView;
-        [SerializeField] private GameObject storeItemCanvasPrefab;
+        [SerializeField] private MerchantHand merchantHandPrefab;
 
         [Header("Tutorial Courtesy Item")]
         [SerializeField] private StoreItemData initialItemSpawn;
-
-        private List<StoreItemDisplay> itemsCreated = new();
+        [SerializeField] private StoreSpawnPoint initialItemSpawnPoint;
+        [SerializeField] private Transform singlePriceSpawnPoint;
+        private List<MerchantHand> initialMerchantHands = new();
         public bool CanSpawnMultipleItems => !isSingleItemSpawn;
 
         [Header("Sell")]
         [SerializeField] private SelllDeposit deposit;
         [SerializeField] private Transform dropPivot;
+        [SerializeField] private MerchantInteraction merchantDialogue;
         [SerializeField] private StoreMenu menu;
-
         private System.Random _random;
-        private Inventory _playerInventory;
-        private Action OnRegenerateStock;
-
-        private void OnEnable()
-        {
-            itemsCreated.Clear();
-        }
-
+        
         private void Start()
         {
-            _playerInventory = GameManager.Player.GetComponent<Inventory>();
+            /*if(isSingleItemSpawn)
+            {
+                var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
+                initialMerchantHands.Add(hand);
 
-            _random = new System.Random(mapSection.GetMapSectionSeed() + SeedUtils.TextToSeed("Shop"));
+                GenerateCourtesyItem();
+            }*/
+
+            _random  = new System.Random(mapSection.GetMapSectionSeed() + SeedUtils.TextToSeed("Shop"));
             GenerateStoreItems();
         }
 
+        public void RegenerateStock()
+        {
+            GenerateStoreItems();
+        }
 
         private void GenerateStoreItems()
         {
             if (isSingleItemSpawn)
             {
+                var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
+                initialMerchantHands.Add(hand);
+
                 GenerateCourtesyItem();
             }
             else
             {
                 if (AreAllItemsGenerated()) return;
 
+                foreach (var spawnPoint in spawnPoints)
+                {
+                    var hand = Instantiate(merchantHandPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation, transform);
+                    merchantHands.Add(hand);
+                }
                 GenerateStock();
             }
         }
@@ -73,8 +82,11 @@ namespace Root
         private bool _forcedSpawn;
         private void GenerateStock()
         {
-            for (int i = 0; i < _random.Next(minAmountOfItemsToGenerate, maxAmountOfItemsToGenerate); i++)
+            for (int i = 0; i < spawnPoints.Count; i++)
             {
+                MerchantHand hand = merchantHands[i];
+                Transform priceCanvasSpawn = priceCanvasSpawnPoint[i];
+
                 StoreItemData item;
                 if (forcedSpawnItem != null && !_forcedSpawn)
                 {
@@ -87,27 +99,43 @@ namespace Root
 
                 int price = _random.Next(item.minPrice, item.maxPrice + 1);
 
-                GameObject obj = Instantiate(storeItemCanvasPrefab, scrollView.transform);
+                GameObject obj = item.item.CreatePhysicalItem(CreateItemSpawnContext()).gameObject;
+                obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
                 obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
-                obj.GetComponent<StoreItemDisplay>().OnPurchased += (i, itemData) =>
+                obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
                 {
-                    //Debug.Log("Purchased item " + item.item.name);
-                    InsertBoughtItem(itemData);
-                    //itemsCreated.Remove(i);
+                    Debug.Log("Purchased item " + item.item.name);
+                    boughtHand.HideHand();
+                    itemsCreated.Remove(i);
+                    merchantHands.Remove(boughtHand);
                     menu.RefreshWalletAmount();
-                    RefreshStoreItems();
                 };
                 itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
+                var objBehaviour = obj.transform;
+                objBehaviour.GetComponent<Rigidbody>().isKinematic = true;
+
+                GameObject canvasObj = Instantiate(priceCanvasPrefab,
+                    priceCanvasSpawn.transform.position,
+                    priceCanvasSpawn.rotation
+                    );
+
+                PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
+
+                if (priceCanvas != null)
+                    priceCanvas.Initialize(price, obj.GetComponent<StoreItemDisplay>());
 
                 StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
                 if (display != null)
-                    display.Initialize(item, price);
+                    display.Initialize(item, price, priceCanvas);
             }
         }
 
         private void GenerateCourtesyItem()
         {
+            MerchantHand hand = initialMerchantHands[0];
+            Transform priceCanvasSpawn = singlePriceSpawnPoint;
+
             StoreItemData item;
             if (forcedSpawnItem != null && !_forcedSpawn)
             {
@@ -117,63 +145,38 @@ namespace Root
             else
                 item = initialItemSpawn;
 
-            GameObject obj = Instantiate(storeItemCanvasPrefab, scrollView.transform);
+            GameObject obj = item.item.CreatePhysicalItem(CreateItemSpawnContext()).gameObject;
+            obj.GetComponent<StoreItemDisplay>()._storeHand = hand;
             obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
-            obj.GetComponent<StoreItemDisplay>().OnPurchased += (i, itemData) =>
+            obj.GetComponent<StoreItemDisplay>().OnPurchased += (boughtHand, i) =>
             {
-                InsertBoughtItem(itemData);
+                boughtHand.HideHand();
+                initialMerchantHands.Remove(boughtHand);
+                itemsCreated.Remove(i);
             };
             obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
             {
+                //merchantDialogue.ForceEnableInteraction();
                 isSingleItemSpawn = false;
-                OnRegenerateStock += ClearStoreItems;
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
+            obj.GetComponent<Rigidbody>().isKinematic = true;
+
+            GameObject canvasObj = Instantiate(priceCanvasPrefab,
+                priceCanvasSpawn.transform.position,
+                priceCanvasSpawn.rotation
+                );
+
+            PriceCanvas priceCanvas = canvasObj.GetComponent<PriceCanvas>();
+
+            if (priceCanvas != null)
+                priceCanvas.Initialize(0, obj.GetComponent<StoreItemDisplay>());
 
             StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
             if (display != null)
-                display.Initialize(item, 0);
+                display.Initialize(item, 0, priceCanvas);
 
-        }
-
-        public void ShowStore()
-        {
-            if (!isSingleItemSpawn)
-            {
-                 foreach (var item in itemsCreated)
-                 {
-                     item.RefreshItems();
-                 }
-            }
-        }
-
-        public void HideStore()
-        {
-            if (!isSingleItemSpawn)
-            {
-                OnRegenerateStock?.Invoke();
-                OnRegenerateStock -= ClearStoreItems;
-            }
-        }
-
-        private void RefreshStoreItems()
-        {
-            foreach (var item in itemsCreated)
-            {
-                item.RefreshItems();
-            }
-        }
-
-        private void ClearStoreItems()
-        {
-            foreach (var item in itemsCreated)
-            {
-                Destroy(item.gameObject);
-            }
-            itemsCreated.Clear();
-
-            GenerateStoreItems();
         }
 
         private ItemSpawnContext CreateItemSpawnContext() {
@@ -203,11 +206,57 @@ namespace Root
             }
         }
 
-
-        public void InsertBoughtItem(StoreItemData item)
+        public void ShowItems()
         {
-            _playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random)));
+            if (isSingleItemSpawn)
+            {
+                foreach (var hand in initialMerchantHands)
+                {
+                    hand.ShowHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnShowPrice?.Invoke();
+                }
+            }
+            else
+            {
+                foreach (var hand in merchantHands)
+                {
+                    hand.ShowHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnShowPrice?.Invoke();
+                }
+            }
         }
 
+        public void HideItems()
+        {
+            if (isSingleItemSpawn)
+            {
+                foreach (var hand in initialMerchantHands)
+                {
+                    hand.HideHand();
+                }
+                foreach (var item in itemsCreated)
+                {
+                    item.OnHidePrice?.Invoke();
+                }
+            }
+            else
+            {
+                foreach (var hand in merchantHands)
+                {
+                    hand.HideHand();
+                }
+
+                foreach (var item in itemsCreated)
+                {
+                    item.OnHidePrice?.Invoke();
+                }
+            }
+        }
     }
 }

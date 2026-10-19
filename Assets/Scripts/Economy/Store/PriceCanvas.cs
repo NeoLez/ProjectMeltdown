@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Root
 {
-    //Volvarloa la mierda
     public class PriceCanvas : MonoBehaviour
     {
         [SerializeField] private TMP_Text priceText;
@@ -24,12 +23,12 @@ namespace Root
             if (priceText != null)
                 priceText.text = "$" + price;
 
-            /*if (item != null)
+            if (item != null)
             {
                 itemToDisplay = item;
                 itemToDisplay.OnShowPrice += Show;
                 itemToDisplay.OnHidePrice += Hide;
-            }*/
+            }
         }
 
         public void Show()
@@ -44,13 +43,13 @@ namespace Root
             _canvas.enabled = false;
         }
 
-       /* private void OnDestroy()
+        private void OnDestroy()
         {
             itemToDisplay.OnShowPrice -= Show;
             itemToDisplay.OnHidePrice -= Hide;
         }
 
-         private void Update()
+        /* private void Update()
          {
              if (_hidden) return;
              if (GameManager.Player == null) return;
