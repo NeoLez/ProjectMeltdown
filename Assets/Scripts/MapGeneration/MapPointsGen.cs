@@ -142,7 +142,9 @@ namespace Root {
                         if (!nodes[y, x].CanConnectTo()) continue;
 
                         var left = nodes[y, x - 1].feature;
+                        var right = nodes[y, x + 1].feature;
                         if (left == Feature.TUNNEL_FORK_LEFT || left == Feature.TUNNEL_FORK_RIGHT) continue;
+                        if (right == Feature.TUNNEL_FORK_LEFT || right == Feature.TUNNEL_FORK_RIGHT) continue;
 
                         int direction = y == 0 ? 1
                             : y == height - 1 ? -1
