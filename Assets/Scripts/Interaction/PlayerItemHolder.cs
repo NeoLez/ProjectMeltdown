@@ -37,15 +37,9 @@ namespace Root
         private void Update()
         {
             if (!HasItem)
-            {
                 crosshair.fillAmount = 0;
-                return;
-            }
-            if (GameManager.Input.Inventory.PutHeldInInventory.WasReleasedThisFrame()) { crosshair.fillAmount = 0; }
-            else if (GameManager.Input.Inventory.PutHeldInInventory.IsPressed())
-            {
-                crosshair.fillAmount += Time.deltaTime / 0.6f;
-            }
+            else
+                crosshair.fillAmount = GameManager.Input.Inventory.PutHeldInInventory.GetTimeoutCompletionPercentage();;
         }
 
         public void Pickup(PhysicalItem item)
