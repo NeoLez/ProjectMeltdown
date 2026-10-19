@@ -8,28 +8,42 @@ namespace Root
 {
     public class StoreBuyBell : StoreBell
     {
-        [SerializeField] Animator merchantAnimator;
+        [SerializeField] private Animator merchantAnimator;
         [SerializeField] private StoreMenu menu;
+        [SerializeField] private Collider colliders;
 
         public Action<bool> _OnStoreShow;
 
         private void Awake()
         {
             OnBellRanged += OpenStore;
-            OnBellRangedAgain += CloseStore;
-
+            //OnBellRangedAgain += OpenStore2;
             _OnStoreShow += HandleInteraction;
+        }
+
+        private void Start()
+        {
+            CloseStore();
         }
 
         private void OpenStore()
         {
-            CanShowItems(true);
             IsStoreOpened = true;
+            storeManager.ShowStore();
+
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
 
-        private void CloseStore()
+        private void OpenStore2()
         {
-            CanShowItems(false);
+            IsStoreOpened = true;
+
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
+        }
+
+        public void CloseStore()
+        {
+            storeManager.HideStore();
             IsStoreOpened = false;
         }
 
@@ -37,29 +51,26 @@ namespace Root
         {
             if (show)
             {
-                merchantAnimator.SetBool("Appear", true);
-                CancelInvoke(nameof(DelayedShow));
-                Invoke(nameof(DelayedShow), 1f);
+                OpenStore();
+                //merchantAnimator.SetBool("Appear", true);
             }
             else 
             {
                 merchantAnimator.SetBool("Appear", false);
-                CancelInvoke(nameof(DelayedShow));
-                storeManager.HideItems();
-                menu.EnableWalletCanvas(false);
             }
 
-        }
-        public void DelayedShow()
-        {
-            storeManager.ShowItems();
         }
 
         private void HandleInteraction(bool enable)
         {
             if (enable)
             {
+                colliders.enabled = true;
                 CanShowItems(true);
+            }
+            else
+            {
+                colliders.enabled = false;
             }
             
         }
@@ -67,6 +78,7 @@ namespace Root
         private void OnDestroy()
         {
             _OnStoreShow -= HandleInteraction;
+
             OnBellRanged = null;
         }
 
