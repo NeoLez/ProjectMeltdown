@@ -7,45 +7,40 @@ namespace Root
 {
     public class StoreMenu : Menu.Menu 
     {
-        [SerializeField] private StoreManager storeManager;
+        [SerializeField] private Canvas mainCanvas;
         [SerializeField] private SelllDeposit deposit;
-        [SerializeField] private Inventory sellInventory;
-        [SerializeField] private StoreBuyBell _trigger;
+        [SerializeField] private StoreBuyBell storeTrigger;
         [SerializeField] private Canvas walletDisplay;
-
+        [SerializeField] private UnityEngine.UI.Button[] storeButtons;
+        [SerializeField] private UnityEngine.UI.Button returnButton;
 
         [Header("Buy UI")]
-        [SerializeField] private Canvas choiseCanvas;
-        [SerializeField] private UnityEngine.UI.Button[] storeButtons;
+        [SerializeField] private Canvas storePanel;
 
         [Header("Sell UI")]
         [SerializeField] private Canvas priceDisplay;
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private UnityEngine.UI.Button confirmButton;
-        [SerializeField] private UnityEngine.UI.Button returnButton;
 
         private void Awake()
         {
-           /* storeButtons[0].onClick.AddListener(() =>
+            storeButtons[0].onClick.AddListener(() =>
             {
-                EnableChoiceCanvas(false);
-                EnableWalletCanvas(true);
-                storeManager.GenerateStoreItems();
-                _trigger.CanShowItems(true);
+                EnableSellCanvas(false);
+                EnableBuyCanvas(true);
 
-                MouseHandler.RelinquishControl(this);
-                GameManager.Input.Movement.Enable();
-                GameManager.Input.CameraMovement.Enable();
+                UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
 
-                UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
-            });*/
+                GameManager.PlayerInventoryUI.CloseInventory();
+                GameManager.Input.Inventory.InventoryToggle.Disable();
+                GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
+            });
 
             storeButtons[1].onClick.AddListener(() => 
             {
-                EnableChoiceCanvas(false);
-                EnableWalletCanvas(true);
+                EnableBuyCanvas(false);
+                EnableSellCanvas(true);
                 deposit.LoadDisplay();
-                EnableSellInventoryCanvas(true);
 
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
 
@@ -70,16 +65,18 @@ namespace Root
                 UIManager.Instance.storeMenu = this;
             }
 
-            EnableChoiceCanvas(false);
-            EnableSellInventoryCanvas(false);
+            mainCanvas.gameObject.SetActive(false);
+
+            EnableSellCanvas(false);
             EnableWalletCanvas(false);
+            EnableBuyCanvas(false);
         }
 
         public override void Open()
         {
-            _trigger.CanShowItems(false);
-            EnableChoiceCanvas(true);
-
+            mainCanvas.gameObject.SetActive(true);
+            EnableBuyCanvas(true);
+            EnableWalletCanvas(true);
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
 
             GameManager.Input.Movement.Disable();
@@ -90,8 +87,8 @@ namespace Root
 
         public override void Close()
         {
-            EnableChoiceCanvas(false);
-
+            EnableBuyCanvas(false);
+            MouseHandler.RelinquishControl(this);
             base.Close();        
         }
 
@@ -99,16 +96,22 @@ namespace Root
         {
             if (deposit.AreUnconfirmedItems()) return;
 
-            _trigger.IsStoreOpened = false;
-            EnableSellInventoryCanvas(false);
+            storeTrigger.CloseStore();
+            EnableBuyCanvas(false);
+            EnableSellCanvas(false);
             EnableWalletCanvas(false);
+            UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
+
             MouseHandler.RelinquishControl(this);
 
             GameManager.PlayerInventoryUI.CloseInventory();
             GameManager.Input.Movement.Enable();
+            GameManager.CameraController.EnableNormalMovement();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Inventory.InventoryToggle.Enable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
+
+            mainCanvas.gameObject.SetActive(false);
         }
 
         private void ToggleConfirmButton()
@@ -120,18 +123,18 @@ namespace Root
             returnButton.interactable = !deposit.AreUnconfirmedItems();
         }
 
+        public void EnableBuyCanvas(bool state)
+        {
+            storePanel.enabled = state;
+        }
+
         public void EnableWalletCanvas(bool state)
         {
             RefreshWalletAmount();
             walletDisplay.enabled = state;
         }
 
-        private void EnableChoiceCanvas(bool state)
-        {
-            choiseCanvas.enabled = state;
-        }
-
-        public void EnableSellInventoryCanvas(bool state)
+        public void EnableSellCanvas(bool state)
         {
             priceDisplay.enabled = state;
         }

@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4783214882511466251}
   - component: {fileID: 7489690849380959053}
-  - component: {fileID: 4208036535924075257}
   - component: {fileID: 2965223517322807398}
   - component: {fileID: 7371119990872587339}
   - component: {fileID: 377483228733766161}
@@ -152,20 +151,6 @@ MonoBehaviour:
       type: {class: ItemState, ns: Root, asm: Assembly-CSharp}
       data:
         <ItemSo>k__BackingField: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
---- !u!114 &4208036535924075257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7643595352215049103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f0f170407b13944ad992e8c8ce9cef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.StoreItemDisplay
-  _storeHand: {fileID: 0}
-  _storeItemPivot: {fileID: 3127442421054557970}
 --- !u!54 &2965223517322807398
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -241,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5aec4c99f44051bca12575d1383ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Managers.ItemPoolable
+  _prefab: {fileID: -8641203962770740517}
 --- !u!114 &8180681076724054622
 MonoBehaviour:
   m_ObjectHideFlags: 0
