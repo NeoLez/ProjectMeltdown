@@ -6,29 +6,41 @@ using UnityEngine;
 
 namespace Root
 {
-    public class StoreBuyBell : StoreBell
+    public class MerchantTrigger : MonoBehaviour //TODO-Erease this script and migrate everything to MerchantInteraction o StoreManager
     {
-        [SerializeField] Animator merchantAnimator;
+        public bool IsStoreOpened { get; set; }
+
+        [SerializeField] private GameObject _face;
+        [SerializeField] private StoreManager _storeManager;
+        [SerializeField] private Collider triggerCollider;
+        [SerializeField] private MerchantInteraction interaction;
         [SerializeField] private StoreMenu menu;
 
+        private Animator _anim;
         public Action<bool> _OnStoreShow;
 
         private void Awake()
         {
-            OnBellRanged += OpenStore;
-            OnBellRangedAgain += CloseStore;
-
             _OnStoreShow += HandleInteraction;
+            interaction.OnInteractionContinue += Interact;
         }
 
-        private void OpenStore()
+        void Start()
         {
-            CanShowItems(true);
+            _anim = _face.GetComponent<Animator>();
+        }
+
+        public void Interact()
+        {
+            if (IsStoreOpened) return;
+
             IsStoreOpened = true;
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
 
-        private void CloseStore()
+        private void OnTriggerExit(Collider other)
         {
+            if (!IsStoreOpened) return;
             CanShowItems(false);
             IsStoreOpened = false;
         }
@@ -37,22 +49,22 @@ namespace Root
         {
             if (show)
             {
-                merchantAnimator.SetBool("Appear", true);
+                _anim.SetBool("Appear", true);
                 CancelInvoke(nameof(DelayedShow));
                 Invoke(nameof(DelayedShow), 1f);
             }
             else 
             {
-                merchantAnimator.SetBool("Appear", false);
+                _anim.SetBool("Appear", false);
                 CancelInvoke(nameof(DelayedShow));
-                storeManager.HideItems();
+                _storeManager.HideItems();
                 menu.EnableWalletCanvas(false);
             }
 
         }
         public void DelayedShow()
         {
-            storeManager.ShowItems();
+            _storeManager.ShowItems();
         }
 
         private void HandleInteraction(bool enable)
@@ -67,7 +79,7 @@ namespace Root
         private void OnDestroy()
         {
             _OnStoreShow -= HandleInteraction;
-            OnBellRanged = null;
+            interaction.OnInteractionContinue -= Interact;
         }
 
     }

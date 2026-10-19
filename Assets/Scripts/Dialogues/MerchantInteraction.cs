@@ -4,7 +4,7 @@ namespace Root
 {
     public class MerchantInteraction : InteractBehaviour
     {
-        [SerializeField] StoreBuyBell merchantTrigger;
+        [SerializeField] MerchantTrigger merchantTrigger;
         [SerializeField] Collider dialogueTrigger;
         [SerializeField] StoreManager storeManager;
         private void Start()

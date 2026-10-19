@@ -10,7 +10,7 @@ namespace Root
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private SelllDeposit deposit;
         [SerializeField] private Inventory sellInventory;
-        [SerializeField] private StoreBuyBell _trigger;
+        [SerializeField] private MerchantTrigger _trigger;
         [SerializeField] private Canvas walletDisplay;
 
 
@@ -26,7 +26,7 @@ namespace Root
 
         private void Awake()
         {
-           /* storeButtons[0].onClick.AddListener(() =>
+            storeButtons[0].onClick.AddListener(() =>
             {
                 EnableChoiceCanvas(false);
                 EnableWalletCanvas(true);
@@ -38,7 +38,7 @@ namespace Root
                 GameManager.Input.CameraMovement.Enable();
 
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Store);
-            });*/
+            });
 
             storeButtons[1].onClick.AddListener(() => 
             {

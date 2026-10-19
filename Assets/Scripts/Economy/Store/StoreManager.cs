@@ -40,24 +40,18 @@ namespace Root
         
         private void Start()
         {
-            /*if(isSingleItemSpawn)
+            if(isSingleItemSpawn)
             {
                 var hand = Instantiate(merchantHandPrefab, initialItemSpawnPoint.transform.position, initialItemSpawnPoint.transform.rotation, transform);
                 initialMerchantHands.Add(hand);
 
                 GenerateCourtesyItem();
-            }*/
+            }
 
             _random  = new System.Random(mapSection.GetMapSectionSeed() + SeedUtils.TextToSeed("Shop"));
-            GenerateStoreItems();
         }
 
-        public void RegenerateStock()
-        {
-            GenerateStoreItems();
-        }
-
-        private void GenerateStoreItems()
+        public void GenerateStoreItems()
         {
             if (isSingleItemSpawn)
             {
@@ -156,7 +150,7 @@ namespace Root
             };
             obj.GetComponent<StoreItemDisplay>().OnSingleItemBought += () =>
             {
-                //merchantDialogue.ForceEnableInteraction();
+                merchantDialogue.ForceEnableInteraction();
                 isSingleItemSpawn = false;
             };
             itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
