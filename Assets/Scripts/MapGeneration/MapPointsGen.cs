@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Root {
     public class MapPointsGen {
@@ -25,7 +26,7 @@ namespace Root {
             }
             
             public bool CanConnectTo() {
-                return feature == Feature.TUNNEL;
+                return feature == Feature.TUNNEL || feature == Feature.UNINITIALIZED;
             }
             
             /// <summary>
@@ -69,6 +70,7 @@ namespace Root {
         }
 
         public enum Feature {
+            UNINITIALIZED = 0,
             TUNNEL,
             TUNNEL_FORK_RIGHT,
             TUNNEL_FORK_LEFT,
@@ -100,11 +102,8 @@ namespace Root {
 
             public Feature GetFeature() {
                 float chance = (float)_random.NextDouble();
-            
-                if (chance <= 0.6f) {
-                    return Feature.TUNNEL;
-                }
-                if (chance <= 0.8f) 
+                
+                if (chance <= 0.5f) 
                 {
                     return Feature.ABANDONED_STATION;
                 }
@@ -113,105 +112,94 @@ namespace Root {
             }
             
             public Map(int height, int width, int seed) {
-                _random = new System.Random(seed);
+                _random = new Random(seed);
                 this.height = height;
                 this.width = width;
                 nodes = new Node[height, width];
 
-                for (int x = 0; x < height; x++) {
+                for (int y = 0; y < height; y++) {
                     Node prevNode = null;
-                    for (int y = 0; y < width; y++) {
-                        nodes[x, y] = new Node(x, y, this);
-                        if (y == 0) {
-                            nodes[x, y].feature = Feature.START;
-                        } else if (y == width - 1) {
-                            nodes[x, y].feature = Feature.END;
+                    for (int x = 0; x < width; x++) {
+                        nodes[y, x] = new Node(y, x, this);
+                        if (x == 0) {
+                            nodes[y, x].feature = Feature.START;
+                        } else if (x == width - 1) {
+                            nodes[y, x].feature = Feature.END;
                         }
-                        else {
-                            nodes[x, y].feature = GetFeature();
-                        }
-                        
                         if (prevNode != null)
                         {
-                            var tunnelNode = new Node(prevNode.height, y, this);
-                            tunnelNode.feature = Feature.TUNNEL;
-                            
-                            prevNode.OutConnections.Add(tunnelNode);
-                            tunnelNode.InConnections.Add(prevNode);
-                            
-                            tunnelNode.OutConnections.Add(nodes[x, y]);
-                            nodes[x, y].InConnections.Add(tunnelNode);
+                            ConnectWithTunnel(prevNode, nodes[y, x]);
                         }
-                        prevNode = nodes[x, y];
+                        prevNode = nodes[y, x];
                     }
                 }
-                
-                float connectionChance = 1f;
-                for (int y = 1; y < width - 1; y++) {
-                    for (int x = 0; x < height; x++) {
-                        if (!nodes[x, y].CanConnectTo()) {
-                            continue;
-                        }
-                        
-                        if (_random.NextDouble() <= connectionChance) {
-                            int direction;
-                            int targetX;
-                            int targetY = y + 1;
-                            
-                            if (x == 0) {
-                                direction = 1;
-                            }else if (x == height - 1) {
-                                direction = -1;
-                            }
-                            else {
-                                direction = _random.Next(0, 2);
-                                if (direction == 0) {
-                                    direction = -1;
-                                }
-                            }
-                            targetX = x + direction;
 
-                            if (!nodes[targetX, targetY].CanConnectTo()) {
-                                continue;
-                            }
-                            
-                            var tunnelNode = new Node(x, y, this);
-                            tunnelNode.feature = Feature.TUNNEL;
-                            
-                            tunnelNode.InConnections.Add(nodes[x, y]);
-                            nodes[x, y].OutConnections.Add(tunnelNode);
-                            
-                            tunnelNode.OutConnections.Add(nodes[targetX, targetY]);
-                            nodes[targetX, targetY].InConnections.Add(tunnelNode);
-                            
-                            nodes[x, y].feature = nodes[x,y].height > nodes[targetX, targetY].height ? Feature.TUNNEL_FORK_RIGHT : Feature.TUNNEL_FORK_LEFT;
-                            nodes[targetX, targetY].feature = Feature.TUNNEL_JOIN;
+                int forkAmount = (_random.Next(1, 3) + _random.Next(1, 2)) / 2;
+                for (int y = 0; y < height; y++) {
+                    int forksMade = 0;
+                    for (int attempt = 0; attempt < 50 && forksMade <= forkAmount; attempt++) {
+                        int x = _random.Next(1, width - 3);
+                        if (!nodes[y, x].CanConnectTo()) continue;
 
-                        }
+                        var left = nodes[y, x - 1].feature;
+                        if (left == Feature.TUNNEL_FORK_LEFT || left == Feature.TUNNEL_FORK_RIGHT) continue;
+
+                        int direction = y == 0 ? 1
+                            : y == height - 1 ? -1
+                            : (_random.Next(0, 2) == 0 ? -1 : 1);
+
+                        int targetY = y + direction;
+                        int targetX = x + 1;
+                        if (!nodes[targetY, targetX].CanConnectTo()) continue;
+
+                        ConnectFork(nodes[y, x], nodes[targetY, targetX]);
+                        forksMade++;
                     }
                 }
-                
-                for (int y = 1; y < width - 1; y++) {
-                    for (int x = 0; x < height; x++)
-                    {
-                        while (nodes[x, y].feature == Feature.TUNNEL)
-                        {
-                            nodes[x, y].feature = GetFeature();
-                        }
+
+                for (int x = 1; x < width - 1; x++) {
+                    for (int y = 0; y < height; y++) {
+                        var node = nodes[y, x];
+                        if(node.feature == Feature.UNINITIALIZED)
+                            nodes[y, x].feature = GetFeature();
                     }
                 }
             }
             
+            private void ConnectWithTunnel(Node a, Node b) {
+                var tunnelNode = new Node(a.height, a.dist, this);
+                tunnelNode.feature = Feature.TUNNEL;
+                            
+                a.OutConnections.Add(tunnelNode);
+                tunnelNode.InConnections.Add(a);
+                            
+                tunnelNode.OutConnections.Add(b);
+                b.InConnections.Add(tunnelNode);
+            }
+            
+            private void ConnectFork(Node a, Node b) {
+                var tunnelNode = new Node(a.height, a.dist, this);
+                tunnelNode.feature = Feature.TUNNEL;
+                            
+                tunnelNode.InConnections.Add(a);
+                a.OutConnections.Add(tunnelNode);
+                            
+                tunnelNode.OutConnections.Add(b);
+                b.InConnections.Add(tunnelNode);
+                            
+                a.feature = a.height > b.height ? Feature.TUNNEL_FORK_RIGHT : Feature.TUNNEL_FORK_LEFT;
+                b.feature = Feature.TUNNEL_JOIN;
+            }
             
 
             public override string ToString() {
                 StringBuilder builder = new();
 
-                for (int x = 0; x < height; x++) {
-                    for (int y = 0; y < width; y++) {
-                        builder.Append($"[{x}.{y} {nodes[x, y].feature.ToString()} ");
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        builder.Append($"[{y}.{x} {nodes[y, x].feature.ToString()} ");
                         
-                        builder.Append(nodes[x, y].OutConnections.Count);
+                        builder.Append(nodes[y, x].OutConnections.Count);
                         
                         builder.Append("]");
                     }
