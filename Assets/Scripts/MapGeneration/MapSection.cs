@@ -40,5 +40,12 @@ namespace Root {
             }
             Destroy(gameObject);
         }
+
+        [NaughtyAttributes.Button]
+        private void SetWaypointRotation() {
+            for (int i = 0; i < _waypoints.Count - 1; i++) {
+                _waypoints[i].transform.LookAt(_waypoints[i + 1].transform);
+            }
+        }
     }
 }
