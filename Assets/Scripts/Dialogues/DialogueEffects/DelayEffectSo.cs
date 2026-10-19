@@ -19,6 +19,7 @@ namespace Root {
         }
 
         private IEnumerator Delay(DialogueExecutionContext context) {
+
             yield return new WaitForSeconds(delay);
             foreach (var effect in effects) {
                 effect.Execute(context);
