@@ -12,7 +12,7 @@ namespace Root {
         
         private void OnDrawGizmos() {
             Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, 1f);
+            Gizmos.DrawSphere(transform.position, 0.5f);
         }
     }
 }
