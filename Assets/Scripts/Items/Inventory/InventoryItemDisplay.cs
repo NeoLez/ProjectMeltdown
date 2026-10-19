@@ -78,7 +78,7 @@ namespace Root {
             SetSortingOrder(true);
             _isBeingDragged = true;
             _currentRotation = originalRotation;
-            _targetPosition = eventData.position;
+            _targetPosition = GetRelativePosition(eventData.position);
             _targetSize = 1;
         }
 
@@ -86,7 +86,7 @@ namespace Root {
 
             if (!_isBeingDragged) return;
             var canvasTransform = (RectTransform)canvas.transform;
-            canvasTransform.anchoredPosition = Vector2.Lerp(canvasTransform.anchoredPosition, _targetPosition, dragSmoothing * Time.deltaTime);
+            canvasTransform.localPosition = Vector2.Lerp(canvasTransform.localPosition, _targetPosition, dragSmoothing * Time.deltaTime);
             canvasTransform.localScale = Vector3.Lerp(canvasTransform.localScale, new Vector3(_targetSize, _targetSize, 1), sizeChangeSmoothing * Time.deltaTime);
             var color = image.color;
             color.a = math.lerp(color.a, dragAlpha, dragAlphaSmoothing * Time.deltaTime);

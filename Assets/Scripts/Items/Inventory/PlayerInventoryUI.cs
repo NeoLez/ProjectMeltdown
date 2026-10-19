@@ -81,6 +81,7 @@ namespace Root {
             GameManager.Input.CameraMovement.Disable();
             GameManager.Input.Interaction.Disable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Enable();
+            GameManager.Input.Handheld.Disable();
             inventoryOpen = true;
         }
 
@@ -93,6 +94,7 @@ namespace Root {
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             inventoryOpen = false;
         }
