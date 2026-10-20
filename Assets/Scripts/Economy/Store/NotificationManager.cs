@@ -32,25 +32,28 @@ namespace Root
             notificationPanel.SetActive(false);
         }
 
-        public void ShowNotification(string message)
+        public void ShowNotification(string message, float customDuration = 0)
         {
             if (currentNotification != null)
                 StopCoroutine(currentNotification);
 
-            currentNotification = StartCoroutine(NotificationRoutine(message));
+            currentNotification = StartCoroutine(NotificationRoutine(message, customDuration));
         }
 
-        private IEnumerator NotificationRoutine(string message)
+        private IEnumerator NotificationRoutine(string message, float customDuration = 0)
         {
+            if(customDuration == 0) customDuration = duration;
+
             notificationPanel.SetActive(true);
             notificationText.text = message;
 
             if (audioSource != null && notificationSound != null)
                 GameManager.AudioSystem.PlaySound(notificationSound, GameManager.AudioSystem.VFX);
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(customDuration);
 
             notificationPanel.SetActive(false);
         }
+
     }
 }

@@ -12,7 +12,9 @@ namespace Root
         [SerializeField] private TextMeshProUGUI priceText;
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private Image itemIcon;
-        [SerializeField] private float buttonAlpha = 0.2f;
+        [SerializeField] private float boughtButtonAlpha = 0.2f;
+        [SerializeField] private float notEnoughMoneybuttonAlpha = 0.8f;
+        [SerializeField] private float notificationDuration;
 
         private StoreItemData _data;
         private int _price;
@@ -28,7 +30,7 @@ namespace Root
          private void Awake()
          {
              _button = GetComponentInChildren<Button>();
-             _button.onClick.AddListener(Interaction);
+             _button.onClick.AddListener(PurchaseItem);
          }
 
         public void Initialize(StoreItemData data, int price)
@@ -43,24 +45,24 @@ namespace Root
                 _button.interactable = HasEnoughMoney() || _purchased;
             }
 
-            SetDisplay();
+            SetItemDisplay();
         }
 
         public void RefreshItems()
         {
             if (_purchased) return;
             _button.interactable = HasEnoughMoney() || _purchased;
-            SetAlpha(_purchased);
+            SetDisplayAlpha(true);
         }
 
-        private void SetDisplay()
+        private void SetItemDisplay()
         {
             nameText.text = _name;
             priceText.text = string.Format(label, _price.ToString());
             itemIcon.sprite = _itemIcon;
         }
 
-        public void Interaction()
+        public void PurchaseItem()
         {
             if (!CanPurchase()) return;
             if (_purchased) return;
@@ -70,9 +72,17 @@ namespace Root
             OnPurchased?.Invoke(this, _data);
             OnSingleItemBought?.Invoke();
 
-            SetAlpha(false);
+            SetDisplayAlpha(false);
             _button.interactable = false;
             _button.onClick.RemoveAllListeners();
+        }
+
+        public void NotifyPurchase()
+        {
+            if (EconomyManager.Instance.GetMoney() < _price)
+            {
+                NotificationManager.Instance.ShowNotification($"No tenes dinero suficiente", notificationDuration);
+            }
         }
 
         private bool HasEnoughMoney()
@@ -85,25 +95,34 @@ namespace Root
 
         }
 
-        public bool CanPurchase()
+        private bool CanPurchase()
         {
             if(!EconomyManager.Instance.SpendMoney(_price))
             {
-                NotificationManager.Instance.ShowNotification($"No tenes dinero suficiente");
                 return false;
             }
             return true;
         }
 
-        public void SetAlpha(bool state)
+        public void SetDisplayAlpha(bool state)
         {
             CanvasGroup alpha = GetComponentInChildren<CanvasGroup>();
-            alpha.alpha = Mathf.Clamp01(buttonAlpha);
-            alpha.interactable = state;
-            alpha.blocksRaycasts = !state;
+
+            if(!state)
+            {
+                alpha.alpha = Mathf.Clamp01(boughtButtonAlpha);
+            }
+            else
+            {
+                alpha.alpha = Mathf.Clamp01(notEnoughMoneybuttonAlpha);
+            }
+
+            alpha.interactable = !state;
+            alpha.blocksRaycasts = state;
         }
 
-        public void SetNotPurchased() {
+        public void SetNotPurchased() 
+        {
             _purchased = false;
         }
 
