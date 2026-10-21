@@ -1,4 +1,5 @@
 using Root.Managers;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,9 +12,11 @@ namespace Root.Controller {
         [SerializeField] private Transform cameraTarget;
         [SerializeField] public float interactDistance = 2;
         [SerializeField] private LayerMask raycastLayerMask;
-        
+
         private PlayerInputActions _input;
         private Vector2 _prevMousePos = Vector2.zero;
+
+        public Action<bool> OnPlayerSeated;
 
         private void Awake() {
             _input = GameManager.Input;
@@ -29,7 +32,7 @@ namespace Root.Controller {
         private void HandleInteraction(InputAction.CallbackContext ctx)
         {
             if (!isActiveAndEnabled) return;
-            
+
             if (ctx.started)
             {
                 HandleInteractionObjectSelection();
@@ -44,30 +47,34 @@ namespace Root.Controller {
 
         private void Update() {
             Vector2 mousePos = GameManager.Input.CameraMovement.MousePosition.ReadValue<Vector2>();
-            
+
             mousePos.y -= Screen.height / 2;
             mousePos.x -= Screen.width / 2;
 
             mousePos.y /= Screen.height / MouseSensitivity;
             mousePos.x /= Screen.width / MouseSensitivity;
-            
+
             cam.transform.position = cameraTarget.position + CameraShakeManager.Instance.GetShakeOffset() / 2;
-            
+
             Quaternion targetRotation = cameraTarget.rotation * Quaternion.Euler(-mousePos.y * lerpSensitivity, mousePos.x * lerpSensitivity, 0f);
             cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, targetRotation, Speed * Time.deltaTime);
-            
+
             _prevMousePos = mousePos;
         }
 
         private void OnEnable() {
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
             _input.Interaction.GoBack.started += GoBack;
+
+            OnPlayerSeated?.Invoke(true);
         }
 
         private void OnDisable() {
             _selectedInteractable?.EndInteraction();
             MouseHandler.RelinquishControl(this);
             _input.Interaction.GoBack.started -= GoBack;
+
+            OnPlayerSeated?.Invoke(false);
         }
 
         private void GoBack(InputAction.CallbackContext _) {
@@ -77,7 +84,7 @@ namespace Root.Controller {
             _input.Inventory.AlternativeCloseInventory.Disable();
             enabled = false;
         }
-        
+
         private Interactable _selectedInteractable;
         private void HandleInteractionObjectSelection() {
             Ray ray = cam.ScreenPointToRay(_input.CameraMovement.MousePosition.ReadValue<Vector2>()/GameManager.GetResolutionRatio());
@@ -88,7 +95,7 @@ namespace Root.Controller {
             }
             _selectedInteractable = component;
         }
-        
+
         public void SyncToRotation(Quaternion targetWorldRotation)
         {
             cam.transform.rotation = targetWorldRotation;
