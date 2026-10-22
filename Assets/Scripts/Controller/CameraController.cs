@@ -85,9 +85,7 @@ public class CameraController : MonoBehaviour
     private void HandleInteraction(InputAction.CallbackContext _)
     {
         if (_playerItemHolder.HasItem) {
-            if (!TryFindInteractableObject(out var component)) 
-                _playerItemHolder.Drop();
-            else
+            if (TryFindInteractableObject(out var component)) 
                 component.Interact();
             return;
         }

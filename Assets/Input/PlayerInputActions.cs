@@ -488,7 +488,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""958ea7fb-f4b9-4968-ac45-346b9f40932a"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -515,7 +515,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""39c0b4b3-8e4a-4874-8a77-a649cd6bbfd9"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Tap(duration=0.3)"",
+                    ""interactions"": ""Tap(duration=0.4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -544,7 +544,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""d1207e1f-8db5-4574-910b-5bd73f12b917"",
                     ""path"": ""<Keyboard>/q"",
-                    ""interactions"": ""Hold(duration=0.6)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PutHeldInInventory"",

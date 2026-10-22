@@ -17,6 +17,7 @@ public class DialogueSO : ScriptableObject
 
     public DialogueChoices[] DialogueChoices;
     public bool[] endDialogueLine;
+    
 
     //public string SpeakerName => speakerName;
     //public bool CanRepeatDialogue => canRepeatDialogue;
