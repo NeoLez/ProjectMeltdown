@@ -4,20 +4,15 @@ namespace Root
 {
     public class MerchantInteraction : InteractBehaviour
     {
-        [SerializeField] MerchantTrigger merchantTrigger;
+        [SerializeField] StoreBuyBell storeBell;
         [SerializeField] Collider dialogueTrigger;
         [SerializeField] StoreManager storeManager;
         private void Start()
         {
             if (HasDialogue() || !storeManager.CanSpawnMultipleItems)
             {
-                //HandleInteraction(false);
-                merchantTrigger._OnStoreShow?.Invoke(false);
-            }
-            /*else
-            {
-                merchantTrigger._OnStoreShow?.Invoke(false);
-            } */            
+                storeBell._OnStoreShow?.Invoke(false);
+            }         
         }
 
         public override void StartedExecutingDialogue()
@@ -50,19 +45,15 @@ namespace Root
                 hasBeenTriggeredOnce = true;
                 HandleInteraction(false);
             }
-            ShowStoreItems();
 
             base.FinishedExecutingDialogue();
+
+            ShowStoreItems();
         }
 
         private void ShowStoreItems()
         {
-            merchantTrigger._OnStoreShow?.Invoke(true);
-        }
-
-        public void ForceEnableInteraction()
-        {
-            dialogueTrigger.enabled = true;
+            storeBell._OnStoreShow?.Invoke(true);
         }
 
         private void HandleInteraction(bool enable)
