@@ -55,6 +55,7 @@ public class CameraController : MonoBehaviour
     private Vector3 _currentEuler;
     private InteractableNormalCamera _currentInteractable;
 
+    public Transform CameraPivot => cam;
     private void Awake()
     {
         GameManager.CameraController = this;

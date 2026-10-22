@@ -8,6 +8,11 @@ namespace Root
 {
     public class StoreBuyBell : StoreBell
     {
+        [SerializeField] private Transform npcPositionPivot;
+        [SerializeField] private Transform npcLookingPivot;
+        private Vector3 _newPlayerPosition;
+        private Transform cameraPivot;
+
         [SerializeField] private Animator merchantAnimator;
         [SerializeField] private StoreMenu menu;
         [SerializeField] private Collider colliders;
@@ -24,12 +29,19 @@ namespace Root
         private void Start()
         {
             CloseStore();
+
+            cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
         }
 
         private void OpenStore()
         {
             IsStoreOpened = true;
             storeManager.ShowStore();
+
+            _newPlayerPosition = new Vector3(npcPositionPivot.position.x, GameManager.Player.gameObject.transform.position.y, npcPositionPivot.position.z);
+
+            GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
+            GameManager.Player.GetComponent<CameraController>().FocusCamera(npcLookingPivot);
 
             UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
