@@ -18,6 +18,7 @@ namespace Root
         [SerializeField, Range(0.01f, 1f)] private float thresholdStep = 0.25f;
         [SerializeField] private float flickerIntervalAtStart = 0.5f;
         [SerializeField] private float flickerIntervalAtFull = 0.05f;
+        private float thresholdTolerance = 0.002f;
 
         private void Update()
         {
@@ -40,15 +41,15 @@ namespace Root
             float lower = 1f - thresholdStep * (index + 1);
             float upper = lower + thresholdStep;
 
-            if (percent <= lower)
+            if (percent >= upper - thresholdTolerance)
             {
-                SetBar(bar, false);
+                SetBar(bar, true);
                 return;
             }
 
-            if (percent >= upper || !charging)
+            if (percent <= lower || !charging)
             {
-                SetBar(bar, true);
+                SetBar(bar, false);
                 return;
             }
 
