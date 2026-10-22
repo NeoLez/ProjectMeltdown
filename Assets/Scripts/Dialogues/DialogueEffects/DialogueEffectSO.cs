@@ -9,7 +9,11 @@ namespace Root
 
         public abstract bool CanExecute(DialogueExecutionContext context = null);
 
+        public virtual void ExecuteBefore(DialogueExecutionContext context = null) { }
+
         public Action OnEffectExcuted;
+
+        public string newDescription;
     }
 
     public class DialogueExecutionContext

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Root
@@ -51,6 +52,7 @@ namespace Root
             List<TypeOfPackage> spawnedTypes = new();
             for (int i = 0; i < spawnedPackages.Count; i++) {
                 spawnedTypes.Add(spawnedPackages[i].typeOfPackage);
+                toDeliver.Add(spawnedPackages[i]);
             }
 
             _activeMissionData[activeMission.Id] = new MissionData(activeMission.AmountOfPackages, spawnedTypes);
@@ -86,12 +88,41 @@ namespace Root
             }
         }
 
+        private List<PackageItemState> delivered = new();
+        private List<PackageItemState> toDeliver = new();
+
+        public int PackagesToDeliver()
+        {
+            return toDeliver.Count;
+        }
+        public int PackagesDelivered()
+        {
+            return delivered.Count;
+        }
+
+        public int UndeliveredPackages()
+        {
+            int amount = 0;
+            foreach (var package in _packagesToDeliver)
+            {
+                foreach (var item in package.Value)
+                {
+                    if(item.canBeDelivered)
+                    {
+                        amount++;
+                    }
+                }
+            }
+            return amount;
+        }   
+
         public void DeleteDepositedPackage(string activeMission, List<PackageItemState> stateToRemove)
         {
             if (_packagesToDeliver.TryGetValue(activeMission, out var packageList))
             {
                 foreach (var item in stateToRemove)
                 {
+                    delivered.Add(item);
                     packageList.Remove(item);
                 }
             }

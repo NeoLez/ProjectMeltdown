@@ -6,7 +6,7 @@ namespace Root
 {
     public class NpcToll : MonoBehaviour
     {
-        [SerializeField] private int moneyToRequest;
+        [SerializeField] private float moneyToRequest;
         [SerializeField] private PackageRequestType requestType;
 
         [ShowIf("ShowPackageAmount")]
@@ -17,7 +17,7 @@ namespace Root
         [SerializeField] private NPCInteraction interaction;
         [SerializeField] private TollDoor barrier;
 
-        public int AmountToRequest => moneyToRequest;
+        public float AmountToRequest => moneyToRequest;
         public ItemGroup PackagesToRequest => packagesToRequest;
 
         public PackageRequestType RequestType => requestType;
@@ -34,7 +34,7 @@ namespace Root
             return requestType == PackageRequestType.TypeOfPackages;
         }
 
-        private void Start()
+       /* private void Start()
         {
             foreach (var item in interaction.Dialogue.DialogueChoices)
             {
@@ -60,7 +60,7 @@ namespace Root
                     item2.OnEffectExcuted -= barrier.OpenTollBarrier;
                 }
             }
-        }
+        }*/
     }
 
     public enum PackageRequestType

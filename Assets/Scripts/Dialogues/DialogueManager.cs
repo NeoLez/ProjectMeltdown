@@ -437,14 +437,31 @@ public class DialogueManager : MonoBehaviour
         int index = 0;
         foreach (var choice in currentChoices)
         {
-            //choiceOptions[index].gameObject.SetActive(true);
+            TollInformationMenu toll = choiceOptions[index].GetComponent<TollInformationMenu>();
             _choicesText[index].text = choice.Text;
 
+            if (string.IsNullOrEmpty(choice.ChoiceDescription))
+            {
+                string newDescription = choice.ChoiceDescription;
+                foreach (var effects in choice.effects)
+                {
+                    effects.ExecuteBefore(_currentContext);
+                    if(effects.newDescription != null)
+                    {
+                        newDescription = effects.newDescription;
+                        break;
+                    }
+
+                    Debug.Log(newDescription);
+                }
+
+                toll.Initialize(newDescription);
+            }
+            else
+            {
+                toll.Initialize(choice.ChoiceDescription);
+            }
             EnableChoises(index);
-
-            TollInformationMenu toll = choiceOptions[index].GetComponent<TollInformationMenu>();
-            toll.Initialize(choice.ChoiceDescription);
-
             index++;
         }
 
@@ -528,6 +545,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     #endregion
+
 }
 
 public enum DialogueState
