@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using Timers;
+using TMPro;
 using UnityEngine;
 using Logger = Root.Log.Logger;
 using LogType = Root.Log.LogType;
@@ -80,6 +81,7 @@ namespace Root {
         }
 
         private void Start() {
+            RenderStationName();
             _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
             _sectionGeneratorSo.Initialize(_context);
             
@@ -104,6 +106,7 @@ namespace Root {
 
                 _context.lastNode = _context.currentNode;
                 _context.currentNode = nextNode ;
+                RenderStationName();
                 _context.currentSeed = GameManager.seed + SeedUtils.Combine(new [] {_context.currentNode.height, _context.currentNode.dist});
                 mapSectionID = 0;
                 _sectionGeneratorSo = GetGeneratorFromFeatureEnum(_context.currentNode.feature);
@@ -194,6 +197,17 @@ namespace Root {
         public bool IsTrainInStation() // True si el tren est� actualmente en una estaci�n
         {
             return IncomingSections.Count > 0 && IncomingSections[0].isStation;
+        }
+
+        [SerializeField] private RenderTexture stationNameRenderTexture;
+        [SerializeField] private Canvas stationNameCanvas;
+        [SerializeField] private TMP_Text stationNameText;
+        private void RenderStationName()
+        {
+            stationNameText.text = $"{GetCurrentNode().line}{GetCurrentNode().dist}";
+            stationNameCanvas.enabled = true;
+            OneShotRenderSystem.Instance.Render(stationNameRenderTexture);
+            stationNameCanvas.enabled = false;
         }
 
         [Button]
