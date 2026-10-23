@@ -86231,6 +86231,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7354231312121814642}
     m_Modifications:
+    - target: {fileID: 1322997281120117328, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_Size
+      value: 0.8408088
+      objectReference: {fileID: 0}
+    - target: {fileID: 2412715515289200704, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_Size
+      value: 0.9999999
+      objectReference: {fileID: 0}
     - target: {fileID: 2437365859254406410, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.274
@@ -86238,6 +86246,18 @@ PrefabInstance:
     - target: {fileID: 2437365859254406410, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767350108713738483, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767350108713738483, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2767350108713738483, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501087677912305617, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_IsActive
@@ -86291,6 +86311,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6869606516674203258, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6869606516674203258, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7510445178388287238, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: mapSection
       value: 
@@ -86301,6 +86329,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7510445178388287238, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: isSingleItemSpawn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558917553596245257, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514261445643470462, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514261445643470462, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514261445643470462, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514261445643470462, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8589700034603344476, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8808821599513474308, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8808821599513474308, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -106769,6 +106829,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flickerObjects: []
+  targetRenderer: {fileID: 0}
+  materialIndices: 
   minTime: 0.1
   maxTime: 0.3
 --- !u!1001 &5803648402328556586
@@ -110210,7 +110272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 335852701721823050, guid: e5f0da191673efd219498ca6acbb1de4, type: 3}
       propertyPath: managedReferences[5244131193279479881].currentCharge
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4013640177168378644, guid: e5f0da191673efd219498ca6acbb1de4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -127771,6 +127833,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flickerObjects: []
+  targetRenderer: {fileID: 0}
+  materialIndices: 
   minTime: 0.1
   maxTime: 0.3
 --- !u!1001 &9036028855435833342
