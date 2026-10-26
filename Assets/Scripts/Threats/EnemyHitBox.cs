@@ -15,7 +15,7 @@ namespace Root
 
         [SerializeField] private GameObject particlesHit;
 
-        private int partAnimation = Animator.StringToHash("sss"); //Insertar nombre de la animacion aca. Agregar mas si ahcen falta
+        [SerializeField] private string partAnimation = "damage"; //Insertar nombre de la animacion aca. Agregar mas si ahcen falta
 
         public override void Interact()
         {
