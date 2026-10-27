@@ -16,7 +16,7 @@ namespace Root
 
         [Header("Animation")]
         [SerializeField] private Animator animator;
-        [SerializeField] private string deathAnimation = "damage";
+        [SerializeField] private string deathAnimation = "death";
 
         private AudioSource _idleLoop;
         private CreaturePathfind _creaturePathfind;
