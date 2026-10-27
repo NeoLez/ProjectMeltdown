@@ -13,7 +13,11 @@ namespace Root
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundDeath;
         [SerializeField] private AudioClip _soundIdle;
-        
+
+        [Header("Animation")]
+        [SerializeField] private Animator animator;
+        [SerializeField] private string deathAnimation = "damage";
+
         private AudioSource _idleLoop;
         private CreaturePathfind _creaturePathfind;
         void Start()
@@ -75,16 +79,20 @@ namespace Root
 
         public override void Death()
         {
+            animator.Play(deathAnimation, -1, 0f);
+
             GetComponent<BloodSplatter>()?.SpawnBlood(transform.position);
-            _visuals.SetActive(false);
-            Destroy(_visuals);
+
             Instantiate(_particles, transform.position, Quaternion.identity, transform);
 
             if (_idleLoop != null) _idleLoop.Stop();
             if (_soundDeath != null) GameManager.AudioSystem.PlaySoundPositional(_soundDeath, transform.position, GameManager.AudioSystem.VFX);
+        }
 
-            Invoke(nameof(Destroy), 5f);
-        
+        public void OnAnimationEnded()
+        {
+            _visuals.SetActive(false);
+            Destroy(_visuals);
         }
     }
 }

@@ -92,11 +92,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ba23a7c0a932c42b7668faafff3f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.KillableZombie
-  _health: 100
+  _health: 3
   _visuals: {fileID: 4000857696384138558}
   _particles: {fileID: 3960954949758265888, guid: b0671952e5a32564fb842b3d3037e780, type: 3}
   _soundDeath: {fileID: 8300000, guid: 29d293826c5cd3f4aa9e7e3e7b025e51, type: 3}
   _soundIdle: {fileID: 8300000, guid: abc20d35d10525a4c9dad0b4bfc133e0, type: 3}
+  animator: {fileID: 5792383707286224620}
+  deathAnimation: damage
 --- !u!135 &5179237796167202605
 SphereCollider:
   m_ObjectHideFlags: 0
