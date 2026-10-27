@@ -73,7 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.CreaturePathfind
   navmeshUpdateFrequency: 1
   attackCooldown: 1
-  attackDamage: 17.69
+  attackDamage: 1
   viewDistance: 15
   DelayBeforeDmg: 1
   raycastLayerMask:
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ba23a7c0a932c42b7668faafff3f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.KillableZombie
-  _health: 5
+  _health: 100
   _visuals: {fileID: 4000857696384138558}
   _particles: {fileID: 3960954949758265888, guid: b0671952e5a32564fb842b3d3037e780, type: 3}
   _soundDeath: {fileID: 8300000, guid: 29d293826c5cd3f4aa9e7e3e7b025e51, type: 3}
@@ -135,7 +135,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.22
   m_Height: 1.2
@@ -212,7 +212,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: TorsoDmg1
 --- !u!1 &6797301343783881597
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: TorsoDmg1
 --- !u!1 &8620059425157380109
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: TorsoDmg1
 --- !u!1001 &589456518130870773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -514,7 +514,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: LarmDmg1
 --- !u!4 &213217454998629356 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8440964296445165031, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -583,7 +583,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: RarmDmg1
 --- !u!1 &355575761345156260 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -844,7 +844,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: HeadDmg1
 --- !u!4 &1871742562336295038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1285751739373478283, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -1108,7 +1108,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: RarmDmg1
 --- !u!4 &7770726020272965078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2019581100577526749, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -1172,7 +1172,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: LarmDmg1
 --- !u!4 &8449624408675933668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9037936330753176593, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: RarmDmg1
 --- !u!4 &8519776137794423986 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -138915780280670905, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
@@ -1310,7 +1310,7 @@ MonoBehaviour:
   animator: {fileID: 5792383707286224620}
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
-  partAnimation: Damage
+  partAnimation: LarmDmg1
 --- !u!4 &9107046564776295118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -699024353037905093, guid: 53427304f9dcd0046898d4623fdf2e40, type: 3}
