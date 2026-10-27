@@ -100,6 +100,11 @@ namespace Root
             return delivered.Count;
         }
 
+        public int RemaingUndelivedPackages()
+        {
+            return remaingPackages.Count;
+        }
+
         public int UndeliveredPackages()
         {
             int amount = 0;

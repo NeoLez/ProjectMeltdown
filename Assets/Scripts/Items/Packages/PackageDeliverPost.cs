@@ -13,6 +13,7 @@ namespace Root
 {
     public class PackageDeliverPost : InteractableNormalCamera, IItemDragReceiver
     {
+        [SerializeField] private bool deactivateDestination;
         public bool HasConfirmedDelivery { get; private set; }
 
         [SerializeField] private Transform dropPivot;
@@ -270,9 +271,12 @@ namespace Root
                 return;
             }
 
-            if (itemState.DestinationNode != mapSection.Node) {
-                if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("Destino incorrecto", false));
-                return;
+            if(!deactivateDestination)
+            {
+                if (itemState.DestinationNode != mapSection.Node) {
+                    if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("Destino incorrecto", false));
+                    return;
+                }
             }
             //if (!MissionsManager.Instance.AreMissionsActive()) return;
 
@@ -288,9 +292,11 @@ namespace Root
             {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("Paquete fuera de mision", false));
             }
-            if (itemState.DestinationNode != mapSection.Node) {
+            if (!deactivateDestination){
+                if (itemState.DestinationNode != mapSection.Node) {
                 if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("Destino incorrecto", false));
                 return false;
+                }
             }
 
             return item.itemState is PackageItemState && !_isAnimating && !HasConfirmedDelivery && itemState.canBeDelivered;
