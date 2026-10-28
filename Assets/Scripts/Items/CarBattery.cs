@@ -14,6 +14,10 @@ namespace Root
         [SerializeField] private AudioClip _soundRemove;
         [SerializeField] private ItemSo _batteryItemSO;
 
+        [Header("Visuals")]
+        [SerializeField] GameObject[] toggleOpenTwesers;
+        [SerializeField] GameObject[] toggleCloseTwesers;
+
         [Header("Overcharge")]
         [SerializeField] private float maxShakeIntensity = 0.02f;
         [SerializeField] private float shakeFrequency = 40f;
@@ -24,6 +28,14 @@ namespace Root
         private void Awake()
         {
             batteryCharcher.OnInterruptCharge += DisableCharge;
+        }
+
+        private void Start()
+        {
+            for (int i = 0; i < toggleOpenTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(false);
+            }
         }
 
         public override void Interact()
@@ -37,6 +49,15 @@ namespace Root
                 if (battery != null)
                 {
                     holder.Pickup(battery);
+
+                    for (int i = 0; i < toggleOpenTwesers.Length; i++)
+                    {
+                        toggleOpenTwesers[i].SetActive(false);
+                    }
+                    for (int i = 0; i < toggleCloseTwesers.Length; i++)
+                    {
+                        toggleCloseTwesers[i].SetActive(true);
+                    }
                 }
                 return;
             }
@@ -47,6 +68,15 @@ namespace Root
             if (TryInsertBattery(holder.HeldItem))
             {
                 holder.ForceClearHeldItem();
+
+                for (int i = 0; i < toggleOpenTwesers.Length; i++)
+                {
+                    toggleOpenTwesers[i].SetActive(true);
+                }
+                for (int i = 0; i < toggleCloseTwesers.Length; i++)
+                {
+                    toggleCloseTwesers[i].SetActive(false);
+                }
             }
         }
 
@@ -117,6 +147,15 @@ namespace Root
             batteryToInsert.VisualOnly(true);
             _battery.transform.position = chargerPivot.position;
             _battery.transform.rotation = chargerPivot.rotation;
+
+            for (int i = 0; i < toggleOpenTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(true);
+            }
+            for (int i = 0; i < toggleCloseTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(false);
+            }
             return true;
         }
 
@@ -127,9 +166,16 @@ namespace Root
             TrainBatteryItem battery = _battery;
             battery.VisualOnly(false);
             _battery = null;
-
-           /* if (_soundRemove != null)
-                GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);*/
+            for (int i = 0; i < toggleOpenTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(false);
+            }
+            for (int i = 0; i < toggleCloseTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(true);
+            }
+            /* if (_soundRemove != null)
+                 GameManager.AudioSystem.PlaySoundPositional(_soundRemove, transform.position, GameManager.AudioSystem.VFX);*/
 
             return battery;
         }

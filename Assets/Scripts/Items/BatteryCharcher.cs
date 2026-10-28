@@ -15,6 +15,10 @@ namespace Root
         [SerializeField] private AudioClip _soundInsert;
         [SerializeField] private AudioClip _soundRemove;
 
+        [Header("Visuals")]
+        [SerializeField] GameObject[] toggleOpenTwesers;
+        [SerializeField] GameObject[] toggleCloseTwesers;
+
         [Header("Overcharge")]
         [SerializeField] private float percentPerBattery = 25f;
         [SerializeField] private float shakeStartPercent = 15f;
@@ -31,6 +35,14 @@ namespace Root
         [SerializeField] private CarBattery batteryElement;
         private bool _powered = false;
 
+        private void Start()
+        {
+            for (int i = 0; i < toggleOpenTwesers.Length; i++)
+            {
+                toggleOpenTwesers[i].SetActive(false);
+            }
+        }
+
         public override void Interact()
         {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
@@ -43,6 +55,15 @@ namespace Root
                 {
                     OnInterruptCharge?.Invoke();
                     holder.Pickup(battery);
+
+                    for (int i = 0; i < toggleOpenTwesers.Length; i++)
+                    {
+                        toggleOpenTwesers[i].SetActive(false);
+                    }
+                    for (int i = 0; i < toggleCloseTwesers.Length; i++)
+                    {
+                        toggleCloseTwesers[i].SetActive(true);
+                    }
                 }
                 return;
             }
@@ -54,6 +75,15 @@ namespace Root
             {
                 holder.ForceClearHeldItem();
                 OnContinueCharge?.Invoke();
+
+                for (int i = 0; i < toggleOpenTwesers.Length; i++)
+                {
+                    toggleOpenTwesers[i].SetActive(true);
+                }
+                for (int i = 0; i < toggleCloseTwesers.Length; i++)
+                {
+                    toggleCloseTwesers[i].SetActive(false);
+                }
             }
         }
 
