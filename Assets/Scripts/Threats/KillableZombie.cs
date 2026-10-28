@@ -40,7 +40,7 @@ namespace Root
 
         public override void Death()
         {
-            animator.Play(deathAnimation);
+            animator.SetBool(deathAnimation, true);
 
             GetComponent<BloodSplatter>()?.SpawnBlood(transform.position);
 
