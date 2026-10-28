@@ -27,7 +27,7 @@ namespace Root
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
 
-            _agent.enabled = false;
+            //_agent.enabled = false;
 
             GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
         }
@@ -119,6 +119,11 @@ namespace Root
             cool -= 1 * Time.deltaTime;
             if (cool <= 0) { DmgInter = false;}        
         }
-       
+
+        private void OnDisable()
+        {
+            _agent.isStopped = true;
+        }
+
     }
 }
