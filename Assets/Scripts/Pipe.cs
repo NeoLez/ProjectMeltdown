@@ -11,7 +11,7 @@ namespace Root
         public event Action<bool> OnStateChange;
         [SerializeField] private bool fluidConsumer;
 
-        public virtual int SendSignal(Pipe pipe, bool sendingFluid)
+        public int SendSignal(Pipe pipe, bool sendingFluid)
         {
             if (sendingFluid == _currentState) return 0;
             _currentState = sendingFluid;

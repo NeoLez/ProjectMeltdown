@@ -29,7 +29,6 @@ namespace Root
         private bool _isAnimating;
         public override void Interact()
         {
-            Debug.Log(_pipe.HasFluid());
             if (_isAnimating || _pipe.HasFluid()) return;
             _isAnimating = true;
             SetConnection();

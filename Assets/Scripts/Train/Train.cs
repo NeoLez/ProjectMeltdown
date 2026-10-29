@@ -86,7 +86,6 @@ namespace Root
 
         private void ToggleGodMode(InputAction.CallbackContext _)
         {
-            Debug.Log("aienatacurostn");
             godmode = !godmode;
         }
 

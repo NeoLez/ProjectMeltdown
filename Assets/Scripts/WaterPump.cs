@@ -21,6 +21,7 @@ namespace Root
 
         private void SendWater()
         {
+            if (pipe.HasFluid()) return;
             var outputAmount = pipe.SendSignal(null, true);
             if (outputAmount == 0) pipe.SendSignal(null, false);
         }
