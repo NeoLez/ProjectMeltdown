@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 133340761679010256}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.455, z: 0}
+  m_LocalPosition: {x: 0, y: 0.028, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57,14 +57,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4401593793162343310}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1.0000352}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3698158229181082074}
   m_Father: {fileID: 8602752150511704694}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &5286964543799330203
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4401593793162343310}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 8467973019869391972, guid: 29676286ddc9cfe4db4ee9d204870e49, type: 3}
 --- !u!23 &1507368530139904590
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -98,7 +98,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3716466078083876573, guid: d4152ad96c658d74abc6a5fbfd6cf2cd, type: 3}
+  - {fileID: 2100000, guid: 74fc49e7c76155447b28e3bbf607c52b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,7 +162,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5923090837519291401}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 8467973019869391972, guid: 29676286ddc9cfe4db4ee9d204870e49, type: 3}
 --- !u!23 &795868381028015825
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3716466078083876573, guid: d4152ad96c658d74abc6a5fbfd6cf2cd, type: 3}
+  - {fileID: 2100000, guid: 74fc49e7c76155447b28e3bbf607c52b, type: 2}
   - {fileID: 2100000, guid: cd6c33fd2f8b1b0458bc699bcdb65ace, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -245,7 +245,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.60922, y: 1.1110723, z: 0.06058787}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7860041893954601722}
@@ -271,8 +271,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.5986492, z: 0.08816379}
+  m_Center: {x: 0, y: -0.006528944, z: 0.0052578095}
 --- !u!54 &5461339498196601952
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -348,8 +348,12 @@ MonoBehaviour:
       type: {class: KeycardState, ns: Root, asm: Assembly-CSharp}
       data:
         <ItemSo>k__BackingField: {fileID: 11400000, guid: b2080dfdd477da846be9a2643731a0df, type: 2}
-        color: 1
         boundCode: -1
+        targetNode:
+          height: 0
+          dist: 0
+          line: 0
+          feature: 0
 --- !u!114 &3858791157956956008
 MonoBehaviour:
   m_ObjectHideFlags: 0
