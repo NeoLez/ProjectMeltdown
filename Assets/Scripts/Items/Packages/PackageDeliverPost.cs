@@ -256,7 +256,7 @@ namespace Root
                 }
                 else
                 {
-                    if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("No tiene ningun paquete para depositar", true));
+                    if (_textRoutine == null) _textRoutine = StartCoroutine(UpdatePanelMessagesRoutine("No tiene ningun paquete para depositar", false));
                 }
 
                 return;
