@@ -1,4 +1,5 @@
-﻿using Root.Controller;
+﻿using System;
+using Root.Controller;
 using UnityEngine;
 
 namespace Root
@@ -7,19 +8,16 @@ namespace Root
     public class JumpTrigger : MonoBehaviour
     {
         [SerializeField] private Transform boardingPoint;
-        [SerializeField] private float maxDistance;
         [SerializeField] private float maxAngle;
 
         private MovementController _movementController;
         private CameraController _cameraController;
-        private BoxCollider _boxCollider;
+        private bool _playerIsTouchingTrigger;
 
         private void Start()
         {
             _movementController = GameManager.Player.GetComponent<MovementController>();
             _cameraController = GameManager.Player.GetComponent<CameraController>();
-
-            _boxCollider = GetComponent<BoxCollider>();
 
             GameManager.Input.Movement.Jump.performed += TryBoard;
         }
@@ -33,42 +31,37 @@ namespace Root
         {
             Transform player = GameManager.Player.transform;
 
-            // Condición 1: estar debajo del punto de entrada
-            if (player.position.y >= boardingPoint.position.y)
+            if (_movementController.GetState() != CharacterState.Grounded || !_playerIsTouchingTrigger)
                 return;
+            Vector3 movementOffset = boardingPoint.position - transform.position;
+            movementOffset.y = 0;
 
-            // Condición 2: estar tocando el suelo
-            if (_movementController.GetState() != CharacterState.Grounded)
+            if (Vector3.Angle(movementOffset, _cameraController.GetHorizontalDirectionForwardVector().Swizzle_x0y()) > maxAngle)
                 return;
+            
+            movementOffset.y = boardingPoint.position.y - player.position.y + player.GetComponent<CapsuleCollider>().height / 2f;
 
-            // Condición 3: estar suficientemente cerca
-            if (Vector3.Distance(player.position, transform.position) > maxDistance)
-                return;
+            player.position += movementOffset;
+        }
 
-            // Condición 4: mirar hacia el trigger dentro del ángulo permitido
-            Vector3 dirToTrigger = (transform.position - player.position).normalized;
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject == GameManager.Player.gameObject)
+                _playerIsTouchingTrigger = true;
+        }
 
-            Vector2 forward = _cameraController.GetHorizontalDirectionForwardVector();
-            Vector3 playerForward = new Vector3(forward.x, 0f, forward.y);
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject == GameManager.Player.gameObject)
+                _playerIsTouchingTrigger = false;
+        }
 
-            float angle = Vector3.Angle(playerForward, dirToTrigger);
-
-            if (angle > maxAngle)
-                return;
-
-            // Centro real del trigger 
-            Vector3 triggerCenter = transform.TransformPoint(_boxCollider.center);
-
-            // Offset entre el centro del trigger y el objetivo 
-            Vector3 offset = boardingPoint.position - triggerCenter;
-
-            // Mantener la posición relativa dentro del trigger
-            Vector3 targetPosition = player.position + new Vector3(offset.x, 0f, offset.z);
-
-            // Forzar la altura de la plataforma
-            targetPosition.y = boardingPoint.position.y;
-
-            player.position = targetPosition;
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            var offset = boardingPoint.position - transform.position;
+            Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,offset.y,0));
+            Gizmos.DrawLine(transform.position + new Vector3(0,offset.y,0), transform.position + offset);
         }
     }
 }
