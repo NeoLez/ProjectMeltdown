@@ -34,7 +34,7 @@ namespace Root
         
         public bool IsConsumer()
         {
-            return _currentState;
+            return fluidConsumer;
         }
 
         private void OnDrawGizmos()

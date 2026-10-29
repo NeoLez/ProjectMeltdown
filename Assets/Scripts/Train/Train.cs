@@ -5,7 +5,6 @@ using PrimeTween;
 using Root.Managers;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
 namespace Root
@@ -78,10 +77,17 @@ namespace Root
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
             GameManager.Train = this;
+            GameManager.Input.Cheats.Godmode.performed += ToggleGodMode;
 
             foreach (var button in externalDoorButtons){
                 button.OnClicked += HandleExternalDoorButton;
             }
+        }
+
+        private void ToggleGodMode(InputAction.CallbackContext _)
+        {
+            Debug.Log("aienatacurostn");
+            godmode = !godmode;
         }
 
         private void HandleResetPerformed(InputAction.CallbackContext context)

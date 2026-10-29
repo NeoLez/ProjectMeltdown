@@ -30,6 +30,7 @@ public static class GameManager {
       Input.Inventory.Enable();
       Input.Inventory.AlternativeCloseInventory.Disable();
       Input.Handheld.Enable();
+      Input.Cheats.Enable();
       AudioSystem = new AudioSystem();
 
     }
