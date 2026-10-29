@@ -14505,6 +14505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
   connections: []
+  fluidConsumer: 0
 --- !u!1 &2759168104061168901
 GameObject:
   m_ObjectHideFlags: 0
@@ -27702,6 +27703,7 @@ MonoBehaviour:
   connections:
   - {fileID: 7747146489907267893}
   - {fileID: 4691683870082317816}
+  fluidConsumer: 0
 --- !u!114 &8335151678838736905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27714,7 +27716,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8bdfca5df44f31b198d89e9220a725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.BinaryPipeValve
-  rotationAngle: 90
   rotationTime: 1
   visuals: {fileID: 6463385944990772287}
   connections:
@@ -33703,6 +33704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
   connections:
   - {fileID: 1032715287112135633}
+  fluidConsumer: 0
 --- !u!1 &5227316725588613850
 GameObject:
   m_ObjectHideFlags: 0
@@ -52182,6 +52184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
   connections: []
+  fluidConsumer: 0
 --- !u!114 &7465220879842556843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52827,7 +52830,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8654643418672355121}
   - component: {fileID: 6214260365357271587}
-  - component: {fileID: 3778686038072026367}
   - component: {fileID: 5986269302828868181}
   - component: {fileID: 3203436373767582806}
   m_Layer: 0
@@ -52874,21 +52876,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05, y: 0.05, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3778686038072026367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7750642856626079113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d937f79c4a847ea90227ba3001e1929, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.ValveBasic
-  rotationAngle: 90
-  rotationTime: 1
-  visuals: {fileID: 250825325251724787}
 --- !u!114 &5986269302828868181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52901,8 +52888,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec2bb3a03c546ad8978a855fa273021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.WaterPump
-  valveBasic: {fileID: 3778686038072026367}
   pipe: {fileID: 3203436373767582806}
+  alwaysOn: 0
 --- !u!114 &3203436373767582806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52917,6 +52904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
   connections:
   - {fileID: 8763522558309489802}
+  fluidConsumer: 0
 --- !u!1 &7835050265953880908
 GameObject:
   m_ObjectHideFlags: 0
@@ -86695,6 +86683,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7354231312121814642}
     m_Modifications:
+    - target: {fileID: 158042843656728888, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158042843656728888, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1322997281120117328, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_Size
       value: 0.466062
@@ -86702,6 +86698,42 @@ PrefabInstance:
     - target: {fileID: 1322997281120117328, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_Value
       value: 0.82861656
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867907349764696544, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867907349764696544, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1867907349764696544, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995136063876068438, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995136063876068438, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995136063876068438, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1995136063876068438, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112395881271363124, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112395881271363124, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2412715515289200704, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_Size
@@ -86799,6 +86831,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7101865372356042862, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7510445178388287238, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: mapSection
       value: 
@@ -86814,6 +86850,14 @@ PrefabInstance:
     - target: {fileID: 7558917553596245257, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8304079449025339322, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8304079449025339322, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8514261445643470462, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_AnchorMax.x
