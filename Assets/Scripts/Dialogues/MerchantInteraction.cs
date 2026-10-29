@@ -5,16 +5,16 @@ namespace Root
 {
     public class MerchantInteraction : InteractBehaviour
     {
-        [SerializeField] StoreBuyBell storeBell;
-        [SerializeField] Collider dialogueTrigger;
-        [SerializeField] StoreManager storeManager;
-        [SerializeField] float _delay = 4f;
-        Animator _anim;
-        [SerializeField] GameObject _merchant;
-        int _animState = 0;
+        [SerializeField] private StoreBuyBell storeBell;
+        [SerializeField] private Collider dialogueTrigger;
+        [SerializeField] private StoreManager storeManager;
+        [SerializeField] private float _delay = 4f;
+        [SerializeField] private Animator merchantAnimator;
+
+        private bool _wasAnimationTriggered;
+
         private void Start()
         {
-            _anim = _merchant.GetComponent<Animator>();
             if (HasDialogue() || !storeManager.CanSpawnMultipleItems)
             {
                 storeBell._OnStoreShow?.Invoke(false);
@@ -27,27 +27,32 @@ namespace Root
 
             base.StartedExecutingDialogue();
         }
+
         public override void ExecuteDialogue()
         {
             if (!gameObject.activeInHierarchy) return;
 
             if (hasBeenTriggeredOnce) return;
-            if (_animState == 2) TriggerDialogue();
-            else if (_animState == 0) StartCoroutine(TriggerAnimationAndDialogue());
-            
-        }
-        IEnumerator TriggerAnimationAndDialogue()
-        {
-            _animState = 1;
-            if (Dialogue == null)  yield break;
-            _anim.Play("2_StartShop");
 
-            DialogueManager.Instance.PoorSafeNet();
+            if(!_wasAnimationTriggered)
+                StartCoroutine(TriggerAnimationAndDialogue());
+            else
+                TriggerDialogue();
+        }
+
+        private IEnumerator TriggerAnimationAndDialogue()
+        {
+            if (merchantAnimator == null) yield break;
+            if (Dialogue == null) yield break;
+
+            merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(_delay);
-            _animState = 2;
+
+            _wasAnimationTriggered = true;
             TriggerDialogue();
         }
-        void TriggerDialogue()
+
+        private void TriggerDialogue()
         {
             if (Dialogue == null) return;
 

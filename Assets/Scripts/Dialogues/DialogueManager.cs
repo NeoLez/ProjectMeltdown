@@ -195,11 +195,7 @@ public class DialogueManager : MonoBehaviour
             if (!_hasChosenOption) DisplayNextSentence();
         }
     }
-    public void PoorSafeNet()
-    {
-        OnDialogueStarted?.Invoke();
-        //despues lo pueden cambiar, tuve algunos problemas haciendo el delay para la secuencia del mercader
-    }
+
     private void StartDialogue()
     {
         OnDialogueStarted?.Invoke();

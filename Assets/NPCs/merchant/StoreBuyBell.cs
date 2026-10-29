@@ -2,6 +2,7 @@ using Root;
 using Root.Controller;
 using Root.Managers;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Root
@@ -18,10 +19,11 @@ namespace Root
         [SerializeField] private Collider colliders;
 
         public Action<bool> _OnStoreShow;
+        private bool _wasAnimationTriggered;
 
         private void Awake()
         {
-            OnBellRanged += OpenStore;
+            OnBellRanged += HandleStore;
             //OnBellRangedAgain += OpenStore2;
             _OnStoreShow += HandleInteraction;
         }
@@ -33,6 +35,17 @@ namespace Root
             cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
         }
 
+        private void HandleStore()
+        {
+            if (!_wasAnimationTriggered)
+                StartCoroutine(TriggerAnimation());
+            else
+            {
+                OpenStore();
+                OpenStorePanel();
+            }
+        }
+
         private void OpenStore()
         {
             IsStoreOpened = true;
@@ -42,14 +55,10 @@ namespace Root
 
             GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
             GameManager.Player.GetComponent<CameraController>().FocusCamera(npcLookingPivot);
-
-            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
 
-        private void OpenStore2()
+        private void OpenStorePanel()
         {
-            IsStoreOpened = true;
-
             UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
         }
 
@@ -59,18 +68,16 @@ namespace Root
             IsStoreOpened = false;
         }
 
-        public void CanShowItems(bool show)
+        private IEnumerator TriggerAnimation()
         {
-            if (show)
-            {
-                OpenStore();
-                //merchantAnimator.SetBool("Appear", true);
-            }
-            else 
-            {
-                merchantAnimator.SetBool("Appear", false);
-            }
+            if (merchantAnimator == null) yield break;
 
+            OpenStore();
+            merchantAnimator.Play("2_StartShop");
+            yield return new WaitForSeconds(4f);
+            _wasAnimationTriggered = true;
+
+            OpenStorePanel();
         }
 
         private void HandleInteraction(bool enable)
@@ -78,7 +85,7 @@ namespace Root
             if (enable)
             {
                 colliders.enabled = true;
-                CanShowItems(true);
+                OpenStorePanel();
             }
             else
             {
