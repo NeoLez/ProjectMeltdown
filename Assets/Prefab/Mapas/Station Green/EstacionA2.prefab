@@ -13555,6 +13555,52 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &4484237599853493994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6571215190914961374}
+  - component: {fileID: 4733190476401646552}
+  m_Layer: 0
+  m_Name: OutputPipe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6571215190914961374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484237599853493994}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0763, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5009205885527727547}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4733190476401646552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484237599853493994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15680e323eb9446da899f60dd0332004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
+  connections: []
+  fluidConsumer: 1
 --- !u!1 &4491179176329969171
 GameObject:
   m_ObjectHideFlags: 0
@@ -14032,7 +14078,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5009205885527727547}
   - component: {fileID: 1561980568268366740}
-  - component: {fileID: 6092779795135727857}
+  - component: {fileID: 5832865804819728158}
+  - component: {fileID: 6472111252849629769}
   m_Layer: 0
   m_Name: Valve
   m_TagString: Untagged
@@ -14054,6 +14101,8 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 660628374551189334}
+  - {fileID: 6571215190914961374}
+  - {fileID: 518446818737252910}
   m_Father: {fileID: 196476295412544438}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1561980568268366740
@@ -14077,7 +14126,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05, y: 0.05, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6092779795135727857
+--- !u!114 &5832865804819728158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14086,13 +14135,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 4604202285469903540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d937f79c4a847ea90227ba3001e1929, type: 3}
+  m_Script: {fileID: 11500000, guid: 15680e323eb9446da899f60dd0332004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Pipe
+  connections:
+  - {fileID: 4733190476401646552}
+  fluidConsumer: 0
+--- !u!114 &6472111252849629769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4604202285469903540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8bdfca5df44f31b198d89e9220a725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.PipeValve
-  rotationAngle: 90
   rotationTime: 1
   visuals: {fileID: 660628374551189334}
-  pipe: {fileID: 0}
+  connections:
+  - angle: 0
+    connections: []
+  - angle: -90
+    connections:
+    - {fileID: 4733190476401646552}
 --- !u!1 &4620200006523904280
 GameObject:
   m_ObjectHideFlags: 0
@@ -15532,7 +15600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.WaterMovable
   _minimumHeight: 8
   _movementRate: 0.5
-  _pipeValve: {fileID: 6092779795135727857}
+  pipe: {fileID: 4733190476401646552}
 --- !u!114 &3035300882277923851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27731,6 +27799,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.3056397, y: 3.7444386, z: 24.082327}
   m_Center: {x: 0.3056991, y: -0.9777806, z: 10.971171}
+--- !u!1 &8655459105476796058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518446818737252910}
+  - component: {fileID: 5844063124693034971}
+  m_Layer: 0
+  m_Name: Pump
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &518446818737252910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655459105476796058}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 62.35999, y: 1.94428, z: 87.69904}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5009205885527727547}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5844063124693034971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655459105476796058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec2bb3a03c546ad8978a855fa273021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.WaterPump
+  pipe: {fileID: 5832865804819728158}
+  alwaysOn: 1
 --- !u!1 &8662410979855834516
 GameObject:
   m_ObjectHideFlags: 0
@@ -46214,7 +46328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1067877062129687866, guid: b13d7e7a17134284b8deb17da002f5f2, type: 3}
       propertyPath: m_Name
-      value: ValvePiece2
+      value: Visuals
       objectReference: {fileID: 0}
     - target: {fileID: 1572073992551447791, guid: b13d7e7a17134284b8deb17da002f5f2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

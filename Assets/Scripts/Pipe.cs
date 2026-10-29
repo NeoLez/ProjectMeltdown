@@ -6,29 +6,41 @@ namespace Root
 {
     public class Pipe : MonoBehaviour
     {
-        private List<Pipe> _connections = new();
-        private bool _currentState;
+        public List<Pipe> connections = new();
+        protected bool _currentState;
         public event Action<bool> OnStateChange;
+        [SerializeField] private bool fluidConsumer;
 
-        public void SendSignal(Pipe pipe, bool sendingFluid)
+        public virtual int SendSignal(Pipe pipe, bool sendingFluid)
         {
-            if (sendingFluid == _currentState) return;
+            if (sendingFluid == _currentState) return 0;
             _currentState = sendingFluid;
+            OnStateChange?.Invoke(sendingFluid);
             
-            foreach (var connection in _connections)
+            int numConsumers = fluidConsumer ? 1 : 0;
+            foreach (var connection in connections)
             {
                 if (connection == pipe) continue;
                 
-                connection.SendSignal(pipe, sendingFluid);
+                numConsumers += connection.SendSignal(pipe, sendingFluid);
             }
-            
-            OnStateChange?.Invoke(sendingFluid);
+            return numConsumers;
+        }
+
+        public bool HasFluid()
+        {
+            return _currentState;
+        }
+        
+        public bool IsConsumer()
+        {
+            return _currentState;
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.darkCyan;
-            foreach (var connection in _connections)
+            foreach (var connection in connections)
             {
                 Gizmos.DrawLine(transform.position, connection.transform.position);
             }
