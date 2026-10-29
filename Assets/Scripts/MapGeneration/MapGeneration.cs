@@ -1,9 +1,10 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
-using NaughtyAttributes;
 using Timers;
 using TMPro;
 using UnityEngine;
+using static Root.MapPointsGen;
 using Logger = Root.Log.Logger;
 using LogType = Root.Log.LogType;
 using Random = UnityEngine.Random;
@@ -101,6 +102,7 @@ namespace Root {
                 var nextNode = _sectionGeneratorSo.GetNextNode();
                 if (nextNode == null) {
                     _hasReachedMapEnd = true;
+                    section.isStation = true;
                     return false;
                 }
 

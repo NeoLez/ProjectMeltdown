@@ -13,6 +13,8 @@ namespace Root
     public class Train : MonoBehaviour
     {
         public bool godmode;
+        public Transform pivot;
+        public Transform secondPivot;
         [SerializeField] private TrainSpeedController speedController;
         [SerializeField] private TrainBrakeController brakeController;
         [SerializeField] private BatterySlot batterySlot;
