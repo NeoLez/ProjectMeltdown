@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -152,6 +153,11 @@ namespace Root
             if (creepySound != null) creepySound.Stop();
             //Debug.Log("mori");
             GameManager.Player.gameObject.GetComponent<HealthControl>().InstantDeath();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, distanceToStartTimer);
         }
     }
 }
