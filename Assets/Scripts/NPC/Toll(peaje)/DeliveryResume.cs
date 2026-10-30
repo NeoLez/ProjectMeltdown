@@ -48,12 +48,12 @@ namespace Root
 
         public void Initialize()
         {
-            if (!missionManager.AreMissionsActive())
+            if (!missionManager.MissionsCompleted())
             {
                 string tollPrice = string.Format(priceLabel, toll.AmountToRequest.ToString());
                 title2.text += tollPrice;
 
-                int sumToPay = Mathf.RoundToInt(toll.AmountToRequest * failureChargePercentage);
+                int sumToPay = Mathf.RoundToInt(toll.AmountToRequest * effect.failureChargePercentage);
                 totalPrice.text += string.Format(priceLabel, sumToPay.ToString());
 
                 failureTicketCanvas.enabled = true;

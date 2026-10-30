@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace Root
@@ -10,6 +9,7 @@ namespace Root
         public static MissionsManager Instance;
 
         private Dictionary<string, MissionObjectiveSO> _deliveryMissions = new(); //TODO-Porbably make it more specific
+        private Dictionary<string, MissionObjectiveSO> _deliveryMissionsRegister = new(); //TODO-Change name
         private Dictionary<string, MissionData> _activeMissionData = new();
 
         private Dictionary<string, List<PackageItemState>> _packagesToDeliver = new(); //para tener un registro de los depositados
@@ -50,7 +50,8 @@ namespace Root
         private void RegisterPackage(MissionObjectiveSO activeMission, List<PackageItemState> spawnedPackages)
         {
             List<TypeOfPackage> spawnedTypes = new();
-            for (int i = 0; i < spawnedPackages.Count; i++) {
+            for (int i = 0; i < spawnedPackages.Count; i++)
+            {
                 spawnedTypes.Add(spawnedPackages[i].typeOfPackage);
                 toDeliver.Add(spawnedPackages[i]);
             }
@@ -66,6 +67,7 @@ namespace Root
 
                 _deliveryMissions.Remove(activeMission.Id);
                 _activeMissionData.Remove(activeMission.Id);
+                _deliveryMissionsRegister.Add(activeMission.Id, missionsToDeliver);
 
                 missionsToDeliver = null;
             }
@@ -105,6 +107,11 @@ namespace Root
             return remaingPackages.Count;
         }
 
+        public bool MissionsCompleted()
+        {
+            return _deliveryMissionsRegister.Count > 0;
+        }
+
         public int UndeliveredPackages()
         {
             int amount = 0;
@@ -112,14 +119,14 @@ namespace Root
             {
                 foreach (var item in package.Value)
                 {
-                    if(item.canBeDelivered)
+                    if (item.canBeDelivered)
                     {
                         amount++;
                     }
                 }
             }
             return amount;
-        }   
+        }
 
         public void DeleteDepositedPackage(string activeMission, List<PackageItemState> stateToRemove)
         {
@@ -165,7 +172,7 @@ namespace Root
         public MissionObjectiveSO SingleMission()
         {
             if (missionsToDeliver == null) return null;
-            
+
             return missionsToDeliver;
         }
 
