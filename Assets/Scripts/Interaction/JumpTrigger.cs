@@ -59,9 +59,42 @@ namespace Root
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
+
+            const float approximateResolution = 10f;
+
+            var back  = transform.TransformPoint(new Vector3(0, 0, -0.5f));
+            var front = transform.TransformPoint(new Vector3(0, 0,  0.5f));
+
+            var totalLength = Vector3.Distance(back, front);
+            var divisionAmount = Mathf.Max(1, Mathf.RoundToInt(totalLength / approximateResolution));
+            
             var offset = boardingPoint.position - transform.position;
-            Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,offset.y,0));
-            Gizmos.DrawLine(transform.position + new Vector3(0,offset.y,0), transform.position + offset);
+            var vertical = transform.up * Vector3.Dot(offset, transform.up);
+            var horizontal = offset - vertical;
+
+            for (int i = 0; i <= divisionAmount; i++)
+            {
+                var start = Vector3.Lerp(back, front, i / (float)divisionAmount);
+                var corner = start + vertical;
+                
+                DrawArrow(start, corner, transform.right);
+                DrawArrow(corner, corner + horizontal, transform.up);
+            }
+        }
+
+        private static void DrawArrow(Vector3 from, Vector3 to, Vector3 axis, float headLength = 0.4f, float headAngle = 25f)
+        {
+            var delta = to - from;
+            if (delta.sqrMagnitude == 0f) return;
+
+            Gizmos.DrawLine(from, to);
+
+            var dir = delta.normalized;
+            headLength = Mathf.Min(headLength, delta.magnitude * 0.4f);
+            
+            var wing = -dir * headLength;
+            Gizmos.DrawLine(to, to + Quaternion.AngleAxis( headAngle, axis) * wing);
+            Gizmos.DrawLine(to, to + Quaternion.AngleAxis(-headAngle, axis) * wing);
         }
     }
 }
