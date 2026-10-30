@@ -66,7 +66,7 @@ namespace Root
             var front = transform.TransformPoint(new Vector3(0, 0,  0.5f));
 
             var totalLength = Vector3.Distance(back, front);
-            var divisionAmount = Mathf.Max(1, Mathf.RoundToInt(totalLength / approximateResolution));
+            var divisionAmount = Mathf.Ceil(Mathf.Max(1, Mathf.RoundToInt(totalLength / approximateResolution)) / 2f) * 2;
             
             var offset = boardingPoint.position - transform.position;
             var vertical = transform.up * Vector3.Dot(offset, transform.up);
