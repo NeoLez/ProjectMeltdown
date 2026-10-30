@@ -21,6 +21,12 @@ MonoBehaviour:
   - Text: Lleva estos paquetes a la proxima estacion segura.
     textDuration: 0
     HasChoices: 0
+  - Text: Se te va a cobrar un minimo de peaje de 100$
+    textDuration: 0
+    HasChoices: 0
+  - Text: Dependiendo cuantos entregues, el precio cambiara
+    textDuration: 0
+    HasChoices: 0
   - Text: Lo podras hacer?
     textDuration: 0
     HasChoices: 1
@@ -32,13 +38,13 @@ MonoBehaviour:
     HasChoices: 0
   DialogueChoices:
   - Text: 'Si '
-    NextDialogueIndex: 2
+    NextDialogueIndex: 4
     effects:
     - {fileID: 11400000, guid: 76a184167b7dac56088147ebbf14525f, type: 2}
     - {fileID: 11400000, guid: 190e71903c9f1a3db938aeb4e5b24bfa, type: 2}
     ChoiceDescription: 
   - Text: No
-    NextDialogueIndex: 3
+    NextDialogueIndex: 5
     effects: []
     ChoiceDescription: 
-  endDialogueLine: 00000101
+  endDialogueLine: 000000000101

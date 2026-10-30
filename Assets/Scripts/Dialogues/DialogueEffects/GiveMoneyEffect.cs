@@ -14,34 +14,37 @@ namespace Root
 
         public override bool CanExecute(DialogueExecutionContext context = null)
         {
-            _currentMoney = context.NPC.gameObject.GetComponent<NpcToll>().AmountToRequest;
-
             MissionsManager missions = MissionsManager.Instance;
 
-            //si no entregaste ninguno, que suba por la cantidad que tenes en este caso 3
-            if (missions.PackagesToDeliver() == missions.UndeliveredPackages())
-            {
-                _currentMoney *= missions.UndeliveredPackages();
-                //Debug.Log(currentMoney);
-            }
-            else if (missions.PackagesDelivered() < missions.PackagesToDeliver()) //sino que te descuente un porcentaje por los pquetes entregados,
-            {
-                int totalDelivered = missions.PackagesDelivered();
-                int amountToDeliver = missions.PackagesToDeliver();
-                totalDelivered = Mathf.Clamp(totalDelivered, 0, amountToDeliver);
+            _currentMoney = context.NPC.gameObject.GetComponent<NpcToll>().AmountToRequest;
 
-                int remainingPackages = amountToDeliver - totalDelivered;
-
-                float succesPercentage = ((float)totalDelivered / amountToDeliver);
-
-                float totalToPay = remainingPackages * succesPercentage;
-                _currentMoney *= totalToPay;
-                //Debug.Log(currentMoney);
-            }
-            else
+            if(missions.AreMissionsActive())
             {
-                _currentMoney *= allPackagesDeliveredDiscount;
-                //Debug.Log(currentMoney);
+                //si no entregaste ninguno, que suba por la cantidad que tenes en este caso 3
+                if (missions.PackagesToDeliver() == missions.UndeliveredPackages())
+                {
+                    _currentMoney *= missions.UndeliveredPackages();
+                    //Debug.Log(currentMoney);
+                }
+                else if (missions.PackagesDelivered() < missions.PackagesToDeliver()) //sino que te descuente un porcentaje por los pquetes entregados,
+                {
+                    int totalDelivered = missions.PackagesDelivered();
+                    int amountToDeliver = missions.PackagesToDeliver();
+                    totalDelivered = Mathf.Clamp(totalDelivered, 0, amountToDeliver);
+
+                    int remainingPackages = amountToDeliver - totalDelivered;
+
+                    float succesPercentage = ((float)totalDelivered / amountToDeliver);
+
+                    float totalToPay = remainingPackages * succesPercentage;
+                    _currentMoney *= totalToPay;
+                    //Debug.Log(currentMoney);
+                }
+                else
+                {
+                    _currentMoney *= allPackagesDeliveredDiscount;
+                    //Debug.Log(currentMoney);
+                }
             }
 
             OnEffectExcuted?.Invoke();

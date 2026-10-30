@@ -21,6 +21,12 @@ namespace Root
         [SerializeField] private TMP_Text totalTollPrice;
         private MissionsManager missionManager;
 
+        [Header("Mission not accepted Resume UI")]
+        [SerializeField] private float failureChargePercentage;
+        [SerializeField] private Canvas failureTicketCanvas;
+        [SerializeField] private TMP_Text title2;
+        [SerializeField] private TMP_Text totalPrice;
+
         private string priceLabel = "{0}$";
         private string porcentageLabel = "- {0}%";
         private string multiplyLabel = "x{0}";
@@ -37,10 +43,24 @@ namespace Root
             effect.OnEffectExcuted += Initialize;
 
             ticketCanvas.enabled = false;
+            failureTicketCanvas.enabled = false;
         }
 
         public void Initialize()
         {
+            if (!missionManager.AreMissionsActive())
+            {
+                string tollPrice = string.Format(priceLabel, toll.AmountToRequest.ToString());
+                title2.text += tollPrice;
+
+                int sumToPay = Mathf.RoundToInt(toll.AmountToRequest * failureChargePercentage);
+                totalPrice.text += string.Format(priceLabel, sumToPay.ToString());
+
+                failureTicketCanvas.enabled = true;
+
+                return;
+            }
+
             string price = string.Format(priceLabel, toll.AmountToRequest.ToString());
             title.text += price;
 
@@ -154,7 +174,6 @@ namespace Root
 
             if (layoutTotalHeight > backgroundRectTransform.rect.height)
             {
-                //Debug.Log("Se desbordo");
                 backgroundRectTransform.sizeDelta = new Vector2(backgroundRectTransform.sizeDelta.x, layoutTotalHeight + resumeLayoutGroup.spacing);
             }
 
