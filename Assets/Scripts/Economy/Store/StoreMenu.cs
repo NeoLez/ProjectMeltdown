@@ -22,8 +22,10 @@ namespace Root
         [SerializeField] private TMP_Text priceCounter;
         [SerializeField] private UnityEngine.UI.Button confirmButton;
 
+        [SerializeField] private Animator _animator;
+
         private void Awake()
-        {
+        {            
             storeButtons[0].onClick.AddListener(() =>
             {
                 EnableSellCanvas(false);
@@ -125,6 +127,7 @@ namespace Root
 
         public void EnableBuyCanvas(bool state)
         {
+            _animator.Play("UIhands1");
             storePanel.enabled = state;
         }
 
@@ -136,6 +139,7 @@ namespace Root
 
         public void EnableSellCanvas(bool state)
         {
+            _animator.Play("UIhands2");
             priceDisplay.enabled = state;
         }
 
