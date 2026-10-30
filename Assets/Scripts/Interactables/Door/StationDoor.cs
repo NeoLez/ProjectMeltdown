@@ -15,7 +15,7 @@ namespace Root
         public enum PowerLossBehavior { Deactivate, MaintainState }
         public enum PowerRestoreBehavior { OpenAutomatically, WaitForButton }
         private enum DoorState { Closed, Opening, Open, Closing }
-        
+
         [field: SerializeField, Required] public MapSection mapSection { get; private set; }
 
         [Header("Tipo de puerta")]
@@ -66,9 +66,12 @@ namespace Root
         private Vector3 _openPosition;
         private Coroutine _currentRoutine;
 
+        public event Action OnPowerChanged;
+
         public bool IsOpen => _state == DoorState.Open;
         public bool IsLocked => isLocked;
         public bool IsOpenOrOpening => _state == DoorState.Open || _state == DoorState.Opening;
+        public bool HasPower => !requiresPowerToInteract || (generatorSlot != null && generatorSlot.IsPowered());
         public bool CanRespondToButton => NeedsButton && _stationPowered && (_state == DoorState.Open || (_state == DoorState.Closed && !isLocked));
         private bool NeedsButton => controlMode == ControlMode.Automatic && onPowerRestored == PowerRestoreBehavior.WaitForButton;
 
@@ -142,15 +145,6 @@ namespace Root
                 return;
             }
 
-            if (_state == DoorState.Closed && useCard)
-            {
-                if (!TryGetHeldKeycard(out KeycardState card) || !CanOpenWithCard(card))
-                {
-                    RequestDeniedFeedback();
-                    return;
-                }
-            }
-
             if (_state == DoorState.Closed) RequestOpen();
             else if (_state == DoorState.Open) RequestClose();
         }
@@ -200,6 +194,17 @@ namespace Root
             ReconcilePowerState();
         }
 
+        public bool TryAuthorizeWithCard(KeycardState card)
+        {
+            if (!useCard) return false;
+            if (!HasPower) return false;
+            if (!CanOpenWithCard(card)) return false;
+
+            Unlock();
+            RequestOpen();
+            return true;
+        }
+
         public bool TryToggleFromButton()
         {
             if (!CanRespondToButton) return false;
@@ -223,12 +228,14 @@ namespace Root
             _stationPowered = true;
             _buttonAuthorized = false;
             ReconcilePowerState();
+            OnPowerChanged?.Invoke();
         }
 
         private void HandlePowerLost()
         {
             _stationPowered = false;
             ReconcilePowerState();
+            OnPowerChanged?.Invoke();
         }
 
         private void ReconcilePowerState()
