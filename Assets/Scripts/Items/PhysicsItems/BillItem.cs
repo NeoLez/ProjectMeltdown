@@ -6,12 +6,12 @@ namespace Root {
     public class BillItem : PhysicalItem {
         [SerializeField] private new Renderer renderer; 
         public override void Interact() {
-            base.Interact();
-            //EconomyManager.Instance.AddMoney(ItemSo.BillDenomination);
-            //MoneyFeedback.Instance.GrabbedBill(ItemSo);
-            //Wallet.Instance.AddBill(ItemSo);
+            //base.Interact();
+            EconomyManager.Instance.AddMoney(ItemSo.BillDenomination);
+            MoneyFeedback.Instance.GrabbedBill(ItemSo);
+            Wallet.Instance.AddBill(ItemSo);
             
-            //PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
+            PoolManager.ReturnObjectToPool(GetComponent<Poolable>());
         }
         
         public BillItemSo ItemSo => (BillItemSo)ItemState.ItemSo;
