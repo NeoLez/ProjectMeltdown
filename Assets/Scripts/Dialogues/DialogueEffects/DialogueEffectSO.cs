@@ -11,6 +11,7 @@ namespace Root
 
         public virtual void ExecuteBefore(DialogueExecutionContext context = null) { }
 
+        public Action OnEffectDisplayed;
         public Action OnEffectExcuted;
 
         public string newDescription;

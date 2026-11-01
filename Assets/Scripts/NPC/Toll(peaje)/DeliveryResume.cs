@@ -40,7 +40,8 @@ namespace Root
         {
             missionManager = MissionsManager.Instance;
 
-            effect.OnEffectExcuted += Initialize;
+            effect.OnEffectDisplayed += Initialize;
+            effect.OnEffectExcuted += Hide;
 
             ticketCanvas.enabled = false;
             failureTicketCanvas.enabled = false;
@@ -120,6 +121,20 @@ namespace Root
             ticketCanvas.enabled = true;
         }
 
+        private void Hide()
+        {
+            if (ticketCanvas.isActiveAndEnabled)
+            {
+                ticketCanvas.enabled = false;
+                return;
+            }
+            if (failureTicketCanvas.isActiveAndEnabled)
+            {
+                failureTicketCanvas.enabled = false;
+                return;
+            }
+        }
+
         public bool IsMissionIncomplete(string price)
         {
             if (missionManager.PackagesToDeliver() == missionManager.UndeliveredPackages())
@@ -181,7 +196,8 @@ namespace Root
 
         private void OnDestroy()
         {
-            effect.OnEffectExcuted -= Initialize;
+            effect.OnEffectDisplayed -= Initialize;
+            effect.OnEffectExcuted -= Hide;
         }
     }
 }

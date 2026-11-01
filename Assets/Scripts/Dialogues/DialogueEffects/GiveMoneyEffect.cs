@@ -22,7 +22,7 @@ namespace Root
             {
                 _currentMoney *= failureChargePercentage;
 
-                OnEffectExcuted?.Invoke();
+                OnEffectDisplayed?.Invoke();
 
                 return EconomyManager.Instance.GetMoney() >= _currentMoney;
             }
@@ -52,13 +52,14 @@ namespace Root
                 //Debug.Log(currentMoney);
             }         
 
-            OnEffectExcuted?.Invoke();
+            OnEffectDisplayed?.Invoke();
 
             return EconomyManager.Instance.GetMoney() >= _currentMoney;
         }
 
         public override void Execute(DialogueExecutionContext context)
         {
+            OnEffectExcuted?.Invoke();
             //float money = context.NPC.gameObject.GetComponent<NpcToll>().AmountToRequest;
             EconomyManager.Instance.SpendMoney((int)_currentMoney);
         }
