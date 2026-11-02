@@ -81,7 +81,7 @@ namespace Root
         {
             if (EconomyManager.Instance.GetMoney() < _price)
             {
-                NotificationManager.Instance.ShowNotification($"No tenes dinero suficiente", notificationDuration);
+                NotificationManager.Instance.ShowNotification($"No tenes dinero suficiente", notificationDuration, false);
             }
         }
 

@@ -12,7 +12,7 @@ namespace Root
         [SerializeField] private Transform npcPositionPivot;
         [SerializeField] private Transform npcLookingPivot;
         private Vector3 _newPlayerPosition;
-        private Transform cameraPivot;
+        private Transform _cameraPivot;
 
         [SerializeField] private Animator merchantAnimator;
         [SerializeField] private StoreMenu menu;
@@ -24,7 +24,7 @@ namespace Root
         private void Awake()
         {
             OnBellRanged += HandleStore;
-            //OnBellRangedAgain += OpenStore2;
+
             _OnStoreShow += HandleInteraction;
         }
 
@@ -32,7 +32,7 @@ namespace Root
         {
             CloseStore();
 
-            cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
+            _cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
         }
 
         private void HandleStore()
@@ -53,19 +53,21 @@ namespace Root
 
             _newPlayerPosition = new Vector3(npcPositionPivot.position.x, GameManager.Player.gameObject.transform.position.y, npcPositionPivot.position.z);
 
-            GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
+            GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(_cameraPivot, _newPlayerPosition);
             GameManager.Player.GetComponent<CameraController>().FocusCamera(npcLookingPivot);
         }
 
         private void OpenStorePanel()
         {
-            UIManager.Instance.OpenMenu(UIManager.UITypes.Store);
+            menu.ShowDisplays();
+            GameManager.PlayerInventoryUI.OpenInventory();
         }
 
         public void CloseStore()
         {
-            storeManager.HideStore();
             IsStoreOpened = false;
+            storeManager.HideStore();
+            menu.HideDisplays();
         }
 
         private IEnumerator TriggerAnimation()

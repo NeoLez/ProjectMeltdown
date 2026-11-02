@@ -19,12 +19,7 @@ namespace Root
             {
                 OnBellRanged?.Invoke();
             }
-            //else
-            //{
-            //    OnBellRangedAgain?.Invoke();
-            //}
         }
 
-        //agregar habilitar y desabilitar interaccion
     }
 }
