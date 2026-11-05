@@ -35,11 +35,12 @@ namespace Root
             {
                 
                 _fsm.ChangeState(AgentStates.Patrol);
+                _zombieStateMachine.animator.SetBool("running", false);
                 return;
             }
             else
             {
-               
+                _zombieStateMachine.animator.SetBool("running", true);
                 _agent.SetDestination(GameManager.Player.gameObject.transform.position);
             }
 
