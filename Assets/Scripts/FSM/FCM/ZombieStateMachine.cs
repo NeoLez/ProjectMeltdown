@@ -5,23 +5,21 @@ using static FSM;
 
 public class ZombieStateMachine : MonoBehaviour
 {
-    FSM _fsm;
-    //TODO- ahcer serializable y protected
     public Transform zombieTransform;
+    public Animator animator;
     public NavMeshAgent agent;
     public Transform[] Waypoints;
-    public LayerMask layers;
     public EnemyFov fov;
+    public LayerMask playerRayCastMask;
     public float chaseDistance;
-    public Animator animator;
 
     [Header("Damage")]
     public float damage;
     public float jumpDamage;
 
     [Header("Speed")]
-    public float chaseSpeed;
     public float patrolSpeed;
+    public float chaseSpeed;
 
     [Header("MeleeAttack")]
     public float attackRange;
@@ -36,23 +34,25 @@ public class ZombieStateMachine : MonoBehaviour
     public float jumpCooldown;
     public float jumpPrepareDelay;
     public float failedJumpAttackCooldown;
-    public float usedTime;
     [Range(0, 100)]
     public float jumpChance;
+    [HideInInspector]
+    public float usedTime;
 
+    private FSM _fsm;
     void Awake()
     {
         _fsm = new FSM();
 
         _fsm.AddState(AgentStates.Patrol, new PatrolState(_fsm, agent, Waypoints, fov, this));
         _fsm.AddState(AgentStates.Chase, new ChaseState(_fsm, agent, this));
-        _fsm.AddState(AgentStates.RangeAttack, new MeleeAttackState(_fsm, agent, this));
+        _fsm.AddState(AgentStates.MeleeAttack, new MeleeAttackState(_fsm, agent, this));
         _fsm.AddState(AgentStates.JumpAttack, new JumpAttackState(_fsm, agent, zombieTransform, this));
 
         _fsm.ChangeState(AgentStates.Patrol);
-        /*agent.enabled = false;
+        agent.enabled = false;
 
-        GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;*/
+        GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
     }
 
     private void DisableForOneSecond()
@@ -83,22 +83,22 @@ public class ZombieStateMachine : MonoBehaviour
     public bool IsPlayerInAttackRange()
     {
         return Physics.SphereCast(zombieTransform.position, attackRange, zombieTransform.forward,
-            out RaycastHit hit, attackRange, layers);
-    }
-
-    public bool IsPlayerInChaseDistance()
-    {
-        float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
-
-        return distance >= chaseDistance;
+            out RaycastHit hit, attackRange, playerRayCastMask);
     }
 
     /*public bool IsPlayerInChaseDistance()
     {
-        Vector3 dist = (GameManager.Player.transform.position - zombieTransform.position).normalized;
+        float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
+
+        return distance >= chaseDistance;
+    }*/
+
+    public bool IsPlayerInChaseDistance()
+    {
+        Vector3 dist = GameManager.Player.transform.position - zombieTransform.position;
 
         return (dist.sqrMagnitude >= chaseDistance);
-    }*/
+    }
 
     public bool CanJumpAttack()
     {

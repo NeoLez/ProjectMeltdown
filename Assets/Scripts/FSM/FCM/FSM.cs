@@ -11,7 +11,7 @@ public class FSM /*<TKey>*/  //no es monobehavoir porque lo creo en mi Agente
     Dictionary<AgentStates,IState> _allstates = new Dictionary<AgentStates,IState>();
     public enum AgentStates
     {
-        Idle, Patrol, Chase, RangeAttack, JumpAttack
+        Idle, Patrol, Chase, MeleeAttack, JumpAttack
     }
     
     //se encarga de decidir cual es el estado actual y correrlo

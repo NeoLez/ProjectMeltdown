@@ -41,7 +41,7 @@ namespace Root
 
             if (_zombieStateMachine.IsPlayerInAttackRange())
             {
-                _fsm.ChangeState(AgentStates.RangeAttack);
+                _fsm.ChangeState(AgentStates.MeleeAttack);
             }
         }
 

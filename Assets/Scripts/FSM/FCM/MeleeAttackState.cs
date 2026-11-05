@@ -24,6 +24,7 @@ namespace Root
             _zombieStateMachine = state;
             _playerHealth = GameManager.Player.gameObject.GetComponent<HealthControl>();
         }
+
         public void OnEnter()
         {
             _agent.speed = _zombieStateMachine.chaseSpeed;

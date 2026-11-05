@@ -209,19 +209,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieStateMachine
   zombieTransform: {fileID: 3285697870559994945}
+  animator: {fileID: 5792383707286224620}
   agent: {fileID: 1732654306547164443}
   Waypoints: []
-  layers:
+  fov: {fileID: 6187169671792799669}
+  playerRayCastMask:
     serializedVersion: 2
     m_Bits: 256
-  fov: {fileID: 6187169671792799669}
   chaseDistance: 5
-  animator: {fileID: 5792383707286224620}
   damage: 5
   jumpDamage: 10
-  chaseSpeed: 4
-  patrolSpeed: 2
-  attackRange: 2
+  patrolSpeed: 0.5
+  chaseSpeed: 2
+  attackRange: 1.5
   attackDelay: 0.8
   attackCooldown: 2
   heightCurve:
@@ -263,8 +263,8 @@ MonoBehaviour:
   jumpCooldown: 3
   jumpPrepareDelay: 2
   failedJumpAttackCooldown: 2
-  usedTime: 0
   jumpChance: 50
+  usedTime: 0
 --- !u!114 &6187169671792799669
 MonoBehaviour:
   m_ObjectHideFlags: 0
