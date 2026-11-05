@@ -19,23 +19,27 @@ namespace Root
         }
         public void OnEnter()
         {
+            _zombieStateMachine.animator.Play("scream");
+            _zombieStateMachine.animator.SetBool("running", true);
             _agent.speed = _zombieStateMachine.chaseSpeed;
         }
 
         public void OnExit()
         {
-
+            
         }
 
         public void OnUpdate()
         {
             if (!_zombieStateMachine.fov.DetectPlayer(_player))
             {
+                
                 _fsm.ChangeState(AgentStates.Patrol);
                 return;
             }
             else
             {
+               
                 _agent.SetDestination(GameManager.Player.gameObject.transform.position);
             }
 

@@ -75,6 +75,7 @@ public class ZombieStateMachine : MonoBehaviour
         }
         enabled = true;
         _fsm.ChangeState(AgentStates.Patrol);
+
     }
 
     void Update() => _fsm.ArtficialUpdate();
@@ -105,7 +106,7 @@ public class ZombieStateMachine : MonoBehaviour
         float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
 
         return /*usedTime + jumpCooldown < Time.deltaTime 
-            && */distance >= minJumpDistance 
+            && */distance >= minJumpDistance
             && distance <= maxJumpDistance;
     }
 
@@ -118,5 +119,4 @@ public class ZombieStateMachine : MonoBehaviour
         }
         return false;
     }
-
 }

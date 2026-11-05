@@ -25,6 +25,7 @@ public class PatrolState : IState
 
     public void OnEnter()
     {
+        _zombieStateMachine.animator.SetBool("walking", true);
         _isChasing = false;
         _agent.speed = _zombieStateMachine.patrolSpeed;
         _agent.SetDestination(Waypoints[_waypointIndex].transform.position);
@@ -32,6 +33,7 @@ public class PatrolState : IState
 
     public void OnExit()
     {
+        _zombieStateMachine.animator.SetBool("walking", false);
         _zombieStateMachine.StopAllCoroutines();
     }
 
@@ -40,19 +42,21 @@ public class PatrolState : IState
     {
         if (Waypoints.Length < 0)
         {
+            
             Debug.LogError("Assign waypoints!!");
             yield break;
         }
 
         if (_isChasing)
         {
+            
             yield break;
         }
 
         if (_agent.enabled && _agent.isOnNavMesh && _agent.remainingDistance <= _agent.stoppingDistance)
         {
             _waypointIndex++;
-
+            
             if (_waypointIndex >= Waypoints.Length)
             {
                 _waypointIndex = 0;
@@ -67,12 +71,12 @@ public class PatrolState : IState
         if (!_fov.DetectPlayer(GameManager.Player))
         {
             _agent.enabled = true;
-            _zombieStateMachine.animator.SetBool("walking", true);
+
             _zombieStateMachine.StartCoroutine(PatrolRoutine());
         }
         else
         {
-            if(CanActiveAbility())
+            if (CanActiveAbility())
             {
                 _fsm.ChangeState(AgentStates.JumpAttack);
             }

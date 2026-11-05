@@ -59,6 +59,7 @@ namespace Root
                     _zombieStateMachine.StartCoroutine(JumpAttackRoutine());
                     return;
                 }
+                
             }
         }
 
@@ -92,6 +93,7 @@ namespace Root
         private IEnumerator RecoverFromJumpRoutine()
         {
             //Debug.Log("me recupere");
+            _zombieStateMachine.animator.Play("getup");
             _agent.enabled = false;
             yield return new WaitForSeconds(_zombieStateMachine.failedJumpAttackCooldown);
             _agent.enabled = true;
@@ -117,6 +119,7 @@ namespace Root
         {
             _agent.enabled = false;
 
+            _zombieStateMachine.animator.Play("jump");
             Vector3 startingPosition = _zombieStateMachine.gameObject.transform.position;
             Vector3 lastPlayerPosition = GameManager.Player.transform.position;
             for (float time = 0; time < 1; time += Time.deltaTime * _zombieStateMachine.jumpSpeed)
