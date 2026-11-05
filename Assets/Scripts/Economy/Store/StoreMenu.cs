@@ -103,7 +103,6 @@ namespace Root
             GameManager.CameraController.EnableNormalMovement();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Inventory.InventoryToggle.Enable();
-            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
 
             mainCanvas.gameObject.SetActive(false);
         }
