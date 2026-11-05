@@ -72,6 +72,37 @@ MonoBehaviour:
   damageSound: {fileID: 8300000, guid: 2f72e59a43f01304ba01a7b34d83f646, type: 3}
   particlesHit: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
   partAnimation: RarmDmg1
+--- !u!1 &1530678712266763373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3285697870559994945}
+  m_Layer: 2
+  m_Name: Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3285697870559994945
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530678712266763373}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 866096744551799787}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4000857696384138558
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,8 +113,9 @@ GameObject:
   m_Component:
   - component: {fileID: 866096744551799787}
   - component: {fileID: 1732654306547164443}
-  - component: {fileID: 5158681211113514144}
   - component: {fileID: 961270729721237934}
+  - component: {fileID: 792776092358132749}
+  - component: {fileID: 6187169671792799669}
   - component: {fileID: 5179237796167202605}
   - component: {fileID: 163551784045851196}
   m_Layer: 2
@@ -107,6 +139,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1127187340386094622}
+  - {fileID: 3285697870559994945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1732654306547164443
@@ -119,7 +152,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.39
-  m_Speed: 0.79
+  m_Speed: 2
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 195.42
@@ -131,27 +164,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5158681211113514144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4000857696384138558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0b40bdee3276870a487569a0fc9399, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.CreaturePathfind
-  navmeshUpdateFrequency: 1
-  attackCooldown: 1
-  attackDamage: 1
-  viewDistance: 15
-  DelayBeforeDmg: 1
-  raycastLayerMask:
-    serializedVersion: 2
-    m_Bits: 1289
-  _delay: 0
 --- !u!114 &961270729721237934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +196,92 @@ MonoBehaviour:
   _soundIdle: {fileID: 8300000, guid: abc20d35d10525a4c9dad0b4bfc133e0, type: 3}
   animator: {fileID: 5792383707286224620}
   deathAnimation: death
+--- !u!114 &792776092358132749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000857696384138558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a42bca57a181541a325a637b997bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieStateMachine
+  zombieTransform: {fileID: 3285697870559994945}
+  agent: {fileID: 1732654306547164443}
+  Waypoints: []
+  layers:
+    serializedVersion: 2
+    m_Bits: 256
+  fov: {fileID: 6187169671792799669}
+  chaseDistance: 5
+  animator: {fileID: 5792383707286224620}
+  damage: 5
+  jumpDamage: 10
+  chaseSpeed: 4
+  patrolSpeed: 2
+  attackRange: 2
+  attackDelay: 0.8
+  attackCooldown: 2
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4500122
+      value: 1.0047607
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.004761905
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minJumpDistance: 1.5
+  maxJumpDistance: 5
+  jumpSpeed: 2
+  jumpCooldown: 3
+  jumpPrepareDelay: 2
+  failedJumpAttackCooldown: 2
+  usedTime: 0
+  jumpChance: 50
+--- !u!114 &6187169671792799669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000857696384138558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ed03a9357b1b88488a2886473b7077c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.EnemyFov
+  _radiusVision: 9
+  _angleVision: 166
+  _myLOSObstacle:
+    serializedVersion: 2
+    m_Bits: 3221241599
 --- !u!135 &5179237796167202605
 SphereCollider:
   m_ObjectHideFlags: 0

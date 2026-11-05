@@ -23092,7 +23092,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.36
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 645025e5ff1521ab9a5cb7e06179d2fc, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 895427668e87d424ea7ed441f02ddddb, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &4442736515986313268
 GameObject:
@@ -33874,6 +33874,37 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &5181943457424319721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4475798842472096736}
+  m_Layer: 2
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4475798842472096736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5181943457424319721}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.25, y: -2.1930299, z: -65.38}
+  m_LocalScale: {x: 2.8369632, y: 2.8369632, z: 2.8369632}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7354231312121814642}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5185343472267770779
 GameObject:
   m_ObjectHideFlags: 0
@@ -52949,6 +52980,37 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &7814373454433625616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5800787826081134906}
+  m_Layer: 2
+  m_Name: GameObject_5
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5800787826081134906
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7814373454433625616}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.82, y: -2.1930299, z: -51.94}
+  m_LocalScale: {x: 2.8369632, y: 2.8369632, z: 2.8369632}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7354231312121814642}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7835050265953880908
 GameObject:
   m_ObjectHideFlags: 0
@@ -59257,6 +59319,8 @@ Transform:
   - {fileID: 175780195928222294}
   - {fileID: 4754656013729377087}
   - {fileID: 6220619683440455668}
+  - {fileID: 4475798842472096736}
+  - {fileID: 5800787826081134906}
   - {fileID: 2699334117727580484}
   - {fileID: 7523465472398724474}
   - {fileID: 5572754925912987854}
@@ -88769,6 +88833,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7354231312121814642}
     m_Modifications:
+    - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: Waypoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: 'Waypoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4475798842472096736}
+    - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: 'Waypoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5800787826081134906}
     - target: {fileID: 866096744551799787, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.537569
@@ -88812,6 +88888,10 @@ PrefabInstance:
     - target: {fileID: 4000857696384138558, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
       propertyPath: m_Name
       value: BasicZombie
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000857696384138558, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

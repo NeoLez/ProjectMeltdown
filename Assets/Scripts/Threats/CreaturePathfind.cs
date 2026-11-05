@@ -23,6 +23,8 @@ namespace Root
         [SerializeField] private float _delay;
         private bool DmgInter = false;
         float cool;
+
+        public NavMeshAgent Agent => _agent;
         private void Awake() {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
@@ -50,6 +52,14 @@ namespace Root
                 Debug.LogError($"{gameObject.name} spawned too far away from a valid NavMesh!", this);
             }
             enabled = true;
+        }
+
+        public void Resample()
+        {
+            if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 2.0f, _agent.areaMask))
+            {
+                _agent.Warp(hit.position);
+            }
         }
 
         private void OnDestroy() {
@@ -85,8 +95,8 @@ namespace Root
             }
            
         } 
-
-        private void OnTriggerEnter(Collider collision)
+       
+       private void OnTriggerEnter(Collider collision)
         {
             if (collision.gameObject == GameManager.Player.gameObject)
             {
@@ -102,8 +112,8 @@ namespace Root
                 _doDamage = false;
             _pj = null;}
         }
-        private bool IsPlayerInView() {
-            if (!Physics.Raycast(transform.position, GameManager.Player.transform.position - transform.position,
+        public bool IsPlayerInView() {
+            if (!Physics.Raycast(transform.position, transform.forward,
                     out var hit, viewDistance, raycastLayerMask))
                 return false;
             return hit.collider.gameObject == GameManager.Player.gameObject;
@@ -119,6 +129,6 @@ namespace Root
             cool -= 1 * Time.deltaTime;
             if (cool <= 0) { DmgInter = false;}        
         }
-
+   
     }
 }

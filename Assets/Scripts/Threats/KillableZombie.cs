@@ -35,7 +35,7 @@ namespace Root
             }
             _health -= damage * multiplier;
             Mathf.Max(0, _health--);
-            _creaturePathfind.InterruptByDmg();
+            //TODO-Add damage delay
         }
 
         public override void Death()

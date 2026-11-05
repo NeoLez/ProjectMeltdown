@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Root
@@ -26,6 +27,7 @@ namespace Root
         public void OnEnemyHit(float damage, float multiplier)
         {
             enemyHealth.TakeDamage(damage,multiplier);
+            //llamar evento para que le enemigo se de la vuelta y reaccione
         }
 
         public void TriggerVisuals()
