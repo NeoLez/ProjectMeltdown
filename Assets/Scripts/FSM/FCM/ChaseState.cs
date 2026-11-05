@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.AI;
 using static FSM;
 
@@ -20,20 +21,18 @@ namespace Root
         public void OnEnter()
         {
             _zombieStateMachine.animator.Play("scream");
-            _zombieStateMachine.animator.SetBool("running", true);
+            //_zombieStateMachine.animator.SetBool("running", true);
             _agent.speed = _zombieStateMachine.chaseSpeed;
         }
 
         public void OnExit()
         {
-            
         }
 
         public void OnUpdate()
         {
             if (!_zombieStateMachine.fov.DetectPlayer(_player))
             {
-                
                 _fsm.ChangeState(AgentStates.Patrol);
                 _zombieStateMachine.animator.SetBool("running", false);
                 return;
@@ -46,6 +45,7 @@ namespace Root
 
             if (_zombieStateMachine.IsPlayerInAttackRange())
             {
+                _zombieStateMachine.animator.SetBool("running", false);
                 _fsm.ChangeState(AgentStates.MeleeAttack);
             }
         }

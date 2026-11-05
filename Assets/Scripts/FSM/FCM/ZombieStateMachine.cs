@@ -28,6 +28,7 @@ public class ZombieStateMachine : MonoBehaviour
 
     [Header("JumpAttack")]
     public AnimationCurve heightCurve;
+    public float jumpAttackRange;
     public float minJumpDistance;
     public float maxJumpDistance;
     public float jumpSpeed = 2f;
@@ -44,6 +45,7 @@ public class ZombieStateMachine : MonoBehaviour
     {
         _fsm = new FSM();
 
+        _fsm.AddState(AgentStates.Idle, new IdleState(_fsm, agent, this));
         _fsm.AddState(AgentStates.Patrol, new PatrolState(_fsm, agent, Waypoints, fov, this));
         _fsm.AddState(AgentStates.Chase, new ChaseState(_fsm, agent, this));
         _fsm.AddState(AgentStates.MeleeAttack, new MeleeAttackState(_fsm, agent, this));
@@ -80,26 +82,31 @@ public class ZombieStateMachine : MonoBehaviour
 
     void Update() => _fsm.ArtficialUpdate();
 
-
     public bool IsPlayerInAttackRange()
     {
         return Physics.SphereCast(zombieTransform.position, attackRange, zombieTransform.forward,
-            out RaycastHit hit, attackRange, playerRayCastMask);
+            out RaycastHit hit, attackRange, playerRayCastMask) && hit.collider.TryGetComponent(out Player player);
     }
 
-    /*public bool IsPlayerInChaseDistance()
+    public bool IsPlayerInJumpAttackRange()
+    {
+        return Physics.Raycast(zombieTransform.position, zombieTransform.forward, out var hit, jumpAttackRange, playerRayCastMask) 
+            && hit.collider.TryGetComponent(out Player player);
+    }
+
+    public bool IsPlayerInChaseDistance()
     {
         float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
 
         return distance >= chaseDistance;
-    }*/
+    }
 
-    public bool IsPlayerInChaseDistance()
+    /*public bool IsPlayerInChaseDistance()
     {
         Vector3 dist = GameManager.Player.transform.position - zombieTransform.position;
 
         return (dist.sqrMagnitude >= chaseDistance);
-    }
+    }*/
 
     public bool CanJumpAttack()
     {

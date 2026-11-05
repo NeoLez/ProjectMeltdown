@@ -18,7 +18,6 @@ namespace Root
         private HealthControl _playerHealth;
 
         private Action _behaviour;
-
         public JumpAttackState(FSM fsm, NavMeshAgent agent, Transform transform,  ZombieStateMachine state)
         {
             _fsm = fsm;
@@ -51,6 +50,7 @@ namespace Root
         {
             if(_agent.enabled)
             {
+                _zombieStateMachine.animator.SetBool("running", true);
                 _agent.SetDestination(GameManager.Player.gameObject.transform.position);
 
                 if (_zombieStateMachine.CanJumpAttack())
@@ -65,16 +65,12 @@ namespace Root
 
         private void AttackBehaviour()
         {
-            if (_zombieStateMachine.IsPlayerInAttackRange())
+            if (_zombieStateMachine.IsPlayerInJumpAttackRange())
             {
-                AttackRoutine();
-                return;
+                Attack();
             }
-            else
-            {
-                _zombieStateMachine.StartCoroutine(RecoverFromJumpRoutine());
-                return;
-            }          
+            _zombieStateMachine.StopCoroutine(JumpAttackRoutine());
+            _zombieStateMachine.StartCoroutine(RecoverFromJumpRoutine());                    
         }
 
 
@@ -86,6 +82,8 @@ namespace Root
 
             _agent.speed = _zombieStateMachine.chaseSpeed;
             _isJumping = false;
+
+            _zombieStateMachine.animator.Play("scream");
             _behaviour = JumpAttackBehaviour;
         }
 
@@ -99,18 +97,14 @@ namespace Root
             _agent.enabled = true;
 
             _behaviour = null;
-            _fsm.ChangeState(AgentStates.Patrol);
+            _fsm.ChangeState(AgentStates.Idle);
         }
 
-        private void AttackRoutine()
+        private void Attack()
         {
             if (_agent.enabled)
             {
                 _playerHealth.TakeDamage(_zombieStateMachine.jumpDamage);
-
-                //Debug.Log("ataque");
-                _behaviour = null;
-                _fsm.ChangeState(AgentStates.Patrol);
             }
 
         }
@@ -134,7 +128,7 @@ namespace Root
 
             _zombieStateMachine.usedTime = Time.time;
             _agent.enabled = true;
-
+            _zombieStateMachine.animator.SetBool("running", false);
             _isJumping = false;
             _behaviour = AttackBehaviour;
         }

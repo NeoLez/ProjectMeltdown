@@ -27,7 +27,7 @@ namespace Root
 
         public void OnEnter()
         {
-            _agent.speed = _zombieStateMachine.chaseSpeed;
+            _agent.isStopped = true;
             _isAttaking = false;
         }
 
@@ -39,7 +39,7 @@ namespace Root
 
         public void OnUpdate()
         {
-            if (_zombieStateMachine.IsPlayerInChaseDistance())
+            if (!_zombieStateMachine.fov.DetectPlayer(GameManager.Player))
             {
                 _fsm.ChangeState(AgentStates.Chase);
             }
@@ -56,7 +56,7 @@ namespace Root
 
         private IEnumerator AttackRoutine()
         {
-            WaitForSeconds wait = new WaitForSeconds(_zombieStateMachine.attackDelay);
+            //WaitForSeconds wait = new WaitForSeconds(_zombieStateMachine.attackDelay);
             while (true)
             {
                 if (_agent.enabled)
@@ -64,13 +64,13 @@ namespace Root
                     _isAttaking = true;
                     _agent.isStopped = true;
 
-                    _playerHealth.TakeDamage(_zombieStateMachine.damage);
+                    //_playerHealth.TakeDamage(_zombieStateMachine.damage);
                     _zombieStateMachine.animator.Play("Attack");
                     _attackTimer.Reset(_zombieStateMachine.attackCooldown);
                     _isAttaking = false;
                 }
 
-                yield return wait;
+                yield return null;
             }
 
         }

@@ -1,25 +1,42 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using static FSM;
 
-public class IdleState : IState
+namespace Root
 {
-    FSM _fsm;
-
-    public IdleState(FSM fsm)
+    public class IdleState : IState
     {
-        _fsm = fsm;
-    }
-    public void OnEnter()
-    {
-    }
+        private FSM _fsm;
+        private ZombieStateMachine _zombieStateMachine;
 
-    public void OnExit()
-    {
-    }
+        public IdleState(FSM fsm, NavMeshAgent agent, ZombieStateMachine state)
+        {
+            _fsm = fsm;
+            _zombieStateMachine = state;
+        }
 
-    public void OnUpdate()
-    {
-    }
+        public void OnEnter()
+        {
+            _zombieStateMachine.StartCoroutine(Wait());
+        }
 
+        public void OnExit()
+        {
+            _zombieStateMachine.StopCoroutine(Wait());
+        }
+
+        public void OnUpdate()
+        {
+         
+        }
+
+        private IEnumerator Wait()
+        {
+            yield return new WaitForSeconds(2f);
+
+            _fsm.ChangeState(AgentStates.Patrol);
+        }
+    }
 }

@@ -79,6 +79,7 @@ public class PatrolState : IState
             if (CanActiveAbility())
             {
                 _fsm.ChangeState(AgentStates.JumpAttack);
+                return;
             }
             else
             {
