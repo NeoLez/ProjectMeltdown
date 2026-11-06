@@ -1,7 +1,9 @@
+using System;
 using Root;
 using UnityEngine;
 using UnityEngine.AI;
 using static FSM;
+using Random = UnityEngine.Random;
 
 public class ZombieStateMachine : MonoBehaviour
 {
@@ -125,5 +127,10 @@ public class ZombieStateMachine : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.MapGeneration.OnBeforeRebase -= DisableForOneSecond;
     }
 }
