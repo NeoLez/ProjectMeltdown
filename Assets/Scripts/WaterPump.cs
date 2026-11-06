@@ -1,3 +1,5 @@
+using System;
+using Timers;
 using UnityEngine;
 
 namespace Root
@@ -6,7 +8,9 @@ namespace Root
     {
         [SerializeField] private Pipe pipe;
         [SerializeField] private bool alwaysOn;
-
+        [SerializeField] private float pumpTime;
+        public event Action OnActivate;
+        
         private void Update()
         {
             if(alwaysOn)
@@ -24,6 +28,13 @@ namespace Root
             if (pipe.HasFluid()) return;
             var outputAmount = pipe.SendSignal(null, true);
             if (outputAmount == 0) pipe.SendSignal(null, false);
+            
+            Invoke(nameof(FlushFluid), pumpTime);
+        }
+
+        private void FlushFluid()
+        {
+            pipe.SendSignal(null, false);
         }
     }
 }

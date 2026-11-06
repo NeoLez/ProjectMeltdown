@@ -18,12 +18,13 @@ namespace Root
         [SerializeField] private Transform visuals;
         private Pipe _pipe;
         [SerializeField] private List<ConnectionInfo> connections;
-        private int _currentIndex = -1;
+        [SerializeField] private int _currentIndex = 0;
 
         private void Awake()
         {
             _pipe = GetComponent<Pipe>();
-            SetConnection();
+            _pipe.connections = connections[_currentIndex].connections;
+            visuals.localRotation = Quaternion.Euler(new Vector3(0, 0, connections[_currentIndex].angle));
         }
 
         private bool _isAnimating;
