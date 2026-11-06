@@ -21,7 +21,7 @@ namespace Root
         {
             float baseY = transform.localPosition.y;
             _heights = new Vector2(baseY + _minimumHeight, baseY + _maximumHeight);
-            Debug.Log(_heights, this);
+            
             if(pump)
                 pump.OnActivate += GoDown;
             if (pipe)

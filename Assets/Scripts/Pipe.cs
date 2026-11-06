@@ -15,7 +15,7 @@ namespace Root
         public void SendSignal(Pipe pipe, bool sendingFluid)
         {
             if (sendingFluid == _currentState) return;
-            Debug.Log("F Origin: " + pipe?.name,this);
+            
             _currentState = sendingFluid;
             OnStateChange?.Invoke(sendingFluid);
             
@@ -30,7 +30,7 @@ namespace Root
         public int FindConsumers(Pipe pipe, bool sendingFluid)
         {
             if (sendingFluid == _currentState) return 0;
-            Debug.Log("F Origin: " + pipe?.name,this);
+            
             int numConsumers = fluidConsumer ? (water.IsLow ? 1 : 0) : 0;
             foreach (var connection in connections)
             {

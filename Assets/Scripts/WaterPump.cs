@@ -25,7 +25,6 @@ namespace Root
 
         private void SendWater()
         {
-            Debug.Log("Interact", this);
             if (pipe.HasFluid()) return;
             var outputAmount = pipe.FindConsumers(null, true);
             if (outputAmount == 0)
@@ -33,8 +32,6 @@ namespace Root
                 pipe.SendSignal(null, false);
                 return;
             };
-            Debug.Log(outputAmount, this);
-            Debug.Log("True", this);
             
             pipe.SendSignal(null, true);
             OnActivate?.Invoke();
@@ -43,7 +40,6 @@ namespace Root
 
         private void FlushFluid()
         {
-            Debug.Log("Flush", this);
             pipe.SendSignal(null, false);
         }
     }
