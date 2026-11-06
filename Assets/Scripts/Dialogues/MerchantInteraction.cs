@@ -45,10 +45,13 @@ namespace Root
             if (merchantAnimator == null) yield break;
             if (Dialogue == null) yield break;
 
+            GameManager.Input.Movement.Disable();
+            IsAnimationPlaying = true;
             merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(_delay);
 
             _wasAnimationTriggered = true;
+            IsAnimationPlaying = false;
             TriggerDialogue();
         }
 

@@ -15,7 +15,7 @@ namespace Root
         public Action OnInteractionStarted;
 
         public Action OnInteractionContinue;
-
+        public bool IsAnimationPlaying { get; protected set; }
         protected virtual void Awake()
         {
             if (HasDialogue())

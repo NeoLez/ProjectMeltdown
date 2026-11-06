@@ -58,7 +58,7 @@ namespace Root
         bool _hasEnteredOnce;
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
-            if(_currentInterractable != null)
+            if(_currentInterractable != null && !_currentInterractable.IsAnimationPlaying)
             {
                 if (!_currentInterractable.HasDialogue())
                 {

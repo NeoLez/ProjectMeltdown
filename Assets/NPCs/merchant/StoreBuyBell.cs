@@ -74,6 +74,7 @@ namespace Root
         {
             if (merchantAnimator == null) yield break;
 
+            GameManager.Input.Movement.Disable();
             OpenStore();
             merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(4f);
