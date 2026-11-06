@@ -43,6 +43,7 @@ public class ZombieStateMachine : MonoBehaviour
     public float usedTime;
 
     private FSM _fsm;
+    public NavMeshAgent Agent => agent;
     void Awake()
     {
         _fsm = new FSM();
