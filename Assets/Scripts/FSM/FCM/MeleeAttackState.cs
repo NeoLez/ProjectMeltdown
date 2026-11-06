@@ -39,7 +39,7 @@ namespace Root
 
         public void OnUpdate()
         {
-            if (!_zombieStateMachine.fov.DetectPlayer(GameManager.Player))
+            if(_zombieStateMachine.IsPlayerInChaseDistance())
             {
                 _fsm.ChangeState(AgentStates.Chase);
             }

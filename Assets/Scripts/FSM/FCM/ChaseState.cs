@@ -21,7 +21,7 @@ namespace Root
         public void OnEnter()
         {
             _zombieStateMachine.animator.Play("scream");
-            //_zombieStateMachine.animator.SetBool("running", true);
+            _zombieStateMachine.animator.SetBool("running", true);
             _agent.speed = _zombieStateMachine.chaseSpeed;
         }
 
@@ -39,7 +39,7 @@ namespace Root
             }
             else
             {
-                _zombieStateMachine.animator.SetBool("running", true);
+                //_zombieStateMachine.animator.SetBool("running", true);
                 _agent.SetDestination(GameManager.Player.gameObject.transform.position);
             }
 

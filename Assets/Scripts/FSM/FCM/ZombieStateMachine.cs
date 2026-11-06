@@ -54,7 +54,7 @@ public class ZombieStateMachine : MonoBehaviour
         _fsm.AddState(AgentStates.MeleeAttack, new MeleeAttackState(_fsm, agent, this));
         _fsm.AddState(AgentStates.JumpAttack, new JumpAttackState(_fsm, agent, zombieTransform, this));
 
-        _fsm.ChangeState(AgentStates.Patrol);
+        //_fsm.ChangeState(AgentStates.Patrol);
         agent.enabled = false;
 
         GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
