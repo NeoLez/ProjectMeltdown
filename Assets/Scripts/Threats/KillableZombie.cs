@@ -20,10 +20,10 @@ namespace Root
         [SerializeField] private string deathAnimation = "death";
 
         private AudioSource _idleLoop;
-        private CreaturePathfind _creaturePathfind;
+        private ZombieStateMachine _stateMachine;
         void Start()
         {
-            _creaturePathfind = GetComponentInChildren<CreaturePathfind>();
+            _stateMachine = GetComponentInChildren<ZombieStateMachine>();
         }
 
         public override void TakeDamage(float damage, float multiplier)
@@ -49,7 +49,7 @@ namespace Root
             if (_idleLoop != null) _idleLoop.Stop();
             if (_soundDeath != null) GameManager.AudioSystem.PlaySoundPositional(_soundDeath, transform.position, GameManager.AudioSystem.VFX);
 
-            _creaturePathfind.enabled = false;
+            _stateMachine.Agent.isStopped = true;
 
             for (int i = 0; i < hitBoxes.Length; i++)
             {
