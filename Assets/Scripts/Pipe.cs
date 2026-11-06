@@ -10,19 +10,33 @@ namespace Root
         protected bool _currentState;
         public event Action<bool> OnStateChange;
         [SerializeField] private bool fluidConsumer;
+        [SerializeField, NaughtyAttributes.EnableIf("fluidConsumer")] private WaterMovable water;
 
-        public int SendSignal(Pipe pipe, bool sendingFluid)
+        public void SendSignal(Pipe pipe, bool sendingFluid)
         {
-            if (sendingFluid == _currentState) return 0;
+            if (sendingFluid == _currentState) return;
+            Debug.Log("F Origin: " + pipe?.name,this);
             _currentState = sendingFluid;
             OnStateChange?.Invoke(sendingFluid);
             
-            int numConsumers = fluidConsumer ? 1 : 0;
             foreach (var connection in connections)
             {
                 if (connection == pipe) continue;
                 
-                numConsumers += connection.SendSignal(pipe, sendingFluid);
+                connection.SendSignal(this, sendingFluid);
+            }
+        }
+
+        public int FindConsumers(Pipe pipe, bool sendingFluid)
+        {
+            if (sendingFluid == _currentState) return 0;
+            Debug.Log("F Origin: " + pipe?.name,this);
+            int numConsumers = fluidConsumer ? (water.IsLow ? 1 : 0) : 0;
+            foreach (var connection in connections)
+            {
+                if (connection == pipe) continue;
+                
+                numConsumers += connection.FindConsumers(this, sendingFluid);
             }
             return numConsumers;
         }

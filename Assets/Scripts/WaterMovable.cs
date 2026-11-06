@@ -19,40 +19,45 @@ namespace Root
 
         private void Awake()
         {
-            _heights = new Vector2(transform.position.y + _minimumHeight, transform.position.y + _maximumHeight);
+            float baseY = transform.localPosition.y;
+            _heights = new Vector2(baseY + _minimumHeight, baseY + _maximumHeight);
+            Debug.Log(_heights, this);
             if(pump)
                 pump.OnActivate += GoDown;
-            if(currentlyLow) 
-            {
-                transform.position = new Vector3(transform.position.x, _heights[0], transform.position.z);
-            }
-            else
-            {
-                transform.position = new Vector3(transform.position.x, _heights[1], transform.position.z);
-            }
-        }
-
-
-        private void Update()
-        {
-            if (!_currentTween.isAlive && pipe.HasFluid())
-            {
-                GoUp();
-            }
+            if (pipe)
+                pipe.OnStateChange += (state) =>
+                {
+                    if(state)
+                        GoUp();
+                };
+            SetLocalY(currentlyLow ? _heights[0] : _heights[1]);
         }
 
         public void GoUp()
         {
+            currentlyLow = false;
             _currentTween.Stop();
-            transform.position = new Vector3(transform.position.x, _heights[0], transform.position.z);
-            Tween.Position(transform, new TweenSettings<Vector3>(new Vector3(transform.position.x, _heights[1], transform.position.z), _time));
+            MoveTo(_heights[1]);
         }
-        
+
         public void GoDown()
         {
+            currentlyLow = true;
             _currentTween.Stop();
-            transform.position = new Vector3(transform.position.x, _heights[1], transform.position.z);
-            Tween.Position(transform, new TweenSettings<Vector3>(new Vector3(transform.position.x, _heights[0], transform.position.z), _time));
+            MoveTo(_heights[0]);
+        }
+        
+        private void SetLocalY(float y)
+        {
+            Vector3 p = transform.localPosition;
+            transform.localPosition = new Vector3(p.x, y, p.z);
+        }
+        
+        private void MoveTo(float localY)
+        {
+            Vector3 p = transform.localPosition;
+            _currentTween = Tween.LocalPosition(transform,
+                new TweenSettings<Vector3>(new Vector3(p.x, localY, p.z), _time));
         }
 
         private void OnValidate()
@@ -66,5 +71,7 @@ namespace Root
             Gizmos.color = Color.aquamarine;
             Gizmos.DrawLine(transform.position + Vector3.up * _minimumHeight, transform.position + Vector3.up * _maximumHeight);
         }
+        
+        public bool IsLow => currentlyLow;
     }
 }

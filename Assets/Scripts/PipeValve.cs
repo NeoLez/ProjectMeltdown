@@ -24,6 +24,10 @@ namespace Root
         {
             _pipe = GetComponent<Pipe>();
             _pipe.connections = connections[_currentIndex].connections;
+            foreach (var pipe in _pipe.connections)
+            {
+                pipe.connections.Add(_pipe);    
+            }
             visuals.localRotation = Quaternion.Euler(new Vector3(0, 0, connections[_currentIndex].angle));
         }
 
@@ -40,8 +44,17 @@ namespace Root
 
         private void SetConnection()
         {
+            foreach (var pipe in connections[_currentIndex].connections)
+            {
+                pipe.connections.RemoveAll(p => p == _pipe);
+            }
             _currentIndex = (_currentIndex + 1) % connections.Count;
+            
             _pipe.connections = connections[_currentIndex].connections;
+            foreach (var pipe in _pipe.connections)
+            {
+                pipe.connections.Add(_pipe);    
+            }
         }
     }
 }

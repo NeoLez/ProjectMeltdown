@@ -1,5 +1,4 @@
 using System;
-using Timers;
 using UnityEngine;
 
 namespace Root
@@ -9,31 +8,42 @@ namespace Root
         [SerializeField] private Pipe pipe;
         [SerializeField] private bool alwaysOn;
         [SerializeField] private float pumpTime;
+        [SerializeField] private WaterMovable water;
         public event Action OnActivate;
         
         private void Update()
         {
-            if(alwaysOn)
+            if(alwaysOn) 
                 SendWater();
         }
 
         public override void Interact()
         {
-            if (alwaysOn) return;
+            if (alwaysOn || water.IsLow) return;
             SendWater();
         }
 
         private void SendWater()
         {
+            Debug.Log("Interact", this);
             if (pipe.HasFluid()) return;
-            var outputAmount = pipe.SendSignal(null, true);
-            if (outputAmount == 0) pipe.SendSignal(null, false);
+            var outputAmount = pipe.FindConsumers(null, true);
+            if (outputAmount == 0)
+            {
+                pipe.SendSignal(null, false);
+                return;
+            };
+            Debug.Log(outputAmount, this);
+            Debug.Log("True", this);
             
+            pipe.SendSignal(null, true);
+            OnActivate?.Invoke();
             Invoke(nameof(FlushFluid), pumpTime);
         }
 
         private void FlushFluid()
         {
+            Debug.Log("Flush", this);
             pipe.SendSignal(null, false);
         }
     }
