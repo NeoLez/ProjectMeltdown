@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,23 +5,32 @@ namespace Root
 {
     public class TollDoor : MonoBehaviour
     {
-        [SerializeField] private float smooth = 8f;
-        [SerializeField] private Quaternion openRotation;
+        [SerializeField] private float openHeight = 3f;
+        [SerializeField] private float speed = 2f;
+
+        private Vector3 _closedPosition;
+        private Coroutine _routine;
+
+        private void Awake()
+        {
+            _closedPosition = transform.localPosition;
+        }
 
         public void OpenTollBarrier()
         {
-            StartCoroutine(Open(openRotation));
+            if (_routine != null) StopCoroutine(_routine);
+            _routine = StartCoroutine(Open(_closedPosition + Vector3.up * openHeight));
         }
-        private IEnumerator Open(Quaternion target)
+
+        private IEnumerator Open(Vector3 target)
         {
-            while (Quaternion.Angle(transform.localRotation, target) > 0.5f)
+            while (transform.localPosition != target)
             {
-                transform.localRotation = Quaternion.Lerp(transform.localRotation, target, smooth * Time.deltaTime);
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
                 yield return null;
             }
 
-            transform.localRotation = target;
+            _routine = null;
         }
-
     }
 }
