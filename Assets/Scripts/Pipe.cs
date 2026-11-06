@@ -31,7 +31,12 @@ namespace Root
         {
             if (sendingFluid == _currentState) return 0;
             
-            int numConsumers = fluidConsumer ? (water.IsLow ? 1 : 0) : 0;
+            int numConsumers = 0;
+            if (fluidConsumer && (!water || water.IsLow))
+            {
+                numConsumers = 1;
+            }
+            
             foreach (var connection in connections)
             {
                 if (connection == pipe) continue;

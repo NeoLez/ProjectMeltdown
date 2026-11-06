@@ -29,7 +29,6 @@ namespace Root
             var outputAmount = pipe.FindConsumers(null, true);
             if (outputAmount == 0)
             {
-                pipe.SendSignal(null, false);
                 return;
             };
             
