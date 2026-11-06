@@ -34,7 +34,7 @@ namespace Root
             return requestType == PackageRequestType.TypeOfPackages;
         }
 
-       /* private void Start()
+        private void Start()
         {
             foreach (var item in interaction.Dialogue.DialogueChoices)
             {
@@ -60,7 +60,7 @@ namespace Root
                     item2.OnEffectExcuted -= barrier.OpenTollBarrier;
                 }
             }
-        }*/
+        }
     }
 
     public enum PackageRequestType
