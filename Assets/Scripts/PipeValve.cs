@@ -16,6 +16,7 @@ namespace Root
         }
         [SerializeField] private float rotationTime;
         [SerializeField] private Transform visuals;
+        [SerializeField] private AudioSource interactSound;
         private Pipe _pipe;
         [SerializeField] private List<ConnectionInfo> connections;
         [SerializeField] private int _currentIndex = 0;
@@ -37,6 +38,7 @@ namespace Root
             if (_isAnimating || _pipe.HasFluid()) return;
             _isAnimating = true;
             SetConnection();
+            interactSound.Play();
 
             var targetRotation = Quaternion.Euler(new Vector3(0, 0, connections[_currentIndex].angle));
             Tween.LocalRotation(visuals.transform, visuals.localRotation, targetRotation, rotationTime).OnComplete(() => _isAnimating = false);
