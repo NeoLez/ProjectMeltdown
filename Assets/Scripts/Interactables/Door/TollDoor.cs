@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Root.Managers;
 
 namespace Root
 {
@@ -7,6 +8,8 @@ namespace Root
     {
         [SerializeField] private float openHeight = 3f;
         [SerializeField] private float speed = 2f;
+        [SerializeField] private float shakeIntensity = 0.05f;
+        [SerializeField] private AudioSource openedSound;
 
         private Vector3 _closedPosition;
         private Coroutine _routine;
@@ -27,8 +30,12 @@ namespace Root
             while (transform.localPosition != target)
             {
                 transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, speed * Time.deltaTime);
+                CameraShakeManager.Instance.Shake(shakeIntensity, 0.1f);
                 yield return null;
             }
+
+            if (!openedSound.isPlaying)
+                openedSound.Play();
 
             _routine = null;
         }
