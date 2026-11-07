@@ -49,7 +49,10 @@ namespace Root
             if (_idleLoop != null) _idleLoop.Stop();
             if (_soundDeath != null) GameManager.AudioSystem.PlaySoundPositional(_soundDeath, transform.position, GameManager.AudioSystem.VFX);
 
-            _stateMachine.Agent.isStopped = true;
+            _stateMachine.StopAllCoroutines();
+            if(_stateMachine.Agent.enabled) _stateMachine.Agent.enabled = false;
+
+            _stateMachine.enabled = false;
 
             for (int i = 0; i < hitBoxes.Length; i++)
             {
