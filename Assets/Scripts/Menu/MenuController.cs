@@ -78,6 +78,7 @@ namespace Root
             panelInfoClase.SetActive(false);
         }
 
+        #region CLASS_SELECTION
         public void SelectClass(int classNumber)
         {
             selectedClass = classNumber;
@@ -111,7 +112,9 @@ namespace Root
                     break;
             }
         }
+        #endregion
 
+        #region AUDIO
         public void SliderMasterVolume(float value) 
         {
             if (GameManager.AudioSystem == null)
@@ -143,6 +146,8 @@ namespace Root
                 UpdateClassInfo();
             }
         }
+        #endregion region
+
 
         public void ConfirmPlay()
         {
@@ -159,5 +164,6 @@ namespace Root
         {
             Application.Quit();
         }
+
     }
 }
