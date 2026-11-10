@@ -61,6 +61,7 @@ namespace Root
             PlayerPrefs.SetInt(GraphiscKey, qualityIndex);
             PlayerPrefs.Save();
         }
+
         private void SetupResolutions()
         {
             Resolution[] resolutions = Screen.resolutions;
