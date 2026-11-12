@@ -8,6 +8,7 @@ namespace Root
     {
         [SerializeField] private GiveMoneyEffect effect;
         [SerializeField] private NpcToll toll;
+        [SerializeField] private Canvas walletDisplay;
 
         [Header("Delivery Resume UI")]
         [SerializeField] private Canvas ticketCanvas;
@@ -45,6 +46,7 @@ namespace Root
 
             ticketCanvas.enabled = false;
             failureTicketCanvas.enabled = false;
+            walletDisplay.enabled = false;
         }
 
         public void Initialize()
@@ -58,7 +60,7 @@ namespace Root
                 totalPrice.text += string.Format(priceLabel, sumToPay.ToString());
 
                 failureTicketCanvas.enabled = true;
-
+                DisplayWalletAmount();
                 return;
             }
 
@@ -119,6 +121,8 @@ namespace Root
             AjustBackgroundHeight();
 
             ticketCanvas.enabled = true;
+
+            DisplayWalletAmount();
         }
 
         private void Hide()
@@ -192,6 +196,15 @@ namespace Root
                 backgroundRectTransform.sizeDelta = new Vector2(backgroundRectTransform.sizeDelta.x, layoutTotalHeight + resumeLayoutGroup.spacing);
             }
 
+        }
+
+        private void DisplayWalletAmount()
+        {
+            walletDisplay.enabled = true;
+
+            int amount = EconomyManager.Instance.GetMoney();
+            TMP_Text moneyText = walletDisplay.GetComponentInChildren<TextMeshProUGUI>();
+            moneyText.text = string.Format("{0}$", amount);
         }
 
         private void OnDestroy()
