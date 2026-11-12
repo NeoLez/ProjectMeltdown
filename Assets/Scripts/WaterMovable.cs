@@ -12,7 +12,8 @@ namespace Root
         [SerializeField] private float _time;
         [SerializeField] private Pipe pipe;
         [SerializeField] private WaterPump pump;
-        
+        [SerializeField] private AudioSource waterMovement;
+
         private Tween _currentTween;
         private bool _animating = false;
         private Vector2 _heights;
@@ -32,6 +33,10 @@ namespace Root
                 };
             SetLocalY(currentlyLow ? _heights[0] : _heights[1]);
         }
+        private void Start()
+        {
+            GameManager.AudioSystem.AssignOutputMixerGroup(waterMovement, GameManager.AudioSystem.VFX);
+        }
 
         public void GoUp()
         {
@@ -45,6 +50,7 @@ namespace Root
             currentlyLow = true;
             _currentTween.Stop();
             MoveTo(_heights[0]);
+            waterMovement.Play();
         }
         
         private void SetLocalY(float y)
@@ -57,7 +63,11 @@ namespace Root
         {
             Vector3 p = transform.localPosition;
             _currentTween = Tween.LocalPosition(transform,
-                new TweenSettings<Vector3>(new Vector3(p.x, localY, p.z), _time));
+                new TweenSettings<Vector3>(new Vector3(p.x, localY, p.z), _time)).OnComplete(() =>
+                {
+                    waterMovement.Stop();
+                    pump.StopAudio(true);
+                }); 
         }
 
         private void OnValidate()

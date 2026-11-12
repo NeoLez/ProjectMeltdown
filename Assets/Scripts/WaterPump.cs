@@ -9,8 +9,15 @@ namespace Root
         [SerializeField] private bool alwaysOn;
         [SerializeField] private float pumpTime;
         [SerializeField] private WaterMovable water;
+        [SerializeField] private AudioSource activePump;
+
         public event Action OnActivate;
-        
+
+        private void Start()
+        {
+            if(activePump!=null) GameManager.AudioSystem.AssignOutputMixerGroup(activePump, GameManager.AudioSystem.VFX);
+        }
+
         private void Update()
         {
             if(alwaysOn) 
@@ -34,7 +41,18 @@ namespace Root
             
             pipe.SendSignal(null, true);
             OnActivate?.Invoke();
+            if(activePump!=null) StopAudio(false);
             Invoke(nameof(FlushFluid), pumpTime);
+        }
+
+        public void StopAudio(bool state)
+        {
+            if (state)
+            {
+                activePump.Stop();
+                alwaysOn = false;
+            }
+            else activePump.Play();
         }
 
         private void FlushFluid()
