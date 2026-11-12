@@ -12,6 +12,11 @@ namespace Root.Enemy
         [SerializeField] private float maxDistance = 2f;
         [SerializeField] private LayerMask surfaceMask;
 
+        [Header("Lifetime")]
+        [SerializeField] private bool destroyAfterTime = true;
+        [SerializeField, Min(0f)] private float decalLifetime = 20f;     
+        [SerializeField, Min(0f)] private float lifetimeVariation = 3f; 
+        
         [Header("Random")]
         [SerializeField] private Vector2 randomScale = new(0.8f, 1.3f);
 
@@ -19,8 +24,7 @@ namespace Root.Enemy
 
         public void SpawnBlood(Vector3 origin)
         {
-            if (_spawned)
-                return;
+            if (_spawned) return;
 
             _spawned = true;
 
@@ -33,28 +37,24 @@ namespace Root.Enemy
         private void ShootBloodRay(Vector3 origin)
         {
             Vector3 direction = (Random.onUnitSphere + Vector3.down * 0.4f).normalized;
-
             float distance = Random.Range(maxDistance * 0.3f, maxDistance);
 
-            if (!Physics.Raycast(origin, direction, out RaycastHit hit, distance, surfaceMask))
-                return;
+            if (!Physics.Raycast(origin, direction, out RaycastHit hit, distance, surfaceMask)) return;
 
             GameObject prefab = bloodDecals[Random.Range(0, bloodDecals.Length)];
-
             Quaternion rotation = Quaternion.LookRotation(-hit.normal);
             rotation *= Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
-
             Transform parent = transform.parent != null ? transform.parent.parent : null;
-            GameObject decal = Instantiate(
-                prefab,
-                hit.point + hit.normal * 0.02f,
-                rotation,
-                parent);
-
+            GameObject decal = Instantiate(prefab,hit.point + hit.normal * 0.02f,rotation,parent);
             float t = distance / maxDistance;
             float scale = Random.Range(randomScale.x, randomScale.y) * Mathf.Lerp(1.2f, 0.8f, t);
-
             decal.transform.localScale *= scale;
+
+            if (destroyAfterTime)
+            {
+                float life = decalLifetime + Random.Range(-lifetimeVariation, lifetimeVariation);
+                Destroy(decal, Mathf.Max(0.1f, life));
+            }
         }
     }
 }
