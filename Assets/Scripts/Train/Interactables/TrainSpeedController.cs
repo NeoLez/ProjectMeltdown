@@ -13,6 +13,7 @@ namespace Root {
         [SerializeField] public float maxTrainSpeed;
         [SerializeField] private Transform visuals;
         [SerializeField] private float automaticSwitchSpeed;
+        public bool lockInteraction;
         private bool _loweringToZero;
 
         private void Awake() {
@@ -26,7 +27,7 @@ namespace Root {
         }
 
         private void Update() {
-            if (active) {
+            if (active && !lockInteraction) {
                 _loweringToZero = false;
                 float yMovement = GameManager.Input.CameraMovement.MouseY.ReadValue<float>() * sensitivity;
                 if (yMovement > maxSwitchSpeed)

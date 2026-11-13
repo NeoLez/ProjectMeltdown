@@ -187,9 +187,23 @@ namespace Root
                 }
             }
 
+            UpdateLockSpeedControllerLock();
+            
             engineSound.mute = _powerLost; 
             strainSound.mute = _powerLost; 
             rattleSound.mute = _powerLost && _currentSpeed == 0; 
+        }
+
+        private void UpdateLockSpeedControllerLock()
+        {
+            if (_reachedEndOfTrack || _pathStop || _powerLost)
+            {
+                speedController.lockInteraction = true;
+            }
+            else
+            {
+                speedController.lockInteraction = false;
+            }
         }
         
         public float currentDistanceBetweenPathpoints;
