@@ -1,14 +1,9 @@
-using NUnit.Framework.Interfaces;
 using Root.Factories;
 using Root.Managers;
 using System;
 using System.Collections.Generic;
 using Timers;
-using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Localization.SmartFormat.Core.Parsing;
-using UnityEngine.UIElements;
 
 namespace Root
 {
@@ -42,9 +37,11 @@ namespace Root
         private Inventory _playerInventory;
         private Action OnRegenerateStock;
 
+        private HashSet<ItemSo> _spawnedItems = new HashSet<ItemSo>();
         private void OnEnable()
         {
             itemsCreated.Clear();
+            _spawnedItems.Clear();
         }
 
         private void Start()
@@ -73,6 +70,7 @@ namespace Root
         private bool _forcedSpawn;
         private void GenerateStock()
         {
+            _spawnedItems.Clear();
             for (int i = 0; i < _random.Next(minAmountOfItemsToGenerate, maxAmountOfItemsToGenerate); i++)
             {
                 StoreItemData item;
@@ -82,27 +80,34 @@ namespace Root
                     _forcedSpawn = true;
                 }
                 else
-                    item = storeItemPool.GetEntry(_random);
-
-
-                int price = _random.Next(item.minPrice, item.maxPrice + 1);
-
-                GameObject obj = Instantiate(storeItemCanvasPrefab, scrollView.transform);
-                obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
-                obj.GetComponent<StoreItemDisplay>().OnPurchased += (i, itemData) =>
                 {
-                    //Debug.Log("Purchased item " + item.item.name);
-                    InsertBoughtItem(itemData);
-                    //itemsCreated.Remove(i);
-                    menu.RefreshWalletAmount();
-                    RefreshStoreItems();
-                };
-                itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
+                    while (true) //Ensures finding a different store item
+                    {
+                        item = storeItemPool.GetEntry(_random);
+                        if (_spawnedItems.Contains(item.item))
+                        {
+                            break;
+                        }
+                        _spawnedItems.Add(item.item);
 
-                StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
+                        int price = _random.Next(item.minPrice, item.maxPrice + 1);
+                        GameObject obj = Instantiate(storeItemCanvasPrefab, scrollView.transform);
+                        obj.GetComponent<StoreItemDisplay>().SetNotPurchased();
+                        obj.GetComponent<StoreItemDisplay>().OnPurchased += (i, itemData) =>
+                        {
+                            InsertBoughtItem(itemData);
+                            menu.RefreshWalletAmount();
+                            RefreshStoreItems();
+                        };
+                        itemsCreated.Add(obj.GetComponent<StoreItemDisplay>());
 
-                if (display != null)
-                    display.Initialize(item, price, this);
+                        StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
+
+                        if (display != null)
+                            display.Initialize(item, price, this);
+
+                    }
+                }
             }
         }
 
@@ -141,10 +146,10 @@ namespace Root
         {
             if (!isSingleItemSpawn)
             {
-                 foreach (var item in itemsCreated)
-                 {
-                     item.RefreshItems();
-                 }
+                foreach (var item in itemsCreated)
+                {
+                    item.RefreshItems();
+                }
             }
         }
 
@@ -176,7 +181,8 @@ namespace Root
             GenerateStoreItems();
         }
 
-        private ItemSpawnContext CreateItemSpawnContext() {
+        private ItemSpawnContext CreateItemSpawnContext()
+        {
             return new ItemSpawnContext(mapSection, _random);
         }
 
@@ -206,12 +212,12 @@ namespace Root
 
         public void InsertBoughtItem(StoreItemData item)
         {
-            _playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random)));           
+            _playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random)));
         }
 
         public bool CanInsertItemInInventory(StoreItemData item)
         {
-            if(!_playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random))))
+            if (!_playerInventory.TryFindFreeArea(item.item.InventorySize, out Vector2Int foundPosition, out InventoryItem.InventoryItemRotation foundRotation))
             {
                 NotificationManager.Instance.ShowNotification($"No tenes suficiente espacio", 2f, false);
                 return false;
