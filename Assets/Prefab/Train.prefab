@@ -15639,7 +15639,6 @@ GameObject:
   - component: {fileID: 122642271388751480}
   - component: {fileID: 205664065748568221}
   - component: {fileID: 3952031846328912561}
-  - component: {fileID: 3829064577884512159}
   m_Layer: 0
   m_Name: Map Slot
   m_TagString: Untagged
@@ -15699,21 +15698,7 @@ MonoBehaviour:
   pivot: {fileID: 3937552153887707524}
   train: {fileID: 2164972166822166087}
   _mapItemSO: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
---- !u!114 &3829064577884512159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5417302617538132650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d468253f3bffe4347a489be880db56d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.SpawnDefaultMap
-  item: {fileID: 11400000, guid: 9236f4fb469821e40ad5627d6412f736, type: 2}
-  mapSection: {fileID: 0}
-  disablePhysics: 1
+  _generateOnStart: 1
 --- !u!1 &5446757870322266536
 GameObject:
   m_ObjectHideFlags: 0
@@ -22270,6 +22255,7 @@ MonoBehaviour:
   maxTrainSpeed: 80
   visuals: {fileID: 5624032882353172386}
   automaticSwitchSpeed: 1
+  lockInteraction: 0
 --- !u!114 &8258590607268115970
 MonoBehaviour:
   m_ObjectHideFlags: 0

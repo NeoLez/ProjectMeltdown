@@ -1,3 +1,5 @@
+using System;
+using Root.Factories;
 using UnityEngine;
 
 namespace Root
@@ -8,8 +10,18 @@ namespace Root
         [SerializeField] private Train train;
 
         [SerializeField] private ItemSo _mapItemSO;
+        [SerializeField] private bool _generateOnStart = true;
 
         private PhysicalItem _map;
+
+        private void Start()
+        {
+            if (_generateOnStart)
+            {
+                TryInsertMap(_mapItemSO.CreateState(new ItemSpawnContext(null, null)));
+            }
+        }
+
         public override void Interact()
         {
             PlayerItemHolder holder = GameManager.Player.GetComponent<PlayerItemHolder>();
