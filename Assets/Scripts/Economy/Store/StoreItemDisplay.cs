@@ -16,13 +16,13 @@ namespace Root
         [SerializeField] private float notEnoughMoneybuttonAlpha = 0.8f;
         [SerializeField] private float notificationDuration;
 
+        private StoreManager _manager;
         private StoreItemData _data;
         private int _price;
         private string _name;
         private Sprite _itemIcon;
         private Button _button;
         private string label = "${0}";
-
         public event Action<StoreItemDisplay, StoreItemData> OnPurchased;
         public event Action OnSingleItemBought;
 
@@ -33,14 +33,15 @@ namespace Root
              _button.onClick.AddListener(PurchaseItem);
          }
 
-        public void Initialize(StoreItemData data, int price)
+        public void Initialize(StoreItemData data, int price, StoreManager manager)
         {
             _data = data;
             _price = price;
             _name = data.item.ItemName;
             _itemIcon = data.item.InventoryItemIcon;
+            _manager = manager;
 
-            if(_button != null)
+            if (_button != null)
             {
                 _button.interactable = HasEnoughMoney() || _purchased;
             }
@@ -66,6 +67,7 @@ namespace Root
         {
             if (!CanPurchase()) return;
             if (_purchased) return;
+            if (!_manager.CanInsertItemInInventory(_data)) return;
 
             NotificationManager.Instance.ShowNotification($"Compraste {_data.item.ItemName}");
             _purchased = true;

@@ -907,7 +907,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1867907349764696544}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.44403368
+  m_Size: 0.44403362
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2071,7 +2071,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2112395881271363124}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11732,14 +11732,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2295749566381828218, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1811307305515518602}
   m_SourcePrefab: {fileID: 100100000, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
 --- !u!114 &3995793126925006816 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
   m_PrefabInstance: {fileID: 8594808017600731923}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7537548358550254441}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf40cb10f1757f47907e11b131a08b5, type: 3}
@@ -11755,6 +11758,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1483923697776620224, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
   m_PrefabInstance: {fileID: 8594808017600731923}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7537548358550254441 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2295749566381828218, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+  m_PrefabInstance: {fileID: 8594808017600731923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1811307305515518602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7537548358550254441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f732182f20bac6646a314182dbf8b4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
+  Pivot: {fileID: 1554797399970967812}
+  PlayerPivot: {fileID: 2437365859254406410}
+  Dialogue: {fileID: 0}
+  hasBeenTriggeredOnce: 0
+  hasMoreInteraction: 1
+  storeBell: {fileID: 3995793126925006816}
+  dialogueTrigger: {fileID: 6920784724850806537}
+  storeManager: {fileID: 7510445178388287238}
+  _delay: 4
+  merchantAnimator: {fileID: 2290269434319551964}
 --- !u!1001 &8632851226784170204
 PrefabInstance:
   m_ObjectHideFlags: 0

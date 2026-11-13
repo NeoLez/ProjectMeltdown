@@ -102,7 +102,7 @@ namespace Root
                 StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
                 if (display != null)
-                    display.Initialize(item, price);
+                    display.Initialize(item, price, this);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Root
             StoreItemDisplay display = obj.GetComponentInChildren<StoreItemDisplay>();
 
             if (display != null)
-                display.Initialize(item, 0);
+                display.Initialize(item, 0, this);
 
         }
 
@@ -206,7 +206,17 @@ namespace Root
 
         public void InsertBoughtItem(StoreItemData item)
         {
-            _playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random)));
+            _playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random)));           
+        }
+
+        public bool CanInsertItemInInventory(StoreItemData item)
+        {
+            if(!_playerInventory.InsertItem(item.item.CreateState(new ItemSpawnContext(mapSection, _random))))
+            {
+                NotificationManager.Instance.ShowNotification($"No tenes suficiente espacio", 2f, false);
+                return false;
+            }
+            return true;
         }
 
     }
