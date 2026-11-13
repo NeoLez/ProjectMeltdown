@@ -130,11 +130,13 @@ namespace Root
             if (ticketCanvas.isActiveAndEnabled)
             {
                 ticketCanvas.enabled = false;
+                walletDisplay.enabled = false;
                 return;
             }
             if (failureTicketCanvas.isActiveAndEnabled)
             {
                 failureTicketCanvas.enabled = false;
+                walletDisplay.enabled = false;
                 return;
             }
         }

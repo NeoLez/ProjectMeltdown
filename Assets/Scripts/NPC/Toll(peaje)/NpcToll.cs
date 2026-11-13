@@ -6,6 +6,7 @@ namespace Root
 {
     public class NpcToll : MonoBehaviour
     {
+        [SerializeField] private Animator tollAnimator;
         [SerializeField] private float moneyToRequest;
         [SerializeField] private PackageRequestType requestType;
 
@@ -43,7 +44,10 @@ namespace Root
                 if (item.effects == null) break;
                 foreach (var item2 in effectsToSuscribe)
                 {
-                    item2.OnEffectExcuted += barrier.OpenTollBarrier;
+                    item2.OnEffectExcuted += ()=> 
+                    {   barrier.OpenTollBarrier();
+                        tollAnimator.Play("PeajeGood");
+                    };
                 }
             }
         }
@@ -57,7 +61,11 @@ namespace Root
                 if (item.effects == null) break;
                 foreach (var item2 in effectsToSuscribe)
                 {
-                    item2.OnEffectExcuted -= barrier.OpenTollBarrier;
+                    item2.OnEffectExcuted -= () =>
+                    {
+                        barrier.OpenTollBarrier();
+                        tollAnimator.Play("PeajeGood");
+                    };
                 }
             }
         }
