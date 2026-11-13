@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Root {
     public class TrainPathWaypoint : MonoBehaviour {
         public float maxSpeed;
+        public bool stop;
         public event Action OnTrainReached;
 
         public void TrainReached() {

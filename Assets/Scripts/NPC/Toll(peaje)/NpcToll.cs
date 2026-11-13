@@ -17,6 +17,7 @@ namespace Root
 
         [SerializeField] private NPCInteraction interaction;
         [SerializeField] private TollDoor barrier;
+        [SerializeField] private TrainPathWaypoint pathWaypointToUnlock;
 
         public float AmountToRequest => moneyToRequest;
         public ItemGroup PackagesToRequest => packagesToRequest;
@@ -46,24 +47,7 @@ namespace Root
                 {
                     item2.OnEffectExcuted += ()=> 
                     {   barrier.OpenTollBarrier();
-                        tollAnimator.Play("PeajeGood");
-                    };
-                }
-            }
-        }
-
-        private void OnDestroy()
-        {
-            foreach (var item in interaction.Dialogue.DialogueChoices)
-            {
-                List<DialogueEffectSO> effectsToSuscribe = item.effects;
-
-                if (item.effects == null) break;
-                foreach (var item2 in effectsToSuscribe)
-                {
-                    item2.OnEffectExcuted -= () =>
-                    {
-                        barrier.OpenTollBarrier();
+                        pathWaypointToUnlock.stop = false;
                         tollAnimator.Play("PeajeGood");
                     };
                 }
