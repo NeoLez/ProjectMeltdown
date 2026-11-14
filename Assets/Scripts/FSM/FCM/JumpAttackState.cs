@@ -55,7 +55,6 @@ namespace Root
 
                 if (_zombieStateMachine.CanJumpAttack())
                 {
-                    //Debug.Log("entre");
                     _zombieStateMachine.StartCoroutine(JumpAttackRoutine());
                     return;
                 }
@@ -84,13 +83,15 @@ namespace Root
             _isJumping = false;
 
             _zombieStateMachine.animator.Play("scream");
+
             _behaviour = JumpAttackBehaviour;
         }
 
 
         private IEnumerator RecoverFromJumpRoutine()
         {
-            //Debug.Log("me recupere");
+            _zombieStateMachine.IsRecovering = true;
+
             _zombieStateMachine.animator.Play("getup");
             _agent.enabled = false;
             yield return new WaitForSeconds(_zombieStateMachine.failedJumpAttackCooldown);
@@ -130,6 +131,7 @@ namespace Root
             _agent.enabled = true;
             _zombieStateMachine.animator.SetBool("running", false);
             _isJumping = false;
+
             _behaviour = AttackBehaviour;
         }
     }

@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.KillableZombie
   _health: 30
+  rotationSpeed: 2
   _visuals: {fileID: 4000857696384138558}
   _particles: {fileID: 3960954949758265888, guid: b0671952e5a32564fb842b3d3037e780, type: 3}
   hitBoxes:
@@ -221,6 +222,7 @@ MonoBehaviour:
   jumpDamage: 40
   patrolSpeed: 1
   chaseSpeed: 5
+  maxFacingAngle: 10
   attackRange: 2
   attackDelay: 2
   attackCooldown: 2
@@ -278,8 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed03a9357b1b88488a2886473b7077c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.EnemyFov
-  _radiusVision: 24.8
-  _angleVision: 188
+  _radiusVision: 23
+  _angleVision: 176
   _myLOSObstacle:
     serializedVersion: 2
     m_Bits: 3221241599
@@ -8803,7 +8805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed2d0bb72755776429aeb176d693c9ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IdleState
-  _state: {fileID: 792776092358132749}
+  stateMachine: {fileID: 792776092358132749}
 --- !u!4 &365726098851670858 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8269318760219934017, guid: d0c9a5e72ef68424fb671688f50731d6, type: 3}

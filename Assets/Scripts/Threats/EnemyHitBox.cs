@@ -16,7 +16,7 @@ namespace Root
 
         [SerializeField] private GameObject particlesHit;
 
-        [SerializeField] private string partAnimation = "damage"; //Insertar nombre de la animacion aca. Agregar mas si ahcen falta
+        [SerializeField] private string partAnimation = "damage"; 
 
         public override void Interact()
         {
@@ -27,7 +27,6 @@ namespace Root
         public void OnEnemyHit(float damage, float multiplier)
         {
             enemyHealth.TakeDamage(damage,multiplier);
-            //llamar evento para que le enemigo se de la vuelta y reaccione
         }
 
         public void TriggerVisuals()

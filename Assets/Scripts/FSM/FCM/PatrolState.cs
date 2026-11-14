@@ -42,14 +42,12 @@ public class PatrolState : IState
     {
         if (Waypoints.Length < 0)
         {
-            
             Debug.LogError("Assign waypoints!!");
             yield break;
         }
 
         if (_isChasing)
-        {
-            
+        {        
             yield break;
         }
 

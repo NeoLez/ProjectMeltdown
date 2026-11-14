@@ -24,6 +24,7 @@ namespace Root
 
         public void OnExit()
         {
+            _zombieStateMachine.IsRecovering = false;
             _zombieStateMachine.StopCoroutine(Wait());
         }
 

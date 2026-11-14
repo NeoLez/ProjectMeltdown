@@ -21,7 +21,7 @@ namespace Root
         public void OnEnter()
         {
             _zombieStateMachine.animator.Play("scream");
-            _zombieStateMachine.animator.SetBool("running", true);
+
             _agent.speed = _zombieStateMachine.chaseSpeed;
         }
 
@@ -31,6 +31,7 @@ namespace Root
 
         public void OnUpdate()
         {
+            _zombieStateMachine.animator.SetBool("running", true);
             if (!_zombieStateMachine.fov.DetectPlayer(_player))
             {
                 _fsm.ChangeState(AgentStates.Patrol);

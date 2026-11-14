@@ -15,6 +15,7 @@ public class ZombieStateMachine : MonoBehaviour
     public LayerMask playerRayCastMask;
     public float chaseDistance;
 
+
     [Header("Damage")]
     public float damage;
     public float jumpDamage;
@@ -24,6 +25,7 @@ public class ZombieStateMachine : MonoBehaviour
     public float chaseSpeed;
 
     [Header("MeleeAttack")]
+    public float maxFacingAngle;
     public float attackRange;
     public float attackDelay = 0.8f;
     public float attackCooldown;
@@ -43,7 +45,12 @@ public class ZombieStateMachine : MonoBehaviour
     public float usedTime;
 
     private FSM _fsm;
+    private float dotThreshold;
     public NavMeshAgent Agent => agent;
+
+    public Action OnFinishedAttacking;
+    public bool IsRecovering {  get;  set; }
+
     void Awake()
     {
         _fsm = new FSM();
@@ -59,6 +66,13 @@ public class ZombieStateMachine : MonoBehaviour
 
         GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
     }
+
+    private void Start()
+    {
+        dotThreshold = Mathf.Cos(maxFacingAngle * Mathf.Deg2Rad);
+    }
+
+    void Update() => _fsm.ArtficialUpdate();
 
     private void DisableForOneSecond()
     {
@@ -83,7 +97,6 @@ public class ZombieStateMachine : MonoBehaviour
 
     }
 
-    void Update() => _fsm.ArtficialUpdate();
 
     public bool IsPlayerInAttackRange()
     {
@@ -97,19 +110,20 @@ public class ZombieStateMachine : MonoBehaviour
             && hit.collider.TryGetComponent(out Player player);
     }
 
-    public bool IsPlayerInChaseDistance()
+    public bool IsPlayerInChaseDistance() //que solo se active cuando mira para adelante
     {
         float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
 
-        return distance >= chaseDistance;
-    }
-
-    /*public bool IsPlayerInChaseDistance()
-    {
+        if(distance <= chaseDistance)
+        {
+            return false;
+        }
         Vector3 dist = GameManager.Player.transform.position - zombieTransform.position;
+        dist.y = 0;
 
-        return (dist.sqrMagnitude >= chaseDistance);
-    }*/
+        float dotProduct = Vector3.Dot(transform.forward, dist);
+        return dotProduct >= dotThreshold;
+    }
 
     public bool CanJumpAttack()
     {
@@ -128,6 +142,15 @@ public class ZombieStateMachine : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public bool AreEntitiesFacing()
+    {
+        Vector3 direction = GameManager.Player.transform.position - zombieTransform.position;
+        direction.y = 0;
+
+        float angle = Vector3.Angle(zombieTransform.forward, direction);
+        return angle <= maxFacingAngle;
     }
 
     private void OnDestroy()

@@ -1,4 +1,7 @@
 using Root.Enemy;
+using Root.Managers;
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Root
@@ -6,11 +9,11 @@ namespace Root
     public class KillableZombie : EnemyClass
     {
         [SerializeField] private float _health = 3;
+        [SerializeField] private float rotationSpeed;
 
         [SerializeField] private GameObject _visuals;
         [SerializeField] private GameObject _particles;
         [SerializeField] private Collider[] hitBoxes;
-
         [Header("Sounds")]
         [SerializeField] private AudioClip _soundDeath;
         [SerializeField] private AudioClip _soundIdle;
@@ -21,6 +24,17 @@ namespace Root
 
         private AudioSource _idleLoop;
         private ZombieStateMachine _stateMachine;
+        private Coroutine _routine;
+        private void Awake()
+        {
+            OnDamaged += FacePlayerDirection;
+        }
+
+        private void OnDestroy()
+        {
+            OnDamaged -= FacePlayerDirection;
+        }
+
         void Start()
         {
             _stateMachine = GetComponentInChildren<ZombieStateMachine>();
@@ -35,7 +49,8 @@ namespace Root
             }
             _health -= damage * multiplier;
             Mathf.Max(0, _health--);
-            //TODO-Add damage delay
+
+            OnDamaged?.Invoke(_stateMachine.IsRecovering);
         }
 
         public override void Death()
@@ -64,6 +79,43 @@ namespace Root
         {
             _visuals.SetActive(false);
             Destroy(_visuals);
+        }
+
+        private void FacePlayerDirection(bool enable)
+        {
+            if (enable) return;
+
+            if (_routine != null)
+            {
+                StopCoroutine(_routine);
+                _routine = null;
+            }
+            _routine = StartCoroutine(Rotate());      
+            //TODO-hacer que tambien frene
+        }
+
+
+        private IEnumerator Rotate()
+        {
+            float journeyProgress = 0f;
+            Quaternion startingRot = transform.rotation;
+            Vector3 direction = GameManager.Player.transform.position - transform.position;
+            direction.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+            while (Quaternion.Angle(transform.rotation, lookRotation) > 0.01f)
+            {
+                journeyProgress += Time.deltaTime * rotationSpeed;
+                float percentage = Mathf.Clamp01(journeyProgress);
+
+                transform.rotation = Quaternion.Lerp(startingRot, lookRotation, journeyProgress);
+
+                if (percentage >= 1f) break;
+
+                yield return null;
+            }
+
+            _routine = null;          
         }
     }
 }

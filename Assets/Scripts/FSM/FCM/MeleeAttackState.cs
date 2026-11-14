@@ -15,14 +15,12 @@ namespace Root
         private readonly Timer _attackTimer = new();
         private bool _isAttaking;
 
-        private HealthControl _playerHealth;
 
         public MeleeAttackState(FSM fsm, NavMeshAgent agent, ZombieStateMachine state)
         {
             _fsm = fsm;
             _agent = agent;
             _zombieStateMachine = state;
-            _playerHealth = GameManager.Player.gameObject.GetComponent<HealthControl>();
         }
 
         public void OnEnter()
@@ -44,19 +42,38 @@ namespace Root
                 _fsm.ChangeState(AgentStates.Chase);
             }
 
-        
-            if (_isAttaking) return;        
+            if (_isAttaking)
+            {
+                return;
+            }
+
+            FollowPlayerRotation();
 
             if (_attackTimer.IsCompleted())
             {
-                _zombieStateMachine.StartCoroutine(AttackRoutine());
+                if (_zombieStateMachine.AreEntitiesFacing())
+                {
+                    _zombieStateMachine.StartCoroutine(AttackRoutine());
+                }
+                else
+                {
+                    _zombieStateMachine.StopCoroutine(AttackRoutine());
+                }
             }
-           
+        }
+
+        private void FollowPlayerRotation()
+        {
+            Quaternion startingRot = _zombieStateMachine.transform.rotation;
+            Vector3 direction = GameManager.Player.transform.position - _zombieStateMachine.transform.position;
+            direction.y = 0;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+            _zombieStateMachine.transform.rotation = lookRotation;
         }
 
         private IEnumerator AttackRoutine()
-        {
-            //WaitForSeconds wait = new WaitForSeconds(_zombieStateMachine.attackDelay);
+        {  
             while (true)
             {
                 if (_agent.enabled)
@@ -64,16 +81,20 @@ namespace Root
                     _isAttaking = true;
                     _agent.isStopped = true;
 
-                    //_playerHealth.TakeDamage(_zombieStateMachine.damage);
                     _zombieStateMachine.animator.Play("Attack");
-                    _attackTimer.Reset(_zombieStateMachine.attackCooldown);
-                    _isAttaking = false;
+
+                    if (!_zombieStateMachine.AreEntitiesFacing()) break;
                 }
 
                 yield return null;
             }
-
+            ResetTimer();
         }
 
+        private void ResetTimer()
+        {
+            _attackTimer.Reset(_zombieStateMachine.attackCooldown);
+            _isAttaking = false;
+        }
     }
 }

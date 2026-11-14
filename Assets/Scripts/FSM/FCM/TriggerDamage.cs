@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TriggerDamage : MonoBehaviour
 {
-    [SerializeField] private ZombieStateMachine _state;
+    [SerializeField] private ZombieStateMachine stateMachine;
     private HealthControl _playerHealth;
 
     private void Start()
@@ -13,7 +13,7 @@ public class TriggerDamage : MonoBehaviour
 
     public void DamagePlayer()
     {
-        _playerHealth.TakeDamage(_state.damage);
+        _playerHealth.TakeDamage(stateMachine.damage);
     }
 
 }
