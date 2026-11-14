@@ -16,6 +16,11 @@ namespace Root.Factories {
                 Debug.LogWarning("No matching features found", this);
             }
 
+            if (nodes.Count == 0)
+            {
+                Debug.Log("No accessible secret room found.");
+                return;
+            }
             state.targetNode = nodes[0].Item1;
         }
     }
