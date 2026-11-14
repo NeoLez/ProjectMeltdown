@@ -111,6 +111,9 @@ namespace Root
             GameManager.AudioSystem.AssignOutputMixerGroup(engineSound, GameManager.AudioSystem.VFX);
             GameManager.AudioSystem.AssignOutputMixerGroup(rattleSound, GameManager.AudioSystem.VFX);
             GameManager.AudioSystem.AssignOutputMixerGroup(strainSound, GameManager.AudioSystem.VFX);
+            
+            MoveTrain();
+            TrainStopped();
         }
 
         private bool isStopped = true;
@@ -160,8 +163,6 @@ namespace Root
                 _currentSpeed = 0;
             }
 
-            MoveTrain();
-
             if (_currentSpeed == 0)
             {
                 if (!isStopped)
@@ -186,6 +187,19 @@ namespace Root
                     UpdateSounds(0, 0);
                 }
             }
+            
+            if (_pathStop)
+            {
+                if (!nextWaypoint.stop)
+                {
+                    _pathStop = false;
+                }
+
+                return;
+            }
+            
+            if(!isStopped)
+                MoveTrain();
 
             UpdateLockSpeedControllerLock();
             
@@ -218,16 +232,6 @@ namespace Root
         private void MoveTrain()
         {
             if (_reachedEndOfTrack) {
-                return;
-            }
-
-            if (_pathStop)
-            {
-                if (!nextWaypoint.stop)
-                {
-                    _pathStop = false;
-                }
-
                 return;
             }
             
@@ -291,6 +295,7 @@ namespace Root
             var currentDirection = (nextWaypoint.transform.position - currentWaypoint.transform.position).normalized;
 
             trainPosition.position = currentWaypoint.transform.position + currentDirection * currentDistanceTraveledToNextPathpoint;
+            previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             trainPosition.forward = Vector3.Slerp(previousDirection, currentDirection, currentDistanceTraveledToNextPathpoint / currentDistanceBetweenPathpoints);
 
             if (_currentSpeed == 0 && transform.position != trainPosition.position)
