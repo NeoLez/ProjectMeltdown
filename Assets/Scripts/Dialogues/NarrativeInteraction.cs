@@ -1,4 +1,5 @@
 using Root.Controller;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,10 +7,9 @@ namespace Root
 {
     public class NarrativeInteraction : MonoBehaviour
     {
-        //[SerializeField] Transform playerPos;
         [SerializeField] private Transform cameraPivot;
-        [SerializeField] float maxDistance;
-        [SerializeField] LayerMask interactableEntityLayer;
+        [SerializeField] private float maxDistance;
+        [SerializeField] private LayerMask interactableEntityLayer;
         [SerializeField] private Canvas interactionPanel;
 
         private PlayerInputActions _input;
@@ -55,9 +55,10 @@ namespace Root
             }
         }
 
-        bool _hasEnteredOnce;
+        private bool _hasEnteredOnce;
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
+            _isInteracting = true;
             if(_currentInterractable != null && !_currentInterractable.IsAnimationPlaying)
             {
                 if (!_currentInterractable.HasDialogue())
@@ -86,25 +87,15 @@ namespace Root
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(null);
                 }
 
-                _currentInterractable.OnInteractionStarted += StartInteraction;
+                //_currentInterractable.OnInteractionStarted += StartInteraction;
                 _currentInterractable.OnInteractionEnded += EndInteraction;
 
-                _currentInterractable.ExecuteDialogue();
+                 _currentInterractable.ExecuteDialogue();
             }
         }
 
         private void ContinueInteraction()
         {
-            /*if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot() && !_hasEnteredOnce)
-            {
-                SetLookAndPositionPivots(_currentInterractable);
-
-                GameManager.Player.GetComponent<MovementController>().CenterPlayerDialogueInteraction(cameraPivot, _newPlayerPosition);
-                GameManager.Player.GetComponent<CameraController>().FocusCamera(_npcLookingPivot);
-
-                _hasEnteredOnce = true;
-            }*/
-
             _currentInterractable.OnInteractionContinue?.Invoke();
         }
 
@@ -123,7 +114,7 @@ namespace Root
             _newPlayerPosition = new Vector3(_npcPositionPivot.position.x, transform.position.y, _npcPositionPivot.position.z);
         }
 
-        private void StartInteraction()
+        private void StartInteraction() //Can be removed
         {
             _isInteracting = true;
             if (_currentInterractable != null)
@@ -132,6 +123,7 @@ namespace Root
             }
 
         }
+
         private void EndInteraction()
         {
             _isInteracting = false;

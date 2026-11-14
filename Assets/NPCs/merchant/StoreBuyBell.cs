@@ -9,6 +9,7 @@ namespace Root
 {
     public class StoreBuyBell : StoreBell
     {
+        [Header("Center Player")]
         [SerializeField] private Transform npcPositionPivot;
         [SerializeField] private Transform npcLookingPivot;
         private Vector3 _newPlayerPosition;
@@ -17,6 +18,7 @@ namespace Root
         [SerializeField] private Animator merchantAnimator;
         [SerializeField] private StoreMenu menu;
         [SerializeField] private Collider colliders;
+
 
         public Action<bool> _OnStoreShow;
         private bool _wasAnimationTriggered;
@@ -33,6 +35,9 @@ namespace Root
             CloseStore();
 
             _cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
+
+            enabled = false;
+            IsStoreOpened = true;
         }
 
         private void HandleStore()
@@ -87,12 +92,12 @@ namespace Root
         {
             if (enable)
             {
-                colliders.enabled = true;
+                enabled = true;
                 OpenStorePanel();
             }
             else
             {
-                colliders.enabled = false;
+                enabled = false;
             }
             
         }

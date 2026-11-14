@@ -11,7 +11,7 @@ namespace Root
         [SerializeField] private float _delay = 4f;
         [SerializeField] private Animator merchantAnimator;
 
-        private bool _wasAnimationTriggered;
+        public bool WasAnimationTriggered { get; private set; }
 
         private void Start()
         {
@@ -23,8 +23,6 @@ namespace Root
 
         public override void StartedExecutingDialogue()
         {
-            HandleInteraction(true);
-
             base.StartedExecutingDialogue();
         }
 
@@ -34,7 +32,7 @@ namespace Root
 
             if (hasBeenTriggeredOnce) return;
 
-            if(!_wasAnimationTriggered)
+            if (!WasAnimationTriggered)
                 StartCoroutine(TriggerAnimationAndDialogue());
             else
                 TriggerDialogue();
@@ -50,7 +48,7 @@ namespace Root
             merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(_delay);
 
-            _wasAnimationTriggered = true;
+            WasAnimationTriggered = true;
             IsAnimationPlaying = false;
             TriggerDialogue();
         }
@@ -67,7 +65,6 @@ namespace Root
             if (!Dialogue.CanRepeatDialogue)
             {
                 hasBeenTriggeredOnce = true;
-                HandleInteraction(false);
             }
 
             base.FinishedExecutingDialogue();
@@ -80,9 +77,5 @@ namespace Root
             storeBell._OnStoreShow?.Invoke(true);
         }
 
-        private void HandleInteraction(bool enable)
-        {
-            dialogueTrigger.enabled = enable ? true : false;
-        }
     }
 }
