@@ -17,6 +17,7 @@ namespace Root
         [SerializeField] private Slider masterVolumeSlider;
         [SerializeField] private Slider musicVolumeSlider;
         [SerializeField] private Slider sfxVolumeSlider;
+        [SerializeField] private Slider sensitivitySlider; 
 
         // Localization
         [SerializeField] private TMP_Text nombreClase;
@@ -29,13 +30,18 @@ namespace Root
         private void Awake()
         {
             PoolManager.Reset();
-
             MouseHandler.ClearListAndSetToDefault();
             MouseHandler.RequestControl(CursorLockMode.None, true, this);
-
+            masterVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.MasterKey)); 
+            musicVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.MusicKey)); 
+            sfxVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.SfxKey)); 
             masterVolumeSlider.onValueChanged.AddListener(SliderMasterVolume);
             musicVolumeSlider.onValueChanged.AddListener(SliderMusicVolume);
             sfxVolumeSlider.onValueChanged.AddListener(SliderSFXVolume);
+            sensitivitySlider.minValue = 0f; 
+            sensitivitySlider.maxValue = 1f; 
+            sensitivitySlider.SetValueWithoutNotify(MouseSensitivitySettings.ToSlider(MouseSensitivitySettings.Value)); 
+            sensitivitySlider.onValueChanged.AddListener(SliderSensitivity);
         }
 
         private void Start()
@@ -43,7 +49,6 @@ namespace Root
             pantallaMenu.SetActive(true);
             pantallaClases.SetActive(false);
             panelInfoClase.SetActive(false);
-
             LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
         }
 
@@ -76,6 +81,11 @@ namespace Root
             pantallaClases.SetActive(false);
             pantallaMenu.SetActive(true);
             panelInfoClase.SetActive(false);
+        }
+
+        public void SliderSensitivity(float value)
+        {
+            MouseSensitivitySettings.Value = MouseSensitivitySettings.FromSlider(value); 
         }
 
         #region CLASS_SELECTION
@@ -115,28 +125,19 @@ namespace Root
         #endregion
 
         #region AUDIO
-        public void SliderMasterVolume(float value) 
+        public void SliderMasterVolume(float value)
         {
-            if (GameManager.AudioSystem == null)
-                return;
-
-            GameManager.AudioSystem.GeneralMixer.SetFloat("MasterVolume",Mathf.Log10(value) * 20f);
+            VolumeSettings.Set(VolumeSettings.MasterKey, value); 
         }
 
         public void SliderMusicVolume(float value)
         {
-            if (GameManager.AudioSystem == null)
-                return;
-
-            GameManager.AudioSystem.GeneralMixer.SetFloat("MusicVolume",Mathf.Log10(value) * 20f);
+            VolumeSettings.Set(VolumeSettings.MusicKey, value); 
         }
 
         public void SliderSFXVolume(float value)
         {
-            if (GameManager.AudioSystem == null)
-                return;
-
-            GameManager.AudioSystem.GeneralMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20f);
+            VolumeSettings.Set(VolumeSettings.SfxKey, value); 
         }
 
         private void OnLocaleChanged(UnityEngine.Localization.Locale locale)
@@ -151,9 +152,7 @@ namespace Root
 
         public void ConfirmPlay()
         {
-            if (loadingScene)
-                return;
-
+            if (loadingScene) return;
             loadingScene = true;
             GameManager.VeryUglyKitNumber = selectedClass;
             LoadingScreen.Instance.LoadScene("Train 1");

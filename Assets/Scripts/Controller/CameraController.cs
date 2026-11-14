@@ -70,6 +70,8 @@ public class CameraController : MonoBehaviour
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();
         Assert.IsNotNull(_playerItemHolder);
+        sensitivity = MouseSensitivitySettings.Value; 
+        MouseSensitivitySettings.OnChanged += SetSensitivity; 
     }
 
     private void OnEnable()
@@ -79,8 +81,14 @@ public class CameraController : MonoBehaviour
 
     private void OnDestroy()
     {
+        MouseSensitivitySettings.OnChanged -= SetSensitivity;
         _input.Interaction.Interact.performed -= HandleInteraction;
         DialogueManager.Instance.OnDialogueEnded -= EnableNormalMovement;
+    }
+
+    private void SetSensitivity(float value) 
+    {
+        sensitivity = value;
     }
 
     private void HandleInteraction(InputAction.CallbackContext _)
