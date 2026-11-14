@@ -32,6 +32,7 @@ namespace Root
             PoolManager.Reset();
             MouseHandler.ClearListAndSetToDefault();
             MouseHandler.RequestControl(CursorLockMode.None, true, this);
+            GameManager.AudioSystem?.StopSoundEffects();
             masterVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.MasterKey)); 
             musicVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.MusicKey)); 
             sfxVolumeSlider.SetValueWithoutNotify(VolumeSettings.Get(VolumeSettings.SfxKey)); 
@@ -42,6 +43,7 @@ namespace Root
             sensitivitySlider.maxValue = 1f; 
             sensitivitySlider.SetValueWithoutNotify(MouseSensitivitySettings.ToSlider(MouseSensitivitySettings.Value)); 
             sensitivitySlider.onValueChanged.AddListener(SliderSensitivity);
+
         }
 
         private void Start()

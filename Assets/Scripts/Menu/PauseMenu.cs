@@ -101,6 +101,7 @@ namespace Root
         {
             PromptManager.Instance.ShowPrompt("confirm_return_menu_message", () =>{
                 GameManager.AudioSystem?.ResumeAll();
+                GameManager.AudioSystem?.StopSoundEffects();
                 GameManager.Input.Enable();
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;

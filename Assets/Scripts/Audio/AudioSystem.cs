@@ -38,6 +38,14 @@ public class AudioSystem
         pausedSources.Clear();
     }
 
+    public void StopSoundEffects() 
+    {
+        if (NonPositionAudioSource == null) return; 
+
+        pausedSources.Remove(NonPositionAudioSource); 
+        NonPositionAudioSource.Stop(); 
+    }
+
     public void PlayMusic(AudioClip audioClip, AudioMixerGroup mixerGroup, float volume = 1)
     {
         AudioSource audioSource = MusicAudioSource;

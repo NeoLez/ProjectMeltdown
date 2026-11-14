@@ -74,6 +74,9 @@ namespace Root
             }
             
             _powerLost = true;
+            engineSound.mute = true; 
+            rattleSound.mute = true; 
+            strainSound.mute = true; 
             previousDirection = previousDirection == Vector3.zero ? trainPosition.forward : previousDirection;
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
             GameManager.Train = this;
@@ -113,7 +116,7 @@ namespace Root
             GameManager.AudioSystem.AssignOutputMixerGroup(strainSound, GameManager.AudioSystem.VFX);
             
             MoveTrain();
-            TrainStopped();
+            TrainStopped(true); 
         }
 
         private bool isStopped = true;
@@ -304,12 +307,15 @@ namespace Root
             }
         }
 
-        private void TrainStopped()
+        private void TrainStopped(bool silent = false) 
         {
             isStopped = true;
             OnTrainStoppedMoving?.Invoke();
-            CameraShakeManager.Instance.Shake(0.1f, 0.05f);
-            GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
+            if (!silent) 
+            {
+                CameraShakeManager.Instance.Shake(0.1f, 0.05f);
+                GameManager.AudioSystem.PlaySound(_trainReleaseAudio, GameManager.AudioSystem.VFX);
+            }
             if (emergencyStopButton.IsBraking())
             {
                 emergencyStopButton.FinishBraking();
