@@ -51,7 +51,7 @@ namespace Root {
             if (!WalletController.CanInteract) return false;
             if (!_playerItemHolder.HasItem || item.Inventory.InsertItem(_playerItemHolder.HeldItem)) {
                 _playerItemHolder.ForceClearHeldItem();
-                _playerItemHolder.Pickup(item.itemState);
+                _playerItemHolder.ForceSetHeldItem(item.itemState);
                 return true;
             }
             

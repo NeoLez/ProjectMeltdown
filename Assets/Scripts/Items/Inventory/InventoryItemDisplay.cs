@@ -240,7 +240,7 @@ namespace Root {
             var playerItemHolder = GameManager.Player.GetComponent<PlayerItemHolder>();
             
             if (!playerItemHolder.HasItem) {
-                playerItemHolder.Pickup(_inventoryItem.itemState);
+                playerItemHolder.ForceSetHeldItem(_inventoryItem.itemState);
                 _inventoryItem.Inventory.RemoveItem(_inventoryItem);
                 return;
             }
@@ -250,7 +250,7 @@ namespace Root {
             if (_inventoryItem.Inventory.TryFindFreeArea(playerItemHolder.HeldItem.ItemSo.InventorySize,
                     out var pos, out var rotation, _inventoryItem)) {
                 playerItemHolder.ForceClearHeldItem();
-                playerItemHolder.Pickup(_inventoryItem.itemState);
+                playerItemHolder.ForceSetHeldItem(_inventoryItem.itemState);
                 originalInventory.RemoveItem(_inventoryItem);
                 originalInventory.InsertItem(heldItem, pos, rotation);
             }

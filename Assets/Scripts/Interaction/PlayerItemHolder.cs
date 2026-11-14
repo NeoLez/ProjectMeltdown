@@ -42,51 +42,69 @@ namespace Root
                 crosshair.fillAmount = GameManager.Input.Inventory.PutHeldInInventory.GetTimeoutCompletionPercentage();;
         }
 
-        public void Pickup(PhysicalItem item)
+        public bool Pickup(PhysicalItem item)
         {
-            if (!WalletController.CanInteract) return;
-            if (HasItem && HeldItem.ItemSo)
-                Drop();
+            if (!WalletController.CanInteract) return false;
+            if (HasItem && HeldItem.ItemSo) {
+                if(GetComponent<Inventory>().InsertItem(item.ItemState)) {
+                    PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
+                    return true;
+                }
+                
+                GameManager.AudioSystem.PlaySound(cantMoveToInventorySound, GameManager.AudioSystem.VFX);
+                return false;
+            }
 
             if(!GameManager.Train.IsStopped())
                 GameManager.Train.RemoveObjectFromContainers(item.GetComponent<VisualContainer>());
             
             HeldItem = item.ItemState;
 
-            if (item.ItemState.ItemSo.HeldItemGameObject == null) return;
-            currentHeldVisual = Instantiate(item.ItemState.ItemSo.HeldItemGameObject, holdPoint);
-            currentHeldVisual.transform.localPosition = Vector3.zero;
-            currentHeldVisual.transform.localRotation = Quaternion.identity;
-            currentHeldVisual.state = HeldItem;
-
-            if (item.TryGetComponent(out DeliveryPackageItem packageItem)) PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, packageItem.State);
+            UpdateVisuals();
 
             PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
 
             OnItemChanged?.Invoke();
+            return true;
         }
 
-        public void Pickup(ItemState item)
+        public bool Pickup(ItemState item)
         {
-            if (!WalletController.CanInteract) return;
-            if (HasItem && HeldItem.ItemSo)
-                Drop();
+            if (!WalletController.CanInteract) return false;
+            if (HasItem && HeldItem.ItemSo) {
+                if(GetComponent<Inventory>().InsertItem(item)) {
+                    return true;
+                }
+
+                GameManager.AudioSystem.PlaySound(cantMoveToInventorySound, GameManager.AudioSystem.VFX);
+                return false;
+            }
             
             HeldItem = item;
 
-            if (item.ItemSo.HeldItemGameObject == null) return;
-            currentHeldVisual = Instantiate(item.ItemSo.HeldItemGameObject, holdPoint);
-            currentHeldVisual.transform.localPosition = Vector3.zero;
-            currentHeldVisual.transform.localRotation = Quaternion.identity;
-            currentHeldVisual.state = HeldItem;
-
-            if (packages.IsItemIncluded(item.ItemSo)) {
-                PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, (PackageItemState)item);
-            }
+            UpdateVisuals();
             
             OnItemChanged?.Invoke();
+            return true;
         }
 
+        public void PickupOrDrop(PhysicalItem item)
+        {
+            if (!Pickup(item))
+            {
+                var itemState = item.ItemState;
+                PoolManager.ReturnObjectToPool(item.gameObject.GetComponent<Poolable>());
+                Drop(itemState);
+            }
+        }
+        
+        public void PickupOrDrop(ItemState item)
+        {
+            if (!Pickup(item))
+            {
+                Drop(item);
+            }
+        }
 
         public void Drop()
         {
@@ -162,6 +180,30 @@ namespace Root
             if(currentHeldVisual != null)
                 Destroy(currentHeldVisual.gameObject);
             OnItemChanged?.Invoke();
+        }
+
+        public void ForceSetHeldItem(ItemState item)
+        {
+            HeldItem = item;
+            
+            UpdateVisuals();
+            
+            OnItemChanged?.Invoke();
+        }
+
+        private void UpdateVisuals()
+        {
+            if (HeldItem.ItemSo.HeldItemGameObject != null)
+            {
+                currentHeldVisual = Instantiate(HeldItem.ItemSo.HeldItemGameObject, holdPoint);
+                currentHeldVisual.transform.localPosition = Vector3.zero;
+                currentHeldVisual.transform.localRotation = Quaternion.identity;
+                currentHeldVisual.state = HeldItem;
+                
+                if (packages.IsItemIncluded(HeldItem.ItemSo)) {
+                    PackageStampGenerator.Instance.SetStampTexture(currentHeldVisual, (PackageItemState)HeldItem);
+                }
+            }
         }
         
         private void OnDestroy() {

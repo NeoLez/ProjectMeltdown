@@ -31,7 +31,7 @@ namespace Root {
                 return;
             }
 
-            playerItemHolder.Pickup(item.itemState);
+            playerItemHolder.ForceSetHeldItem(item.itemState);
         }
         
         public void LoadInventory(Inventory inv) {

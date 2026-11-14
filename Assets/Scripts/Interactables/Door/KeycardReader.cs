@@ -134,7 +134,10 @@ namespace Root
                 _abortSwipe = null;
 
                 SetCardPhysics(cardItem, true);
-                if (holder != null) holder.Pickup(cardItem);
+                if (holder != null)
+                {
+                    holder.PickupOrDrop(cardItem);
+                }
 
                 if (resolve) ResolveCard(card);
             }
