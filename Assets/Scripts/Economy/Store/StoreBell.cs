@@ -19,9 +19,11 @@ namespace Root
         [SerializeField] private float duration = 1f;
 
         protected Action OnBellRanged;
-
+        private bool _isAnimating;
         public override void Interact()
         {
+            if (_isAnimating) return;
+
             if (!IsStoreOpened)
             {
                 OnBellRanged?.Invoke();
@@ -33,6 +35,8 @@ namespace Root
 
         private void PressBell()
         {
+            _isAnimating = true;
+
             Tween.LocalPosition(
             target: pivot,
             startValue: pivot.localPosition,
@@ -40,7 +44,7 @@ namespace Root
             duration: duration,
             ease: Ease.OutQuad,
             cycles: 2,
-            cycleMode: CycleMode.Yoyo);
+            cycleMode: CycleMode.Yoyo).OnComplete(() => { _isAnimating = false; });
         }
 
     }
