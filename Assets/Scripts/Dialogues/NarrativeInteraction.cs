@@ -58,8 +58,7 @@ namespace Root
         private bool _hasEnteredOnce;
         private void HandleNarrativeInteraction(InputAction.CallbackContext _)
         {
-            _isInteracting = true;
-            if(_currentInterractable != null && !_currentInterractable.IsAnimationPlaying)
+            if(_currentInterractable != null)
             {
                 if (!_currentInterractable.HasDialogue())
                 {
@@ -72,6 +71,9 @@ namespace Root
                     ContinueInteraction();
                     return;
                 }
+                _isInteracting = true;
+
+                if (_currentInterractable.IsAnimationPlaying) return;
 
                 if (_currentInterractable.CheckPivot() && _currentInterractable.CheckPosPivot() && !_hasEnteredOnce)
                 {
@@ -87,7 +89,7 @@ namespace Root
                     GameManager.Player.GetComponent<CameraController>().FocusCamera(null);
                 }
 
-                //_currentInterractable.OnInteractionStarted += StartInteraction;
+                _currentInterractable.OnInteractionStarted += StartInteraction;
                 _currentInterractable.OnInteractionEnded += EndInteraction;
 
                  _currentInterractable.ExecuteDialogue();
