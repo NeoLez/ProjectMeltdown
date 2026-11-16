@@ -12,6 +12,7 @@ namespace Root
 
         [Header("Delivery Resume UI")]
         [SerializeField] private Canvas ticketCanvas;
+        [SerializeField] private RectTransform backgroundRect;
         [SerializeField] private VerticalLayoutGroup resumeLayoutGroup;
         [SerializeField] private TMP_Text title;
         [SerializeField] private TMP_Text packagesAccepted;
@@ -180,7 +181,7 @@ namespace Root
 
         private void AjustBackgroundHeight()
         {
-            RectTransform backgroundRectTransform = GetComponentInChildren<RectTransform>();
+            RectTransform backgroundRectTransform = backgroundRect;
             RectTransform verticalRecTransform = resumeLayoutGroup.GetComponent<RectTransform>();
             float layoutTotalHeight = resumeLayoutGroup.padding.top + resumeLayoutGroup.padding.bottom;
 
@@ -199,6 +200,7 @@ namespace Root
             }
 
         }
+
 
         private void DisplayWalletAmount()
         {
