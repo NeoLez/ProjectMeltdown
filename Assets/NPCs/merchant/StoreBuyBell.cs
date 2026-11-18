@@ -36,8 +36,8 @@ namespace Root
 
             _cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
 
-            enabled = false;
-            IsStoreOpened = true;
+            //enabled = false;
+            //IsStoreOpened = true;
         }
 
         private void HandleStore()

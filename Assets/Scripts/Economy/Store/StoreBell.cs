@@ -11,6 +11,7 @@ namespace Root
         public bool CanCloseStore {  get; set; }    
 
         [SerializeField] protected StoreManager storeManager;
+        [SerializeField] private MerchantInteraction dialogue;
 
         [Header("Animation")]
         [SerializeField] private AudioClip bellRing;
@@ -24,7 +25,7 @@ namespace Root
         {
             if (_isAnimating) return;
 
-            if (!IsStoreOpened)
+            if (!IsStoreOpened && !dialogue.IsDialoguing)
             {
                 OnBellRanged?.Invoke();
             }
