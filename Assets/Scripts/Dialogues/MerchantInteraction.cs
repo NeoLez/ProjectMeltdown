@@ -12,13 +12,19 @@ namespace Root
         [SerializeField] private Animator merchantAnimator;
 
         public bool WasAnimationTriggered { get; private set; }
-
+        public bool IsDialoguing { get; private set; }
         private void Start()
         {
             if (HasDialogue() || !storeManager.CanSpawnMultipleItems)
             {
-                storeBell._OnStoreShow?.Invoke(false);
-            }         
+                IsDialoguing = true;
+                storeBell._OnStoreShow?.Invoke(false);               
+            }
+            else
+            { 
+                enabled = false;
+                IsDialoguing = false;
+            }
         }
 
         public override void StartedExecutingDialogue()
@@ -57,6 +63,7 @@ namespace Root
         {
             if (Dialogue == null) return;
 
+
             DialogueManager.Instance.StartConversation(Dialogue);
         }
 
@@ -69,6 +76,7 @@ namespace Root
 
             base.FinishedExecutingDialogue();
 
+            IsDialoguing = false;
             ShowStoreItems();
         }
 
