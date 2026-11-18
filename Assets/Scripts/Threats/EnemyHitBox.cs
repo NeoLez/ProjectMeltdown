@@ -23,7 +23,13 @@ namespace Root
             OnEnemyHit(1, damagePerPartMultiplier);
             TriggerVisuals();
         }
-
+        
+        public void Hit(float damage)
+        {
+            OnEnemyHit(damage, damagePerPartMultiplier);
+            TriggerVisuals();
+        }
+        
         public void OnEnemyHit(float damage, float multiplier)
         {
             enemyHealth.TakeDamage(damage,multiplier);
