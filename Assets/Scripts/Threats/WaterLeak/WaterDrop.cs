@@ -33,7 +33,7 @@ namespace Root
         {
             if (other.TryGetComponent<HealthControl>(out HealthControl health))
             {
-                health.TakeDamage(_damage);
+                health.Infect(_damage);
                 PlaySplash();
                 Destroy(gameObject);
                 return;

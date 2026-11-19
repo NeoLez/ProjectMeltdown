@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 namespace Root.Controller
 {
     [RequireComponent(typeof(Rigidbody), typeof(CameraController), typeof(CapsuleCollider))]
-    public class MovementController : MonoBehaviour
+    public class MovementController : InfectableComponent
     {
         private PlayerInputActions _input;
         private Rigidbody _rb;
@@ -42,6 +42,8 @@ namespace Root.Controller
         private Vector3 _lastPosition;
         private Vector3 _lastSpeed;
 
+        public Modifier[] modifiers;
+        [SerializeField] private HealthControl health;
         private void Start()
         {
             _input = GameManager.Input;
@@ -56,6 +58,14 @@ namespace Root.Controller
 
             DialogueManager.Instance.OnDialogueStarted += DisableMovement;
             DialogueManager.Instance.OnDialogueEnded += EnableMovement;
+
+
+            for (int i = 0; i < modifiers.Length; i++)
+            {
+                modifiers[i].modifier.Intialize(modifiers[i].controller);
+                modifiers[i].controller.BaseValue = movementSpeed;
+            }
+            health.OnInfectionIncreased += Infect;
         }
 
         private void OnDestroy()
@@ -93,10 +103,11 @@ namespace Root.Controller
             _lastSpeed = math.lerp(_lastSpeed, worldMoveDir * (targetSpeed * slopeFactor), movementSmoothing);
 
             Vector3 slopeAdjustmentSpeed = Vector3.zero;
-            if (_currentSurfaceNormal != Vector3.zero && _currentSurfaceNormal != Vector3.up) {
+            if (_currentSurfaceNormal != Vector3.zero && _currentSurfaceNormal != Vector3.up)
+            {
                 slopeAdjustmentSpeed = SlopeAdjustmentSpeed(_lastSpeed);
             }
-            
+
             _rb.linearVelocity = _lastSpeed + slopeAdjustmentSpeed + Vector3.up * currentVerticalSpeed;
 
             if (_currentState == CharacterState.Grounded && _rb.linearVelocity.magnitude > 0.1f)
@@ -111,8 +122,9 @@ namespace Root.Controller
 
             _lastPosition = transform.position;
         }
-        
-        public Vector3 SlopeAdjustmentSpeed(Vector3 moveDir) {
+
+        public Vector3 SlopeAdjustmentSpeed(Vector3 moveDir)
+        {
             if (_currentSlopeAngle > maxSlopeAngle) return moveDir;
             float requiredY = -(moveDir.x * _currentSurfaceNormal.x + moveDir.z * _currentSurfaceNormal.z) / _currentSurfaceNormal.y;
             return new Vector3(0, requiredY, 0);
@@ -152,7 +164,7 @@ namespace Root.Controller
             {
                 _currentSurfaceNormal = Vector3.up;
                 _currentState = CharacterState.Air;
-                
+
                 if (Physics.SphereCast(transform.position, _collider.radius - 0.001f, Vector3.down, out RaycastHit hitt,
                         groundCheckRayLengthForNormalDetection, groundLayer))
                 {
@@ -233,6 +245,19 @@ namespace Root.Controller
         {
             return _currentState;
         }
+
+        public override void Infect(float currentValue)
+        {
+            for (int i = 0; i < modifiers.Length; i++)
+            {
+                modifiers[i].modifier.Evaluate(currentValue);
+
+                if (!modifiers[i].modifier.ChecksCondition) break;
+                movementSpeed = modifiers[i].modifier.ActiveState ? movementSpeed = modifiers[i].controller.FinalValue : movementSpeed = modifiers[i].controller.BaseValue;
+
+            }
+        }
+
     }
 }
 

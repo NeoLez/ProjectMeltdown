@@ -15,6 +15,7 @@ namespace Root {
         [SerializeField] HandHeldInventorySlot handHeldInventorySlot;
         [SerializeField] private ItemActionButton itemActionButtonPrefab;
         [SerializeField] private RectTransform itemActionsTitlePrefab;
+        [SerializeField] private Canvas infectionIndicator;
         private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
@@ -54,11 +55,13 @@ namespace Root {
         public override void Open() {
             base.Open();
             ShowDisplays();
+            infectionIndicator.gameObject.SetActive(true);
         }
 
         public override void Close() {
             base.Close();
             HideDisplays();
+            infectionIndicator.gameObject.SetActive(false);
         }
 
         private void ShowDisplays() {

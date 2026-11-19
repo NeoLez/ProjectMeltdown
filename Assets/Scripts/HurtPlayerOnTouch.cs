@@ -27,7 +27,11 @@ namespace Root
             if (_touchingPlayer && _damageTimer.IsCompleted())
             {
                 _damageTimer.Reset(damageCooldown);
-                GameManager.Player.GetComponent<HealthControl>().TakeDamage(damage);
+                GameManager.Player.GetComponent<HealthControl>().StartInfection(this);
+            }
+            else
+            {
+                GameManager.Player.GetComponent<HealthControl>().StopInfection();
             }
         }
     }

@@ -1,8 +1,10 @@
 using Root.Managers;
+using System;
+using System.Collections;
+using Timers;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 namespace Root
 {
     public class HealthControl : MonoBehaviour
@@ -23,6 +25,20 @@ namespace Root
         private bool _muerto = false;
 
 
+        [Header("Infection")]
+        [SerializeField] private Slider infectionBar;
+        [SerializeField] private Image backgroundImage;
+        [SerializeField] private float maxInfectionLevel;
+        [SerializeField] private float infectionCooldown;
+        private bool _canInfect;
+        private Timer _infectionTimer = new();
+
+        [SerializeField] private Component[] scriptsToModify;
+        [SerializeField] private float infectionSpeed;
+        [SerializeField] private Color[] infectionStages;
+        [SerializeField] private float[] infectionPercentageStages;
+        public event Action<float> OnInfectionIncreased;
+        private Coroutine _infectionCoroutine;
         private void Awake()
         {
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
@@ -38,6 +54,7 @@ namespace Root
             if (_muerto)
                 LoadingScreen.Instance.LoadScene("Menu");
         }
+
         private void Start()
         {
             _currentHealth = _maxHealth;
@@ -47,6 +64,9 @@ namespace Root
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
             GameManager.Input.Interaction.Interact.Enable();
+
+            infectionBar.image.color = infectionStages[0];
+            backgroundImage.color = infectionStages[0];
         }
 
         void Update()
@@ -55,6 +75,12 @@ namespace Root
             {
                 Regen();
                 DamageFeedback();
+            }
+
+            if (_infectionTimer.IsCompleted())
+            {
+                _canInfect = true;
+                _infectionTimer.Reset(infectionCooldown);
             }
         }
 
@@ -141,7 +167,103 @@ namespace Root
             GameManager.AudioSystem?.PauseAll();
 
             ui_muerte.SetActive(true);
-            OnPlayerDied?.Invoke(); 
+            OnPlayerDied?.Invoke();
         }
+
+
+        public void Infect(float amount)
+        {
+            if (!_canInfect) return;
+
+            infectionBar.value += amount / maxInfectionLevel;
+            _canInfect = false;
+
+            OnInfectionIncreased?.Invoke(infectionBar.value);
+
+            ChangeColorIndicator(infectionBar.value);
+
+            if (infectionBar.value == infectionBar.maxValue)
+            {
+                Die();
+            }
+        }
+
+        public void StartInfection(MonoBehaviour behaviour)
+        {
+            _infectionCoroutine = StartCoroutine(GradualInfectionRoutine(behaviour));
+        }
+
+        public void StopInfection()
+        {
+            if (_infectionCoroutine != null)
+            {
+                StopCoroutine(_infectionCoroutine);
+                _infectionCoroutine = null;
+            }
+        }
+
+        private IEnumerator GradualInfectionRoutine(MonoBehaviour behaviour)
+        {
+            while (behaviour != null && infectionBar.value < maxInfectionLevel)
+            {
+                infectionBar.value += (1 / maxInfectionLevel) * infectionSpeed;
+
+                ApplyModifiers();
+
+                ChangeColorIndicator(infectionBar.value);
+                if (infectionBar.value >= infectionBar.maxValue)
+                {
+                    Die();
+                    break;
+                }
+                yield return null;
+            }
+
+            StopInfection();
+        }
+
+        private void ApplyModifiers()
+        {
+            for (int i = 0; i < scriptsToModify.Length; i++)
+            {
+                var component = scriptsToModify[i].GetComponent<InfectableComponent>();
+                component.Infect(infectionBar.value);
+            }
+        }
+
+        private void ChangeColorIndicator(float value)
+        {
+            if (infectionPercentageStages.Length > 0)
+            {
+                if (value >= infectionPercentageStages[0] && value <= infectionPercentageStages[1])
+                {
+                    infectionBar.image.color = infectionStages[1];
+                    backgroundImage.color = infectionStages[1];
+                }
+                else if (value >= infectionPercentageStages[1])
+                {
+                    infectionBar.image.color = infectionStages[2];
+                    backgroundImage.color = infectionStages[2];
+                }
+                else
+                {
+                    infectionBar.image.color = infectionStages[0];
+                    backgroundImage.color = infectionStages[0];
+                }
+            }
+        }
+
+        public void Cure(float amount)
+        {
+            //aca chequear si esta al maximo, no usar cualquier item
+            StopInfection();
+            if (infectionBar.minValue == 0)
+            {
+                Debug.Log("full vida");
+                return;
+            }
+            infectionBar.value -= amount / maxInfectionLevel;
+        }
+
     }
 }

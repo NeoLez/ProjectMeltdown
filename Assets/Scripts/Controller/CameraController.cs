@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class CameraController : MonoBehaviour
+public class CameraController : InfectableComponent
 {
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform cam;
@@ -56,6 +56,10 @@ public class CameraController : MonoBehaviour
     private InteractableNormalCamera _currentInteractable;
 
     public Transform CameraPivot => cam;
+
+    public Modifier[] modifiers;
+    [SerializeField] private HealthControl health;
+
     private void Awake()
     {
         GameManager.CameraController = this;
@@ -71,7 +75,14 @@ public class CameraController : MonoBehaviour
         _playerItemHolder = GetComponent<PlayerItemHolder>();
         Assert.IsNotNull(_playerItemHolder);
         sensitivity = MouseSensitivitySettings.Value; 
-        MouseSensitivitySettings.OnChanged += SetSensitivity; 
+        MouseSensitivitySettings.OnChanged += SetSensitivity;
+
+        for (int i = 0; i < modifiers.Length; i++)
+        {
+            modifiers[i].modifier.Intialize(modifiers[i].controller);
+            modifiers[i].controller.BaseValue = frequency;
+        }
+        health.OnInfectionIncreased += Infect;
     }
 
     private void OnEnable()
@@ -272,6 +283,17 @@ public class CameraController : MonoBehaviour
     {
         if (crosshair != null) crosshair.SetActive(false);
         MouseHandler.RelinquishControl(this);
+    }
+
+    public override void Infect(float currentValue)
+    {
+        for (int i = 0; i < modifiers.Length; i++)
+        {
+            modifiers[i].modifier.Evaluate(currentValue);
+
+            if (!modifiers[i].modifier.ChecksCondition) break;
+            frequency = modifiers[i].modifier.ActiveState ? frequency = modifiers[i].controller.FinalValue : frequency = modifiers[i].controller.BaseValue;
+        }
     }
 
     public Vector2 GetHorizontalDirectionForwardVector()

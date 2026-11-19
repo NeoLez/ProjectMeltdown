@@ -13,6 +13,7 @@ public class TriggerDamage : MonoBehaviour
 
     public void DamagePlayer()
     {
+        _playerHealth.Infect(stateMachine.damage);
         _playerHealth.TakeDamage(stateMachine.damage);
     }
 

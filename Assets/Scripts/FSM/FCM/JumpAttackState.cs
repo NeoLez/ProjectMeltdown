@@ -105,7 +105,7 @@ namespace Root
         {
             if (_agent.enabled)
             {
-                _playerHealth.TakeDamage(_zombieStateMachine.jumpDamage);
+                _playerHealth.Infect(_zombieStateMachine.jumpDamage);
             }
 
         }
