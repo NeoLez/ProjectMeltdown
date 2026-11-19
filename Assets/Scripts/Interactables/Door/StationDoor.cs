@@ -21,7 +21,7 @@ namespace Root
         [Header("Tipo de puerta")]
         [SerializeField] private ControlMode controlMode = ControlMode.Automatic;
 
-        [Header("Bloqueo")]
+        [Header("Bloqueo (Puertas con lector de tarjetas)")]
         [SerializeField] private bool isLocked = false;
 
         [Header("Electricidad")]

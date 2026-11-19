@@ -153,6 +153,53 @@ MonoBehaviour:
   m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
+--- !u!1 &80968812923059184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8999520000106255431}
+  - component: {fileID: 5727734923118281972}
+  m_Layer: 0
+  m_Name: SpawnKeycard_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8999520000106255431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80968812923059184}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 23.78, y: 0.901, z: -60.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8005883346884581491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5727734923118281972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80968812923059184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d468253f3bffe4347a489be880db56d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.SpawnSingleItem
+  item: {fileID: 11400000, guid: 3e30724b05b1bd047a9b348286a132dc, type: 2}
+  mapSection: {fileID: 8274113595705031903}
+  disablePhysics: 0
 --- !u!1 &108533119277792740
 GameObject:
   m_ObjectHideFlags: 0
@@ -14715,6 +14762,7 @@ Transform:
   - {fileID: 2430527661037144630}
   - {fileID: 9068186473990549367}
   - {fileID: 4373219913873515356}
+  - {fileID: 8999520000106255431}
   - {fileID: 5025421827549897562}
   - {fileID: 8305339874221934705}
   - {fileID: 1041352802334725264}
@@ -22586,6 +22634,7 @@ MonoBehaviour:
   barrier: {fileID: 1031875431000248927}
   pathWaypointToUnlock: {fileID: 0}
   unlockPathDelay: 0
+  animator: {fileID: 0}
 --- !u!1 &4435612848153033722
 GameObject:
   m_ObjectHideFlags: 0

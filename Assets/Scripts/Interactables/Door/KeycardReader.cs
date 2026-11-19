@@ -197,7 +197,7 @@ namespace Root
             foreach (StationDoor door in doors)
             {
                 if (door == null) continue;
-                if (door.IsOpenOrOpening) return true;
+                if (door.IsOpenOrOpening || !door.IsLocked) return true;
             }
 
             return false;
