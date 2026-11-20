@@ -21,7 +21,7 @@ namespace Root {
             }
 
             if (!IsStateTypeValid(defaultItemSo.CreateUninitializedState())) {
-                Debug.LogWarning("Wrong type of itemState set as defaultItemSo (editor only)");
+                Debug.LogWarning("Wrong type of itemState set as defaultItemSo");
                 return;
             }
 
