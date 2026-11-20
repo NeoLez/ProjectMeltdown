@@ -6,7 +6,6 @@ namespace Root
     public class MerchantInteraction : InteractBehaviour
     {
         [SerializeField] private StoreBuyBell storeBell;
-        [SerializeField] private Collider dialogueTrigger;
         [SerializeField] private StoreManager storeManager;
         [SerializeField] private float _delay = 4f;
         [SerializeField] private Animator merchantAnimator;
@@ -50,6 +49,8 @@ namespace Root
             if (Dialogue == null) yield break;
 
             GameManager.Input.Movement.Disable();
+            GameManager.Input.Inventory.InventoryToggle.Disable();
+            GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             IsAnimationPlaying = true;
             merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(_delay);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1483923697776620224}
   - component: {fileID: 4626618449195085043}
+  - component: {fileID: 7955021873620177305}
   - component: {fileID: 1553855857241774635}
   m_Layer: 10
   m_Name: Campanita
@@ -48,15 +49,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storeManager: {fileID: 0}
   dialogue: {fileID: 0}
-  bellRing: {fileID: 0}
+  bellRing: {fileID: 8300000, guid: d1e3b93c63cce83488491266dc896d21, type: 3}
   desiredHeight: {x: 0, y: 0.08, z: 0}
-  pivot: {fileID: 0}
+  pivot: {fileID: 7853528722572811714}
   duration: 0.2
   npcPositionPivot: {fileID: 0}
   npcLookingPivot: {fileID: 0}
   merchantAnimator: {fileID: 0}
   menu: {fileID: 0}
-  colliders: {fileID: 0}
+  colliders: {fileID: 1553855857241774635}
+--- !u!114 &7955021873620177305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2295749566381828218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f732182f20bac6646a314182dbf8b4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
+  Pivot: {fileID: 0}
+  PlayerPivot: {fileID: 0}
+  Dialogue: {fileID: 0}
+  hasBeenTriggeredOnce: 0
+  hasMoreInteraction: 1
+  storeBell: {fileID: 4626618449195085043}
+  dialogueTrigger: {fileID: 0}
+  storeManager: {fileID: 0}
+  _delay: 4
+  merchantAnimator: {fileID: 0}
 --- !u!65 &1553855857241774635
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -150,5 +173,10 @@ PrefabInstance:
 --- !u!4 &3959832622231103736 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3941517478831523876, guid: 9c90f2aa75095ef4ca061557b5f4d39b, type: 3}
+  m_PrefabInstance: {fileID: 20041389595795676}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7853528722572811714 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7834685873721326878, guid: 9c90f2aa75095ef4ca061557b5f4d39b, type: 3}
   m_PrefabInstance: {fileID: 20041389595795676}
   m_PrefabAsset: {fileID: 0}

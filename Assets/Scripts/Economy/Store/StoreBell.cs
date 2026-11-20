@@ -21,6 +21,15 @@ namespace Root
 
         protected Action OnBellRanged;
         private bool _isAnimating;
+
+        private void OnEnable()
+        {
+            if(pivot == null)
+            {
+                Debug.LogError($"Assign pivot for {gameObject.name} animation", gameObject);
+            }
+        }
+
         public override void Interact()
         {
             if (_isAnimating) return;
@@ -45,7 +54,7 @@ namespace Root
             duration: duration,
             ease: Ease.OutQuad,
             cycles: 2,
-            cycleMode: CycleMode.Yoyo).OnComplete(() => { _isAnimating = false; });
+            cycleMode: CycleMode.Yoyo).OnComplete(() => { _isAnimating = false;});
         }
 
     }

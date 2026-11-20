@@ -1834,7 +1834,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5948379349620057790}
   - {fileID: 1554797399970967812}
   - {fileID: 2437365859254406410}
   m_Father: {fileID: 5876689379157890076}
@@ -4180,82 +4179,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
---- !u!1 &8589700034603344476
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5948379349620057790}
-  - component: {fileID: 6920784724850806537}
-  - component: {fileID: 5266841043158765091}
-  m_Layer: 9
-  m_Name: DialogueCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &5948379349620057790
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8589700034603344476}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70711005, z: -0, w: -0.7071036}
-  m_LocalPosition: {x: -0.25176048, y: -2.4548273, z: -1.7756042}
-  m_LocalScale: {x: 16.555334, y: 2.1225, z: 15.681541}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8696440288519381918}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!65 &6920784724850806537
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8589700034603344476}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.59767264, y: 2.1117039, z: 0.27731967}
-  m_Center: {x: -0.036771514, y: 1.7873386, z: 0.3613477}
---- !u!114 &5266841043158765091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8589700034603344476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f732182f20bac6646a314182dbf8b4f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
-  Pivot: {fileID: 1554797399970967812}
-  PlayerPivot: {fileID: 2437365859254406410}
-  Dialogue: {fileID: 0}
-  hasBeenTriggeredOnce: 0
-  hasMoreInteraction: 1
-  storeBell: {fileID: 3995793126925006816}
-  dialogueTrigger: {fileID: 6920784724850806537}
-  storeManager: {fileID: 7510445178388287238}
-  _delay: 4
-  merchantAnimator: {fileID: 2290269434319551964}
 --- !u!1 &8904251798115133431
 GameObject:
   m_ObjectHideFlags: 0
@@ -11345,17 +11268,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5307694134756083663}
     - target: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-      propertyPath: bellRing
-      value: 
-      objectReference: {fileID: 8300000, guid: d1e3b93c63cce83488491266dc896d21, type: 3}
-    - target: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
       propertyPath: dialogue
       value: 
       objectReference: {fileID: 1811307305515518602}
-    - target: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-      propertyPath: colliders
-      value: 
-      objectReference: {fileID: 7122024934843023672}
     - target: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
       propertyPath: storeManager
       value: 
@@ -11372,62 +11287,54 @@ PrefabInstance:
       propertyPath: npcPositionPivot
       value: 
       objectReference: {fileID: 2437365859254406410}
+    - target: {fileID: 7955021873620177305, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+      propertyPath: Pivot
+      value: 
+      objectReference: {fileID: 1554797399970967812}
+    - target: {fileID: 7955021873620177305, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+      propertyPath: PlayerPivot
+      value: 
+      objectReference: {fileID: 2437365859254406410}
+    - target: {fileID: 7955021873620177305, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+      propertyPath: storeManager
+      value: 
+      objectReference: {fileID: 7510445178388287238}
+    - target: {fileID: 7955021873620177305, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+      propertyPath: merchantAnimator
+      value: 
+      objectReference: {fileID: 2290269434319551964}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2295749566381828218, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 1811307305515518602}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
---- !u!114 &3995793126925006816 stripped
+--- !u!114 &1811307305515518602 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7955021873620177305, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
   m_PrefabInstance: {fileID: 8594808017600731923}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537548358550254441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf40cb10f1757f47907e11b131a08b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!65 &7122024934843023672 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 1553855857241774635, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-  m_PrefabInstance: {fileID: 8594808017600731923}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7192548666325281235 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1483923697776620224, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-  m_PrefabInstance: {fileID: 8594808017600731923}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7537548358550254441 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2295749566381828218, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
-  m_PrefabInstance: {fileID: 8594808017600731923}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1811307305515518602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537548358550254441}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f732182f20bac6646a314182dbf8b4f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Root.MerchantInteraction
-  Pivot: {fileID: 1554797399970967812}
-  PlayerPivot: {fileID: 2437365859254406410}
-  Dialogue: {fileID: 0}
-  hasBeenTriggeredOnce: 0
-  hasMoreInteraction: 1
-  storeBell: {fileID: 3995793126925006816}
-  dialogueTrigger: {fileID: 6920784724850806537}
-  storeManager: {fileID: 7510445178388287238}
-  _delay: 4
-  merchantAnimator: {fileID: 2290269434319551964}
+--- !u!114 &3995793126925006816 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4626618449195085043, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+  m_PrefabInstance: {fileID: 8594808017600731923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf40cb10f1757f47907e11b131a08b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &7192548666325281235 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1483923697776620224, guid: 655d471fa3aa2d34d9c9d157607de8df, type: 3}
+  m_PrefabInstance: {fileID: 8594808017600731923}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8632851226784170204
 PrefabInstance:
   m_ObjectHideFlags: 0
