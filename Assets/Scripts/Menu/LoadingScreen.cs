@@ -69,6 +69,7 @@ namespace Root
             if (UIManager.Instance != null) UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Disable();
             GameManager.Input.Inventory.Disable();
             GameManager.Input.Menu.Disable();
@@ -79,6 +80,7 @@ namespace Root
         {
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Enable();
             GameManager.Input.Inventory.Enable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();

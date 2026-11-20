@@ -63,6 +63,7 @@ namespace Root
             GameManager.AudioSystem?.ResumeAll();
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Interact.Enable();
 
             infectionBar.image.color = infectionStages[0];
@@ -163,6 +164,7 @@ namespace Root
 
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Interact.Disable();
             GameManager.AudioSystem?.PauseAll();
 

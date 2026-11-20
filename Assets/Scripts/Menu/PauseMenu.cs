@@ -60,6 +60,7 @@ namespace Root
             optionsPanel.SetActive(false);
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Disable();
             GameManager.PlayerInventoryUI.CloseInventory();
             GameManager.AudioSystem?.PauseAll();
@@ -74,6 +75,7 @@ namespace Root
             optionsPanel.SetActive(false);
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Enable();
             GameManager.AudioSystem?.ResumeAll();
             GameManager.DialogueManager?.ResumeCurrentDialogue();

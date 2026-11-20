@@ -82,6 +82,7 @@ namespace Root {
             MouseHandler.RequestControl(CursorLockMode.Confined, true, this);
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Disable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Enable();
             GameManager.Input.Handheld.Disable();
@@ -96,6 +97,7 @@ namespace Root {
             MouseHandler.RelinquishControl(this);
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Enable();
             GameManager.Input.Handheld.Enable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();

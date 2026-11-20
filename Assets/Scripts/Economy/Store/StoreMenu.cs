@@ -76,6 +76,7 @@ namespace Root
 
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Inventory.InventoryToggle.Disable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
         }
@@ -102,6 +103,7 @@ namespace Root
             GameManager.Input.Movement.Enable();
             GameManager.CameraController.EnableNormalMovement();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Inventory.InventoryToggle.Enable();
 
             mainCanvas.gameObject.SetActive(false);

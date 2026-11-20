@@ -51,6 +51,7 @@ namespace Root
             if (UIManager.Instance != null) UIManager.Instance.CloseMenu(UIManager.UITypes.PauseMenu);
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Disable();
             GameManager.Input.Inventory.Disable();
             GameManager.Input.Menu.Disable();

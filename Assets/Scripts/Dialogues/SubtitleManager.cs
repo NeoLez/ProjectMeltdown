@@ -51,6 +51,7 @@ namespace Root
             GameManager.Input.Inventory.Disable();
             GameManager.Input.Movement.Disable();
             GameManager.Input.CameraMovement.Disable();
+            GameManager.Input.Handheld.Disable();
             GameManager.Input.Interaction.Wallet.Disable();
             GameManager.Input.Menu.Pause.Disable();
             GameManager.Input.Interaction.Wallet.Disable();
@@ -66,6 +67,7 @@ namespace Root
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             GameManager.Input.Movement.Enable();
             GameManager.Input.CameraMovement.Enable();
+            GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Wallet.Enable();
             GameManager.Input.Menu.Pause.Enable();
             GameManager.Input.Interaction.Wallet.Enable();

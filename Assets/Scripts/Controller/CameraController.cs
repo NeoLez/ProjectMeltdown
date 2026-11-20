@@ -70,6 +70,7 @@ public class CameraController : InfectableComponent
         _crosshairImage = crosshair.GetComponent<Image>();
         _input = GameManager.Input;
         _input.CameraMovement.Enable();
+        _input.Handheld.Enable();
         _input.Interaction.Interact.performed += HandleInteraction;
         _movementController = GetComponent<MovementController>();
         _playerItemHolder = GetComponent<PlayerItemHolder>();
