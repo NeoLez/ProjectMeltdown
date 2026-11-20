@@ -32,7 +32,7 @@ namespace Root
             if (sendingFluid == _currentState) return 0;
             
             int numConsumers = 0;
-            if (fluidConsumer && (!water || water.IsLow))
+            if (fluidConsumer && (!water || !water.IsMaxed))
             {
                 numConsumers = 1;
             }

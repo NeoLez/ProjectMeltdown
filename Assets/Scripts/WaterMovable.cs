@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -8,9 +9,10 @@ namespace Root
     {
         [SerializeField] private float _minimumHeight;
         [SerializeField] private float _maximumHeight;
-        [SerializeField] private bool currentlyLow;
+        [SerializeField] private int currentLevel;
+        [SerializeField] private int maximumLevel;
         [SerializeField] private float _time;
-        [SerializeField] private Pipe pipe;
+        [SerializeField] private List<Pipe> pipes = new();
         [SerializeField] private WaterPump pump;
         [SerializeField] private AudioSource waterMovement;
 
@@ -25,13 +27,17 @@ namespace Root
             
             if(pump)
                 pump.OnActivate += GoDown;
-            if (pipe)
-                pipe.OnStateChange += (state) =>
-                {
-                    if(state)
-                        GoUp();
-                };
-            SetLocalY(currentlyLow ? _heights[0] : _heights[1]);
+            foreach (var pipe in pipes)
+            {
+                if (pipe)
+                    pipe.OnStateChange += (state) =>
+                    {
+                        if(state)
+                            GoUp();
+                    };
+            }
+            
+            SetLocalY(GetLevelHeight(currentLevel));
         }
         private void Start()
         {
@@ -40,16 +46,20 @@ namespace Root
 
         public void GoUp()
         {
-            currentlyLow = false;
+            if (IsMaxed) return;
+            
+            currentLevel++;
             _currentTween.Stop();
-            MoveTo(_heights[1]);
+            MoveTo(GetLevelHeight(currentLevel));
         }
 
         public void GoDown()
         {
-            currentlyLow = true;
+            if (IsLow) return;
+            
+            currentLevel--;
             _currentTween.Stop();
-            MoveTo(_heights[0]);
+            MoveTo(GetLevelHeight(currentLevel));
             waterMovement.Play();
         }
         
@@ -66,14 +76,23 @@ namespace Root
                 new TweenSettings<Vector3>(new Vector3(p.x, localY, p.z), _time)).OnComplete(() =>
                 {
                     waterMovement.Stop();
-                    pump.StopAudio(true);
+                    pump?.StopAudio(true);
                 }); 
+        }
+
+        private float GetLevelHeight(int level)
+        {
+            Debug.Log(_heights[0] + ((_heights[1] - _heights[0]) / maximumLevel) * level, this);
+            return _heights[0] + (((_heights[1] - _heights[0]) / maximumLevel) * level);
         }
 
         private void OnValidate()
         {
-            Assert.IsNotNull(pipe);
-            Assert.IsTrue(pipe.IsConsumer());
+            Assert.IsNotNull(pipes);
+            foreach (var pipe in pipes)
+            {
+                Assert.IsTrue(pipe.IsConsumer());
+            }
         }
 
         private void OnDrawGizmos()
@@ -82,6 +101,7 @@ namespace Root
             Gizmos.DrawLine(transform.position + Vector3.up * _minimumHeight, transform.position + Vector3.up * _maximumHeight);
         }
         
-        public bool IsLow => currentlyLow;
+        public bool IsLow => currentLevel == 0;
+        public bool IsMaxed => currentLevel == maximumLevel;
     }
 }

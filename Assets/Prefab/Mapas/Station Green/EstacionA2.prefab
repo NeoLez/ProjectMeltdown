@@ -6847,9 +6847,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Root.WaterMovable
   _minimumHeight: -8.2
   _maximumHeight: 0
-  currentlyLow: 0
+  currentLevel: 1
+  maximumLevel: 1
   _time: 10
-  pipe: {fileID: 4733190476401646552}
+  pipes:
+  - {fileID: 4733190476401646552}
   pump: {fileID: 5844063124693034971}
   waterMovement: {fileID: 8453492846534966443}
 --- !u!114 &880017098388158543
@@ -28979,8 +28981,12 @@ MonoBehaviour:
   pipe: {fileID: 4592353803086529276}
   alwaysOn: 1
   pumpTime: 10
-  water: {fileID: 0}
+  water: {fileID: 7841262139905174393}
   activePump: {fileID: 4585439817127304527}
+  shakeTarget: {fileID: 0}
+  shakeMagnitude: 0.01
+  _soundFail: {fileID: 0}
+  failShakeDuration: 0.3
 --- !u!1 &8662410979855834516
 GameObject:
   m_ObjectHideFlags: 0

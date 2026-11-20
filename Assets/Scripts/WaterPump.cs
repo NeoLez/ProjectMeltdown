@@ -27,7 +27,7 @@ namespace Root
 
         private void Update()
         {
-            if(alwaysOn) 
+            if(alwaysOn && !pipe.HasFluid() && !_locked && !water.IsLow) 
                 SendWater();
         }
 
@@ -65,7 +65,6 @@ namespace Root
                 if (activePump != null) activePump.Stop();
                 StopShake();
                 _locked = false;
-                alwaysOn = false;
             }
             else activePump.Play();
         }
