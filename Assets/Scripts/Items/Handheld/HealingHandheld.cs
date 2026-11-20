@@ -11,6 +11,7 @@ namespace Root.Handheld
             var health = GameManager.Player.GetComponent<HealthControl>();
             health.Heal(itemSo.HealAmount);
             health.Cure(itemSo.InfectionHealAmount);
+            GameManager.ItemHolder.ForceClearHeldItem();
         }
     }
 }
