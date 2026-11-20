@@ -1,6 +1,7 @@
 using System;
 using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Root
@@ -54,9 +55,23 @@ namespace Root
 
         private void SubscribeFunction()
         {
+            StartCoroutine(OpenBarrierAfterAnimation()); 
+        }
+
+        private IEnumerator OpenBarrierAfterAnimation() 
+        {
+            tollAnimator.Play("PeajeGood"); 
+            yield return null; 
+
+            AnimatorStateInfo info = tollAnimator.GetCurrentAnimatorStateInfo(0); 
+            while (info.IsName("PeajeGood") && info.normalizedTime < 1f) 
+            {
+                yield return null; 
+                info = tollAnimator.GetCurrentAnimatorStateInfo(0); 
+            }
+
             barrier.OpenTollBarrier();
             Invoke(nameof(UnlockPath), unlockPathDelay);
-            tollAnimator.Play("PeajeGood");
         }
 
         private void UnlockPath()
