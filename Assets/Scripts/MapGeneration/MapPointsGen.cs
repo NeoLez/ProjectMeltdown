@@ -79,6 +79,9 @@ namespace Root {
             STATION,
             ABANDONED_STATION,
             END,
+            SHOP,
+            CHARGER,
+            DELIVERY,
         }
         
         public class Map {
