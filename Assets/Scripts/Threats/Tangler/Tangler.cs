@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace Root.Enemy
 {
-    public class Tangler : InteractableNormalCamera
+    public class Tangler : EnemyClass
     {
         [SerializeField] float _maxRadius = 10f;
         [SerializeField] float _minRadius = 2f;
@@ -18,7 +18,7 @@ namespace Root.Enemy
         private Dictionary<int, TanglerTentacle> _tentacles = new();
         private int _tentacleAmount;
         private int _tentacleID;
-        [SerializeField] private int _health = 3;
+        [SerializeField] private float _health = 3;
         private bool _isDead;
 
         [SerializeField] float tentacleSpawnCooldown = 15f;
@@ -104,7 +104,7 @@ namespace Root.Enemy
             return !_isDead && (_tentacleAmount < maxTentacleQuantity);
         }
 
-        public override void Interact()
+        public override void TakeDamage(float damage)
         {
             if (_isDead) return;
             if (_health <= 0)
@@ -134,7 +134,7 @@ namespace Root.Enemy
                 _animator.Play("Damage", -1, 0f);
                 Instantiate(_particlesHit, transform.position, transform.rotation);
                 if (_soundDamage != null) GameManager.AudioSystem.PlaySoundPositional(_soundDamage, transform.position, GameManager.AudioSystem.VFX);
-                _health--;
+                _health -= damage;
             }
         }
 

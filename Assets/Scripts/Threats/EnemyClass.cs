@@ -6,7 +6,7 @@ namespace Root
     public abstract class EnemyClass : MonoBehaviour
     {
         public Action<bool> OnDamaged;
-        public abstract void TakeDamage(float damage, float multiplier);
+        public abstract void TakeDamage(float damage);
 
         public virtual void Dead() { }
     }
