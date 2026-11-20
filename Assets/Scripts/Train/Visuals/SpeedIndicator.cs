@@ -17,6 +17,11 @@ namespace Root
             train.AlertSystem.OnEventChanged += ChangeStuff;
         }
 
+        private void OnEnable()
+        {
+            flickerTimer.Reset(flickerSpeed);
+        }
+
         private void OnDestroy() {
             train.AlertSystem.OnEventChanged -= ChangeStuff;
         }
@@ -47,6 +52,7 @@ namespace Root
                 }
             }
             else {
+                MakeVisible();
                 flickerTimer.Reset(flickerSpeed);
             }
         }
