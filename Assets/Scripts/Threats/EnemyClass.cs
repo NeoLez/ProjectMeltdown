@@ -8,6 +8,6 @@ namespace Root
         public Action<bool> OnDamaged;
         public abstract void TakeDamage(float damage, float multiplier);
 
-        public virtual void Death() { }
+        public virtual void Dead() { }
     }
 }

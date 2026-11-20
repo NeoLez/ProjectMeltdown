@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class ZombieStateMachine : MonoBehaviour
 {
+    [SerializeField] private bool testOption;
     public Transform zombieTransform;
     public Animator animator;
     public NavMeshAgent agent;
@@ -14,7 +15,6 @@ public class ZombieStateMachine : MonoBehaviour
     public EnemyFov fov;
     public LayerMask playerRayCastMask;
     public float chaseDistance;
-
 
     [Header("Damage")]
     public float damage;
@@ -51,6 +51,22 @@ public class ZombieStateMachine : MonoBehaviour
     public Action OnFinishedAttacking;
     public bool IsRecovering {  get;  set; }
 
+    [Header("Ground Check")]
+    [SerializeField] private float maxDistance;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private Vector3 offset;
+    private Vector3 _lastZombiePosition;
+    private Vector3 _sampleIntialYPosition;
+    public Vector3 LastGroundedPosition
+    {
+        get => _lastZombiePosition;
+        set
+        {
+            _lastZombiePosition = new Vector3(_lastZombiePosition.x, _sampleIntialYPosition.y, _sampleIntialYPosition.z);
+        }
+    }
+
+
     void Awake()
     {
         _fsm = new FSM();
@@ -61,18 +77,32 @@ public class ZombieStateMachine : MonoBehaviour
         _fsm.AddState(AgentStates.MeleeAttack, new MeleeAttackState(_fsm, agent, this));
         _fsm.AddState(AgentStates.JumpAttack, new JumpAttackState(_fsm, agent, zombieTransform, this));
 
-        //_fsm.ChangeState(AgentStates.Patrol);
-        agent.enabled = false;
+        if(testOption)
+        {
+            _fsm.ChangeState(AgentStates.Patrol);
+        }
+        else
+        {
+            agent.enabled = false;
 
-        GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
+            GameManager.MapGeneration.OnBeforeRebase += DisableForOneSecond;
+        }
     }
 
     private void Start()
     {
         dotThreshold = Mathf.Cos(maxFacingAngle * Mathf.Deg2Rad);
+
+        _sampleIntialYPosition.y = transform.position.y;
     }
 
-    void Update() => _fsm.ArtficialUpdate();
+    private void Update()
+    {
+        _fsm.ArtficialUpdate();
+
+        IsGrounded();
+    }
+
 
     private void DisableForOneSecond()
     {
@@ -110,7 +140,7 @@ public class ZombieStateMachine : MonoBehaviour
             && hit.collider.TryGetComponent(out Player player);
     }
 
-    public bool IsPlayerInChaseDistance() //que solo se active cuando mira para adelante
+    public bool IsPlayerInChaseDistance()
     {
         float distance = Vector3.Distance(zombieTransform.position, GameManager.Player.transform.position);
 
@@ -151,6 +181,23 @@ public class ZombieStateMachine : MonoBehaviour
 
         float angle = Vector3.Angle(zombieTransform.forward, direction);
         return angle <= maxFacingAngle;
+    }
+
+    public bool IsGrounded()
+    {
+        RaycastHit hit;
+        if(!Physics.Raycast(transform.position + offset, -transform.up + offset, out hit, maxDistance))
+        {
+            return false;
+        }
+        _lastZombiePosition = hit.point;
+        return true;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position + offset, transform.position + offset + Vector3.down * maxDistance);
     }
 
     private void OnDestroy()

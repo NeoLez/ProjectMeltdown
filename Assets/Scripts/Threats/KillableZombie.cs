@@ -2,6 +2,7 @@ using Root.Enemy;
 using Root.Managers;
 using System;
 using System.Collections;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 namespace Root
@@ -44,7 +45,12 @@ namespace Root
         {
             if (_health <= 0)
             {
-                Death();
+                if (_routine != null)
+                {
+                    StopCoroutine(_routine);
+                    _routine = null;
+                }
+                TriggerDeath();
                 return;
             }
             _health -= damage * multiplier;
@@ -53,7 +59,21 @@ namespace Root
             OnDamaged?.Invoke(_stateMachine.IsRecovering);
         }
 
-        public override void Death()
+        private void TriggerDeath()
+        {
+            if(!_stateMachine.IsGrounded())
+            {
+                transform.position = _stateMachine.LastGroundedPosition;
+                transform.rotation = Quaternion.identity;
+                Dead(); 
+            }
+            else
+            {
+                Dead();
+            }
+        }
+
+        public override void Dead()
         {
             animator.SetBool(deathAnimation, true);
 
