@@ -9,7 +9,7 @@ namespace Root.Handheld
             base.Use(ctx);
             var itemSo = (HealingItemSo)state.ItemSo;
             var health = GameManager.Player.GetComponent<HealthControl>();
-            health.Cure(itemSo.HealAmount);
+            health.Heal(itemSo.HealAmount);
             health.Cure(itemSo.InfectionHealAmount);
         }
     }
