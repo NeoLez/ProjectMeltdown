@@ -27,6 +27,9 @@ namespace Root {
         [SerializeField] private SectionGeneratorSO startGeneratorSo;
         [SerializeField] private SectionGeneratorSO endGeneratorSo;
         [SerializeField] private SectionGeneratorSO stationGeneratorSo;
+        [SerializeField] private SectionGeneratorSO shopStationGeneratorSo;
+        [SerializeField] private SectionGeneratorSO chargeStationGeneratorSo;
+        [SerializeField] private SectionGeneratorSO deliveryStationGeneratorSo;
         [SerializeField] private SectionGeneratorSO abandonedStationGeneratorSo;
         [SerializeField] private SectionGeneratorSO tunnelForkLeftGeneratorSo;
         [SerializeField] private SectionGeneratorSO tunnelForkRightGeneratorSo;
@@ -62,6 +65,12 @@ namespace Root {
                     return tunnelGeneratorSo;
                 case MapPointsGen.Feature.END:
                     return endGeneratorSo;
+                case MapPointsGen.Feature.CHARGER:
+                    return chargeStationGeneratorSo;
+                case MapPointsGen.Feature.SHOP:
+                    return shopStationGeneratorSo;
+                case MapPointsGen.Feature.DELIVERY:
+                    return deliveryStationGeneratorSo;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

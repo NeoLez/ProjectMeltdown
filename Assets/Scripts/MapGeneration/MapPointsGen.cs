@@ -106,12 +106,15 @@ namespace Root {
             public Feature GetFeature() {
                 float chance = (float)_random.NextDouble();
                 
-                if (chance <= 0.5f) 
+                if (chance <= 0.7f) 
                 {
                     return Feature.ABANDONED_STATION;
                 }
-                else { return Feature.STATION; }
-                
+
+                if (chance <= 0.8) return Feature.SHOP;
+                if (chance <= 0.9) return Feature.DELIVERY;
+                return Feature.CHARGER;
+
             }
             
             public Map(int height, int width, int seed) {
