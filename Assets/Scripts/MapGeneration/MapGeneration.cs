@@ -7,7 +7,6 @@ using UnityEngine;
 using static Root.MapPointsGen;
 using Logger = Root.Log.Logger;
 using LogType = Root.Log.LogType;
-using Random = UnityEngine.Random;
 
 namespace Root {
     public class MapGeneration : MonoBehaviour {
@@ -37,39 +36,39 @@ namespace Root {
 
         public class MapGenerationContext
         {
-            public MapPointsGen.Node currentNode;
-            public MapPointsGen.Node lastNode;
+            public Node currentNode;
+            public Node lastNode;
             public int currentSeed;
         }
         MapGenerationContext _context;
 
-        public MapPointsGen.Node GetCurrentNode() {
+        public Node GetCurrentNode() {
             return _context.currentNode;
         }
 
-        private SectionGeneratorSO GetGeneratorFromFeatureEnum(MapPointsGen.Feature feature) {
+        private SectionGeneratorSO GetGeneratorFromFeatureEnum(Feature feature) {
             switch (feature) {
-                case MapPointsGen.Feature.TUNNEL_FORK_RIGHT:
+                case Feature.TUNNEL_FORK_RIGHT:
                     return tunnelForkRightGeneratorSo;
-                case MapPointsGen.Feature.TUNNEL_FORK_LEFT:
+                case Feature.TUNNEL_FORK_LEFT:
                     return tunnelForkLeftGeneratorSo;
-                case MapPointsGen.Feature.TUNNEL_JOIN:
+                case Feature.TUNNEL_JOIN:
                     return tunnelJoinGeneratorSo;
-                case MapPointsGen.Feature.START:
+                case Feature.START:
                     return startGeneratorSo;
-                case MapPointsGen.Feature.STATION:
+                case Feature.STATION:
                     return stationGeneratorSo;
-                case MapPointsGen.Feature.ABANDONED_STATION:
+                case Feature.ABANDONED_STATION:
                     return abandonedStationGeneratorSo;
-                case MapPointsGen.Feature.TUNNEL:
+                case Feature.TUNNEL:
                     return tunnelGeneratorSo;
-                case MapPointsGen.Feature.END:
+                case Feature.END:
                     return endGeneratorSo;
-                case MapPointsGen.Feature.CHARGER:
+                case Feature.CHARGER:
                     return chargeStationGeneratorSo;
-                case MapPointsGen.Feature.SHOP:
+                case Feature.SHOP:
                     return shopStationGeneratorSo;
-                case MapPointsGen.Feature.DELIVERY:
+                case Feature.DELIVERY:
                     return deliveryStationGeneratorSo;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -78,7 +77,7 @@ namespace Root {
 
         private List<TrainPathWaypoint> _waypoints = new();
         private int waypointLowestIndex = 0;
-        public MapPointsGen.Map map;
+        public Map map;
         
         private void Awake() {
             _rebaseCounter = countUntilRebase;
@@ -86,7 +85,7 @@ namespace Root {
             GameManager.MapGeneration = this;
             map = new(mapHeight, mapWidth, GameManager.seed);
             _context = new();
-            _context.currentNode = map.GetNode(new System.Random(GameManager.seed).Next(0, mapHeight), 0);
+            _context.currentNode = map.GetNode(map.StartPosition.x, map.StartPosition.y);
             Logger.Log(map.ToString(), LogType.WorldGen);
         }
 

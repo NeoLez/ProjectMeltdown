@@ -89,6 +89,8 @@ namespace Root {
             public int height { get; private set; } 
             public int width { get; private set; }
             [SerializeReference] private Node[,] nodes;
+            public Vector2Int
+                StartPosition;
 
             public Node GetNode(int y, int x) {
                 return nodes[y, x];
@@ -122,6 +124,7 @@ namespace Root {
                 this.height = height;
                 this.width = width;
                 nodes = new Node[height, width];
+                StartPosition = new Vector2Int(new System.Random(GameManager.seed).Next(0, height), 0);
 
                 for (int y = 0; y < height; y++) {
                     Node prevNode = null;
