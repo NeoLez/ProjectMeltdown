@@ -89,13 +89,17 @@ namespace Root {
             public int height { get; private set; } 
             public int width { get; private set; }
             [SerializeReference] private Node[,] nodes;
+            private bool[,] _accessible;
+            private Dictionary<int, int> firstDistAccesible = new();
+            private Queue<int> nextLineToProcess = new();
+            private float forkFrequency = 4.2f;
             public Vector2Int
                 StartPosition;
 
             public Node GetNode(int y, int x) {
                 return nodes[y, x];
             }
-            
+
             /// <summary>
             /// Analyzes all nodes starting from the one at coordinates [<paramref name="startHeight"/>, <paramref name="startLength"/>] until a given <paramref name="maxDepth"/>>
             /// </summary>
@@ -104,28 +108,20 @@ namespace Root {
                 if (startHeight < 0 || startLength < 0 || startHeight >= height || startLength >= width) return null;
                 return nodes[startHeight, startLength].GetNodesThatMatch(predicate, maxDepth);
             }
-
-            public Feature GetFeature() {
-                float chance = (float)_random.NextDouble();
-                
-                if (chance <= 0.7f) 
-                {
-                    return Feature.ABANDONED_STATION;
-                }
-
-                if (chance <= 0.8) return Feature.SHOP;
-                if (chance <= 0.9) return Feature.DELIVERY;
-                return Feature.CHARGER;
-
-            }
             
             public Map(int height, int width, int seed) {
                 _random = new Random(seed);
                 this.height = height;
                 this.width = width;
                 nodes = new Node[height, width];
-                StartPosition = new Vector2Int(new System.Random(GameManager.seed).Next(0, height), 0);
+                _accessible = new bool[height, width];
+                
+                for (int i = 0; i < height; i++)
+                    firstDistAccesible[i] = int.MaxValue;
+                
+                StartPosition = new Vector2Int(new Random(GameManager.seed).Next(0, height), 0);
 
+                //Initializing nodes and connecting them with tunnels
                 for (int y = 0; y < height; y++) {
                     Node prevNode = null;
                     for (int x = 0; x < width; x++) {
@@ -143,38 +139,113 @@ namespace Root {
                     }
                 }
 
-                int forkAmount = (_random.Next(1, 3) + _random.Next(1, 2)) / 2;
-                for (int y = 0; y < height; y++) {
-                    int forksMade = 0;
-                    for (int attempt = 0; attempt < 50 && forksMade <= forkAmount; attempt++) {
-                        int x = _random.Next(1, width - 3);
-                        if (!nodes[y, x].CanConnectTo()) continue;
+                //Creating first fork right after the start to maximize player options
+                SetLineAsAccessible(StartPosition.x, 0);
+                int direction = StartPosition.x == 0 ? 1 : StartPosition.x == this.height - 1 ? -1 : (_random.Next(0, 2) == 0 ? -1 : 1);
 
-                        var left = nodes[y, x - 1].feature;
-                        var right = nodes[y, x + 1].feature;
-                        if (left == Feature.TUNNEL_FORK_LEFT || left == Feature.TUNNEL_FORK_RIGHT) continue;
-                        if (right == Feature.TUNNEL_FORK_LEFT || right == Feature.TUNNEL_FORK_RIGHT) continue;
+                int targetY = StartPosition.x + direction;
+                int targetX = 2;
+                SetLineAsAccessible(targetY, targetX);
+                ConnectFork(nodes[StartPosition.x, 1], nodes[targetY, targetX]);
+                firstDistAccesible[StartPosition.x] = 2;
+                nextLineToProcess.Enqueue(StartPosition.x);
+                firstDistAccesible[targetY] = 2;
+                nextLineToProcess.Enqueue(targetY);
 
-                        int direction = y == 0 ? 1
-                            : y == height - 1 ? -1
-                            : (_random.Next(0, 2) == 0 ? -1 : 1);
-
-                        int targetY = y + direction;
-                        int targetX = x + 1;
-                        if (!nodes[targetY, targetX].CanConnectTo()) continue;
-
-                        ConnectFork(nodes[y, x], nodes[targetY, targetX]);
-                        forksMade++;
-                    }
+                //Process line queue to generate forks
+                while(nextLineToProcess.Count > 0) {
+                    int lineToProcess = nextLineToProcess.Dequeue();
+                    int forkAmount = (int)((width - firstDistAccesible[lineToProcess]) / forkFrequency);
+                    CreateForks(forkAmount, lineToProcess, firstDistAccesible[lineToProcess] + 1);
                 }
+                
 
-                for (int x = 1; x < width - 1; x++) {
-                    for (int y = 0; y < height; y++) {
+                //Place fixed features
+                PlaceFeature(Feature.DELIVERY);
+                PlaceFeature(Feature.DELIVERY);
+                PlaceFeature(Feature.SHOP);
+                PlaceFeature(Feature.SHOP);
+                PlaceFeature(Feature.CHARGER);
+                PlaceFeature(Feature.CHARGER);
+
+                for (int y = 0; y < height; y++) {
+                    for (int x = 1; x < width - 1; x++) {
                         var node = nodes[y, x];
                         if(node.feature == Feature.UNINITIALIZED)
-                            nodes[y, x].feature = GetFeature();
+                            nodes[y, x].feature = Feature.ABANDONED_STATION;
                     }
                 }
+            }
+
+            public void PlaceFeature(Feature feature)
+            {
+                int attempts = 0;
+                while (attempts < 1000)
+                {
+                    var node = nodes[_random.Next(0, height), _random.Next(1, width - 1)];
+                    attempts++;
+                    if(!_accessible[node.height, node.dist] || node.feature != Feature.UNINITIALIZED ||
+                       IsFeature(nodes[node.height, node.dist + 1].feature) || IsFeature(nodes[node.height, node.dist - 1].feature)) continue;
+                    node.feature = feature;
+                    break;
+                }
+            }
+
+            private bool IsFeature(Feature feature)
+            {
+                return feature == Feature.SHOP || feature == Feature.CHARGER || feature == Feature.DELIVERY;
+            }
+
+            private void CreateForks(int forkAmount, int height, int startDist)
+            {
+                int forksMade = 0;
+                for (int attempt = 0; attempt < 50 && forksMade < forkAmount; attempt++) {
+                    int x = _random.Next(startDist, width - 3);
+                    if (!nodes[height, x].CanConnectTo()) continue;
+
+                    //There should be no other forks at a distance of 1 from the location of the new one
+                    var left = nodes[height, x - 1].feature;
+                    var right = nodes[height, x + 1].feature;
+                    if (left == Feature.TUNNEL_FORK_LEFT || left == Feature.TUNNEL_FORK_RIGHT) continue;
+                    if (right == Feature.TUNNEL_FORK_LEFT || right == Feature.TUNNEL_FORK_RIGHT) continue;
+
+                    int targetX = x + 1;
+                    int direction;
+                    if (height == 0) direction = 1;
+                    else if (height == this.height - 1) direction = -1;
+                    else
+                    {
+                        var acc1 = _accessible[height - 1, targetX];
+                        var acc2 = _accessible[height + 1, targetX];
+                        //If both directions are accessible or both ar inaccessible, just generate one at random, otherwise always pick the inaccessible one so the player can go to all lines
+                        if (acc1 == acc2) direction = _random.Next(0, 2) == 0 ? -1 : 1;
+                        else if (!acc1) direction = -1;
+                        else direction = 1;
+                    }
+                    
+                    int targetY = height + direction;
+                    
+                    if (!nodes[targetY, targetX].CanConnectTo()) continue;
+
+                    ConnectFork(nodes[height, x], nodes[targetY, targetX]);
+                    
+                    SetLineAsAccessible(targetY, targetX);
+
+                    if (!firstDistAccesible.TryGetValue(targetY, out var v) || v > targetX)
+                    {
+                        firstDistAccesible[targetY] = targetX;
+                        if(nextLineToProcess.Count == 0 || nextLineToProcess.Peek() != targetY) nextLineToProcess.Enqueue(targetY);
+                    }
+
+                    forksMade++;
+                }
+                
+            }
+
+            private void SetLineAsAccessible(int height, int width)
+            {
+                for (int x = width; x < this.width; x++)
+                    _accessible[height, x] = true;
             }
             
             private void ConnectWithTunnel(Node a, Node b) {
@@ -209,6 +280,7 @@ namespace Root {
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
                         builder.Append($"[{y}.{x} {nodes[y, x].feature.ToString()} ");
+                        if(_accessible[y,x])builder.Append("V");
                         
                         builder.Append(nodes[y, x].OutConnections.Count);
                         
