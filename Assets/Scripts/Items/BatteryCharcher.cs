@@ -35,6 +35,8 @@ namespace Root
         [SerializeField] private CarBattery batteryElement;
         private bool _powered = false;
 
+        [SerializeField] private GameObject _particles;
+
         private void Start()
         {
             for (int i = 0; i < toggleOpenTwesers.Length; i++)
@@ -110,9 +112,10 @@ namespace Root
         {
             var train = _battery.State;
             var car = batteryElement.GetBattery().State;
-
+            _particles.gameObject.SetActive(true);
             if (train.currentCharge >= train.maxCharge)
             {
+                _particles.gameObject.SetActive(false);
                 OnFullyCharged?.Invoke();
                 batteryElement.Shake(0f);
                 return;
@@ -169,7 +172,7 @@ namespace Root
             _battery = null;
             _animationEnd = false;
             bool hadPower = _powered;
-
+            _particles.gameObject.SetActive(false);
             if (_powered)
             {
                 _powered = false;
