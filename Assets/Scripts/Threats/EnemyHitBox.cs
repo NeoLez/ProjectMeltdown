@@ -1,4 +1,4 @@
-using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Root
@@ -11,28 +11,31 @@ namespace Root
         [SerializeField] private EnemyClass enemyHealth;
 
         [Header ("Visuals")]
-        [SerializeField] private Animator animator;
-        [SerializeField] private AudioClip damageSound;
+        [SerializeField] private bool triggerVisuals = true;
+        [SerializeField, ShowIf("triggerVisuals")] private Animator animator;
+        [SerializeField, ShowIf("triggerVisuals")] private AudioClip damageSound;
 
-        [SerializeField] private GameObject particlesHit;
+        [SerializeField, ShowIf("triggerVisuals")] private GameObject particlesHit;
 
-        [SerializeField] private string partAnimation = "damage"; 
+        [SerializeField, ShowIf("triggerVisuals")] private string partAnimation = "damage"; 
+        
 
         public override void Interact()
         {
-            OnEnemyHit(1, damagePerPartMultiplier);
+            OnEnemyHit(1 * damagePerPartMultiplier);
             TriggerVisuals();
         }
         
         public void Hit(float damage)
         {
-            OnEnemyHit(damage, damagePerPartMultiplier);
-            TriggerVisuals();
+            OnEnemyHit(damage * damagePerPartMultiplier);
+            if (triggerVisuals)
+                TriggerVisuals();
         }
         
-        public void OnEnemyHit(float damage, float multiplier)
+        public void OnEnemyHit(float damage)
         {
-            enemyHealth.TakeDamage(damage,multiplier);
+            enemyHealth.TakeDamage(damage);
         }
 
         public void TriggerVisuals()
@@ -42,6 +45,5 @@ namespace Root
             Instantiate(particlesHit, transform.position, transform.rotation);
             if (damageSound != null) GameManager.AudioSystem.PlaySoundPositional(damageSound, transform.position, GameManager.AudioSystem.VFX);
         }
-
     }
 }

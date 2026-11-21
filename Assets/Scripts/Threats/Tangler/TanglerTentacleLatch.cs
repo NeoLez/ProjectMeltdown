@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Root.Enemy
 {
-    public class TanglerTentacleLatch : InteractableNormalCamera
+    public class TanglerTentacleLatch : EnemyClass
     {
         public TanglerTentacle tangler;
         [SerializeField] GameObject _particles;
@@ -18,7 +18,7 @@ namespace Root.Enemy
                 GameManager.AudioSystem.PlaySoundPositional(_soundLatch, transform.position, GameManager.AudioSystem.VFX);
         }
 
-        public override void Interact()
+        public override void TakeDamage(float _)
         {
             tangler.Cut(ChainLatchNumber);
         }
@@ -39,7 +39,7 @@ namespace Root.Enemy
             if (_once && other.gameObject.layer == LayerMask.NameToLayer("Player") && other.TryGetComponent(out HealthControl health))
             {
                 health.TakeDamage(35f);
-                Interact();
+                tangler.Cut(ChainLatchNumber);
                 _once = false;
             }
         }

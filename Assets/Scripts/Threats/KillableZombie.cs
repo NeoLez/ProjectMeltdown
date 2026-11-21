@@ -41,7 +41,7 @@ namespace Root
             _stateMachine = GetComponentInChildren<ZombieStateMachine>();
         }
 
-        public override void TakeDamage(float damage, float multiplier)
+        public override void TakeDamage(float damage)
         {
             if (_health <= 0)
             {
@@ -53,7 +53,7 @@ namespace Root
                 TriggerDeath();
                 return;
             }
-            _health -= damage * multiplier;
+            _health -= damage;
             Mathf.Max(0, _health--);
 
             OnDamaged?.Invoke(_stateMachine.IsRecovering);
