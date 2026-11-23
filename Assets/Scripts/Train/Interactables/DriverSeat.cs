@@ -61,5 +61,10 @@ namespace Root
                     animPivot.localRotation = targetRotation;
             }
         }
+
+        private void OnDestroy()
+        {
+            _cameraController.OnPlayerSeated -= RotateTowardsPlayer;
+        }
     }
 }

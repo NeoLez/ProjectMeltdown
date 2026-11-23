@@ -49,6 +49,7 @@ namespace Root
             if (Dialogue == null) yield break;
 
             GameManager.Input.Movement.Disable();
+            GameManager.Input.Menu.Disable();
             GameManager.Input.Inventory.InventoryToggle.Disable();
             GameManager.Input.Inventory.AlternativeCloseInventory.Disable();
             IsAnimationPlaying = true;

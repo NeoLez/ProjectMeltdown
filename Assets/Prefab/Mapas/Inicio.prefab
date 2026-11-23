@@ -12966,7 +12966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
@@ -14062,7 +14062,7 @@ Light:
   m_CookieSize2D: {x: 10, y: 10}
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 128
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -14122,7 +14122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
@@ -21014,7 +21014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
@@ -22060,7 +22060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
@@ -22726,7 +22726,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.36
+  m_VoxelSize: 0.15333334
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 895427668e87d424ea7ed441f02ddddb, type: 2}
   m_BuildHeightMesh: 0
@@ -78591,6 +78591,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6096529329619267567}
     m_Modifications:
+    - target: {fileID: 5484549618774371188, guid: 58cabb0a6991fb14d84e15c9461f0efb, type: 3}
+      propertyPath: m_AdditionalLightsShadowResolutionTier
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8352593545778987215, guid: 58cabb0a6991fb14d84e15c9461f0efb, type: 3}
       propertyPath: m_Name
       value: SquaredLight
@@ -84503,6 +84507,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasicZombie
       objectReference: {fileID: 0}
+    - target: {fileID: 4000857696384138558, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -86241,7 +86249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1722312577722234840, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_Size
-      value: 0.44403315
+      value: 0.44403368
       objectReference: {fileID: 0}
     - target: {fileID: 1722312577722234840, guid: 43dd81ff5d767d244853c4886b6ad731, type: 3}
       propertyPath: m_Value
@@ -88884,6 +88892,10 @@ PrefabInstance:
     - target: {fileID: 2359937034688799026, guid: 1bad56a4a86cfd480bf72e8f80d81635, type: 3}
       propertyPath: m_Name
       value: Tangler
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359937034688799026, guid: 1bad56a4a86cfd480bf72e8f80d81635, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6404018954352327870, guid: 1bad56a4a86cfd480bf72e8f80d81635, type: 3}
       propertyPath: m_LocalPosition.x
@@ -114896,6 +114908,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1231133033039766284, guid: 4dc7b7a7ec9053d4e9a91e8c45689b8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5873332091756065230}
+    - targetCorrespondingSourceObject: {fileID: 1231133033039766284, guid: 4dc7b7a7ec9053d4e9a91e8c45689b8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2823471441056981852}
   m_SourcePrefab: {fileID: 100100000, guid: 4dc7b7a7ec9053d4e9a91e8c45689b8a, type: 3}
 --- !u!4 &1841409583537706250 stripped
 Transform:
@@ -114949,6 +114964,24 @@ MonoBehaviour:
   _meshList: []
   shakeDuration: 0.4
   shakeMagnitude: 0.06
+--- !u!114 &2823471441056981852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133412208800933180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c283bb888f84394be4616198713d28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.Inventory
+  <Size>k__BackingField: {x: 0, y: 0}
+  itemSoToAdd: {fileID: 0}
+  rotation: 0
+  amount: 1
+  find: 1
+  pos: {x: 0, y: 0}
 --- !u!1001 &7061922011985325345
 PrefabInstance:
   m_ObjectHideFlags: 0

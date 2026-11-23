@@ -35,9 +35,6 @@ namespace Root
             CloseStore();
 
             _cameraPivot = GameObject.FindAnyObjectByType<CameraController>().CameraPivot;
-
-            //enabled = false;
-            //IsStoreOpened = true;
         }
 
         private void HandleStore()
@@ -80,6 +77,7 @@ namespace Root
             if (merchantAnimator == null) yield break;
 
             GameManager.Input.Movement.Disable();
+            GameManager.Input.Menu.Disable();
             OpenStore();
             merchantAnimator.Play("2_StartShop");
             yield return new WaitForSeconds(4f);
