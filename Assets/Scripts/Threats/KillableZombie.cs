@@ -43,6 +43,10 @@ namespace Root
 
         public override void TakeDamage(float damage)
         {
+            _health -= damage;
+            Mathf.Max(0, _health);
+            OnDamaged?.Invoke(_stateMachine.IsRecovering);
+
             if (_health <= 0)
             {
                 if (_routine != null)
@@ -53,10 +57,7 @@ namespace Root
                 TriggerDeath();
                 return;
             }
-            _health -= damage;
-            Mathf.Max(0, _health--);
 
-            OnDamaged?.Invoke(_stateMachine.IsRecovering);
         }
 
         private void TriggerDeath()

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1928427031795081394
 Transform:
   m_ObjectHideFlags: 0
@@ -83,6 +83,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3947562727309670901}
   - component: {fileID: 6654104598316610156}
+  - component: {fileID: 3852584150229031283}
+  - component: {fileID: 6281299528604009196}
   m_Layer: 0
   m_Name: TentacleLatch
   m_TagString: Untagged
@@ -122,6 +124,46 @@ MonoBehaviour:
   tangler: {fileID: 0}
   _particles: {fileID: 3960954949758265888, guid: d7eaaf8fad20d104c9538b4578dd9ccb, type: 3}
   ChainLatchNumber: 0
+--- !u!65 &3852584150229031283
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8075143327368464702}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5443432, y: 1.3244803, z: 0.9999999}
+  m_Center: {x: -0.013489215, y: -0.1385449, z: 0}
+--- !u!114 &6281299528604009196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8075143327368464702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5896dc0c8c37e34439794f519f93c3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Root.EnemyHitBox
+  damagePerPartMultiplier: 1
+  enemyHealth: {fileID: 6654104598316610156}
+  triggerVisuals: 0
+  animator: {fileID: 0}
+  damageSound: {fileID: 0}
+  particlesHit: {fileID: 0}
+  partAnimation: damage
 --- !u!1001 &2331629593822934447
 PrefabInstance:
   m_ObjectHideFlags: 0

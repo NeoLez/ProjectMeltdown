@@ -23,7 +23,8 @@ namespace Root
         public override void Interact()
         {
             OnEnemyHit(1 * damagePerPartMultiplier);
-            TriggerVisuals();
+            if (triggerVisuals)
+                TriggerVisuals();
         }
         
         public void Hit(float damage)
