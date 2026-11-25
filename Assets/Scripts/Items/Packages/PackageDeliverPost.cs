@@ -41,6 +41,7 @@ namespace Root
         [SerializeField] private float duration = 1f;
         [SerializeField] private float billSpawnForce;
         private bool _isAnimating;
+        public bool IsAnimating => _isAnimating;
 
         public Action<bool> OnPackagesDelivered;
         private List<TypeOfPackage> _packagesType = new();

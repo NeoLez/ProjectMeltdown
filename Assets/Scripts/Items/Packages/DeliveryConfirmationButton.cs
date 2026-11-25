@@ -21,6 +21,8 @@ namespace Root
 
         public override void Interact() 
         {
+            if (packagePost.IsAnimating) return;
+
             if (_isAnimating) return;
 
             if (_hasConfirmedInteraction) return;
