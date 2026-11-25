@@ -58,6 +58,7 @@ public class CameraController : InfectableComponent
     public Transform CameraPivot => cam;
 
     public Modifier[] modifiers;
+    public Modifier[] runningModifiers;
     [SerializeField] private HealthControl health;
 
     private void Awake()
@@ -82,6 +83,11 @@ public class CameraController : InfectableComponent
         {
             modifiers[i].modifier.Intialize(modifiers[i].controller);
             modifiers[i].controller.BaseValue = frequency;
+        }
+        for (int i = 0; i < runningModifiers.Length; i++)
+        {
+            runningModifiers[i].modifier.Intialize(runningModifiers[i].controller);
+            runningModifiers[i].controller.BaseValue = runningFrequency;
         }
         health.OnInfectionIncreased += Infect;
     }
@@ -294,6 +300,13 @@ public class CameraController : InfectableComponent
 
             if (!modifiers[i].modifier.ChecksCondition) break;
             frequency = modifiers[i].modifier.ActiveState ? frequency = modifiers[i].controller.FinalValue : frequency = modifiers[i].controller.BaseValue;
+        }
+        for (int i = 0; i < runningModifiers.Length; i++)
+        {
+            runningModifiers[i].modifier.Evaluate(currentValue);
+
+            if (!runningModifiers[i].modifier.ChecksCondition) break;
+            runningFrequency = runningModifiers[i].modifier.ActiveState ? runningFrequency = runningModifiers[i].controller.FinalValue : runningFrequency = runningModifiers[i].controller.BaseValue;
         }
     }
 

@@ -142,6 +142,7 @@ MonoBehaviour:
   _maxHealth: 100
   _currentHealth: 100
   _cooldownDuration: 2
+  damageIndicator: {fileID: 0}
   _dmg1: {fileID: 0}
   _dmg2: {fileID: 0}
   _dmg3: {fileID: 0}
@@ -150,9 +151,6 @@ MonoBehaviour:
   backgroundImage: {fileID: 0}
   maxInfectionLevel: 200
   infectionCooldown: 2
-  scriptsToModify:
-  - {fileID: 6541982603768647851}
-  - {fileID: 7817117622453091627}
   infectionSpeed: 10
   infectionStages:
   - {r: 0.068057984, g: 0.5377358, b: 0.058339275, a: 1}
@@ -207,7 +205,24 @@ MonoBehaviour:
     controller:
       baseValue: 0
   - modifier:
-      percentageThreshold: 0.6
+      percentageThreshold: 0.85
+      condition: 1
+      modifier:
+        type: 0
+        value: -5
+    controller:
+      baseValue: 0
+  runningModifiers:
+  - modifier:
+      percentageThreshold: 0.5
+      condition: 1
+      modifier:
+        type: 0
+        value: -2
+    controller:
+      baseValue: 0
+  - modifier:
+      percentageThreshold: 0.85
       condition: 1
       modifier:
         type: 0
@@ -258,11 +273,28 @@ MonoBehaviour:
     controller:
       baseValue: 0
   - modifier:
-      percentageThreshold: 0.6
+      percentageThreshold: 0.85
       condition: 1
       modifier:
         type: 0
         value: -2
+    controller:
+      baseValue: 0
+  runningModifiers:
+  - modifier:
+      percentageThreshold: 0.5
+      condition: 1
+      modifier:
+        type: 0
+        value: -2
+    controller:
+      baseValue: 0
+  - modifier:
+      percentageThreshold: 0.85
+      condition: 1
+      modifier:
+        type: 0
+        value: -5
     controller:
       baseValue: 0
   health: {fileID: 5443131875277949609}

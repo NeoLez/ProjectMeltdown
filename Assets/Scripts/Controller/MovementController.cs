@@ -43,6 +43,7 @@ namespace Root.Controller
         private Vector3 _lastSpeed;
 
         public Modifier[] modifiers;
+        public Modifier[] runningModifiers;
         [SerializeField] private HealthControl health;
         private void Start()
         {
@@ -64,6 +65,11 @@ namespace Root.Controller
             {
                 modifiers[i].modifier.Intialize(modifiers[i].controller);
                 modifiers[i].controller.BaseValue = movementSpeed;
+            }
+            for (int i = 0; i < runningModifiers.Length; i++)
+            {
+                runningModifiers[i].modifier.Intialize(runningModifiers[i].controller);
+                runningModifiers[i].controller.BaseValue = runningMovementSpeed;
             }
             health.OnInfectionIncreased += Infect;
         }
@@ -254,6 +260,14 @@ namespace Root.Controller
 
                 if (!modifiers[i].modifier.ChecksCondition) break;
                 movementSpeed = modifiers[i].modifier.ActiveState ? movementSpeed = modifiers[i].controller.FinalValue : movementSpeed = modifiers[i].controller.BaseValue;
+            }
+
+            for (int i = 0; i < runningModifiers.Length; i++)
+            {
+                runningModifiers[i].modifier.Evaluate(currentValue);
+
+                if (!runningModifiers[i].modifier.ChecksCondition) break;
+                runningMovementSpeed = runningModifiers[i].modifier.ActiveState ? runningMovementSpeed = runningModifiers[i].controller.FinalValue : runningMovementSpeed = runningModifiers[i].controller.BaseValue;
 
             }
         }
