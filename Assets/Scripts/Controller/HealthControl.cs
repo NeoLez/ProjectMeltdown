@@ -17,6 +17,7 @@ namespace Root
         float _regenRate = 4f;
         float _cooldown = 0f;
         [SerializeField] float _cooldownDuration = 2f;
+        [SerializeField] private Image damageIndicator;
         [SerializeField] Image _dmg1; //lo tengo q cambiar por un shadergraph o una lista, perdon Leo jiji
         [SerializeField] Image _dmg2;
         [SerializeField] Image _dmg3;
@@ -33,7 +34,6 @@ namespace Root
         private bool _canInfect;
         private Timer _infectionTimer = new();
 
-        [SerializeField] private Component[] scriptsToModify;
         [SerializeField] private float infectionSpeed;
         [SerializeField] private Color[] infectionStages;
         [SerializeField] private float[] infectionPercentageStages;
@@ -75,7 +75,6 @@ namespace Root
             if (_regeneration)
             {
                 Regen();
-                DamageFeedback();
             }
 
             if (_infectionTimer.IsCompleted())
@@ -83,6 +82,8 @@ namespace Root
                 _canInfect = true;
                 _infectionTimer.Reset(infectionCooldown);
             }
+
+            DamageFeedback();
         }
 
         public void TakeDamage(float dmg)
@@ -94,6 +95,7 @@ namespace Root
                 CameraShakeManager.Instance.Shake(0.5f, 0.1f);
                 _currentHealth -= dmg;
                 _currentHealth = Mathf.Clamp(_currentHealth, 0f, _maxHealth);
+
                 _regeneration = true;
                 if (_currentHealth <= 0f)
                 {
@@ -104,25 +106,30 @@ namespace Root
         }
 
         private void DamageFeedback()
-        {
-            if (_currentHealth < 100 && _currentHealth >= 60)
+        {           
+            if (_currentHealth < 60 && _currentHealth >= 30)
             {
-                UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
-                UIFeedback(_dmg3, 0f);
-                UIFeedback(_dmg2, 0f);
-            }
-            else if (_currentHealth < 60 && _currentHealth >= 30)
-            {
+                damageIndicator.color = infectionStages[1];
+
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0f);
             }
-            else
+            else if (_currentHealth <= 30 && _currentHealth >= 0)
             {
+                damageIndicator.color = infectionStages[2];
+
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0.3f - _currentHealth * 0.01f);
+            }
+            else
+            {
+                damageIndicator.color = infectionStages[0];
 
+                UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
+                UIFeedback(_dmg3, 0f);
+                UIFeedback(_dmg2, 0f);
             }
         }
 
@@ -134,16 +141,17 @@ namespace Root
         {
             if (_currentHealth == _maxHealth)
             {
-
-                UIFeedback(_dmg3, 0f);
-                UIFeedback(_dmg2, 0f);
-                UIFeedback(_dmg1, 0f);
+                damageIndicator.color = infectionStages[0];
+                 UIFeedback(_dmg3, 0f);
+                 UIFeedback(_dmg2, 0f);
+                 UIFeedback(_dmg1, 0f);
                 _regeneration = false; return;
 
             }
             _currentHealth += healAmount;
             _currentHealth = Mathf.Clamp(_currentHealth, 0f, _maxHealth);
         }
+
         private void UIFeedback(Image Image, float alpha)
         {
             Color temp = Image.color;
@@ -210,7 +218,7 @@ namespace Root
             {
                 infectionBar.value += (1 / maxInfectionLevel) * infectionSpeed;
 
-                ApplyModifiers();
+                OnInfectionIncreased?.Invoke(infectionBar.value);
 
                 ChangeColorIndicator(infectionBar.value);
                 if (infectionBar.value >= infectionBar.maxValue)
@@ -222,15 +230,6 @@ namespace Root
             }
 
             StopInfection();
-        }
-
-        private void ApplyModifiers()
-        {
-            for (int i = 0; i < scriptsToModify.Length; i++)
-            {
-                var component = scriptsToModify[i].GetComponent<InfectableComponent>();
-                component.Infect(infectionBar.value);
-            }
         }
 
         private void ChangeColorIndicator(float value)
@@ -257,14 +256,21 @@ namespace Root
 
         public void Cure(float amount)
         {
-            //aca chequear si esta al maximo, no usar cualquier item
             StopInfection();
-            if (infectionBar.minValue == 0)
+            if (infectionBar.value <= infectionBar.minValue)
             {
-                Debug.Log("full vida");
                 return;
             }
             infectionBar.value -= amount / maxInfectionLevel;
+
+            ChangeColorIndicator(infectionBar.value);
+            OnInfectionIncreased?.Invoke(infectionBar.value);
+            //crea otro evento para cuando estoy curando al pj y restableciendo los modificadores
+        }
+
+        public bool CanCure()
+        {
+            return infectionBar.value > 0;
         }
 
     }

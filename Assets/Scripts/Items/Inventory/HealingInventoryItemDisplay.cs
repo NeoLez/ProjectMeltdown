@@ -24,8 +24,9 @@ namespace Root
         private void Heal()
         {
             var itemSo = (HealingItemSo)_inventoryItem.itemState.ItemSo;
-            _inventoryItem.Inventory.RemoveItem(_inventoryItem);
             var health = GameManager.Player.GetComponent<HealthControl>();
+            if (!health.CanCure()) return;
+            _inventoryItem.Inventory.RemoveItem(_inventoryItem);
             health.Heal(itemSo.HealAmount);
             health.Cure(itemSo.InfectionHealAmount);
         }
