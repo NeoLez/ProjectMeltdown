@@ -15,7 +15,15 @@ namespace Root
         [SerializeField] private List<Pipe> pipes = new();
         [SerializeField] private WaterPump pump;
         [SerializeField] private AudioSource waterMovement;
+        public event System.Action<bool> OnRisingChanged;
+        public bool IsRising { get; private set; }
 
+        private void SetRising(bool value)
+        {
+            if (IsRising == value) return;
+            IsRising = value;
+            OnRisingChanged?.Invoke(value);
+        }
         private Tween _currentTween;
         private bool _animating = false;
         private Vector2 _heights;
@@ -47,37 +55,40 @@ namespace Root
         public void GoUp()
         {
             if (IsMaxed) return;
-            
+
             currentLevel++;
             _currentTween.Stop();
-            MoveTo(GetLevelHeight(currentLevel));
+            SetRising(true);
+            MoveTo(GetLevelHeight(currentLevel), true);
         }
 
         public void GoDown()
         {
             if (IsLow) return;
-            
+
             currentLevel--;
             _currentTween.Stop();
-            MoveTo(GetLevelHeight(currentLevel));
+            SetRising(false);  
+            MoveTo(GetLevelHeight(currentLevel), false);
             waterMovement.Play();
         }
-        
+
         private void SetLocalY(float y)
         {
             Vector3 p = transform.localPosition;
             transform.localPosition = new Vector3(p.x, y, p.z);
         }
-        
-        private void MoveTo(float localY)
+
+        private void MoveTo(float localY, bool rising)
         {
             Vector3 p = transform.localPosition;
             _currentTween = Tween.LocalPosition(transform,
                 new TweenSettings<Vector3>(new Vector3(p.x, localY, p.z), _time)).OnComplete(() =>
                 {
+                    if (rising) SetRising(false);
                     waterMovement.Stop();
                     pump?.StopAudio(true);
-                }); 
+                });
         }
 
         private float GetLevelHeight(int level)
