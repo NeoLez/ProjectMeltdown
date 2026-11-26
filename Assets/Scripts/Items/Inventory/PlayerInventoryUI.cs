@@ -16,6 +16,7 @@ namespace Root {
         [SerializeField] private ItemActionButton itemActionButtonPrefab;
         [SerializeField] private RectTransform itemActionsTitlePrefab;
         [SerializeField] private Canvas infectionIndicator;
+        [SerializeField] private Canvas healthIndicator;
         private Inventory _otherInventory;
         private bool playerInventoryInitialized;
         private bool inventoryOpen;
@@ -56,12 +57,14 @@ namespace Root {
             base.Open();
             ShowDisplays();
             infectionIndicator.gameObject.SetActive(true);
+            healthIndicator.gameObject.SetActive(true);
         }
 
         public override void Close() {
             base.Close();
             HideDisplays();
             infectionIndicator.gameObject.SetActive(false);
+            healthIndicator.gameObject.SetActive(false);
         }
 
         private void ShowDisplays() {
