@@ -70,7 +70,7 @@ namespace Root
             GameManager.Input.Handheld.Enable();
             GameManager.Input.Interaction.Interact.Enable();
 
-            infectionBar.image.color = infectionStages[0];
+            //infectionBar.image.color = infectionStages[0];
             backgroundImage.color = infectionStages[0];
         }
 
@@ -246,18 +246,18 @@ namespace Root
                 if (value >= infectionPercentageStages[0] && value <= infectionPercentageStages[1])
                 {
                     infectionIndicator.SetInteger("Level", 2);
-                    infectionBar.image.color = infectionStages[1];
+                    //infectionBar.image.color = infectionStages[1];
                     backgroundImage.color = infectionStages[1];
                 }
                 else if (value >= infectionPercentageStages[1])
                 {
-                    infectionBar.image.color = infectionStages[2];
+                    //infectionBar.image.color = infectionStages[2];
                     backgroundImage.color = infectionStages[2];
                     infectionIndicator.SetInteger("Level", 3);
                 }
                 else
                 {
-                    infectionBar.image.color = infectionStages[0];
+                    //infectionBar.image.color = infectionStages[0];
                     backgroundImage.color = infectionStages[0];
                     infectionIndicator.SetInteger("Level", 1);
                 }
