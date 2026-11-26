@@ -17,7 +17,7 @@ namespace Root
         public ConditionThreshold condition = ConditionThreshold.LessOrEqualThan;
         public InfectionModifier modifier;
 
-        private ModifierController _estadisticaObjetivo;
+        private ModifierController _objectiveStat;
         private bool _isActive = false;
 
         public bool ActiveState => _isActive;
@@ -25,35 +25,52 @@ namespace Root
        
         public void Intialize(ModifierController estadistica)
         {
-            _estadisticaObjetivo = estadistica;
+            _objectiveStat = estadistica;
             _isActive = false;
         }
 
-        public void Evaluate(float currentValue)
+        public void Evaluate(float currentValue, float algo = 0) //TODO-Make it return a boolean instead
         {
-            if (_estadisticaObjetivo == null) return;
+            if (_objectiveStat == null) return;
 
-            //float currentPercentage = (currentValue / maxValue) * 100;
             float currentPercentage = currentValue;
 
             bool reachesGoal = condition == ConditionThreshold.LessOrEqualThan
                 ? currentPercentage <= percentageThreshold
                 : currentPercentage >= percentageThreshold;
 
-            ChecksCondition = reachesGoal;
             if (reachesGoal && !_isActive)
             {
-                _estadisticaObjetivo.AddModifier(modifier);
+                _objectiveStat.AddModifier(modifier);
                 _isActive = true;
+                _objectiveStat.BaseValue = algo;
             }
             else if (!reachesGoal && _isActive)
             {
-                _estadisticaObjetivo.RemoveModifier(modifier);
+                _objectiveStat.RemoveModifier(modifier);
+                _isActive = false;
+            }
+            ChecksCondition = reachesGoal;
+        }
+
+        public void Evaluate(float currentValue) 
+        {
+            if (_objectiveStat == null) return;
+
+            float currentPercentage = (float)Math.Round(currentValue, 2);
+
+            bool reachesGoal = condition == ConditionThreshold.LessOrEqualThan
+               ? currentPercentage >= percentageThreshold
+               : currentPercentage <= percentageThreshold;
+
+            if (!reachesGoal && _isActive) //rever esto
+            {
+                _objectiveStat.RemoveModifier(modifier);
                 _isActive = false;
             }
 
+            ChecksCondition = reachesGoal;
+            //Debug.Log(currentPercentage + "!" + percentageThreshold);
         }
-
-
     }
 }

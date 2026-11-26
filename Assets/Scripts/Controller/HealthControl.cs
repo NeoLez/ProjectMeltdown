@@ -29,6 +29,7 @@ namespace Root
         [Header("Infection")]
         [SerializeField] private Slider infectionBar;
         [SerializeField] private Image backgroundImage;
+        [SerializeField] private Animator infectionIndicator;
         [SerializeField] private float maxInfectionLevel;
         [SerializeField] private float infectionCooldown;
         private bool _canInfect;
@@ -38,7 +39,9 @@ namespace Root
         [SerializeField] private Color[] infectionStages;
         [SerializeField] private float[] infectionPercentageStages;
         public event Action<float> OnInfectionIncreased;
+        public event Action<float> OnInfectionReduced;
         private Coroutine _infectionCoroutine;
+
         private void Awake()
         {
             GameManager.Input.Interaction.Reset.performed += HandleResetPerformed;
@@ -84,6 +87,9 @@ namespace Root
             }
 
             DamageFeedback();
+
+            if (infectionBar.value <= 0)
+                infectionIndicator.SetInteger("Level", 0);
         }
 
         public void TakeDamage(float dmg)
@@ -106,7 +112,7 @@ namespace Root
         }
 
         private void DamageFeedback()
-        {           
+        {
             if (_currentHealth < 60 && _currentHealth >= 30)
             {
                 damageIndicator.color = infectionStages[1];
@@ -142,9 +148,9 @@ namespace Root
             if (_currentHealth == _maxHealth)
             {
                 damageIndicator.color = infectionStages[0];
-                 UIFeedback(_dmg3, 0f);
-                 UIFeedback(_dmg2, 0f);
-                 UIFeedback(_dmg1, 0f);
+                UIFeedback(_dmg3, 0f);
+                UIFeedback(_dmg2, 0f);
+                UIFeedback(_dmg1, 0f);
                 _regeneration = false; return;
 
             }
@@ -238,6 +244,7 @@ namespace Root
             {
                 if (value >= infectionPercentageStages[0] && value <= infectionPercentageStages[1])
                 {
+                    infectionIndicator.SetInteger("Level", 2);
                     infectionBar.image.color = infectionStages[1];
                     backgroundImage.color = infectionStages[1];
                 }
@@ -245,11 +252,13 @@ namespace Root
                 {
                     infectionBar.image.color = infectionStages[2];
                     backgroundImage.color = infectionStages[2];
+                    infectionIndicator.SetInteger("Level", 3);
                 }
                 else
                 {
                     infectionBar.image.color = infectionStages[0];
                     backgroundImage.color = infectionStages[0];
+                    infectionIndicator.SetInteger("Level", 1);
                 }
             }
         }
@@ -261,11 +270,11 @@ namespace Root
             {
                 return;
             }
-            infectionBar.value -= amount / maxInfectionLevel;
+
+            OnInfectionReduced?.Invoke(infectionBar.value);
+            infectionBar.value -= Mathf.Clamp01(amount / maxInfectionLevel);
 
             ChangeColorIndicator(infectionBar.value);
-            OnInfectionIncreased?.Invoke(infectionBar.value);
-            //crea otro evento para cuando estoy curando al pj y restableciendo los modificadores
         }
 
         public bool CanCure()

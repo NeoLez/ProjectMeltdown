@@ -90,6 +90,7 @@ public class CameraController : InfectableComponent
             runningModifiers[i].controller.BaseValue = runningFrequency;
         }
         health.OnInfectionIncreased += Infect;
+        health.OnInfectionReduced += RevertInfection;
     }
 
     private void OnEnable()
@@ -294,20 +295,14 @@ public class CameraController : InfectableComponent
 
     public override void Infect(float currentValue)
     {
-        for (int i = 0; i < modifiers.Length; i++)
-        {
-            modifiers[i].modifier.Evaluate(currentValue);
+        frequency = ApplyModifiers(currentValue, modifiers, frequency);
+        runningFrequency = ApplyModifiers(currentValue, runningModifiers, runningFrequency);
+    }
 
-            if (!modifiers[i].modifier.ChecksCondition) break;
-            frequency = modifiers[i].modifier.ActiveState ? frequency = modifiers[i].controller.FinalValue : frequency = modifiers[i].controller.BaseValue;
-        }
-        for (int i = 0; i < runningModifiers.Length; i++)
-        {
-            runningModifiers[i].modifier.Evaluate(currentValue);
-
-            if (!runningModifiers[i].modifier.ChecksCondition) break;
-            runningFrequency = runningModifiers[i].modifier.ActiveState ? runningFrequency = runningModifiers[i].controller.FinalValue : runningFrequency = runningModifiers[i].controller.BaseValue;
-        }
+    public override void RevertInfection(float currentValue)
+    {
+        frequency = RevertModifiers(currentValue, modifiers, frequency);
+        runningFrequency = RevertModifiers(currentValue, runningModifiers, runningFrequency);
     }
 
     public Vector2 GetHorizontalDirectionForwardVector()

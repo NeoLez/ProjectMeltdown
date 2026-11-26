@@ -72,11 +72,13 @@ namespace Root.Controller
                 runningModifiers[i].controller.BaseValue = runningMovementSpeed;
             }
             health.OnInfectionIncreased += Infect;
+            health.OnInfectionReduced += RevertInfection;
         }
 
         private void OnDestroy()
         {
             _input.Movement.Jump.performed -= Jump;
+            health.OnInfectionReduced -= RevertInfection;
 
             DialogueManager.Instance.OnDialogueStarted -= DisableMovement;
             DialogueManager.Instance.OnDialogueEnded -= EnableMovement;
@@ -254,23 +256,16 @@ namespace Root.Controller
 
         public override void Infect(float currentValue)
         {
-            for (int i = 0; i < modifiers.Length; i++)
-            {
-                modifiers[i].modifier.Evaluate(currentValue);
-
-                if (!modifiers[i].modifier.ChecksCondition) break;
-                movementSpeed = modifiers[i].modifier.ActiveState ? movementSpeed = modifiers[i].controller.FinalValue : movementSpeed = modifiers[i].controller.BaseValue;
-            }
-
-            for (int i = 0; i < runningModifiers.Length; i++)
-            {
-                runningModifiers[i].modifier.Evaluate(currentValue);
-
-                if (!runningModifiers[i].modifier.ChecksCondition) break;
-                runningMovementSpeed = runningModifiers[i].modifier.ActiveState ? runningMovementSpeed = runningModifiers[i].controller.FinalValue : runningMovementSpeed = runningModifiers[i].controller.BaseValue;
-
-            }
+            movementSpeed = ApplyModifiers(currentValue, modifiers, movementSpeed);
+            runningMovementSpeed = ApplyModifiers(currentValue, runningModifiers, runningMovementSpeed);
         }
+
+        public override void RevertInfection(float currentValue) 
+        {
+            movementSpeed =  RevertModifiers(currentValue, modifiers, movementSpeed);
+            runningMovementSpeed = RevertModifiers(currentValue, runningModifiers, runningMovementSpeed);
+        }
+
 
     }
 }
