@@ -11,6 +11,7 @@ namespace Root
         [NonSerialized] public bool _purchased = true;
         [SerializeField] private TextMeshProUGUI priceText;
         [SerializeField] private TextMeshProUGUI nameText;
+        [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private Image itemIcon;
         [SerializeField] private float boughtButtonAlpha = 0.2f;
         [SerializeField] private float notEnoughMoneybuttonAlpha = 0.8f;
@@ -60,6 +61,7 @@ namespace Root
         {
             nameText.text = _name;
             priceText.text = string.Format(label, _price.ToString());
+            descriptionText.text = _data.item.Description;
             itemIcon.sprite = _itemIcon;
         }
 
