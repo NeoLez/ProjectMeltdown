@@ -14,7 +14,7 @@ namespace Root.Handheld
         
         static readonly int AttackSpeedHash = Animator.StringToHash("AttackSpeed");
         static readonly int AttackStateHash = Animator.StringToHash("Attack"); 
-        private MeleeWeaponItemSo State => (MeleeWeaponItemSo)state.ItemSo;
+        private MeleeWeaponItemSo ItemSo => (MeleeWeaponItemSo)state.ItemSo;
         
         public override void Use(InputAction.CallbackContext ctx)
         {
@@ -25,29 +25,42 @@ namespace Root.Handheld
         private IEnumerator PerformHit()
         {
             if (!_cooldownTimer.IsCompleted())
-                yield break;
-            _cooldownTimer.Reset(State.Cooldown);
+            {
+                var cooldownTimeLeft = _cooldownTimer.GetTimeLeft();
+                if (cooldownTimeLeft <= ItemSo.InputBufferTime)
+                {
+                    Debug.Log(cooldownTimeLeft);
+                    yield return new WaitForSeconds(cooldownTimeLeft);
+                }
+                else
+                {
+                    yield break;
+                }
+            }
+            _cooldownTimer.Reset(ItemSo.Cooldown);
             
             PlayAnimation();
-            yield return new WaitForSeconds(State.HitTime);
+            Debug.Log("a");
+            yield return new WaitForSeconds(ItemSo.HitTime);
+            Debug.Log("b");
             Damage();
         }
 
         private void PlayAnimation()
         {
-            animator.SetFloat(AttackSpeedHash, attackClip.length / State.Cooldown);
+            animator.SetFloat(AttackSpeedHash, attackClip.length / ItemSo.Cooldown);
             animator.Play(AttackStateHash, 0, 0f);
         }
 
         private void Damage()
         {
             var cam = GameManager.CameraPivot.transform;
-            if (!Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, State.Range, layerMask))
+            if (!Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, ItemSo.Range, layerMask))
                 return;
 
             if (hit.collider.gameObject.TryGetComponent<EnemyHitBox>(out var component))
             {
-                component.Hit(State.Damage);
+                component.Hit(ItemSo.Damage);
             }
         }
     }

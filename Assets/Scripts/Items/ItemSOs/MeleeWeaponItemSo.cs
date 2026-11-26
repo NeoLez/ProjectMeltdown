@@ -7,6 +7,7 @@ namespace Root
     {
         [field: SerializeField] public float Range { get; private set; }
         [field: SerializeField] public float Cooldown { get; private set; }
+        [field: SerializeField] public float InputBufferTime { get; private set; }
         [field: SerializeField] public float HitTime { get; private set; }
         [field: SerializeField] public int Damage { get; private set; }
     }

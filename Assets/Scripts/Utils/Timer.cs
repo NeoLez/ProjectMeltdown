@@ -18,5 +18,10 @@ namespace Timers {
         public void Reset(float timeToWait) {
             completionTime = timeToWait + Time.time;
         }
+
+        public float GetTimeLeft()
+        {
+            return IsCompleted() ? 0 : completionTime - Time.time;
+        }
     }
 }
