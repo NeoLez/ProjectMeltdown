@@ -99,7 +99,7 @@ namespace Root
 
             MouseHandler.RelinquishControl(this);
 
-            GameManager.PlayerInventoryUI.CloseInventory();
+            GameManager.PlayerInventoryUI.CloseOnlyInventory();
             GameManager.Input.Movement.Enable();
             GameManager.CameraController.EnableNormalMovement();
             GameManager.Input.CameraMovement.Enable();

@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 namespace Root {
     public class PlayerInventoryUI : Menu.Menu {
@@ -30,6 +31,7 @@ namespace Root {
         private void InventoryToggle(InputAction.CallbackContext _) {
             if (inventoryOpen) {
                 UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
+                CloseHealthSystem();
             }
             else {
                 OpenInventory();
@@ -45,26 +47,49 @@ namespace Root {
         public void CloseInventory() {
             if (!inventoryOpen) return;
             UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
+            CloseHealthSystem();
         }
 
         public void OpenInventory(Inventory inventory = null) {
             if (inventoryOpen) return;
             _otherInventory = inventory;
             UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
+            OpenHealthSystem();
+        }
+
+        public void OpenOnlyInventory(Inventory inventory = null)
+        {
+            if (inventoryOpen) return;
+            _otherInventory = inventory;
+            UIManager.Instance.OpenMenu(UIManager.UITypes.Inventory);
+        }
+
+        public void CloseOnlyInventory()
+        {
+            if (!inventoryOpen) return;
+            UIManager.Instance.CloseMenu(UIManager.UITypes.Inventory);
+        }
+
+        public void OpenHealthSystem()
+        {
+            infectionIndicator.gameObject.SetActive(true);
+            healthIndicator.gameObject.SetActive(true);
+        }
+
+        public void CloseHealthSystem()
+        {
+            infectionIndicator.gameObject.SetActive(false);
+            healthIndicator.gameObject.SetActive(false);
         }
 
         public override void Open() {
             base.Open();
             ShowDisplays();
-            infectionIndicator.gameObject.SetActive(true);
-            healthIndicator.gameObject.SetActive(true);
         }
 
         public override void Close() {
             base.Close();
             HideDisplays();
-            infectionIndicator.gameObject.SetActive(false);
-            healthIndicator.gameObject.SetActive(false);
         }
 
         private void ShowDisplays() {

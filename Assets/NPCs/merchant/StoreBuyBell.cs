@@ -61,7 +61,7 @@ namespace Root
 
         private void OpenStorePanel()
         {
-            GameManager.PlayerInventoryUI.OpenInventory();
+            GameManager.PlayerInventoryUI.OpenOnlyInventory();
             menu.ShowDisplays();
         }
 
