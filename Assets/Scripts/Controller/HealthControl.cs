@@ -21,7 +21,7 @@ namespace Root
         [SerializeField] Image _dmg1; //lo tengo q cambiar por un shadergraph o una lista, perdon Leo jiji
         [SerializeField] Image _dmg2;
         [SerializeField] Image _dmg3;
-
+        Animator _healthBarAnim;
         [SerializeField] private GameObject ui_muerte;
         private bool _muerto = false;
 
@@ -60,6 +60,7 @@ namespace Root
 
         private void Start()
         {
+            _healthBarAnim = damageIndicator.GetComponent<Animator>();
             _currentHealth = _maxHealth;
             IsPlayerDead = false;
 
@@ -116,7 +117,7 @@ namespace Root
             if (_currentHealth < 60 && _currentHealth >= 30)
             {
                 damageIndicator.color = infectionStages[1];
-
+                _healthBarAnim.SetInteger("Critical", 1);
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0f);
@@ -124,7 +125,7 @@ namespace Root
             else if (_currentHealth <= 30 && _currentHealth >= 0)
             {
                 damageIndicator.color = infectionStages[2];
-
+                _healthBarAnim.SetInteger("Critical", 2);
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg2, 0.6f - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0.3f - _currentHealth * 0.01f);
@@ -132,7 +133,7 @@ namespace Root
             else
             {
                 damageIndicator.color = infectionStages[0];
-
+                _healthBarAnim.SetInteger("Critical", 0);
                 UIFeedback(_dmg1, 1 - _currentHealth * 0.01f);
                 UIFeedback(_dmg3, 0f);
                 UIFeedback(_dmg2, 0f);
