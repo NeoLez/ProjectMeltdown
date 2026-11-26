@@ -29,7 +29,6 @@ namespace Root.Handheld
                 var cooldownTimeLeft = _cooldownTimer.GetTimeLeft();
                 if (cooldownTimeLeft <= ItemSo.InputBufferTime)
                 {
-                    Debug.Log(cooldownTimeLeft);
                     yield return new WaitForSeconds(cooldownTimeLeft);
                 }
                 else
@@ -40,9 +39,7 @@ namespace Root.Handheld
             _cooldownTimer.Reset(ItemSo.Cooldown);
             
             PlayAnimation();
-            Debug.Log("a");
             yield return new WaitForSeconds(ItemSo.HitTime);
-            Debug.Log("b");
             Damage();
         }
 
