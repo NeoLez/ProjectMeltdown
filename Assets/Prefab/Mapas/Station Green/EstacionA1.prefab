@@ -2311,7 +2311,7 @@ Transform:
   m_GameObject: {fileID: 616718253525882082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 51.27, y: 9.24, z: 46.3}
+  m_LocalPosition: {x: 61.77, y: -13.124, z: 34.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2690,7 +2690,7 @@ Transform:
   m_GameObject: {fileID: 700056943085405665}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.88, y: 9.24, z: 45.52}
+  m_LocalPosition: {x: 71.54, y: -13.1, z: 34.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7607,7 +7607,7 @@ Transform:
   m_GameObject: {fileID: 1945700242990614967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -37.318, y: 10.25, z: 72.08}
+  m_LocalPosition: {x: 31.57, y: -12.8, z: 34.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7627,16 +7627,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshLink
   m_SerializedVersion: 1
   m_AgentTypeID: -1372625422
-  m_StartPoint: {x: -0.0000020003745, y: 0, z: -4.059645}
-  m_EndPoint: {x: 0.0000027321682, y: 0, z: 3.840107}
+  m_StartPoint: {x: 0.0000014249222, y: 0, z: -2.796041}
+  m_EndPoint: {x: 0.000008429296, y: 0, z: 2.447005}
   m_StartTransform: {fileID: 0}
   m_EndTransform: {fileID: 0}
   m_Activated: 1
-  m_Width: 3.17
+  m_Width: 1.4540826
   m_CostModifier: 5
   m_IsOverridingCost: 1
   m_Bidirectional: 1
-  m_AutoUpdatePosition: 0
+  m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!1 &1990616122894040167
 GameObject:
@@ -18027,7 +18027,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.14666666
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: d8e94d0b6a935194185d0dd5a87cb974, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: f47eac433c6c48f44afbec71aa78587a, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &3529574376815783891
 GameObject:
@@ -26600,6 +26600,37 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &4463184919662346029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4715962791366603726}
+  m_Layer: 0
+  m_Name: Waypoint_7
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4715962791366603726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4463184919662346029}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 51.09, y: -13.1, z: 34.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5205768700190203375}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4484710245296262044
 GameObject:
   m_ObjectHideFlags: 0
@@ -44077,6 +44108,7 @@ Transform:
   - {fileID: 3191823560864017781}
   - {fileID: 280663130553721374}
   - {fileID: 3458224290896973143}
+  - {fileID: 4715962791366603726}
   - {fileID: 6714271361131281499}
   - {fileID: 2899290523292441450}
   - {fileID: 6711747242424528968}
@@ -95792,7 +95824,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
       propertyPath: Waypoints.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
       propertyPath: 'Waypoints.Array.data[0]'
@@ -95802,6 +95834,10 @@ PrefabInstance:
       propertyPath: 'Waypoints.Array.data[1]'
       value: 
       objectReference: {fileID: 6714271361131281499}
+    - target: {fileID: 792776092358132749, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
+      propertyPath: 'Waypoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4715962791366603726}
     - target: {fileID: 866096744551799787, guid: 94b78f97c990dcd3b9231e3b36c92d0c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 73.17
