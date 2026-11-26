@@ -253,7 +253,7 @@ namespace Root
             {
                 if (GameManager.Player.GetComponent<Inventory>().ContainsItemType(packages))
                 {
-                    PlayerInventoryUI.Instance.OpenInventory();
+                    PlayerInventoryUI.Instance.OpenOnlyInventory();
                 }
                 else
                 {
